@@ -1,0 +1,57 @@
+version: '3.8'
+services:
+  truffle:
+    build:
+      context: ./ethereum
+      target: truffle
+    depends_on:
+      - ganache
+    networks:
+      - backend
+    volumes:
+      - .:/app
+      - /app/node_modules
+  ganache:
+    build:
+      context: ./ethereum
+      target: ganache
+    ports:
+      - 8545:8545
+    networks:
+      - backend
+  web:
+    build:
+      context: ./web
+      target: runner
+    volumes:
+      - ./web/:/app
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+  api:
+    build:
+      context: ./api
+    volumes:
+      - ./api/:/app
+    command: npm run dev:serve
+    ports:
+      - "4000:4000"
+    depends_on:
+      - mongodb
+    environment:
+      NODE_ENV: development
+      #   # Servicio para la base de datos MongoDB
+  mongodb:
+    image: mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+volumes:
+  mongo_data:
+  node_modules:
+networks:
+  backend:
+    driver: "bridge"
