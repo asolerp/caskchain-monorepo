@@ -13,10 +13,12 @@ import UserInfoModal from '@ui/modals/UserInfoModal'
 import { useAuth } from '@hooks/auth'
 import Link from 'next/link'
 import { getCookie } from 'cookies-next'
+import Image from 'next/image'
 
 const navigation = [
+  { name: 'Home', href: '/' },
+  { name: 'Explore', href: '/explore' },
   { name: 'Marketplace', href: '/marketplace' },
-  { name: 'Exchange', href: '/exchange' },
   { name: 'About us', href: '/about' },
 ]
 
@@ -28,7 +30,7 @@ export default function Navbar() {
   useAuth()
   const { account } = useAccount()
   const { network } = useNetwork()
-  const token = getCookie('token')
+  const token = getCookie('token') as string
   const {
     state: { userInfoModal, signInModal, user },
     dispatch,
@@ -57,7 +59,7 @@ export default function Navbar() {
       <Disclosure as="nav">
         {({ open }) => (
           <>
-            <div className="absolute z-50 mx-auto w-full px-2 sm:px-6 lg:px-20">
+            <div className="absolute z-50 mx-auto w-full px-2 sm:px-6 lg:px-32">
               <div className="relative bg-transparent flex h-24 items-center justify-between">
                 <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                   {/* Mobile menu button*/}
@@ -74,35 +76,37 @@ export default function Navbar() {
                   <div className="flex flex-1 items-center">
                     <Link href={`/`}>
                       <div className="flex flex-row space-x-3 items-center">
-                        <p className=" text-4xl font-bold text-white text-opacity-90">
-                          CaskChain
-                        </p>
+                        <Image
+                          src="/images/logo.svg"
+                          width={205}
+                          height={200}
+                          alt="caskchain_logo"
+                        />
                       </div>
                     </Link>
                   </div>
                   <div className="flex flex-grow space-x-3 justify-center items-center">
                     {navigation.map((item) => (
                       <ActiveLink
-                        activeclass="bg-emerald-400 text-slate-100"
+                        activeclass="text-cask-chain border-b-2 border-b-cask-chain"
                         key={item.name}
                         href={item.href}
                       >
                         <span
                           className={
-                            'text-white hover:bg-gray-700 hover:text-white px-4 py-5 rounded-full text-sm font-semibold'
+                            'text-white font-poppins hover:border-b-2 hover:border-b-cask-chain px-4 py-5 text-sm'
                           }
-                          aria-current={item.current ? 'page' : undefined}
                         >
-                          {item.name.toUpperCase()}
+                          {item.name}
                         </span>
                       </ActiveLink>
                     ))}
                   </div>
                   <div className="flex flex-1 justify-end items-center pr-2 sm:static sm:inset-auto sm:pr-0">
                     <div className="text-gray-200 self-center mr-2">
-                      <span className="inline-flex items-center px-6 py-3 rounded-full text-sm font-medium bg-slate-700 text-white shadow-lg">
+                      <span className="inline-flex items-center px-6 py-3 rounded-full text-sm font-medium ring-2 ring-cask-chain text-white shadow-lg">
                         <svg
-                          className="-ml-0.5 mr-1.5 h-2 w-2 text-emerald-600"
+                          className="-ml-0.5 mr-1.5 h-2 w-2 text-cask-chain"
                           fill="currentColor"
                           viewBox="0 0 8 8"
                         >

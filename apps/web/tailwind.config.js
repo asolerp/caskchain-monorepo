@@ -15,6 +15,7 @@ module.exports = {
       colors: {
         'black-light': '#1B1B1B',
         'cask-chain': '#CAFC01',
+        neutral: '#A8A8A8',
       },
       fontFamily: {
         gugi: ['Gugi', 'sans-serif'],

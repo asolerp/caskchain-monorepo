@@ -1,6 +1,7 @@
 import { Menu } from '@headlessui/react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { addressSimplifier } from 'utils/addressSimplifier'
 
 type WalletbarProps = {
   isLoading: boolean
@@ -30,7 +31,7 @@ const Walletbar: React.FC<WalletbarProps> = ({
       <div>
         <button
           type="button"
-          className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-slate-700 bg-amber-300 hover:bg-amber-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500"
+          className="inline-flex items-center px-3 py-3 border border-transparent text-sm font-medium font-poppins rounded-full shadow-sm text-slate-700 bg-cask-chain hover:bg-opacity-80 focus:outline-none"
         >
           Loading ...
         </button>
@@ -43,13 +44,11 @@ const Walletbar: React.FC<WalletbarProps> = ({
       <Menu as="div" className="ml-3 relative ">
         <div className="flex justify-center items-center">
           <div>
-            <Menu.Button className="w-14 h-14 justify-center items-center hover:border bg-white bg-opacity-30 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-              <Image
-                src="/images/default_user_image.png"
-                alt=""
-                width={40}
-                height={40}
-              />
+            <Menu.Button className="px-1 py-1 justify-center items-center hover:border bg-cask-chain flex text-sm rounded-full focus:outline-none">
+              <Image src="/images/user.png" alt="" width={40} height={40} />
+              <p className="px-2 text-sm font-poppins text-black">
+                {user?.nickname || addressSimplifier(account)}
+              </p>
             </Menu.Button>
           </div>
         </div>
@@ -74,7 +73,7 @@ const Walletbar: React.FC<WalletbarProps> = ({
                 <span
                   className={classNames(
                     active
-                      ? 'bg-amber-300 text-slate-700 font-semibold'
+                      ? 'bg-cask-chain text-black font-semibold'
                       : 'text-gray-300',
                     'block px-4 py-2 text-sm '
                   )}
@@ -90,7 +89,7 @@ const Walletbar: React.FC<WalletbarProps> = ({
                 onClick={() => logout()}
                 className={classNames(
                   active
-                    ? 'bg-amber-300 text-slate-700 font-semibold'
+                    ? 'bg-cask-chain text-black font-semibold'
                     : 'text-gray-300',
                   'block px-4 py-2 text-sm'
                 )}
