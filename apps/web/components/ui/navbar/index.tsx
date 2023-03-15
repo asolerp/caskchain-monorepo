@@ -1,5 +1,5 @@
 import { Disclosure } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, WalletIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
 import ActiveLink from '../link'
 
@@ -14,6 +14,7 @@ import { useAuth } from '@hooks/auth'
 import Link from 'next/link'
 import { getCookie } from 'cookies-next'
 import Image from 'next/image'
+import Sidebar from './Sidebar'
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -32,7 +33,7 @@ export default function Navbar() {
   const { network } = useNetwork()
   const token = getCookie('token') as string
   const {
-    state: { userInfoModal, signInModal, user },
+    state: { userInfoModal, signInModal, user, sideBar },
     dispatch,
   } = useGlobal()
 
@@ -56,6 +57,9 @@ export default function Navbar() {
           })
         }
       />
+
+      <Sidebar open={sideBar} />
+
       <Disclosure as="nav">
         {({ open }) => (
           <>
@@ -103,6 +107,12 @@ export default function Navbar() {
                     ))}
                   </div>
                   <div className="flex flex-1 justify-end items-center pr-2 sm:static sm:inset-auto sm:pr-0">
+                    <WalletIcon
+                      onClick={() => account.multiConnect()}
+                      width={40}
+                      height={40}
+                      className="text-cask-chain mr-5"
+                    />
                     <div className="text-gray-200 self-center mr-2">
                       <span className="inline-flex items-center px-6 py-3 rounded-full text-sm font-medium ring-2 ring-cask-chain text-white shadow-lg">
                         <svg

@@ -6,13 +6,15 @@ import axios from 'axios'
 import { deleteCookie, getCookie, setCookie } from 'cookies-next'
 import axiosClient from 'lib/fetcher/axiosInstance'
 import { useRouter } from 'next/router'
-
+import Web3Modal from 'web3modal'
 import { getSignedData } from 'pages/api/utils'
 import { useEffect } from 'react'
 import useSWR from 'swr'
+import { ethers } from 'ethers'
 
 type UseAccountResponse = {
   connect: () => void
+  multiConnect: () => void
   logout: () => void
   signAddress: ({ callback }: { callback: () => void }) => void
   handelSaveUser: ({
@@ -45,6 +47,8 @@ export const hookFactory: AccountHookFactory =
     } = useGlobal()
     const token = getCookie('token')
     const Router = useRouter()
+
+    const providerOptions = {}
 
     const { data, mutate, isValidating, ...swr } = useSWR(
       provider ? 'web3/useAccount' : null,
@@ -127,15 +131,20 @@ export const hookFactory: AccountHookFactory =
       }
     }
 
-    const logout = async () => {
-      deleteCookie('token')
-      deleteCookie('refresh-token')
-      dispatch({
-        type: GlobalTypes.SET_USER,
-        payload: { user: null },
-      })
-      await axiosClient.get(`/api/user/${data}/cleanTokens`)
-      Router.push('/')
+    const multiConnect = async () => {
+      try {
+        const web3Modal = new Web3Modal({
+          cacheProvider: false,
+          providerOptions,
+        })
+        const web3ModalInstance = await web3Modal.connect()
+        const web3ModalProvider = new ethers.providers.Web3Provider(
+          web3ModalInstance
+        )
+        console.log(web3ModalProvider)
+      } catch (e) {
+        console.log(e)
+      }
     }
 
     const connect = async () => {
@@ -158,17 +167,29 @@ export const hookFactory: AccountHookFactory =
       }
     }
 
+    const logout = async () => {
+      deleteCookie('token')
+      deleteCookie('refresh-token')
+      dispatch({
+        type: GlobalTypes.SET_USER,
+        payload: { user: null },
+      })
+      await axiosClient.get(`/api/user/${data}/cleanTokens`)
+      Router.push('/')
+    }
+
     return {
+      data,
       ...swr,
-      connect,
-      logout,
       mutate,
+      logout,
+      connect,
       signAddress,
+      multiConnect,
       isValidating,
       handelSaveUser,
       hasAllAuthData: token && user,
       isLoading: isLoading as boolean,
       isInstalled: ethereum?.isMetaMask || false,
-      data,
     }
   }

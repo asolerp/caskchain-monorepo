@@ -19,6 +19,12 @@ export const globalReducer = (
         signInModal: action.payload.state,
       }
 
+    case GlobalTypes.SET_SIDE_BAR:
+      return {
+        ...state,
+        sideBar: action.payload.state,
+      }
+
     case GlobalTypes.SET_USER:
       return {
         ...state,

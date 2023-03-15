@@ -1,6 +1,7 @@
-import { Menu } from '@headlessui/react'
+import { useGlobal } from '@providers/global'
+import { GlobalTypes } from '@providers/global/utils'
 import Image from 'next/image'
-import Link from 'next/link'
+
 import { addressSimplifier } from 'utils/addressSimplifier'
 
 type WalletbarProps = {
@@ -13,19 +14,27 @@ type WalletbarProps = {
   logout: () => void
 }
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
-}
-
 const Walletbar: React.FC<WalletbarProps> = ({
   isLoading,
   isInstalled,
   account,
   token,
   user,
-  logout,
+
   connect,
 }) => {
+  const {
+    dispatch,
+    state: { sideBar },
+  } = useGlobal()
+
+  const handleOpenSidebar = () => {
+    dispatch({
+      type: GlobalTypes.SET_SIDE_BAR,
+      payload: { state: !sideBar },
+    })
+  }
+
   if (isLoading) {
     return (
       <div>
@@ -41,65 +50,21 @@ const Walletbar: React.FC<WalletbarProps> = ({
 
   if (token && user?.email) {
     return (
-      <Menu as="div" className="ml-3 relative ">
+      <div className="ml-3 relative ">
         <div className="flex justify-center items-center">
           <div>
-            <Menu.Button className="px-1 py-1 justify-center items-center hover:border bg-cask-chain flex text-sm rounded-full focus:outline-none">
+            <div
+              onClick={handleOpenSidebar}
+              className="cursor-pointer px-1 py-1 justify-center items-center hover:border bg-cask-chain flex text-sm rounded-full focus:outline-none"
+            >
               <Image src="/images/user.png" alt="" width={40} height={40} />
               <p className="px-2 text-sm font-poppins text-black">
                 {user?.nickname || addressSimplifier(account)}
               </p>
-            </Menu.Button>
+            </div>
           </div>
         </div>
-
-        <Menu.Items className="z-10 origin-top-right absolute right-0 mt-4 w-48  shadow-lg py-1 bg-slate-700 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-90">
-          <Menu.Item>
-            {() => (
-              <button
-                disabled={true}
-                className="disabled:text-amber-300 text-lg block px-4 pt-2 mb-2 text-amber-300"
-              >
-                {user?.nickname ||
-                  `0x${account[2]}${account[3]}${account[4]}....${account.slice(
-                    -4
-                  )}`}
-              </button>
-            )}
-          </Menu.Item>
-          <Menu.Item>
-            {({ active }) => (
-              <Link href="/profile">
-                <span
-                  className={classNames(
-                    active
-                      ? 'bg-cask-chain text-black font-semibold'
-                      : 'text-gray-300',
-                    'block px-4 py-2 text-sm '
-                  )}
-                >
-                  Profile
-                </span>
-              </Link>
-            )}
-          </Menu.Item>
-          <Menu.Item>
-            {({ active }) => (
-              <span
-                onClick={() => logout()}
-                className={classNames(
-                  active
-                    ? 'bg-cask-chain text-black font-semibold'
-                    : 'text-gray-300',
-                  'block px-4 py-2 text-sm'
-                )}
-              >
-                Logout
-              </span>
-            )}
-          </Menu.Item>
-        </Menu.Items>
-      </Menu>
+      </div>
     )
   }
 
@@ -111,7 +76,7 @@ const Walletbar: React.FC<WalletbarProps> = ({
             connect()
           }}
           type="button"
-          className="inline-flex items-center px-6 py-3 border border-transparent text-sm text-white font-medium rounded-full bg-emerald-800 hover:bg-emerald-900 shadow-xl"
+          className="inline-flex items-center px-6 py-3 border border-transparent text-md text-black font-medium rounded-full bg-cask-chain hover:opacity-80 shadow-xl ml-3"
         >
           Start
         </button>
