@@ -1,7 +1,11 @@
 import { useAccount } from '@hooks/web3'
 import { useGlobal } from '@providers/global'
 import { GlobalTypes } from '@providers/global/utils'
+import Button from '@ui/common/Button'
+import Input from '@ui/common/Input'
+import Spacer from '@ui/common/Spacer'
 import React, { useState } from 'react'
+import Modal from 'react-modal'
 
 type Props = {
   modalIsOpen: boolean
@@ -19,92 +23,100 @@ const UserInfoModal: React.FC<Props> = ({ modalIsOpen, closeModal }) => {
   const [nickname, setNickname] = useState<string>('')
 
   return (
-    <>
-      {modalIsOpen && (
-        <>
-          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-1/4 sm:w-1/2 my-6 mx-auto max-w-3xl">
-              {/*content*/}
-              <div className="h-full w-full bg-slate-700 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-90 ">
-                {/*header*/}
-                <div className="flex items-center justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                  <h3 className="text-xl font-semibold text-amber-300">
-                    Create account with metamask
-                  </h3>
-                  <button
-                    className="p-1 ml-auto bg-transparent border-0 text-gray-100 float-right text-2xl leading-none font-semibold outline-none focus:outline-none"
-                    onClick={closeModal}
-                  >
-                    <span className="bg-transparent text-gray-100 text-2xl block outline-none focus:outline-none">
-                      ×
-                    </span>
-                  </button>
-                </div>
-                {/*body*/}
-                <div className="relative p-6 flex-auto">
-                  <p className="text-gray-200 mb-5">
-                    {
-                      'Your email address is only used to send you important updates. Your nickname is how other CryptoKitties players will identify you.'
-                    }
-                  </p>
-                  <input
-                    onChange={(e) => setEmail(e.target.value)}
-                    value={email}
-                    type="text"
-                    name="email"
-                    id="email"
-                    className="w-full bg-transparent  mt-2 text-xl text-gray-100 focus:ring-0 rounded-lg "
-                    placeholder="Your email address"
-                  />
-                  <input
-                    onChange={(e) => setNickname(e.target.value)}
-                    value={nickname}
-                    type="text"
-                    name="name"
-                    id="name"
-                    className="w-full bg-transparent border-0 mt-2 text-xl text-gray-100 focus:ring-0 rounded-lg "
-                    placeholder="Nickname (optional)"
-                  />
-                </div>
-                {/*footer*/}
-                <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-                  <button
-                    className="text-gray-100 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="button"
-                    onClick={closeModal}
-                  >
-                    Close
-                  </button>
-                  <button
-                    className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="button"
-                    onClick={() => {
-                      account.handelSaveUser({
-                        id: user._id,
-                        email,
-                        nickname,
-                        callback: () => {
-                          closeModal()
-                          setTimeout(() => {
-                            return dispatch({
-                              type: GlobalTypes.SET_SIGN_IN_MODAL,
-                              payload: { state: true },
-                            })
-                          }, 300)
-                        },
-                      })
-                    }}
-                  >
-                    Continue
-                  </button>
-                </div>
+    <Modal
+      style={{
+        overlay: {
+          backgroundColor: '#A8A8A880',
+        },
+        content: {
+          backgroundColor: 'transparent',
+          border: 0,
+        },
+      }}
+      isOpen={modalIsOpen}
+      onRequestClose={closeModal}
+    >
+      <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+        <div className="relative w-1/4 sm:w-1/2 my-6 mx-auto max-w-md">
+          {/*content*/}
+          <div className="h-full w-full bg-black-light rounded-3xl bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-90 p-6">
+            {/*header*/}
+            <div className="grid grid-cols-5 rounded-t">
+              <div></div>
+              <div className="col-span-3 flex items-center justify-center">
+                <h3 className="text-3xl pb-2 w-fit  text-center font-semibold text-white font-poppins border-b border-cask-chain">
+                  Create account
+                </h3>
               </div>
+              <button
+                className="w-10 p-1 ml-auto bg-transparent border-0 text-gray-100 float-right text-2xl leading-none font-semibold outline-none focus:outline-none"
+                onClick={closeModal}
+              >
+                <span className="bg-transparent text-gray-100 text-2xl block outline-none focus:outline-none">
+                  ×
+                </span>
+              </button>
+            </div>
+            <Spacer size="md" />
+            <div className="relative flex-auto">
+              <p className="text-gray-400 text-center text-lg mb-3">
+                Your email address is only used to send you important updates.
+                Your nickname is how other CaskChain users will identify you.
+              </p>
+              <Spacer size="md" />
+              <Input
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+                type="text"
+                name="email"
+                id="email"
+                placeholder="Your email address"
+              />
+              <Input
+                onChange={(e) => setNickname(e.target.value)}
+                value={nickname}
+                type="text"
+                name="name"
+                id="name"
+                placeholder="Nickname (optional)"
+              />
+            </div>
+            <Spacer size="md" />
+            <div className="flex items-center justify-center rounded-b">
+              <Button
+                onClick={() => {
+                  account.handelSaveUser({
+                    id: user._id,
+                    email,
+                    nickname,
+                    callback: () => {
+                      closeModal()
+                      setTimeout(() => {
+                        return dispatch({
+                          type: GlobalTypes.SET_SIGN_IN_MODAL,
+                          payload: { state: true },
+                        })
+                      }, 300)
+                    },
+                  })
+                }}
+              >
+                Continue
+              </Button>
+            </div>
+            <Spacer size="md" />
+            <div>
+              <p className="text-center text-gray-300 text-sm font-poppins">
+                By signing up, you agree to our{' '}
+                <span className="text-cask-chain">Terms of Service</span> and{' '}
+                <span className="text-cask-chain">Privay Policy</span>
+              </p>
             </div>
           </div>
-          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
-        </>
-      )}
-    </>
+        </div>
+      </div>
+      <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+    </Modal>
   )
 }
 

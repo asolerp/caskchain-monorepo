@@ -3,6 +3,7 @@ import { GlobalTypes } from '@providers/global/utils'
 import { CryptoHookFactory } from '@_types/hooks'
 import { Nft } from '@_types/nft'
 import axios from 'axios'
+import { getCookie } from 'cookies-next'
 import { ethers } from 'ethers'
 import axiosClient from 'lib/fetcher/axiosInstance'
 import { useCallback, useState } from 'react'
@@ -22,9 +23,11 @@ export const hookFactory: CaskNftHookFactory =
     const [tokenAmmount, setTokenAmmount] = useState<number | undefined>(0)
 
     const {
-      state: { user, token },
+      state: { user },
       dispatch,
     } = useGlobal()
+
+    const token = getCookie('token')
 
     const { data, ...swr } = useSWR(
       'web3/useCaskNft',
@@ -175,6 +178,7 @@ export const hookFactory: CaskNftHookFactory =
             handleUserState()
           }
         } catch (e: any) {
+          console.error('ERROR', e)
           toast.info('🏦 There is a higher offer. Bid harder!')
         }
       },

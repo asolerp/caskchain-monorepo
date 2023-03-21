@@ -7,15 +7,18 @@ import { Nft } from '@_types/nft'
 import { useOwnedNfts } from '@hooks/web3'
 
 import TransactionsHistory from '@ui/ntf/transactionsHistory'
-import withAuth from 'components/hoc/withAuth'
+
 import { ethers } from 'ethers'
 import { useState } from 'react'
 import FractionBalances from '@ui/ntf/fractionBalance'
 import { auth } from 'utils/auth'
+import Spacer from '@ui/common/Spacer'
+import Button from '@ui/common/Button'
+import Image from 'next/image'
 
 const tabs = [
   { name: 'Your Collection', href: '#', key: 'collection' },
-  { name: 'Your Fractions', href: '#', key: 'fractions' },
+  // { name: 'Your Fractions', href: '#', key: 'fractions' },
 ]
 
 function classNames(...classes: string[]) {
@@ -71,16 +74,17 @@ const Profile: NextPage = () => {
 
   return (
     <BaseLayout>
-      <div className="py-16 sm:px-6 lg:px-8 px-4">
+      <div className="py-16 pt-40 px-2 sm:px-6 lg:px-32">
         <div className="flex-1 flex flex-col">
           <div className="flex-1 flex space-x-4 items-stretch">
             <main className="flex-1 overflow-y-auto">
-              <div className="pt-8 mx-auto">
+              <div className="mx-auto">
                 <div className="flex">
-                  <h2 className="tracking-tight font-extrabold text-gray-100 sm:text-8xl">
-                    YOUR NFTS
+                  <h2 className="tracking-tight font-extrabold text-gray-100 font-rale sm:text-8xl">
+                    Your Cellar
                   </h2>
                 </div>
+                <Spacer size="3xl" />
                 <div className="mt-3 sm:mt-2">
                   <div className="hidden sm:block">
                     <div className="flex items-center ">
@@ -98,12 +102,12 @@ const Profile: NextPage = () => {
                             }
                             className={classNames(
                               tab.key === activeTab
-                                ? 'border-amber-300 text-amber-300'
+                                ? 'border-cask-chain text-cask-chain'
                                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                              'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-lg'
+                              'whitespace-nowrap pb-2 px-1 border-b-2 font-medium text-lg'
                             )}
                           >
-                            {tab.name.toUpperCase()}
+                            {tab.name}
                           </a>
                         ))}
                       </nav>
@@ -132,19 +136,21 @@ const Profile: NextPage = () => {
                           <div
                             className={classNames(
                               nft.tokenId === nfts.activeNft?.tokenId
-                                ? 'ring-2 ring-offset-2 ring-amber-300'
-                                : 'focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-amber-300',
+                                ? 'ring-2 ring-offset-2 ring-cask-chain'
+                                : 'focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-cask-chain',
                               'group block w-full aspect-w-10 aspect-h-7 rounded-lg py-3 overflow-hidden'
                             )}
                           >
-                            <img
-                              src={'/images/cask_2.png'}
+                            <Image
+                              width={300}
+                              height={100}
+                              src={'/images/nft.png'}
                               alt=""
                               className={classNames(
                                 nft.tokenId === nfts.activeNft?.tokenId
                                   ? ''
                                   : 'group-hover:opacity-75',
-                                'object-contain pointer-events-none h-40 w-full'
+                                'object-cover pointer-events-none h-40 w-full'
                               )}
                             />
                             <button
@@ -162,14 +168,14 @@ const Profile: NextPage = () => {
                         </li>
                       ))}
                     </ul>
+                    <Spacer size="xl" />
+                    <div className="w-full border-b border-gray-700" />
+                    <Spacer size="xl" />
                     {nfts.activeNft && (
                       <div>
-                        <TransactionsHistory
-                          transactions={nfts.activeNft?.transactions}
-                        />
                         {nfts.activeNft?.offer && (
-                          <div className="sm:px-6 lg:px-8 mt-6">
-                            <h3 className="text-lg font-medium text-gray-900 mb-4">
+                          <div>
+                            <h3 className="font-rale text-white text-4xl mb-4">
                               Received Offers
                             </h3>
 
@@ -178,12 +184,18 @@ const Profile: NextPage = () => {
                               className="flex flex-row justify-between items-center w-3/4 mb-2"
                             >
                               <div>
-                                <h3 className="font-medium">Bidder</h3>
-                                <p>{nfts.activeNft?.offer?.highestBidder}</p>
+                                <h3 className="font-poppins text-cask-chain font-medium">
+                                  Bidder
+                                </h3>
+                                <p className="text-white">
+                                  {nfts.activeNft?.offer?.highestBidder}
+                                </p>
                               </div>
                               <div>
-                                <h3 className="font-medium">Bid</h3>
-                                <p>
+                                <h3 className="font-poppins text-cask-chain font-medium">
+                                  Bid
+                                </h3>
+                                <p className="text-white">
                                   {nfts.activeNft?.offer?.bid &&
                                     ethers.utils.formatEther(
                                       nfts.activeNft?.offer?.bid
@@ -192,19 +204,26 @@ const Profile: NextPage = () => {
                                 </p>
                               </div>
                               <div>
-                                <button
+                                <Button
                                   onClick={() =>
                                     nfts.acceptOffer(nfts.activeNft.tokenId)
                                   }
-                                  type="button"
-                                  className=" bg-indigo-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                 >
                                   Accept Offer
-                                </button>
+                                </Button>
                               </div>
                             </div>
                           </div>
                         )}
+                        <Spacer size="xl" />
+                        <div className="w-full border-b border-gray-700" />
+                        <Spacer size="xl" />
+                        <h3 className="font-rale text-white text-4xl mb-4">
+                          Transactions History
+                        </h3>
+                        <TransactionsHistory
+                          transactions={nfts.activeNft?.transactions}
+                        />
                       </div>
                     )}
                   </section>
@@ -224,20 +243,22 @@ const Profile: NextPage = () => {
             </main>
             {/* Details sidebar */}
             {nfts.activeNft && (
-              <aside className="hidden w-96 bg-slate-800 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-90 p-8 mt-10 mr-8 border border-slate-500 overflow-y-auto lg:block">
+              <aside className="hidden w-96 bg-black-light rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-90 p-8 mt-10 mr-8 border border-slate-500 overflow-y-auto lg:block">
                 <div>
-                  <div className="space-y-6">
+                  <div>
                     <div>
                       <div className="block w-full aspect-w-10 aspect-h-7 rounded-lg overflow-hidden">
-                        <img
-                          src={'/images/cask_2.png'}
+                        <Image
+                          width={350}
+                          height={50}
+                          src={'/images/nft.png'}
                           alt=""
-                          className="object-cover"
+                          className="object-cover w-full"
                         />
                       </div>
                       <div className="mt-4 flex items-start justify-between">
                         <div className="flex flex-col space-y-3">
-                          <h2 className="text-lg font-medium text-amber-300">
+                          <h2 className="text-lg font-medium text-cask-chain">
                             <span className="sr-only">Details for </span>
                             {nfts.activeNft.meta.name}
                           </h2>
@@ -258,22 +279,25 @@ const Profile: NextPage = () => {
                             <dt className="text-gray-100">
                               {attr.trait_type.toUpperCase()}:{' '}
                             </dt>
-                            <dd className="text-amber-300 text-right">
+                            <dd className="text-cask-chain text-right">
                               {attr.value}
                             </dd>
                           </div>
                         ))}
                       </dl>
                     </div>
-
-                    <div className="flex flex-grow flex-col space-y-4">
-                      <button
-                        onClick={() => nfts.approveSell(nfts.activeNft.tokenId)}
-                        type="button"
-                        className=" bg-emerald-400 py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-semiBold text-white "
-                      >
-                        APPROVE SELL
-                      </button>
+                    <Spacer size="md" />
+                    <div className="flex flex-grow flex-col">
+                      <div className="flex justify-end">
+                        <Button
+                          onClick={() =>
+                            nfts.approveSell(nfts.activeNft.tokenId)
+                          }
+                        >
+                          Approve sell
+                        </Button>
+                      </div>
+                      <Spacer size="md" />
                       <input
                         min={0}
                         value={nfts.listPrice || 0}
@@ -281,17 +305,17 @@ const Profile: NextPage = () => {
                         onChange={(e) => nfts.setListPrice(e.target.value)}
                         type="number"
                         id="first_name"
-                        className="w-full bg-transparent border-b mt-2 text-5xl text-gray-100 focus:ring-0 rounded-lg "
+                        className="w-full bg-transparent border-b  text-5xl text-gray-100 focus:ring-0 rounded-lg "
                         required
                       />
-                      <button
+                      <Spacer size="md" />
+                      <Button
+                        fit={false}
                         onClick={() => nfts.listNft(nfts.activeNft.tokenId)}
                         disabled={!nfts.isApproved}
-                        type="button"
-                        className=" bg-emerald-400 py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-semiBold text-white disabled:opacity-100 disabled:bg-slate-200 disabled:text-gray-800"
                       >
-                        PUT ON SALE
-                      </button>
+                        List Nft
+                      </Button>
                       {/* <button
                         disabled={activeNft.isListed}
                         onClick={() => {

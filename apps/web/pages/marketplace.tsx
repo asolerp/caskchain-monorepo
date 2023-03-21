@@ -1,7 +1,7 @@
 import { useAllNfts } from '@hooks/web3'
 import { BaseLayout } from '@ui'
 import Filter from '@ui/common/Filter'
-import GeneralNftInfo from '@ui/ntf/item/GeneralNftInfo'
+import BarrelNft from '@ui/ntf/item/BarrelNft'
 import { Nft } from '@_types/nft'
 import { NextPage } from 'next'
 import Link from 'next/link'
@@ -25,9 +25,9 @@ const NFTCaskWorld: NextPage = () => {
 
   return (
     <BaseLayout>
-      <div className="py-16 sm:px-6 pt-40 lg:px-20 px-4">
-        <h2 className="tracking-tight font-extrabold text-gray-100 sm:text-8xl">
-          MARKETPLACE
+      <div className="py-16 sm:px-6 pt-40 lg:px-32 px-4">
+        <h2 className="tracking-tight font-extrabold text-gray-100 font-rale sm:text-8xl">
+          Marketplace
         </h2>
         <div className="flex flex-row space-x-6 mt-14">
           <Filter
@@ -50,7 +50,7 @@ const NFTCaskWorld: NextPage = () => {
           <div className="flex flex-row space-x-6 flex-wrap mx-auto lg:max-w-none">
             {filteredNfts?.map((nft: Nft) => (
               <Link key={nft.tokenId} href={`/cask/${nft.tokenId}`}>
-                <GeneralNftInfo isMarketPlace item={nft} blow />
+                <BarrelNft isMarketPlace item={nft} blow />
               </Link>
             ))}
           </div>

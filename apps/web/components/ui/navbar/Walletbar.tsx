@@ -1,13 +1,17 @@
+import { useAccount } from '@hooks/web3'
 import { useGlobal } from '@providers/global'
 import { GlobalTypes } from '@providers/global/utils'
+import ClientOnly from 'components/pages/ClientOnly'
 import Image from 'next/image'
+import { useEffect } from 'react'
 
 import { addressSimplifier } from 'utils/addressSimplifier'
+import { useAccount as useAccountWagmi } from 'wagmi'
 
 type WalletbarProps = {
-  isLoading: boolean
   user: any
   isInstalled: boolean
+  isConnected: boolean
   token: string | null
   account: string
   connect: () => void
@@ -15,18 +19,26 @@ type WalletbarProps = {
 }
 
 const Walletbar: React.FC<WalletbarProps> = ({
-  isLoading,
   isInstalled,
+  isConnected,
   account,
+  connect,
   token,
   user,
-
-  connect,
 }) => {
   const {
     dispatch,
     state: { sideBar },
   } = useGlobal()
+
+  const { isDisconnected } = useAccountWagmi()
+  const { account: accountHook } = useAccount()
+
+  useEffect(() => {
+    if (isDisconnected) {
+      accountHook.logout()
+    }
+  }, [isDisconnected])
 
   const handleOpenSidebar = () => {
     dispatch({
@@ -35,20 +47,20 @@ const Walletbar: React.FC<WalletbarProps> = ({
     })
   }
 
-  if (isLoading) {
-    return (
-      <div>
-        <button
-          type="button"
-          className="inline-flex items-center px-3 py-3 border border-transparent text-sm font-medium font-poppins rounded-full shadow-sm text-slate-700 bg-cask-chain hover:bg-opacity-80 focus:outline-none"
-        >
-          Loading ...
-        </button>
-      </div>
-    )
-  }
+  // if (isConnecting) {
+  //   return (
+  //     <div>
+  //       <button
+  //         type="button"
+  //         className="inline-flex items-center px-3 py-3 border border-transparent text-sm font-medium font-poppins rounded-full shadow-sm text-slate-700 bg-cask-chain hover:bg-opacity-80 focus:outline-none"
+  //       >
+  //         Loading ...
+  //       </button>
+  //     </div>
+  //   )
+  // }
 
-  if (token && user?.email) {
+  if (token && user?.email && isConnected) {
     return (
       <div className="ml-3 relative ">
         <div className="flex justify-center items-center">
@@ -70,17 +82,19 @@ const Walletbar: React.FC<WalletbarProps> = ({
 
   if (isInstalled) {
     return (
-      <div>
-        <button
-          onClick={() => {
-            connect()
-          }}
-          type="button"
-          className="inline-flex items-center px-6 py-3 border border-transparent text-md text-black font-medium rounded-full bg-cask-chain hover:opacity-80 shadow-xl ml-3"
-        >
-          Start
-        </button>
-      </div>
+      <ClientOnly>
+        <div>
+          <button
+            onClick={() => {
+              connect()
+            }}
+            type="button"
+            className="inline-flex items-center px-6 py-3 border border-transparent text-md text-black font-medium rounded-full bg-cask-chain hover:opacity-80 shadow-xl ml-3"
+          >
+            {isConnected ? 'Start' : 'Connect Wallet'}
+          </button>
+        </div>
+      </ClientOnly>
     )
   } else {
     return (

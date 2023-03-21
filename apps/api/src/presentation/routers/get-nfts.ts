@@ -24,7 +24,6 @@ export default function GetNftsRouter(
   const router = express.Router()
 
   router.get('/', async (req: Request, res: Response) => {
-    console.log('HOLA')
     const nfts = await getNfts.execute()
     return res.json(nfts)
   })
@@ -33,6 +32,7 @@ export default function GetNftsRouter(
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
     const { address } = jwt_decode(token as string) as any
+    console.log('Address: ', address)
     const nfts = await getOwnedNfts.execute(address)
     return res.json(nfts)
   })

@@ -32,7 +32,7 @@ export const hookFactory: OwnedNftsHookFactory =
       for (let i = 0; i < ownedNfts.data.length; i++) {
         const item = ownedNfts.data[i]
         const transactions = await axiosClient.get(
-          `/api/get-transactions?tokenId=${item.tokenId}`
+          `/api/transactions?tokenId=${item.tokenId}`
         )
         nfts.push({
           ...item,
@@ -98,10 +98,7 @@ export const hookFactory: OwnedNftsHookFactory =
     const acceptOffer = async (tokenId: string) => {
       try {
         await _ccNft
-          ?.approve(
-            process.env.NEXT_PUBLIC_NFT_OFFERS_ADDRESS as string,
-            tokenId
-          )
+          ?.approve(nftOffers!.address as string, tokenId)
           .then(async () => {
             const result = await nftOffers?.acceptOffer(tokenId)
             await toast.promise(result!.wait(), {
@@ -117,10 +114,11 @@ export const hookFactory: OwnedNftsHookFactory =
 
     const approveSell = async (tokenId: number) => {
       try {
+        console.log('CONTRACT ADDRESS', nftOffers!.address)
         const gasPrice = await provider?.getGasPrice()
 
         const result = await _ccNft?.approve(
-          process.env.NEXT_PUBLIC_NFT_VENDOR_ADDRESS as string,
+          nftVendor!.address as string,
           tokenId,
           {
             gasPrice,

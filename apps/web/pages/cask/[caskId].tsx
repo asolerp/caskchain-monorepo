@@ -26,7 +26,7 @@ function CaskDetail() {
               <div className="flex flex-1 justify-center">
                 <Image
                   className={` mb-6 object-contain  `}
-                  src={'/images/suau_1.png'}
+                  src={'/images/nft.png'}
                   alt="New NFT"
                   width={500}
                   height={300}
@@ -56,6 +56,7 @@ function CaskDetail() {
                       />
                     ) : (
                       <MakeOffer
+                        isLoading={cask.isLoading || cask.isValidating}
                         cask={cask?.data}
                         onOffer={(offer) => cask?.makeOffer(offer)}
                       />
@@ -91,9 +92,9 @@ function CaskDetail() {
               </div>
             ) : (
               <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 px-4">
-                <div className="flex items-center p-2 bg-emerald-400 mb-4 rounded-lg">
-                  <h1 className="text-7xl font-semibold text-slate-100">
-                    NFT DETAILS
+                <div className="flex items-center p-2 bg-cask-chain mb-4 rounded-lg">
+                  <h1 className="text-7xl font-semibold font-rale text-black">
+                    Nft Details
                   </h1>
                 </div>
                 <h2 className="text-xl text-gray-100">
@@ -102,7 +103,7 @@ function CaskDetail() {
                 <div className="grid grid-cols-2 gap-0 mt-14">
                   <div className="flex flex-col justify-center">
                     <h2 className="text-white text-5xl font-semibold">
-                      CASK STATS
+                      Cask Stats
                     </h2>
                     <div className="grid grid-cols-2 mt-6">
                       {cask?.data?.meta?.attributes?.map((attribute: any) => (
@@ -113,7 +114,7 @@ function CaskDetail() {
                           <dt className="order-2 text-xl font-medium text-gray-400">
                             {attribute.trait_type.toUpperCase()}
                           </dt>
-                          <dd className="order-1 text-3xl font-extrabold text-emerald-300">
+                          <dd className="order-1 text-3xl font-extrabold text-cask-chain">
                             {attribute.value}
                           </dd>
                         </div>

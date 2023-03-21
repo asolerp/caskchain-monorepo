@@ -18,9 +18,9 @@ import Sidebar from './Sidebar'
 
 const navigation = [
   { name: 'Home', href: '/' },
-  { name: 'Explore', href: '/explore' },
+  // { name: 'Explore', href: '/explore' },
   { name: 'Marketplace', href: '/marketplace' },
-  { name: 'About us', href: '/about' },
+  // { name: 'About us', href: '/about' },
 ]
 
 function classNames(...classes: string[]) {
@@ -36,6 +36,8 @@ export default function Navbar() {
     state: { userInfoModal, signInModal, user, sideBar },
     dispatch,
   } = useGlobal()
+
+  const openClass = sideBar ? 'bg-black-light' : ''
 
   return (
     <>
@@ -63,7 +65,9 @@ export default function Navbar() {
       <Disclosure as="nav">
         {({ open }) => (
           <>
-            <div className="absolute z-50 mx-auto w-full px-2 sm:px-6 lg:px-32">
+            <div
+              className={`absolute z-50 mx-auto w-full px-2 sm:px-6 lg:px-32 transition-all duration-500 ${openClass}`}
+            >
               <div className="relative bg-transparent flex h-24 items-center justify-between">
                 <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                   {/* Mobile menu button*/}
@@ -132,8 +136,8 @@ export default function Navbar() {
                     <Walletbar
                       token={token}
                       user={user}
+                      isConnected={account.isConnected}
                       isInstalled={account.isInstalled}
-                      isLoading={account.isLoading}
                       account={account?.data as string}
                       connect={account.connect}
                       logout={account.logout}

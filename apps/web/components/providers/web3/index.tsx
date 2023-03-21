@@ -1,6 +1,7 @@
 import {
   createContext,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useState,
@@ -12,18 +13,21 @@ import {
   loadContractByAddress,
   Web3State,
 } from './utils'
-import { ethers } from 'ethers'
 
-import { MetaMaskInpageProvider } from '@metamask/providers'
 import { CcNftContract } from '@_types/ccNftContract'
 import { NftVendorContract } from '@_types/nftVendorContract'
 import { NftOffersContract } from '@_types/nftOffersContract'
-import { useRouter } from 'next/router'
-import { useGlobal } from '@providers/global'
-import { GlobalTypes } from '@providers/global/utils'
-import axiosClient from 'lib/fetcher/axiosInstance'
+
 // import { NftFractionsVendorContract } from '@_types/nftFractionsVendorContract'
 import { NftFractionsFactoryContract } from '@_types/nftFractionsFactoryContract'
+import { useAccount, useProvider } from 'wagmi'
+import { Provider, Signer } from '@wagmi/core'
+import { deleteCookie } from 'cookies-next'
+import { GlobalTypes } from '@providers/global/utils'
+import { useGlobal } from '@providers/global'
+import axiosClient from 'lib/fetcher/axiosInstance'
+import { useRouter } from 'next/router'
+import { fetchSigner } from '@wagmi/core'
 
 const pageReload = () => {
   window.location.reload()
@@ -34,16 +38,16 @@ const accountChanged = (logout: any) => {
   window.location.reload()
 }
 
-const setGlobalListeners = (ethereum: MetaMaskInpageProvider, logout: any) => {
-  ethereum.on('chainChanged', pageReload)
-  ethereum.on('accountsChanged', () => accountChanged(logout))
-  ethereum.on('disconnect', pageReload)
+const setGlobalListeners = (provider: Provider, logout: any) => {
+  provider.on('chainChanged', pageReload)
+  provider.on('accountsChanged', () => accountChanged(logout))
+  provider.on('disconnect', () => console.log('disconnect'))
 }
 
-const removeGlobalListeners = (ethereum: MetaMaskInpageProvider) => {
-  ethereum?.removeListener('chainChanged', pageReload)
-  ethereum?.removeListener('accountsChnaged', pageReload)
-  ethereum?.removeListener('disconnect', pageReload)
+const removeGlobalListeners = (provider: Provider) => {
+  provider?.removeListener('chainChanged', pageReload)
+  provider?.removeListener('accountsChnaged', pageReload)
+  provider?.removeListener('disconnect', pageReload)
 }
 
 const Web3Context = createContext<Web3State>(createDefaultState())
@@ -53,54 +57,41 @@ interface Props {
 }
 
 const Web3Provider: React.FC<Props> = ({ children }) => {
-  const Router = useRouter()
-  const { dispatch } = useGlobal()
   const [web3Api, setWeb3Api] = useState<Web3State>(createDefaultState())
+  const provider = useProvider()
+  const { address } = useAccount()
+
+  const { dispatch } = useGlobal()
+  const router = useRouter()
 
   const logout = async () => {
-    console.log('Login out')
-    localStorage.removeItem('token')
-    localStorage.removeItem('refresh-token')
-    dispatch({
-      type: GlobalTypes.SET_TOKEN,
-      payload: { token: null },
-    })
+    deleteCookie('token')
+    deleteCookie('refresh-token')
     dispatch({
       type: GlobalTypes.SET_USER,
       payload: { user: null },
     })
 
-    const accounts = await web3Api.provider?.listAccounts()
-    const account = accounts?.[0]
+    const account = address
 
     await axiosClient.get(`/api/user/${account}/cleanTokens`)
-    Router.push('/')
+    router.push('/')
   }
 
   useEffect(() => {
     async function initWeb3() {
-      console.log('INIT WEB3')
       try {
-        const provider = new ethers.providers.Web3Provider(
-          window.ethereum as any
-        )
-        const ccNft = await loadContract('CCNft', provider)
-        const nftVendor = await loadContract('NftVendor', provider)
-        const nftOffers = await loadContract('NftOffers', provider)
+        const ccNft = await loadContract('CCNft')
+        const nftVendor = await loadContract('NftVendor')
+        const nftOffers = await loadContract('NftOffers')
 
-        const nftFractionsFactory = await loadContract(
-          'NftFractionsFactory',
-          provider
-        )
-        const nftFractionsVendor = await loadContract(
-          'NftFractionsVendor',
-          provider
-        )
+        const nftFractionsFactory = await loadContract('NftFractionsFactory')
+        const nftFractionsVendor = await loadContract('NftFractionsVendor')
 
         const nftFactionToken = async (address: string) =>
           await loadContractByAddress('NftFractionToken', provider, address)
 
-        const signer = provider.getSigner()
+        const signer = (await fetchSigner()) as unknown as Signer
 
         const sigendNftVendorContract = nftVendor.connect(signer)
         const signedCCNftContract = ccNft.connect(signer)
@@ -108,7 +99,7 @@ const Web3Provider: React.FC<Props> = ({ children }) => {
         const signednftFractionsVendor = nftFractionsVendor.connect(signer)
         const signednftFractionsFactory = nftFractionsFactory.connect(signer)
         const signedNftFractionToken = async (address: string) =>
-          (await nftFactionToken(address)).connect(signer)
+          await nftFactionToken(address)
 
         // const signedNftFractionToken = async (tokenAddress: string) => {
         //   console.log('HOLA FROM SIGNED NFT FRACTION TOKEN')
@@ -126,6 +117,7 @@ const Web3Provider: React.FC<Props> = ({ children }) => {
         //   return _signedTokenContract
         // }
 
+        console.log('SET GLOBAL LISTENERS', window.ethereum)
         setGlobalListeners(window.ethereum, logout)
         setWeb3Api(
           createWeb3State({
@@ -139,7 +131,6 @@ const Web3Provider: React.FC<Props> = ({ children }) => {
             ccNft: signedCCNftContract as unknown as CcNftContract,
             nftVendor: sigendNftVendorContract as unknown as NftVendorContract,
             nftOffers: signedNftOffersContract as unknown as NftOffersContract,
-            isLoading: false,
           })
         )
       } catch (e: any) {
@@ -153,7 +144,7 @@ const Web3Provider: React.FC<Props> = ({ children }) => {
       }
     }
     initWeb3()
-    return () => removeGlobalListeners(window.ethereum)
+    return () => removeGlobalListeners(provider)
   }, [])
 
   return <Web3Context.Provider value={web3Api}>{children}</Web3Context.Provider>

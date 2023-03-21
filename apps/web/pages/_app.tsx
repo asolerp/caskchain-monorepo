@@ -5,17 +5,40 @@ import { ParallaxProvider } from 'react-scroll-parallax'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import GlobalProvider from '@providers/global'
+import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
+import { Web3Modal } from '@web3modal/react'
+import { configureChains, createClient, WagmiConfig } from 'wagmi'
+import { localhost, polygonMumbai } from 'wagmi/chains'
+import { AnimatePresence } from 'framer-motion'
+
+const chains = [localhost, polygonMumbai]
+const projectId = '7ba8a5909e41332fb0abe840c1d4923e'
+
+const { provider } = configureChains(chains, [w3mProvider({ projectId })])
+
+const wagmiClient = createClient({
+  autoConnect: true,
+  connectors: w3mConnectors({ projectId, version: 1, chains }),
+  provider,
+})
+
+const ethereumClient = new EthereumClient(wagmiClient, chains)
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <ToastContainer />
       <GlobalProvider>
-        <Web3Provider>
-          <ParallaxProvider>
-            <Component {...pageProps} />
-          </ParallaxProvider>
-        </Web3Provider>
+        <WagmiConfig client={wagmiClient}>
+          <Web3Provider>
+            <ParallaxProvider>
+              <AnimatePresence mode="wait" initial={false}>
+                <Component {...pageProps} />
+              </AnimatePresence>
+            </ParallaxProvider>
+            <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
+          </Web3Provider>
+        </WagmiConfig>
       </GlobalProvider>
     </>
   )

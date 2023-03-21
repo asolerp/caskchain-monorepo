@@ -21,33 +21,33 @@ const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({
                 <tr>
                   <th
                     scope="col"
-                    className="text-lg font-medium text-amber-300 px-6 py-4 text-left"
+                    className="text-lg font-medium text-cask-chain px-6 py-4 text-left"
                   >
                     #
                   </th>
                   <th
                     scope="col"
-                    className="text-lg font-medium text-amber-300 px-6 py-4 text-left"
+                    className="text-lg font-medium text-cask-chain px-6 py-4 text-left"
                   >
-                    FROM
+                    From
                   </th>
                   <th
                     scope="col"
-                    className="text-lg font-medium text-amber-300 px-6 py-4 text-left"
+                    className="text-lg font-medium text-cask-chain px-6 py-4 text-left"
                   >
-                    TO
+                    To
                   </th>
                   <th
                     scope="col"
-                    className="text-lg font-medium text-amber-300 px-6 py-4 text-left"
+                    className="text-lg font-medium text-cask-chain px-6 py-4 text-left"
                   >
-                    DATE
+                    Date
                   </th>
                   <th
                     scope="col"
-                    className="text-lg font-medium text-amber-300 px-6 py-4 text-left"
+                    className="text-lg font-medium text-cask-chain px-6 py-4 text-left"
                   >
-                    PRICE
+                    Price
                   </th>
                 </tr>
               </thead>

@@ -1,7 +1,9 @@
 import { setupHooks, Web3Hooks } from '@hooks/web3/setupHooks'
 import { MetaMaskInpageProvider } from '@metamask/providers'
+import { getProvider, Provider } from '@wagmi/core'
 import { Web3Dependencies } from '@_types/hooks'
-import { Contract, ethers, providers } from 'ethers'
+import { Contract, ethers } from 'ethers'
+import { getContract } from '@wagmi/core'
 
 declare global {
   interface Window {
@@ -11,7 +13,7 @@ declare global {
 
 export type Web3Params = {
   ethereum: MetaMaskInpageProvider | null
-  provider: providers.Web3Provider | null
+  provider: Provider | null
   contract: Contract | null
 }
 
@@ -40,6 +42,7 @@ export const createDefaultState = () => {
 }
 
 export const createWeb3State = ({
+  web3Modal,
   ethereum,
   nftFractionsFactory,
   nftFractionsVendor,
@@ -52,6 +55,7 @@ export const createWeb3State = ({
   isLoading,
 }: Web3Dependencies) => {
   return {
+    web3Modal,
     ethereum,
     provider,
     ccNft,
@@ -63,6 +67,7 @@ export const createWeb3State = ({
     nftFractionsFactory,
     erc20Contracts,
     hooks: setupHooks({
+      web3Modal,
       ethereum,
       provider,
       nftFractionToken,
@@ -81,7 +86,7 @@ const NETWORK_ID = process.env.NEXT_PUBLIC_NETWORK_ID
 
 export const loadContractByAddress = async (
   name: string,
-  provider: providers.Web3Provider,
+  provider: Provider,
   address: string
 ): Promise<Contract> => {
   if (!NETWORK_ID) {
@@ -99,23 +104,22 @@ export const loadContractByAddress = async (
   }
 }
 
-export const loadContract = async (
-  name: string,
-  provider: providers.Web3Provider
-): Promise<Contract> => {
+export const loadContract = async (name: string): Promise<Contract> => {
   if (!NETWORK_ID) {
     return Promise.reject('Network ID is not defined!')
   }
+
+  const provider = getProvider()
 
   const res = await import(`contracts/build/contracts/${name}.json`)
   const Artifact = res
 
   if (Artifact.networks[NETWORK_ID].address) {
-    const contract = new ethers.Contract(
-      Artifact.networks[NETWORK_ID].address,
-      Artifact.abi,
-      provider
-    )
+    const contract = getContract({
+      address: Artifact.networks[NETWORK_ID].address as string,
+      abi: Artifact.abi,
+      signerOrProvider: provider,
+    })
     return contract
   } else {
     return Promise.reject(`Contract ${name} cannot be loaded`)

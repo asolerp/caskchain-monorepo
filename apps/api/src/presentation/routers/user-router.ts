@@ -136,6 +136,9 @@ export default function UserRouter(
             await saveUser.execute(req.body.id, {
               nonce: JSON.stringify(generateNonce()),
             })
+
+            console.log('USER ADDRESS: ', user.address)
+
             // Set jwt token
             const token = jwt.sign(
               {
