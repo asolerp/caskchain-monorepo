@@ -13,6 +13,21 @@ export const globalReducer = (
         userInfoModal: action.payload.state,
       }
 
+    case GlobalTypes.SET_ANIMATIN_EXECUTED:
+      return {
+        ...state,
+        animationsExecuted: {
+          ...state.animationsExecuted,
+          [action.payload.animation]: true,
+        },
+      }
+
+    case GlobalTypes.SET_MAIN_ANIMATION_FINISHED:
+      return {
+        ...state,
+        mainAnimationFinished: action.payload.state,
+      }
+
     case GlobalTypes.SET_SIGN_IN_MODAL:
       return {
         ...state,

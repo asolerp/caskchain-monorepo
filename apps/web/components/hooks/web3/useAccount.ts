@@ -4,37 +4,36 @@ import { CryptoHookFactory } from '@_types/hooks'
 import axios from 'axios'
 import { deleteCookie, getCookie, setCookie } from 'cookies-next'
 import axiosClient from 'lib/fetcher/axiosInstance'
-import { useRouter } from 'next/router'
+
 import { useWeb3Modal } from '@web3modal/react'
 
 import { getSignedData } from 'pages/api/utils'
-import { useEffect } from 'react'
-import useSWR from 'swr'
+
 import { useAccount, useProvider, useSigner } from 'wagmi'
 
-type UseAccountResponse = {
-  connect: () => void
-  multiConnect: () => void
-  logout: () => void
-  signAddress: ({ callback }: { callback: () => void }) => void
-  handelSaveUser: ({
-    id,
-    email,
-    nickname,
-    callback,
-  }: {
-    id: string
-    email: string
-    nickname: string
-    callback: () => void
-  }) => void
-  isValidating: boolean
-  isConnected: boolean
-  isInstalled: boolean
-  hasAllAuthData: boolean
-}
+// type UseAccountResponse = {
+//   connect: () => void
+//   multiConnect: () => void
+//   logout: () => void
+//   signAddress: ({ callback }: { callback: () => void }) => void
+//   handelSaveUser: ({
+//     id,
+//     email,
+//     nickname,
+//     callback,
+//   }: {
+//     id: string
+//     email: string
+//     nickname: string
+//     callback: () => void
+//   }) => void
+//   isValidating: boolean
+//   isConnected: boolean
+//   isInstalled: boolean
+//   hasAllAuthData: boolean
+// }
 
-type AccountHookFactory = CryptoHookFactory<string, UseAccountResponse>
+type AccountHookFactory = CryptoHookFactory<string, any>
 
 export type UseAccountHook = ReturnType<AccountHookFactory>
 
@@ -47,7 +46,7 @@ export const hookFactory: AccountHookFactory = () => () => {
   const { address, isConnected } = useAccount()
   const provider = useProvider()
   const { data: signer } = useSigner()
-  const Router = useRouter()
+
   const { open } = useWeb3Modal()
 
   const signAddress = async ({ callback }: { callback: () => void }) => {

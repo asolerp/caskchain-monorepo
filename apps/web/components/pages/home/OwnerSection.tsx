@@ -25,7 +25,9 @@ const OwnerSection = () => {
   return (
     <div>
       <div className="bg-black-light flex flex-col items-center py-20">
-        <h2 className="font-rale text-white text-5xl">How To Be Owner</h2>
+        <h2 className="font-rale text-white font-semibold text-5xl">
+          How To Be Owner
+        </h2>
         <Spacer size="lg" />
         <div className="flex flex-row space-x-5">
           <OwnerTip
@@ -53,7 +55,33 @@ const OwnerSection = () => {
           height={500}
           className="w-full h-[698px] object-cover object-center"
         />
+        <Spacer size="2xl" />
+        <Spacer size="2xl" />
+        <div className="flex flex-col items-center">
+          <h2 className="font-rale text-white font-semibold text-5xl">
+            Meet CaskChain
+          </h2>
+          <Spacer size="sm" />
+          <p className="text-gray-400 text-center font-popins font-thin text-xl max-w-lg">
+            we work quickly & with maximum security check out the video below to
+            know how we work
+          </p>
+          <Spacer size="xl" />
+          <Image
+            src="/images/cellar.png"
+            width={1000}
+            height={500}
+            alt="cellar"
+          />
+        </div>
       </div>
+      <Image
+        src="/images/wave1.svg"
+        width={1000}
+        height={500}
+        alt="wave"
+        className="w-full"
+      />
     </div>
   )
 }

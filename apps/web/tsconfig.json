@@ -2,7 +2,11 @@
   "compilerOptions": {
     "baseUrl": ".",
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -16,20 +20,42 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@ui": ["components/ui"],
-      "@ui/*": ["components/ui/*"],
-      "@providers": ["components/providers"],
-      "@providers/*": ["components/providers/*"],
-      "@hooks": ["components/hooks"],
-      "@hooks/*": ["components/hooks/*"],
-      "@_types/*": ["types/*"]
-    }
+      "@ui": [
+        "components/ui"
+      ],
+      "@ui/*": [
+        "components/ui/*"
+      ],
+      "@providers": [
+        "components/providers"
+      ],
+      "@providers/*": [
+        "components/providers/*"
+      ],
+      "@hooks": [
+        "components/hooks"
+      ],
+      "@hooks/*": [
+        "components/hooks/*"
+      ],
+      "@_types/*": [
+        "types/*"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "pages/casks/[id]/index.tsx"
+    "pages/casks/[id]/index.tsx",
+    ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

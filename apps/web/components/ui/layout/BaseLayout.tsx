@@ -2,13 +2,16 @@ import { ReactNode } from 'react'
 import Navbar from '../navbar'
 
 interface Props {
+  background?: string
   children: ReactNode
 }
 
-const BaseLayout: React.FC<Props> = ({ children }) => {
+const BaseLayout: React.FC<Props> = ({ background, children }) => {
+  const backgroundClass = background ? background : ''
+
   return (
     <>
-      <div className="bg-gradient-to-r from-[#0F0F0F] via-[#161616] to-[#000000] overflow-hidden min-h-screen ">
+      <div className={`overflow-hidden min-h-screen ${backgroundClass}`}>
         <div className=" bg-opacity-80 mx-auto backdrop-blur-xl	">
           <Navbar />
           {children}

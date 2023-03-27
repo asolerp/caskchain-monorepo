@@ -1,10 +1,7 @@
-import useOutsideClick from '@hooks/common/useOutsideClick'
 import { useAccount } from '@hooks/web3'
-import { useGlobal } from '@providers/global'
-import { GlobalTypes } from '@providers/global/utils'
 import Button from '@ui/common/Button'
 import Spacer from '@ui/common/Spacer'
-import Spinner from '@ui/common/Spinner'
+
 import ClientOnly from 'components/pages/ClientOnly'
 import { openTransak } from 'lib/crypto/transak'
 import Link from 'next/link'

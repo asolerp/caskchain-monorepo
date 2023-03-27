@@ -6,15 +6,32 @@ export type GlobalState = {
   signInModal: boolean
   sideBar: boolean
   userInfoModal: boolean
+  mainAnimationFinished: boolean
+  animationsExecuted: {
+    main: boolean
+    nav: boolean
+  }
   hooks: GlobalHooks
 }
 
 export enum GlobalTypes {
+  SET_ANIMATIN_EXECUTED = 'SET_ANIMATIN_EXECUTED',
+  SET_MAIN_ANIMATION_FINISHED = 'SET_MAIN_ANIMATION_FINISHED',
   SET_SIGN_IN_MODAL = 'SET_SIGN_IN_MODAL',
   SET_USER_INFO_MODAL = 'SET_USER_INFO_MODAL',
   SET_USER = 'SET_USER',
   SET_TOKEN = 'SET_TOKEN',
   SET_SIDE_BAR = 'SET_SIDE_BAR',
+}
+
+type SetAnimationsExecuted = {
+  type: typeof GlobalTypes.SET_ANIMATIN_EXECUTED
+  payload: any
+}
+
+type SetMainAnimationFinished = {
+  type: typeof GlobalTypes.SET_MAIN_ANIMATION_FINISHED
+  payload: any
 }
 
 type SetSignInModal = {
@@ -48,6 +65,8 @@ export type GlobalActionTypes =
   | SetSignInModal
   | SetUserInfoModal
   | SetSideBar
+  | SetMainAnimationFinished
+  | SetAnimationsExecuted
 
 export const initialState: GlobalState = {
   user: null,
@@ -55,5 +74,10 @@ export const initialState: GlobalState = {
   sideBar: false,
   signInModal: false,
   userInfoModal: false,
+  mainAnimationFinished: false,
+  animationsExecuted: {
+    main: false,
+    nav: false,
+  },
   hooks: setupHooks(),
 }

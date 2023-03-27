@@ -90,7 +90,7 @@ export function ClientContextProvider({
         throw new Error('WalletConnect is not initialized')
       }
 
-      _client.on('display_uri', async (uri: string) => {
+      _client.on('display_uri', async () => {
         console.log('EVENT', 'QR Code Modal open')
       })
 
@@ -144,6 +144,7 @@ export function ClientContextProvider({
 
       const web3Modal = new Web3Modal({
         projectId: DEFAULT_PROJECT_ID,
+        walletConnectVersion: 2,
       })
 
       setEthereumProvider(provider)

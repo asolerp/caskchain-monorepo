@@ -4,12 +4,15 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", ".next/**"]
     },
+    "start": {
+      "dependsOn": ["^build"]
+    },
+    "start:app": {},
     "lint": {
       "outputs": []
     },
     "dev": {
       "cache": false
     }
-  },
-  "globalDependencies": [".env"]
+  }
 }

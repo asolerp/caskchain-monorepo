@@ -18,7 +18,7 @@ function CaskDetail() {
   const { cask } = useCaskNft({ caskId: route.query.caskId as string })
 
   return (
-    <BaseLayout>
+    <BaseLayout background="bg-gradient-to-r from-[#0F0F0F] via-[#161616] to-[#000000]">
       <div className="max-w-7xl mx-auto pt-40 pb-8 rounded-lg">
         {cask?.data?.tokenId || cask?.isLoading ? (
           <div>

@@ -31,14 +31,14 @@ const Walletbar: React.FC<WalletbarProps> = ({
     state: { sideBar },
   } = useGlobal()
 
-  const { isDisconnected } = useAccountWagmi()
+  const { address, isDisconnected } = useAccountWagmi()
   const { account: accountHook } = useAccount()
 
   useEffect(() => {
-    if (isDisconnected) {
+    if (address && isDisconnected) {
       accountHook.logout()
     }
-  }, [isDisconnected])
+  }, [isDisconnected, address])
 
   const handleOpenSidebar = () => {
     dispatch({

@@ -15,7 +15,7 @@ const NFTCaskWorld: NextPage = () => {
     if (filter === 'all') {
       return true
     }
-    if (filter === 'onSale') {
+    if (filter === 'onSale' && nft?.price) {
       return nft?.price > 0
     }
     if (filter === 'fractionized') {
@@ -24,7 +24,7 @@ const NFTCaskWorld: NextPage = () => {
   })
 
   return (
-    <BaseLayout>
+    <BaseLayout background="bg-gradient-to-r from-[#0F0F0F] via-[#161616] to-[#000000]">
       <div className="py-16 sm:px-6 pt-40 lg:px-32 px-4">
         <h2 className="tracking-tight font-extrabold text-gray-100 font-rale sm:text-8xl">
           Marketplace

@@ -1,7 +1,6 @@
 import {
   createContext,
   ReactNode,
-  useCallback,
   useContext,
   useEffect,
   useState,
@@ -38,7 +37,7 @@ const accountChanged = (logout: any) => {
   window.location.reload()
 }
 
-const setGlobalListeners = (provider: Provider, logout: any) => {
+const setGlobalListeners = (provider: any, logout: any) => {
   provider.on('chainChanged', pageReload)
   provider.on('accountsChanged', () => accountChanged(logout))
   provider.on('disconnect', () => console.log('disconnect'))

@@ -1,0 +1,1 @@
+echo "web: cd apps/api && yarn dev:build" > Procfile

@@ -7,6 +7,7 @@ import { Nft } from '@_types/nft'
 import { useOwnedNfts } from '@hooks/web3'
 
 import TransactionsHistory from '@ui/ntf/transactionsHistory'
+import { useRouter } from 'next/router'
 
 import { ethers } from 'ethers'
 import { useState } from 'react'
@@ -15,6 +16,8 @@ import { auth } from 'utils/auth'
 import Spacer from '@ui/common/Spacer'
 import Button from '@ui/common/Button'
 import Image from 'next/image'
+import { useGlobal } from '@providers/global'
+import { addressSimplifier } from 'utils/addressSimplifier'
 
 const tabs = [
   { name: 'Your Collection', href: '#', key: 'collection' },
@@ -28,68 +31,42 @@ function classNames(...classes: string[]) {
 export const getServerSideProps = (context: any) => auth(context)
 
 const Profile: NextPage = () => {
+  const {
+    state: { user },
+  } = useGlobal()
   const { nfts } = useOwnedNfts()
   const [activeTab, setActiveTab] = useState('collection')
-
-  // const orderBottle = async () =>
-  //   // numberOfBottles: number,
-  //   // tokenId: number,
-  //   // tokenURI: string
-  //   {
-  //     try {
-  //       // const { address, signature } = await getSignedData(
-  //       //   provider,
-  //       //   account.data as string
-  //       // )
-  //       // const res = await axios.post(
-  //       //   '/order-bottle',
-  //       //   {
-  //       //     address,
-  //       //     signature,
-  //       //     extractions: numberOfBottles,
-  //       //     tokenURI,
-  //       //   },
-  //       //   { withCredentials: true }
-  //       // )
-  //       // const data = res.data as PinataRes
-  //       // const newTokenURI = `${process.env.NEXT_PUBLIC_PINATA_DOMAIN}/ipfs/${data.IpfsHash}`
-  //       // const tx = await contract?.orderBottle(
-  //       //   numberOfBottles,
-  //       //   tokenId,
-  //       //   newTokenURI,
-  //       //   {
-  //       //     value: ethers.utils.parseEther(String(bottlePrice * numberOfBottles)),
-  //       //   }
-  //       // )
-  //       // await toast.promise(tx!.wait(), {
-  //       //   pending: 'Uploading metadata',
-  //       //   success: 'Metadata uploaded',
-  //       //   error: 'Metadata upload error',
-  //       // })
-  //       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //     } catch (e: any) {
-  //       console.error(e.message)
-  //     }
-  //   }
+  const router = useRouter()
 
   return (
-    <BaseLayout>
+    <BaseLayout background="bg-gradient-to-r from-[#0F0F0F] via-[#161616] to-[#000000]">
       <div className="py-16 pt-40 px-2 sm:px-6 lg:px-32">
         <div className="flex-1 flex flex-col">
           <div className="flex-1 flex space-x-4 items-stretch">
             <main className="flex-1 overflow-y-auto">
               <div className="mx-auto">
-                <div className="flex">
-                  <h2 className="tracking-tight font-extrabold text-gray-100 font-rale sm:text-8xl">
-                    Your Cellar
+                <div className="flex flex-col">
+                  <Image
+                    src="/images/nft.png"
+                    width={300}
+                    height={300}
+                    alt="profile"
+                    className="rounded-full object-cover w-60 h-60"
+                  />
+                  <Spacer size="md" />
+                  <h2 className="tracking-tight font-extrabold text-gray-100 font-rale sm:text-4xl">
+                    {user?.nickname}
                   </h2>
+                  <p className="font-poppins text-xl text-gray-300">
+                    {addressSimplifier(user?.address)}
+                  </p>
                 </div>
                 <Spacer size="3xl" />
                 <div className="mt-3 sm:mt-2">
                   <div className="hidden sm:block">
                     <div className="flex items-center ">
                       <nav
-                        className=" -mb-px flex space-x-6 xl:space-x-8"
+                        className=" -mb-px flex space-x-6 xl:space-x-8 border-b border-gray-600 w-full"
                         aria-label="Tabs"
                       >
                         {tabs.map((tab) => (
@@ -104,7 +81,7 @@ const Profile: NextPage = () => {
                               tab.key === activeTab
                                 ? 'border-cask-chain text-cask-chain'
                                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                              'whitespace-nowrap pb-2 px-1 border-b-2 font-medium text-lg'
+                              'whitespace-nowrap pb-2 px-1 border-b-2 font-medium text-2xl'
                             )}
                           >
                             {tab.name}
@@ -117,113 +94,127 @@ const Profile: NextPage = () => {
 
                 {activeTab === 'collection' && (
                   <section
-                    className="mt-8 pb-16 px-4"
+                    className="mt-8 pb-16"
                     aria-labelledby="gallery-heading"
                   >
-                    <ul
-                      role="list"
-                      className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8"
-                    >
-                      {(nfts.data as Nft[])?.map((nft) => (
-                        <li
-                          key={nft.meta.name}
-                          onClick={() => {
-                            nfts.setIsApproved(false)
-                            nfts.setActiveNft(nft)
-                          }}
-                          className="relative"
+                    {nfts.data.length ? (
+                      <>
+                        <ul
+                          role="list"
+                          className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 px-4"
                         >
-                          <div
-                            className={classNames(
-                              nft.tokenId === nfts.activeNft?.tokenId
-                                ? 'ring-2 ring-offset-2 ring-cask-chain'
-                                : 'focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-cask-chain',
-                              'group block w-full aspect-w-10 aspect-h-7 rounded-lg py-3 overflow-hidden'
-                            )}
-                          >
-                            <Image
-                              width={300}
-                              height={100}
-                              src={'/images/nft.png'}
-                              alt=""
-                              className={classNames(
-                                nft.tokenId === nfts.activeNft?.tokenId
-                                  ? ''
-                                  : 'group-hover:opacity-75',
-                                'object-cover pointer-events-none h-40 w-full'
-                              )}
-                            />
-                            <button
-                              type="button"
-                              className="absolute inset-0 focus:outline-none"
+                          {(nfts.data as Nft[])?.map((nft) => (
+                            <li
+                              key={nft.meta.name}
+                              onClick={() => {
+                                nfts.setIsApproved(false)
+                                nfts.setActiveNft(nft)
+                              }}
+                              className="relative"
                             >
-                              <span className="sr-only">
-                                View details for {nft.meta.name}
-                              </span>
-                            </button>
-                          </div>
-                          <p className="mt-3 block text-lg font-medium text-gray-100 truncate pointer-events-none">
-                            {nft.meta.name}
-                          </p>
-                        </li>
-                      ))}
-                    </ul>
-                    <Spacer size="xl" />
-                    <div className="w-full border-b border-gray-700" />
-                    <Spacer size="xl" />
-                    {nfts.activeNft && (
-                      <div>
-                        {nfts.activeNft?.offer && (
-                          <div>
-                            <h3 className="font-rale text-white text-4xl mb-4">
-                              Received Offers
-                            </h3>
-
-                            <div
-                              key={nfts.activeNft?.offer?.bidder}
-                              className="flex flex-row justify-between items-center w-3/4 mb-2"
-                            >
-                              <div>
-                                <h3 className="font-poppins text-cask-chain font-medium">
-                                  Bidder
-                                </h3>
-                                <p className="text-white">
-                                  {nfts.activeNft?.offer?.highestBidder}
-                                </p>
-                              </div>
-                              <div>
-                                <h3 className="font-poppins text-cask-chain font-medium">
-                                  Bid
-                                </h3>
-                                <p className="text-white">
-                                  {nfts.activeNft?.offer?.bid &&
-                                    ethers.utils.formatEther(
-                                      nfts.activeNft?.offer?.bid
-                                    )}{' '}
-                                  ETH
-                                </p>
-                              </div>
-                              <div>
-                                <Button
-                                  onClick={() =>
-                                    nfts.acceptOffer(nfts.activeNft.tokenId)
-                                  }
+                              <div
+                                className={classNames(
+                                  nft.tokenId === nfts.activeNft?.tokenId
+                                    ? 'ring-2 ring-offset-2 ring-cask-chain'
+                                    : 'focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-cask-chain',
+                                  'group block w-full aspect-w-10 aspect-h-7 rounded-lg py-3 overflow-hidden'
+                                )}
+                              >
+                                <Image
+                                  width={300}
+                                  height={100}
+                                  src={'/images/nft.png'}
+                                  alt=""
+                                  className={classNames(
+                                    nft.tokenId === nfts.activeNft?.tokenId
+                                      ? ''
+                                      : 'group-hover:opacity-75',
+                                    'object-cover pointer-events-none h-40 w-full'
+                                  )}
+                                />
+                                <button
+                                  type="button"
+                                  className="absolute inset-0 focus:outline-none"
                                 >
-                                  Accept Offer
-                                </Button>
+                                  <span className="sr-only">
+                                    View details for {nft.meta.name}
+                                  </span>
+                                </button>
                               </div>
-                            </div>
+                              <p className="mt-3 block text-lg font-medium text-gray-100 truncate pointer-events-none">
+                                {nft.meta.name}
+                              </p>
+                            </li>
+                          ))}
+                        </ul>
+                        <Spacer size="xl" />
+                        {/* <div className="w-full border-b border-gray-700" /> */}
+                        <Spacer size="xl" />
+                        {nfts.activeNft && (
+                          <div>
+                            {nfts.activeNft?.offer && (
+                              <div>
+                                <h3 className="font-rale text-white text-4xl mb-4">
+                                  Received Offers
+                                </h3>
+
+                                <div
+                                  key={nfts.activeNft?.offer?.bidder}
+                                  className="flex flex-row justify-between items-center w-3/4 mb-2"
+                                >
+                                  <div>
+                                    <h3 className="font-poppins text-cask-chain font-medium">
+                                      Bidder
+                                    </h3>
+                                    <p className="text-white">
+                                      {nfts.activeNft?.offer?.highestBidder}
+                                    </p>
+                                  </div>
+                                  <div>
+                                    <h3 className="font-poppins text-cask-chain font-medium">
+                                      Bid
+                                    </h3>
+                                    <p className="text-white">
+                                      {nfts.activeNft?.offer?.bid &&
+                                        ethers.utils.formatEther(
+                                          nfts.activeNft?.offer?.bid
+                                        )}{' '}
+                                      ETH
+                                    </p>
+                                  </div>
+                                  <div>
+                                    <Button
+                                      onClick={() =>
+                                        nfts.acceptOffer(nfts.activeNft.tokenId)
+                                      }
+                                    >
+                                      Accept Offer
+                                    </Button>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                            <Spacer size="xl" />
+                            <div className="w-full border-b border-gray-700" />
+                            <Spacer size="xl" />
+                            <h3 className="font-rale text-white text-4xl mb-4">
+                              Transactions History
+                            </h3>
+                            <TransactionsHistory
+                              transactions={nfts.activeNft?.transactions}
+                            />
                           </div>
                         )}
-                        <Spacer size="xl" />
-                        <div className="w-full border-b border-gray-700" />
-                        <Spacer size="xl" />
-                        <h3 className="font-rale text-white text-4xl mb-4">
-                          Transactions History
+                      </>
+                    ) : (
+                      <div className="flex flex-col border border-gray-700 p-6 rounded-lg justify-center items-center">
+                        <h3 className="font-poppins text-2xl text-gray-300">
+                          No se ha encontrado ningna barrica
                         </h3>
-                        <TransactionsHistory
-                          transactions={nfts.activeNft?.transactions}
-                        />
+                        <Spacer size="md" />
+                        <Button onClick={() => router.push('/marketplace')}>
+                          Ir al marketplace
+                        </Button>
                       </div>
                     )}
                   </section>
