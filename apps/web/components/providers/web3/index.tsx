@@ -56,7 +56,7 @@ interface Props {
 }
 
 const Web3Provider: React.FC<Props> = ({ children }) => {
-  const [web3Api, setWeb3Api] = useState<Web3State>(createDefaultState())
+  const [web3Api, setWeb3Api] = useState<any>(createDefaultState())
   const provider = useProvider()
   const { address } = useAccount()
 
@@ -130,11 +130,12 @@ const Web3Provider: React.FC<Props> = ({ children }) => {
             ccNft: signedCCNftContract as unknown as CcNftContract,
             nftVendor: sigendNftVendorContract as unknown as NftVendorContract,
             nftOffers: signedNftOffersContract as unknown as NftOffersContract,
+            isLoading: false,
           })
         )
       } catch (e: any) {
         console.error('ERROR', e.message)
-        setWeb3Api((api) =>
+        setWeb3Api((api: any) =>
           createWeb3State({
             ...(api as any),
             isLoading: false,

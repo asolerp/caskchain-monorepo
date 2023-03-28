@@ -14,7 +14,7 @@ type Props = {
 }
 
 const MakeOffer: React.FC<Props> = ({ cask, isLoading, onOffer }) => {
-  const [offer, setOffer] = useState<number>(null)
+  const [offer, setOffer] = useState<number>()
 
   return (
     <div className="p-6 w-2/3 h-fit bg-black-light rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-90 border border-gray-700 grid grid-cols-1 ">
@@ -41,7 +41,7 @@ const MakeOffer: React.FC<Props> = ({ cask, isLoading, onOffer }) => {
                 min={1}
                 max={cask?.fractions?.available}
                 value={offer}
-                onChange={(e) => setOffer(Number(e.target.value))}
+                onChange={(e: any) => setOffer(Number(e.target.value))}
                 type="number"
                 id="first_name"
                 placeholder="Place an offer"
@@ -51,7 +51,10 @@ const MakeOffer: React.FC<Props> = ({ cask, isLoading, onOffer }) => {
           </div>
           <Spacer size="md" />
           <div className="flex items-center">
-            <Button fit={false} onClick={() => onOffer(offer.toString())}>
+            <Button
+              fit={false}
+              onClick={() => offer && onOffer(offer.toString())}
+            >
               MAKE OFFER
             </Button>
           </div>

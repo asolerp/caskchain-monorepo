@@ -4,64 +4,64 @@ import {
   BytesLike as Arrayish,
   BigNumber,
   BigNumberish,
-} from 'ethers';
-import { EthersContractContextV5 } from 'ethereum-abi-types-generator';
+} from 'ethers'
+import { EthersContractContextV5 } from 'ethereum-abi-types-generator'
 
 export type ContractContext = EthersContractContextV5<
   NftVendorContract,
   NftVendorContractMethodNames,
   NftVendorContractEventsContext,
   NftVendorContractEvents
->;
+>
 
 export declare type EventFilter = {
-  address?: string;
-  topics?: Array<string>;
-  fromBlock?: string | number;
-  toBlock?: string | number;
-};
+  address?: string
+  topics?: Array<string>
+  fromBlock?: string | number
+  toBlock?: string | number
+}
 
 export interface ContractTransactionOverrides {
   /**
    * The maximum units of gas for the transaction to use
    */
-  gasLimit?: number;
+  gasLimit?: number
   /**
    * The price (in wei) per unit of gas
    */
-  gasPrice?: BigNumber | string | number | Promise<any>;
+  gasPrice?: BigNumber | string | number | Promise<any>
   /**
    * The nonce to use in the transaction
    */
-  nonce?: number;
+  nonce?: number
   /**
    * The amount to send with the transaction (i.e. msg.value)
    */
-  value?: BigNumber | string | number | Promise<any>;
+  value?: BigNumber | string | number | Promise<any>
   /**
    * The chain ID (or network ID) to use
    */
-  chainId?: number;
+  chainId?: number
 }
 
 export interface ContractCallOverrides {
   /**
    * The address to execute the call as
    */
-  from?: string;
+  from?: string
   /**
    * The maximum units of gas for the transaction to use
    */
-  gasLimit?: number;
+  gasLimit?: number
 }
 export type NftVendorContractEvents =
   | 'ItemBought'
   | 'ItemCanceled'
-  | 'ItemListed';
+  | 'ItemListed'
 export interface NftVendorContractEventsContext {
-  ItemBought(...parameters: any): EventFilter;
-  ItemCanceled(...parameters: any): EventFilter;
-  ItemListed(...parameters: any): EventFilter;
+  ItemBought(...parameters: any): EventFilter
+  ItemCanceled(...parameters: any): EventFilter
+  ItemListed(...parameters: any): EventFilter
 }
 export type NftVendorContractMethodNames =
   | 'new'
@@ -80,40 +80,41 @@ export type NftVendorContractMethodNames =
   | 'getListing'
   | 'getAllListedNftsId'
   | 'getAllListedNFTs'
-  | 'getProceeds';
+  | 'getProceeds'
 export interface ItemBoughtEventEmittedResponse {
-  buyer: string;
-  nftAddress: string;
-  tokenId: BigNumberish;
-  price: BigNumberish;
+  buyer: string
+  nftAddress: string
+  tokenId: BigNumberish
+  price: BigNumberish
 }
 export interface ItemCanceledEventEmittedResponse {
-  seller: string;
-  nftAddress: string;
-  tokenId: BigNumberish;
+  seller: string
+  nftAddress: string
+  tokenId: BigNumberish
 }
 export interface ItemListedEventEmittedResponse {
-  seller: string;
-  nftAddress: string;
-  tokenId: BigNumberish;
-  price: BigNumberish;
+  seller: string
+  nftAddress: string
+  tokenId: BigNumberish
+  price: BigNumberish
 }
 export interface RoyaltyInfoResponse {
-  result0: string;
-  0: string;
-  result1: BigNumber;
-  1: BigNumber;
-  length: 2;
+  result0: string
+  0: string
+  result1: BigNumber
+  1: BigNumber
+  length: 2
 }
 export interface ListingResponse {
-  tokenId: BigNumber;
-  0: BigNumber;
-  price: BigNumber;
-  1: BigNumber;
-  seller: string;
-  2: string;
+  tokenId: BigNumber
+  0: BigNumber
+  price: BigNumber
+  1: BigNumber
+  seller: string
+  2: string
 }
 export interface NftVendorContract {
+  address: string
   /**
    * Payable: false
    * Constant: false
@@ -126,21 +127,21 @@ export interface NftVendorContract {
     _collection: string,
     _creator: string,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  collection(overrides?: ContractCallOverrides): Promise<string>;
+  collection(overrides?: ContractCallOverrides): Promise<string>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  creator(overrides?: ContractCallOverrides): Promise<string>;
+  creator(overrides?: ContractCallOverrides): Promise<string>
   /**
    * Payable: false
    * Constant: true
@@ -153,7 +154,7 @@ export interface NftVendorContract {
     _tokenId: BigNumberish,
     _salePrice: BigNumberish,
     overrides?: ContractCallOverrides
-  ): Promise<RoyaltyInfoResponse>;
+  ): Promise<RoyaltyInfoResponse>
   /**
    * Payable: false
    * Constant: true
@@ -164,7 +165,7 @@ export interface NftVendorContract {
   s_excludedList(
     parameter0: string,
     overrides?: ContractCallOverrides
-  ): Promise<boolean>;
+  ): Promise<boolean>
   /**
    * Payable: false
    * Constant: true
@@ -175,7 +176,7 @@ export interface NftVendorContract {
   supportsInterface(
     interfaceId: Arrayish,
     overrides?: ContractCallOverrides
-  ): Promise<boolean>;
+  ): Promise<boolean>
   /**
    * Payable: false
    * Constant: false
@@ -188,7 +189,7 @@ export interface NftVendorContract {
     tokenId: BigNumberish,
     price: BigNumberish,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: false
@@ -199,7 +200,7 @@ export interface NftVendorContract {
   cancelListing(
     tokenId: BigNumberish,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: true
    * Constant: false
@@ -210,7 +211,7 @@ export interface NftVendorContract {
   buyItem(
     tokenId: BigNumberish,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: false
@@ -223,7 +224,7 @@ export interface NftVendorContract {
     tokenId: BigNumberish,
     newPrice: BigNumberish,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: false
@@ -232,14 +233,14 @@ export interface NftVendorContract {
    */
   withdrawProceeds(
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  totalSupply(overrides?: ContractCallOverrides): Promise<BigNumber>;
+  totalSupply(overrides?: ContractCallOverrides): Promise<BigNumber>
   /**
    * Payable: false
    * Constant: true
@@ -250,7 +251,7 @@ export interface NftVendorContract {
   tokenByIndex(
     index: BigNumberish,
     overrides?: ContractCallOverrides
-  ): Promise<BigNumber>;
+  ): Promise<BigNumber>
   /**
    * Payable: false
    * Constant: true
@@ -261,14 +262,14 @@ export interface NftVendorContract {
   getListing(
     tokenId: BigNumberish,
     overrides?: ContractCallOverrides
-  ): Promise<ListingResponse>;
+  ): Promise<ListingResponse>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  getAllListedNftsId(overrides?: ContractCallOverrides): Promise<BigNumber[]>;
+  getAllListedNftsId(overrides?: ContractCallOverrides): Promise<BigNumber[]>
   /**
    * Payable: false
    * Constant: true
@@ -277,7 +278,7 @@ export interface NftVendorContract {
    */
   getAllListedNFTs(
     overrides?: ContractCallOverrides
-  ): Promise<ListingResponse[]>;
+  ): Promise<ListingResponse[]>
   /**
    * Payable: false
    * Constant: true
@@ -288,5 +289,5 @@ export interface NftVendorContract {
   getProceeds(
     seller: string,
     overrides?: ContractCallOverrides
-  ): Promise<BigNumber>;
+  ): Promise<BigNumber>
 }

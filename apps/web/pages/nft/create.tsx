@@ -28,7 +28,7 @@ const NftCreate: NextPage = () => {
     image: '',
     attributes: [
       { trait_type: 'country', value: '' },
-      { trait_type: 'extraction', value: '0' },
+      { trait_type: 'extractions', value: '0' },
       { trait_type: 'region', value: '' },
       { trait_type: 'year', value: new Date().getFullYear().toString() },
     ],

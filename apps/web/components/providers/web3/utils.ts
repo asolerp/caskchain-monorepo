@@ -1,19 +1,12 @@
 import { setupHooks, Web3Hooks } from '@hooks/web3/setupHooks'
-import { MetaMaskInpageProvider } from '@metamask/providers'
 import { getProvider, Provider } from '@wagmi/core'
 import { Web3Dependencies } from '@_types/hooks'
 import { Contract, ethers } from 'ethers'
 import { getContract } from '@wagmi/core'
 
-declare global {
-  interface Window {
-    ethereum: MetaMaskInpageProvider
-  }
-}
-
 export type Web3Params = {
-  ethereum: MetaMaskInpageProvider | null
-  provider: Provider | null
+  ethereum: any
+  provider: any
   contract: Contract | null
 }
 

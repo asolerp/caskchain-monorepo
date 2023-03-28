@@ -1,12 +1,12 @@
 import Button from '@ui/common/Button'
-import { Nft } from '@_types/nft'
+import { NftAttribute } from '@_types/nft'
 
 import Image from 'next/image'
 import { useState } from 'react'
 import { addressSimplifier } from 'utils/addressSimplifier'
 
 type NftItemProps = {
-  item: Nft
+  item: any
   active?: boolean
   isMarketPlace?: boolean
   blow?: boolean
@@ -61,7 +61,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
             <div className="flex-1">
               <div className="mt-4">
                 <div className="flex flex-row items-start justify-start flex-wrap space-x-1">
-                  {item.meta.attributes.map((attribute) => (
+                  {item.meta.attributes.map((attribute: NftAttribute) => (
                     <div key={attribute.trait_type} className="">
                       <div className="flex flex-row justify-between space-x-1">
                         <dt className=" text-sm font-medium text-gray-300">

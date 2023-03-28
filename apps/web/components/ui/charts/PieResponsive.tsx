@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { PieChart, Pie, Sector, ResponsiveContainer } from 'recharts'
 import { addressSimplifier } from 'utils/addressSimplifier'
 

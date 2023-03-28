@@ -1,5 +1,3 @@
-import { MetaMaskInpageProvider } from '@metamask/providers'
-import { providers } from 'ethers'
 import { SWRResponse } from 'swr'
 import { CcNftContract } from './ccNftContract'
 // import { NftFractionTokenContract } from './nftFractionTokenContract'
@@ -15,10 +13,10 @@ export type Web3Dependencies = {
   nftFractionsFactory?: VaultFactoryContract
   nftFractionToken?: any
   nftOffers?: NftOffersContract
-  provider: providers.Web3Provider
+  provider: any | undefined
   ccNft: CcNftContract
   nftVendor: NftVendorContract
-  ethereum: MetaMaskInpageProvider
+  ethereum: any | undefined
   isLoading: boolean
 }
 

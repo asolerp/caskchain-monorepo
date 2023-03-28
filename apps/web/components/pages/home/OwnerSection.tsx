@@ -2,7 +2,13 @@ import Spacer from '@ui/common/Spacer'
 import Image from 'next/image'
 import React from 'react'
 
-const OwnerTip = ({ imgSrc, title, subtitle }) => {
+type OwnerTipProps = {
+  imgSrc: string
+  title: string
+  subtitle: string
+}
+
+const OwnerTip: React.FC<OwnerTipProps> = ({ imgSrc, title, subtitle }) => {
   return (
     <div className="rounded-3xl bg-[#292929] flex flex-col space-y-4 items-center justify-start p-4 py-6 w-[298px]">
       <Image

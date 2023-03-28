@@ -65,7 +65,7 @@ const UserInfoModal: React.FC<Props> = ({ modalIsOpen, closeModal }) => {
               </p>
               <Spacer size="md" />
               <Input
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e: any) => setEmail(e.target.value)}
                 value={email}
                 type="text"
                 name="email"
@@ -73,7 +73,7 @@ const UserInfoModal: React.FC<Props> = ({ modalIsOpen, closeModal }) => {
                 placeholder="Your email address"
               />
               <Input
-                onChange={(e) => setNickname(e.target.value)}
+                onChange={(e: any) => setNickname(e.target.value)}
                 value={nickname}
                 type="text"
                 name="name"

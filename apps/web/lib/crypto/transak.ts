@@ -1,6 +1,6 @@
 import transakSDK from '@transak/transak-sdk'
 
-const settings = {
+const settings: any = {
   apiKey: '69733794-9ee8-4b0c-87d7-da8bb74f7b4e', // Your API Key
   environment: 'STAGING', // STAGING/PRODUCTION
   defaultCryptoCurrency: 'ETH',
@@ -20,13 +20,13 @@ export function openTransak() {
   })
 
   // This will trigger when the user closed the widget
-  transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
+  transak.on('TRANSAK_WIDGET_CLOSE', (eventData) => {
     console.log(eventData)
     transak.close()
   })
 
   // This will trigger when the user marks payment is made.
-  transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
+  transak.on('TRANSAK_ORDER_SUCCESSFUL', (orderData) => {
     console.log(orderData)
     window.alert('Payment Success')
     transak.close()
