@@ -11,9 +11,6 @@
     "test": "jest --watchAll --collectCoverage",
     "dev": "ts-node-dev --files --ignore-watch node_modules ./src/main.ts"
   },
-  "engines": {
-    "node": "16.15.1"
-  },
   "dependencies": {
     "@truffle/hdwallet-provider": "^2.1.4",
     "abi-decoder": "^2.4.0",
