@@ -55,12 +55,3 @@
     "node": ">=16.0.0"
   }
 }
-
-
-heroku config:set USE_YARN_CACHE=false -a caskchain-frontend
-heroku config:set NODE_MODULES_CACHE=false -a caskchain-frontend
-heroku config:set YARN_PRODUCTION=false -a caskchain-frontend
-
-heroku config:set USE_YARN_CACHE=false -a caskchain-backend
-heroku config:set NODE_MODULES_CACHE=false -a caskchain-backend
-heroku config:set YARN_PRODUCTION=false -a caskchain-backend
