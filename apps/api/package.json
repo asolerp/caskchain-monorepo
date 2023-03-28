@@ -5,9 +5,13 @@
   "author": "MyCask",
   "license": "MIT",
   "scripts": {
+    "start": "node ./dist/main.js",
+    "postinstall": "tsc",
     "test": "jest --watchAll --collectCoverage",
-    "dev:build": "tsc",
     "dev": "ts-node-dev --files --ignore-watch node_modules ./src/main.ts"
+  },
+  "engines": {
+    "node": "16.15.1"
   },
   "dependencies": {
     "@truffle/hdwallet-provider": "^2.1.4",
