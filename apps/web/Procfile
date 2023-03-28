@@ -1,1 +1,1 @@
-echo "web: cd apps/web && yarn start" > Procfile
+echo "web: cd apps/casckchain-frontend && yarn start" > Procfile
