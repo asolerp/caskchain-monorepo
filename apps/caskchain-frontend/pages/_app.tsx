@@ -8,10 +8,10 @@ import GlobalProvider from '@providers/global'
 import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
 import { Web3Modal } from '@web3modal/react'
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
-import { localhost, polygonMumbai } from 'wagmi/chains'
+import { polygonMumbai } from 'wagmi/chains'
 import { AnimatePresence } from 'framer-motion'
 
-const chains = [localhost, polygonMumbai]
+const chains = [polygonMumbai]
 const projectId = '7ba8a5909e41332fb0abe840c1d4923e'
 
 const { provider } = configureChains(chains, [w3mProvider({ projectId })])
