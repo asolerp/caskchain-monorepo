@@ -1,5 +1,9 @@
 import * as dotenv from 'dotenv'
-dotenv.config({ path: `../../../.env` })
+dotenv.config(
+  process.env.NODE_ENV === 'development'
+    ? { path: '../../.env' }
+    : { path: '.env' }
+)
 
 import express from 'express'
 import cors from 'cors'
