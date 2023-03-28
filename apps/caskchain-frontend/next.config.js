@@ -5,6 +5,14 @@ require('dotenv-mono').load(
 )
 
 const nextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'https://caskchain-backend.herokuapp.com/api/:path*', // Proxy to Backend
+      },
+    ]
+  },
   reactStrictMode: true,
   swcMinify: true,
   experimental: {
