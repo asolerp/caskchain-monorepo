@@ -206,5 +206,7 @@ import { GetReceivedOffers } from './domain/use-cases/offer/get-received-offers'
   server.use('/api/webhook', webhook)
   server.use('/api/offers', offers)
 
-  server.listen(4000, () => console.log('Running on http://localhost:4000'))
+  server.listen(process.env.PORT || 4000, () =>
+    console.log(`Running on ${process.env.PORT}`)
+  )
 })()
