@@ -6,14 +6,14 @@ const CCNft = artifacts.require("CCNft");
 module.exports = async function (callback) {
   try {
     // Fetch accounts from wallet - these are unlocked
-    const accounts = await web3.eth.getAccounts();
+    // const accounts = await web3.eth.getAccounts();
 
     // Fetch the deployed exchange
     const ccNft = await CCNft.deployed();
     console.log("ccNft fetched", ccNft.address);
 
     // Set up exchange users
-    const user1 = accounts[0];
+    const user1 = "0xb2B78366b8a6aB48104222932E60002B01751174";
 
     // User 1 Deposits Ether
     await ccNft.mintNFT(

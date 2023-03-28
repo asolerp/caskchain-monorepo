@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { deleteCookie, getCookie, setCookie } from 'cookies-next'
-import axiosClient from 'lib/fetcher/axiosInstance'
 
 import { toast } from 'react-toastify'
 
@@ -18,11 +17,14 @@ export const auth = async (context: any) => {
   } else {
     try {
       // we call the api that verifies the token.
-      const data = await axios.get('http://localhost:4000/api/user/verify', {
-        headers: {
-          Authorization: `Bearer ${session}`,
-        },
-      })
+      const data = await axios.get(
+        'https://caskchain-frontend.herokuapp.com/api/user/verify',
+        {
+          headers: {
+            Authorization: `Bearer ${session}`,
+          },
+        }
+      )
       // if token was verified we set the state.
       if (data) {
         return { props: {} }
@@ -45,7 +47,7 @@ export const auth = async (context: any) => {
           if (refreshToken) {
             try {
               const rs = await axios.post(
-                'http://localhost:4000/api/user/refresh',
+                'https://caskchain-frontend.herokuapp.com/api/user/refresh',
                 {
                   token: refreshToken,
                 }
