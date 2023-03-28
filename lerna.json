@@ -1,8 +1,8 @@
 {
   "packages": [
-    "./web",
-    "./api",
-    "./ethereum"
+    "./caskchain-frontend",
+    "./caskchain-backend",
+    "./caskchain-contracts"
   ],
   "version": "0.0.1"
 }

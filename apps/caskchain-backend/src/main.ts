@@ -55,10 +55,9 @@ import { GetReceivedOffers } from './domain/use-cases/offer/get-received-offers'
     }
   )
 
-  console.log(process.env)
-
   const { client: web3Client, wsClient: web3WsClient } =
     Web3ClientFactory.createClient(
+      process.env.MNEMONIC as string,
       process.env.CONTEXT_NAME as string,
       process.env.BLOCKCHAIN_URL as string,
       process.env.BLOCKCHAIN_WS_URL as string,

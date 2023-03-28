@@ -112,7 +112,7 @@ pm2.connect(false, async function (err) {
 
   spinner.info(`Stopping previously launched processes...${"\n"}`);
 
-  await jetpack.removeAsync("./apps/cc-contracts/build");
+  await jetpack.removeAsync("./apps/contracts/build");
 
   await stopProcess("api", [4000]);
   await stopProcess("web", [3000]);
@@ -204,7 +204,7 @@ pm2.connect(false, async function (err) {
 
   await runProcess({
     name: `truffle-migrate`,
-    cwd: "./apps/cc-contracts",
+    cwd: "./apps/contracts",
     script: "truffle",
     args:
       environment.selected === "local"
@@ -222,7 +222,7 @@ pm2.connect(false, async function (err) {
   spinner.start("Creating contracts interfaces");
 
   const timerId = setInterval(async () => {
-    const isExists = await jetpack.existsAsync("./apps/cc-contracts/build");
+    const isExists = await jetpack.existsAsync("./apps/contracts/build");
     if (isExists) {
       clearInterval(timerId);
       spinner.succeed(chalk.greenBright("Contracts created"));

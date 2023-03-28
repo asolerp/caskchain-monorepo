@@ -1,11 +1,8 @@
 import * as dotenv from 'dotenv'
-dotenv.config()
+dotenv.config({ path: `../../../.env` })
 
 import { Contract } from 'ethers'
 import Web3 from 'web3'
-const { MNEMONIC } = process.env
-
-console.log("MNEMONIC", MNEMONIC)
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const HDWalletProvider = require('@truffle/hdwallet-provider')
@@ -22,6 +19,7 @@ export class Web3ClientFactory {
   private static contracts: { [key: string]: any } = {}
 
   static createClient(
+    MNEMONIC: string,
     contextName: string,
     url: any,
     ws: string,
@@ -37,7 +35,7 @@ export class Web3ClientFactory {
       }
 
       if (!client) {
-        client = Web3ClientFactory.createAndConnectClient(url)
+        client = Web3ClientFactory.createAndConnectClient(url, MNEMONIC)
         Web3ClientFactory.registerClient(client, contextName)
 
         contractsData.forEach((contract: any) => {
@@ -98,7 +96,7 @@ export class Web3ClientFactory {
     return client
   }
 
-  private static createAndConnectClient(url: any): Web3 {
+  private static createAndConnectClient(url: any, MNEMONIC: string): Web3 {
     const client = new Web3(new HDWalletProvider(MNEMONIC, url, 0, 5))
     return client
   }

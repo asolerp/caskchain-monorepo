@@ -18,7 +18,7 @@ export const hookFactory: AuthHookFactory = () => () => {
   const { dispatch } = useGlobal()
 
   const { data: user } = useSWR(
-    address ? `/api/user/${address.toLowerCase()}` : null,
+    address ? `http://localhost:4000/api/user/${address.toLowerCase()}` : null,
     async (url: string) => {
       return axiosClient.get(url).then((res: any) => res.data)
     }
