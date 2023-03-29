@@ -186,6 +186,7 @@ pm2.connect(false, async function (err) {
         PRIVATE_KEY: privateKey,
         NETWORK_ID: 4447,
         TARGET_CHAIN_ID: 1337,
+        API_URL: "http://localhost:4000",
         BLOCKCHAIN_URL: "http://127.0.0.1:8545",
         BLOCKCHAIN_WS_URL: "ws://127.0.0.1:8545",
       },

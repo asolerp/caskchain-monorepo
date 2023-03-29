@@ -5,14 +5,14 @@ require('dotenv-mono').load(
 )
 
 const nextConfig = {
-  // async rewrites() {
-  //   return [
-  //     {
-  //       source: '/api/:path*',
-  //       destination: `http://localhost:4000/api/:path*`, // Proxy to Backend
-  //     },
-  //   ]
-  // },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: `${process.env.API_URL}/api/:path*`, // Proxy to Backend
+      },
+    ]
+  },
   reactStrictMode: true,
   swcMinify: true,
   experimental: {
