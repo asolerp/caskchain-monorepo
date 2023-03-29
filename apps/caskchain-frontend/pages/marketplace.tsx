@@ -1,6 +1,7 @@
 import { useAllNfts } from '@hooks/web3'
 import { BaseLayout } from '@ui'
 import Filter from '@ui/common/Filter'
+import Spinner from '@ui/common/Spinner'
 import BarrelNft from '@ui/ntf/item/BarrelNft'
 import { Nft } from '@_types/nft'
 import { NextPage } from 'next'
@@ -47,13 +48,25 @@ const NFTCaskWorld: NextPage = () => {
           />
         </div>
         <div className="mx-auto mt-20">
-          <div className="flex flex-row space-x-6 flex-wrap mx-auto lg:max-w-none">
-            {filteredNfts?.map((nft: Nft) => (
-              <Link key={nft.tokenId} href={`/cask/${nft.tokenId}`}>
-                <BarrelNft isMarketPlace item={nft} blow />
-              </Link>
-            ))}
-          </div>
+          {nfts.isLoading ? (
+            <Spinner color="white" />
+          ) : (
+            <div className="flex flex-row space-x-6 flex-wrap mx-auto lg:max-w-none">
+              {filteredNfts?.length === 0 ? (
+                <div>
+                  <h3>There is not casks at the moment</h3>
+                </div>
+              ) : (
+                <>
+                  {filteredNfts?.map((nft: Nft) => (
+                    <Link key={nft.tokenId} href={`/cask/${nft.tokenId}`}>
+                      <BarrelNft isMarketPlace item={nft} blow />
+                    </Link>
+                  ))}
+                </>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </BaseLayout>
