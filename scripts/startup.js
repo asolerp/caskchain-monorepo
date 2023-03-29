@@ -112,8 +112,6 @@ pm2.connect(false, async function (err) {
 
   spinner.info(`Stopping previously launched processes...${"\n"}`);
 
-  await jetpack.removeAsync("./apps/contracts/build");
-
   await stopProcess("api", [4000]);
   await stopProcess("web", [3000]);
   await stopProcess("emulator", [8085, 8085]);
@@ -152,9 +150,9 @@ pm2.connect(false, async function (err) {
     choices: ["local", "polygon testnet"],
   });
 
-  spinner.start("Emulating Ethereum Network");
-
   if (environment.selected === "local") {
+    spinner.start("Emulating Ethereum Network");
+
     await runProcess({
       name: "emulator",
       script: "ganache",
@@ -209,6 +207,7 @@ pm2.connect(false, async function (err) {
   });
 
   if (deployment.selected === "Yes") {
+    await jetpack.removeAsync("./apps/contracts/build");
     spinner.start("Deploying contracts to the selected network");
 
     await runProcess({
