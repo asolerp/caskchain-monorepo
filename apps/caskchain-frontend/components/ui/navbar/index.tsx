@@ -2,7 +2,7 @@ import { Disclosure } from '@headlessui/react'
 import { Bars3Icon, WalletIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
 import ActiveLink from '../link'
-import { motion, useAnimation } from 'framer-motion'
+
 import { useAccount, useNetwork } from '@hooks/web3'
 import Walletbar from './Walletbar'
 import SignInModal from '@ui/modals/SignInModal'
@@ -15,7 +15,6 @@ import Link from 'next/link'
 import { getCookie } from 'cookies-next'
 import Image from 'next/image'
 import Sidebar from './Sidebar'
-import { useEffect } from 'react'
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -34,30 +33,11 @@ export default function Navbar() {
   const { network } = useNetwork()
   const token = getCookie('token') as string
   const {
-    state: {
-      userInfoModal,
-      signInModal,
-      user,
-      sideBar,
-      mainAnimationFinished,
-      animationsExecuted: { nav },
-    },
+    state: { userInfoModal, signInModal, user, sideBar },
     dispatch,
   } = useGlobal()
 
   const openClass = sideBar ? 'bg-black-light' : ''
-
-  const controls = useAnimation()
-  useEffect(() => {
-    if (mainAnimationFinished && !nav) {
-      controls.start('visible')
-    }
-  }, [mainAnimationFinished])
-
-  const navVariants = {
-    visible: { opacity: 1, y: 0 },
-    hidden: { opacity: 0, y: -100 },
-  }
 
   return (
     <>
@@ -82,18 +62,7 @@ export default function Navbar() {
 
       <Sidebar open={sideBar} />
 
-      <motion.div
-        initial={!nav ? 'hidden' : 'visible'}
-        animate={controls}
-        onAnimationComplete={() =>
-          dispatch({
-            type: GlobalTypes.SET_ANIMATIN_EXECUTED,
-            payload: { animation: 'nav' },
-          })
-        }
-        variants={navVariants}
-        transition={{ duration: 1 }}
-      >
+      <div>
         <Disclosure as="nav">
           {({ open }) => (
             <>
@@ -208,7 +177,7 @@ export default function Navbar() {
             </>
           )}
         </Disclosure>
-      </motion.div>
+      </div>
     </>
   )
 }

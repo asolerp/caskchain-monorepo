@@ -200,138 +200,148 @@ pm2.connect(false, async function (err) {
     insertInEnvFile({ params: { ...parsed } });
   }
 
-  spinner.start("Deploying contracts to the selected network");
-
-  await runProcess({
-    name: `truffle-migrate`,
-    cwd: "./apps/contracts",
-    script: "truffle",
-    args:
-      environment.selected === "local"
-        ? "migrage --reset"
-        : "migrate --network mumbai --reset",
-    watch: false,
-    wait_ready: true,
-    autorestart: false,
+  let deployment = await inquirer.prompt({
+    type: "list",
+    name: "deploy",
+    message: `Do you want to deploy contracts?`,
+    default: "Yes",
+    choices: ["Yes", "No"],
   });
 
-  spinner.succeed(chalk.greenBright("Contracts deployed"));
+  if (deployment.selected === "Yes") {
+    spinner.start("Deploying contracts to the selected network");
 
-  const checkTime = 1000;
+    await runProcess({
+      name: `truffle-migrate`,
+      cwd: "./apps/contracts",
+      script: "truffle",
+      args:
+        environment.selected === "local"
+          ? "migrage --reset"
+          : "migrate --network mumbai --reset",
+      watch: false,
+      wait_ready: true,
+      autorestart: false,
+    });
 
-  spinner.start("Creating contracts interfaces");
+    spinner.succeed(chalk.greenBright("Contracts deployed"));
 
-  const timerId = setInterval(async () => {
-    const isExists = await jetpack.existsAsync("./apps/contracts/build");
-    if (isExists) {
-      clearInterval(timerId);
-      spinner.succeed(chalk.greenBright("Contracts created"));
+    const checkTime = 1000;
 
-      dotenv.config({
-        path: requireEnv(process.env.CHAIN_ENV),
-      });
+    spinner.start("Creating contracts interfaces");
 
-      // spinner.start("Starting API server");
+    const timerId = setInterval(async () => {
+      const isExists = await jetpack.existsAsync("./apps/contracts/build");
+      if (isExists) {
+        clearInterval(timerId);
+        spinner.succeed(chalk.greenBright("Contracts created"));
 
-      // await runProcess({
-      //   name: `api`,
-      //   cwd: "./api",
-      //   script: "npm",
-      //   args: "run dev:serve",
-      //   watch: false,
-      //   wait_ready: true,
-      // });
-
-      // spinner.succeed(chalk.greenBright("API server started"));
-
-      // spinner.info(
-      //   `CaskChain API is running at: ${chalk.yellow("http://localhost:4000")}`
-      // );
-      // spinner.info(
-      //   `View log output: ${chalk.cyanBright(`npx pm2 logs api`)}${"\n"}`
-      // );
-
-      // spinner.start("Starting storefront web app");
-
-      // await runProcess({
-      //   name: `web`,
-      //   cwd: "./web",
-      //   script: "npm",
-      //   args: "run start:dev",
-      //   watch: false,
-      //   wait_ready: true,
-      //   autorestart: false,
-      // });
-
-      // spinner.succeed(chalk.greenBright("Storefront web app started"));
-
-      // spinner.info(
-      //   `ChaskChain Web App is running at: ${chalk.yellow(
-      //     "http://localhost:3000"
-      //   )}`
-      // );
-      // spinner.info(
-      //   `View log output: ${chalk.cyanBright(`npx pm2 logs web`)}${"\n"}`
-      // );
-
-      // spinner.start("Runing init Truffle Script");
-
-      // await runProcess({
-      //   name: `truffle-script`,
-      //   cwd: "./ethereum",
-      //   script: "truffle",
-      //   args:
-      //     environment.selected === "local"
-      //       ? "exec scripts/truffle-init.js"
-      //       : "exec scripts/truffle-init.js --network mumbai",
-      //   watch: false,
-      //   wait_ready: true,
-      //   autorestart: false,
-      // });
-
-      // spinner.succeed(chalk.greenBright("Truffle initializated"));
-
-      //   // ------------------------------------------------------------
-      //   // --------------------- DONE -------------------------------
-
-      const rainbow = chalkAnimation.rainbow("CASK CHAIN HAS STARTED");
-
-      setTimeout(async () => {
-        rainbow.stop();
-
-        console.log("\n");
-        console.log(`${chalk.cyanBright("Visit")}: http://localhost:3000`);
-        console.log("\n");
-
-        let logs = await inquirer.prompt({
-          type: "confirm",
-          name: "confirm",
-          message: `Would you like to view the logs for all processes?`,
-          default: true,
+        dotenv.config({
+          path: requireEnv(process.env.CHAIN_ENV),
         });
 
-        if (logs.confirm) {
-          console.log("\n");
-          const ps = spawn("npx", ["pm2", "logs", "--no-daemon"], {
-            shell: true,
-            stdio: "inherit",
-          });
-          ps.stdout?.on("data", (data) => {
-            console.log(data.toString().trim());
-          });
-          process.on("SIGINT", () => {
-            process.exit(0);
-          }); // CTRL+C
-        } else {
-          spinner.info(
-            `View log output for all processes: ${chalk.cyanBright(
-              `npx pm2 logs`
-            )}${"\n"}`
-          );
-        }
-        pm2.disconnect();
-        spinner.stop();
-      }, 3000);
+        // spinner.start("Starting API server");
+
+        // await runProcess({
+        //   name: `api`,
+        //   cwd: "./api",
+        //   script: "npm",
+        //   args: "run dev:serve",
+        //   watch: false,
+        //   wait_ready: true,
+        // });
+
+        // spinner.succeed(chalk.greenBright("API server started"));
+
+        // spinner.info(
+        //   `CaskChain API is running at: ${chalk.yellow("http://localhost:4000")}`
+        // );
+        // spinner.info(
+        //   `View log output: ${chalk.cyanBright(`npx pm2 logs api`)}${"\n"}`
+        // );
+
+        // spinner.start("Starting storefront web app");
+
+        // await runProcess({
+        //   name: `web`,
+        //   cwd: "./web",
+        //   script: "npm",
+        //   args: "run start:dev",
+        //   watch: false,
+        //   wait_ready: true,
+        //   autorestart: false,
+        // });
+
+        // spinner.succeed(chalk.greenBright("Storefront web app started"));
+
+        // spinner.info(
+        //   `ChaskChain Web App is running at: ${chalk.yellow(
+        //     "http://localhost:3000"
+        //   )}`
+        // );
+        // spinner.info(
+        //   `View log output: ${chalk.cyanBright(`npx pm2 logs web`)}${"\n"}`
+        // );
+
+        // spinner.start("Runing init Truffle Script");
+
+        // await runProcess({
+        //   name: `truffle-script`,
+        //   cwd: "./ethereum",
+        //   script: "truffle",
+        //   args:
+        //     environment.selected === "local"
+        //       ? "exec scripts/truffle-init.js"
+        //       : "exec scripts/truffle-init.js --network mumbai",
+        //   watch: false,
+        //   wait_ready: true,
+        //   autorestart: false,
+        // });
+
+        // spinner.succeed(chalk.greenBright("Truffle initializated"));
+      }
+    }, checkTime);
+  }
+
+  //   // ------------------------------------------------------------
+  //   // --------------------- DONE -------------------------------
+
+  const rainbow = chalkAnimation.rainbow("CASK CHAIN HAS STARTED");
+
+  setTimeout(async () => {
+    rainbow.stop();
+
+    console.log("\n");
+    console.log(`${chalk.cyanBright("Visit")}: http://localhost:3000`);
+    console.log("\n");
+
+    let logs = await inquirer.prompt({
+      type: "confirm",
+      name: "confirm",
+      message: `Would you like to view the logs for all processes?`,
+      default: true,
+    });
+
+    if (logs.confirm) {
+      console.log("\n");
+      const ps = spawn("npx", ["pm2", "logs", "--no-daemon"], {
+        shell: true,
+        stdio: "inherit",
+      });
+      ps.stdout?.on("data", (data) => {
+        console.log(data.toString().trim());
+      });
+      process.on("SIGINT", () => {
+        process.exit(0);
+      }); // CTRL+C
+    } else {
+      spinner.info(
+        `View log output for all processes: ${chalk.cyanBright(
+          `npx pm2 logs`
+        )}${"\n"}`
+      );
     }
-  }, checkTime);
+    pm2.disconnect();
+    spinner.stop();
+  }, 3000);
 });
