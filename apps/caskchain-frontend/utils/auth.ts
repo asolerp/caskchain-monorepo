@@ -18,7 +18,7 @@ export const auth = async (context: any) => {
     try {
       // we call the api that verifies the token.
       const data = await axios.get(
-        'https://caskchain-frontend.herokuapp.com/api/user/verify',
+        `${process.env.NEXT_PUBLIC_API_URL}/api/user/verify`,
         {
           headers: {
             Authorization: `Bearer ${session}`,
@@ -43,11 +43,10 @@ export const auth = async (context: any) => {
         // Access Token was expired
         if (err.response.status === 401 || err.response.status === 403) {
           const refreshToken = getCookie('refresh-token', { req, res })
-          console.log('REFRESH TOKEN', refreshToken)
           if (refreshToken) {
             try {
               const rs = await axios.post(
-                'https://caskchain-frontend.herokuapp.com/api/user/refresh',
+                `${process.env.NEXT_PUBLIC_API_URL}/api/user/refresh`,
                 {
                   token: refreshToken,
                 }

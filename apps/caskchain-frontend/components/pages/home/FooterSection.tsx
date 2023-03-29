@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import Spacer from '@ui/common/Spacer'
+import { PaperAirplaneIcon } from '@heroicons/react/24/outline'
 
 interface SocialIconProps {
   width?: number
@@ -49,10 +50,72 @@ const FooterSection = () => {
           </div>
         </div>
         <div className="grid grid-cols-3">
-          <div className="flex flex-col justify-center items-center" />
-          <div className="flex flex-col justify-center items-center" />
-          <div className="flex flex-col justify-center items-center" />
+          <div className="flex flex-col justify-start items-start">
+            <h4 className="font-poppins text-white font-medium text-xl">
+              Company
+            </h4>
+            <Spacer size="sm" />
+            <div className="space-y-2">
+              <p className="font-poppins text-gray-400 font-thin text-lg">
+                About us
+              </p>
+              <p className="font-poppins text-gray-400 font-thin text-lg">
+                Blog
+              </p>
+              <p className="font-poppins text-gray-400 font-thin text-lg">
+                Contact us
+              </p>
+              <p className="font-poppins text-gray-400 font-thin text-lg">
+                Pricing
+              </p>
+              <p className="font-poppins text-gray-400 font-thin text-lg">
+                Testimonials
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col justify-start items-start">
+            <h4 className="font-poppins text-white font-medium text-xl">
+              Support
+            </h4>
+            <Spacer size="sm" />
+            <div className="space-y-2">
+              <p className="font-poppins text-gray-400 font-thin text-lg">
+                Help center
+              </p>
+              <p className="font-poppins text-gray-400 font-thin text-lg">
+                Terms of service
+              </p>
+              <p className="font-poppins text-gray-400 font-thin text-lg">
+                Legal
+              </p>
+              <p className="font-poppins text-gray-400 font-thin text-lg">
+                Privacy policy
+              </p>
+              <p className="font-poppins text-gray-400 font-thin text-lg">
+                Status
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col justify-start items-start">
+            <h4 className="font-poppins text-white font-medium text-xl">
+              Stay up to date
+            </h4>
+            <Spacer size="sm" />
+            <div className="flex flex-row space-x-4 items-center px-4 py-3 bg-gray-500 rounded-3xl">
+              <input
+                className="bg-transparent placeholder-gray-300 font-poppins text-sm font-thin  text-gray-300"
+                placeholder="Your email address"
+              ></input>
+              <PaperAirplaneIcon className="w-4 h-4 -rotate-45 text-gray-300" />
+            </div>
+          </div>
         </div>
+        <Spacer size="xl" />
+      </div>
+      <div className="bg-black-light w-full h-20 flex items-center justify-center ">
+        <p className="font-poppins text-gray-600 text-sm">
+          © 2023 Cask Chain All rights reserved.
+        </p>
       </div>
     </div>
   )

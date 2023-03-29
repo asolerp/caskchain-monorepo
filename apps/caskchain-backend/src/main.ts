@@ -55,6 +55,8 @@ import { GetReceivedOffers } from './domain/use-cases/offer/get-received-offers'
     }
   )
 
+  console.log('ENV', process.env)
+
   const { client: web3Client, wsClient: web3WsClient } =
     Web3ClientFactory.createClient(
       process.env.MNEMONIC as string,

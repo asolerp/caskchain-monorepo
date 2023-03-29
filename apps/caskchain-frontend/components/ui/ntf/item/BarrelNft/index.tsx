@@ -19,16 +19,18 @@ const BarrelNft: React.FC<NftItemProps> = ({
 }) => {
   const [isHover, setIsHover] = useState(active)
 
-  const isMarketPlaceClass = isMarketPlace ? 'h-full w-80' : 'h-full w-[460px]'
+  const isMarketPlaceClass = isMarketPlace
+    ? 'h-full w-80'
+    : 'h-full w-[460px] m-0'
 
   return (
     <div
-      className="relative"
+      className="relative flex flex-row justify-center items-center"
       onMouseEnter={() => !active && setIsHover(true)}
       onMouseLeave={() => !active && setIsHover(false)}
     >
       <div
-        className={`relative bg-black-light rounded-[40px] bg-clip-padding backdrop-filter backdrop-blur-sm border border-gray-800 ${isMarketPlaceClass}`}
+        className={`bg-black-light rounded-[40px] bg-clip-padding backdrop-filter backdrop-blur-sm border border-gray-800 ${isMarketPlaceClass}`}
       >
         <div className="relative">
           <div className="flex justify-center items-center rounded-md">

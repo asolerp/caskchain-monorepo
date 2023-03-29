@@ -1,3 +1,5 @@
+import { PlayIcon } from '@heroicons/react/24/outline'
+import Button from '@ui/common/Button'
 import Spacer from '@ui/common/Spacer'
 import Image from 'next/image'
 import React from 'react'
@@ -54,13 +56,16 @@ const OwnerSection = () => {
         </div>
         <Spacer size="2xl" />
         <Spacer size="2xl" />
-        <Image
-          src="/images/bg_owner.png"
-          alt=""
-          width={1000}
-          height={500}
-          className="w-full h-[698px] object-cover object-center"
-        />
+        <div className="relative bg-bg_owner bg-cover bg-center bg-no-repeat h-[600px] w-full flex flex-col items-center justify-center">
+          <div className="absolute right-32 flex flex-col items-center w-72 p-6 bg-gray-400 rounded-[30px] bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10">
+            <h3 className="font-rale font-medium text-white text-3xl text-center">
+              Now you can be a pionner in the digital world of spirit
+            </h3>
+            <Spacer size="md" />
+            <Button labelStyle="text-md">Set up Now</Button>
+          </div>
+        </div>
+
         <Spacer size="2xl" />
         <Spacer size="2xl" />
         <div className="flex flex-col items-center">
@@ -73,12 +78,23 @@ const OwnerSection = () => {
             know how we work
           </p>
           <Spacer size="xl" />
-          <Image
-            src="/images/cellar.png"
-            width={1000}
-            height={500}
-            alt="cellar"
-          />
+          <div className="relative">
+            <Image
+              src="/images/cellar.png"
+              width={1000}
+              height={500}
+              alt="cellar"
+            />
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-50 w-20 h-20 rounded-full flex justify-center items-center">
+              <Image
+                src="/icons/play.png"
+                width={35}
+                height={35}
+                alt="play"
+                className="cursor-pointer"
+              />
+            </div>
+          </div>
         </div>
       </div>
       <Image

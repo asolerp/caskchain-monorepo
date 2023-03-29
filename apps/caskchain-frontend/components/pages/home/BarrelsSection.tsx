@@ -1,3 +1,4 @@
+import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
 import Spacer from '@ui/common/Spacer'
 import BarrelNft from '@ui/ntf/item/BarrelNft'
 import React from 'react'
@@ -5,6 +6,31 @@ import React from 'react'
 import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
 import { barrels } from './barrels'
+
+type CustomArrowProps = {
+  onClick?: () => void
+  positon?: 'left' | 'right'
+}
+
+const CustomArrow: React.FC<CustomArrowProps> = ({
+  onClick,
+  positon = 'left',
+}) => {
+  return (
+    <div
+      onClick={onClick}
+      className={`cursor-pointer bg-white w-16 h-16 rounded-full z-50 shadow-2xl absolute ${
+        positon === 'left' ? 'left-2' : 'right-2'
+      } flex items-center justify-center`}
+    >
+      {positon === 'left' ? (
+        <ArrowLeftIcon className="w-8" />
+      ) : (
+        <ArrowRightIcon className="w-8" />
+      )}
+    </div>
+  )
+}
 
 const BarrelsSection = () => {
   return (
@@ -14,7 +40,7 @@ const BarrelsSection = () => {
           The Best Barrels
         </h2>
         <Spacer size="3xl" />
-        <div className="w-2/3">
+        <div className="w-full flex flex-row items-center justify-center ">
           <Carousel
             additionalTransfrom={0}
             arrows
@@ -23,15 +49,16 @@ const BarrelsSection = () => {
             containerClass="container"
             dotListClass=""
             draggable
-            focusOnSelect={false}
             infinite
+            focusOnSelect={false}
+            customLeftArrow={<CustomArrow positon="left" />}
+            customRightArrow={<CustomArrow positon="right" />}
             itemClass=""
             keyBoardControl
             minimumTouchDrag={80}
             pauseOnHover
             renderArrowsWhenDisabled={false}
             renderButtonGroupOutside={false}
-            renderDotsOutside
             responsive={{
               desktop: {
                 breakpoint: {

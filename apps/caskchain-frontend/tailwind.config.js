@@ -25,6 +25,7 @@ module.exports = {
       backgroundImage: {
         hero: "url('/images/bg.png')",
         caskChain: "url('/images/caskChainBg.png')",
+        bg_owner: "url('/images/bg_owner.png')",
       },
     },
   },

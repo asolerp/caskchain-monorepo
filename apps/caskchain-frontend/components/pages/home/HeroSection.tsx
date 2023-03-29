@@ -37,7 +37,7 @@ const HeroSection = () => {
             animate={controls}
             variants={titleVariants}
             transition={{ duration: 1 }}
-            className="font-rale text-[105px] leading-[110px] font-semibold text-white"
+            className="font-rale lg:text-[95px] leading-[110px] font-semibold text-white"
           >
             <span className="text-cask-chain">NFT Cask</span> Marketplace for
             brandy connoisseurs
