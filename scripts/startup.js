@@ -112,8 +112,6 @@ pm2.connect(false, async function (err) {
 
   spinner.info(`Stopping previously launched processes...${"\n"}`);
 
-  await jetpack.removeAsync("./apps/contracts/build");
-
   await stopProcess("api", [4000]);
   await stopProcess("web", [3000]);
   await stopProcess("emulator", [8085, 8085]);
@@ -202,13 +200,14 @@ pm2.connect(false, async function (err) {
 
   let deployment = await inquirer.prompt({
     type: "list",
-    name: "deploy",
+    name: "selected",
     message: `Do you want to deploy contracts?`,
     default: "Yes",
     choices: ["Yes", "No"],
   });
 
   if (deployment.selected === "Yes") {
+    await jetpack.removeAsync("./apps/contracts/build");
     spinner.start("Deploying contracts to the selected network");
 
     await runProcess({
@@ -239,6 +238,48 @@ pm2.connect(false, async function (err) {
         dotenv.config({
           path: requireEnv(process.env.CHAIN_ENV),
         });
+
+        //   // ------------------------------------------------------------
+        //   // --------------------- DONE -------------------------------
+
+        const rainbow = chalkAnimation.rainbow("CASK CHAIN HAS STARTED");
+
+        setTimeout(async () => {
+          rainbow.stop();
+
+          console.log("\n");
+          console.log(`${chalk.cyanBright("Visit")}: http://localhost:3000`);
+          console.log("\n");
+
+          let logs = await inquirer.prompt({
+            type: "confirm",
+            name: "confirm",
+            message: `Would you like to view the logs for all processes?`,
+            default: true,
+          });
+
+          if (logs.confirm) {
+            console.log("\n");
+            const ps = spawn("npx", ["pm2", "logs", "--no-daemon"], {
+              shell: true,
+              stdio: "inherit",
+            });
+            ps.stdout?.on("data", (data) => {
+              console.log(data.toString().trim());
+            });
+            process.on("SIGINT", () => {
+              process.exit(0);
+            }); // CTRL+C
+          } else {
+            spinner.info(
+              `View log output for all processes: ${chalk.cyanBright(
+                `npx pm2 logs`
+              )}${"\n"}`
+            );
+          }
+          pm2.disconnect();
+          spinner.stop();
+        }, 3000);
 
         // spinner.start("Starting API server");
 
@@ -301,47 +342,47 @@ pm2.connect(false, async function (err) {
         // spinner.succeed(chalk.greenBright("Truffle initializated"));
       }
     }, checkTime);
-  }
+  } else {
+    //   // ------------------------------------------------------------
+    //   // --------------------- DONE -------------------------------
 
-  //   // ------------------------------------------------------------
-  //   // --------------------- DONE -------------------------------
+    const rainbow = chalkAnimation.rainbow("CASK CHAIN HAS STARTED");
 
-  const rainbow = chalkAnimation.rainbow("CASK CHAIN HAS STARTED");
+    setTimeout(async () => {
+      rainbow.stop();
 
-  setTimeout(async () => {
-    rainbow.stop();
-
-    console.log("\n");
-    console.log(`${chalk.cyanBright("Visit")}: http://localhost:3000`);
-    console.log("\n");
-
-    let logs = await inquirer.prompt({
-      type: "confirm",
-      name: "confirm",
-      message: `Would you like to view the logs for all processes?`,
-      default: true,
-    });
-
-    if (logs.confirm) {
       console.log("\n");
-      const ps = spawn("npx", ["pm2", "logs", "--no-daemon"], {
-        shell: true,
-        stdio: "inherit",
+      console.log(`${chalk.cyanBright("Visit")}: http://localhost:3000`);
+      console.log("\n");
+
+      let logs = await inquirer.prompt({
+        type: "confirm",
+        name: "confirm",
+        message: `Would you like to view the logs for all processes?`,
+        default: true,
       });
-      ps.stdout?.on("data", (data) => {
-        console.log(data.toString().trim());
-      });
-      process.on("SIGINT", () => {
-        process.exit(0);
-      }); // CTRL+C
-    } else {
-      spinner.info(
-        `View log output for all processes: ${chalk.cyanBright(
-          `npx pm2 logs`
-        )}${"\n"}`
-      );
-    }
-    pm2.disconnect();
-    spinner.stop();
-  }, 3000);
+
+      if (logs.confirm) {
+        console.log("\n");
+        const ps = spawn("npx", ["pm2", "logs", "--no-daemon"], {
+          shell: true,
+          stdio: "inherit",
+        });
+        ps.stdout?.on("data", (data) => {
+          console.log(data.toString().trim());
+        });
+        process.on("SIGINT", () => {
+          process.exit(0);
+        }); // CTRL+C
+      } else {
+        spinner.info(
+          `View log output for all processes: ${chalk.cyanBright(
+            `npx pm2 logs`
+          )}${"\n"}`
+        );
+      }
+      pm2.disconnect();
+      spinner.stop();
+    }, 3000);
+  }
 });
