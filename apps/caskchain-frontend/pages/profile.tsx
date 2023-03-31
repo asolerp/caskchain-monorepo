@@ -18,6 +18,7 @@ import Button from '@ui/common/Button'
 import Image from 'next/image'
 import { useGlobal } from '@providers/global'
 import { addressSimplifier } from 'utils/addressSimplifier'
+import { LoadingAnimation } from '@ui/common/Loading/LoadingAnimation'
 
 const tabs = [
   { name: 'Your Collection', href: '#', key: 'collection' },
@@ -40,7 +41,8 @@ const Profile: NextPage = () => {
 
   return (
     <BaseLayout background="bg-gradient-to-r from-[#0F0F0F] via-[#161616] to-[#000000]">
-      <div className="py-16 pt-40 px-2 sm:px-6 lg:px-32">
+      {(nfts.isLoading || nfts.isValidating) && <LoadingAnimation />}
+      <div className="py-16 pt-40 px-2 sm:px-6 lg:w-3/4">
         <div className="flex-1 flex flex-col">
           <div className="flex-1 flex space-x-4 items-stretch">
             <main className="flex-1 overflow-y-auto">
@@ -196,13 +198,17 @@ const Profile: NextPage = () => {
                             )}
                             <Spacer size="xl" />
                             <div className="w-full border-b border-gray-700" />
-                            <Spacer size="xl" />
-                            <h3 className="font-rale text-white text-4xl mb-4">
-                              Transactions History
-                            </h3>
-                            <TransactionsHistory
-                              transactions={nfts.activeNft?.transactions}
-                            />
+                            {nfts.activeNft?.transactions?.length && (
+                              <>
+                                <Spacer size="xl" />
+                                <h3 className="font-rale text-white text-4xl mb-4">
+                                  Transactions History
+                                </h3>
+                                <TransactionsHistory
+                                  transactions={nfts.activeNft?.transactions}
+                                />
+                              </>
+                            )}
                           </div>
                         )}
                       </>

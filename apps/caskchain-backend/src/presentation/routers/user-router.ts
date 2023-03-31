@@ -109,7 +109,7 @@ export default function UserRouter(
             address: user.address,
           },
           process.env.TOKEN_SECRET as string,
-          { expiresIn: '10s' }
+          { expiresIn: '60m' }
         )
         res.json({ token: accessToken })
       }
@@ -146,7 +146,7 @@ export default function UserRouter(
                 address: user.address,
               },
               process.env.TOKEN_SECRET as string,
-              { expiresIn: '10s' }
+              { expiresIn: '60m' }
             )
 
             const refreshToken = jwt.sign(

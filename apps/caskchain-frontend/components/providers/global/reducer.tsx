@@ -13,6 +13,12 @@ export const globalReducer = (
         userInfoModal: action.payload.state,
       }
 
+    case GlobalTypes.SET_NETWORK_MODAL:
+      return {
+        ...state,
+        networkModal: action.payload.state,
+      }
+
     case GlobalTypes.SET_ANIMATIN_EXECUTED:
       return {
         ...state,

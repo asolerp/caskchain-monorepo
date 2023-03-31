@@ -6,15 +6,29 @@ import { Nft } from '@_types/nft'
 
 import { useState } from 'react'
 import { addressSimplifier } from 'utils/addressSimplifier'
+import { useAccount } from 'wagmi'
 
 type Props = {
   cask: Nft
   isLoading?: boolean
+  onCancelOffer: () => void
   onOffer: (offer: string) => void
 }
 
-const MakeOffer: React.FC<Props> = ({ cask, isLoading, onOffer }) => {
+const MakeOffer: React.FC<Props> = ({
+  cask,
+  isLoading,
+  onCancelOffer,
+  onOffer,
+}) => {
   const [offer, setOffer] = useState<number>()
+  const { address } = useAccount()
+
+  console.log("hola")
+
+  const hasOffer = cask?.offer?.bidders?.some(
+    (bidder: string) => bidder === address
+  )
 
   return (
     <div className="p-6 w-2/3 h-fit bg-black-light rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-90 border border-gray-700 grid grid-cols-1 ">
@@ -49,13 +63,26 @@ const MakeOffer: React.FC<Props> = ({ cask, isLoading, onOffer }) => {
               />
             </div>
           </div>
-          <Spacer size="md" />
-          <div className="flex items-center">
+          <Spacer size="sm" />
+          <div className="flex flex-col items-center">
+            {hasOffer && (
+              <>
+                <Button
+                  containerStyle="bg-red-500 hover:bg-red-600 py-3"
+                  labelStyle="text-white font-medium text-center font-poppins"
+                  fit={false}
+                  onClick={() => onCancelOffer()}
+                >
+                  Cancel last offer
+                </Button>
+                <Spacer size="xs" />
+              </>
+            )}
             <Button
               fit={false}
               onClick={() => offer && onOffer(offer.toString())}
             >
-              MAKE OFFER
+              {hasOffer ? 'Bid harder' : 'Make Offer'}
             </Button>
           </div>
         </>

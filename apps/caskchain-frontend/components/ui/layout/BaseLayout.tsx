@@ -14,7 +14,9 @@ const BaseLayout: React.FC<Props> = ({ background, children }) => {
       <div className={`overflow-hidden min-h-screen ${backgroundClass}`}>
         <div className=" bg-opacity-80 mx-auto backdrop-blur-xl	">
           <Navbar />
-          {children}
+          <div className="flex flex-col justify-center items-center w-full h-full">
+            {children}
+          </div>
         </div>
       </div>
     </>

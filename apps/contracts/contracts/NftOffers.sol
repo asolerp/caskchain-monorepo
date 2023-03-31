@@ -3,118 +3,121 @@ pragma solidity ^0.8.7;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import '@openzeppelin/contracts/token/common/ERC2981.sol';
-import '@openzeppelin/contracts/utils/Counters.sol';
-import './NftVendor.sol';
-import './CCNft.sol';
+import "@openzeppelin/contracts/token/common/ERC2981.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "./NftVendor.sol";
+import "./CCNft.sol";
 
 // Check out https://github.com/Fantom-foundation/Artion-Contracts/blob/5c90d2bc0401af6fb5abf35b860b762b31dfee02/contracts/FantomMarketplace.sol
 // For a full decentralized nft marketplace
-
-
 
 // Error thrown for isNotOwner modifier
 // error IsNotOwner()
 error NotOffers();
 
 contract NftOffers is ReentrancyGuard {
-
-struct Offer {
+  struct Offer {
     // Current owner of NFT
     uint256 nftId;
     address seller;
     uint highestBid;
     address highestBidder;
-}
+  }
 
-address public collection;
-NftVendor public nftVendor;
+  address public collection;
+  NftVendor public nftVendor;
 
+  // Map from token ID to their corresponding auction.
+  mapping(uint256 => Offer) tokenIdToOffer;
+  // NFT Id => Account Address => Bid
+  mapping(uint256 => mapping(address => uint256)) public offerBidsFromTokenId;
+  // NFT Id => Account Address => Index
+  mapping(uint256 => mapping(address => uint256)) indexOfofferBidsFromAddress;
+  // NFT Id => Address[]
+  mapping(uint256 => address[]) public addressesFromTokenId;
+  // NFT Id => Address => bool
+  mapping(uint256 => mapping(address => bool)) public hasBidFromTokenId;
 
-// Map from token ID to their corresponding auction.
-mapping(uint256 => Offer) tokenIdToOffer;
-// NFT Id => Account Address => Bid
-mapping(uint256 => mapping(address => uint256)) public offerBidsFromTokenId;
-// NFT Id => Account Address => Index
-mapping(uint256 => mapping(address => uint256)) indexOfofferBidsFromAddress;
-// NFT Id => Address[]
-mapping(uint256 => address[]) public addressesFromTokenId;
-
-modifier hasOffers(
-    uint256 tokenId
-) {
+  modifier hasOffers(uint256 tokenId) {
     if (addressesFromTokenId[tokenId].length == 0) {
-        revert NotOffers();
+      revert NotOffers();
     }
     _;
-}
+  }
 
-modifier isOwner(
-    uint256 tokenId,
-    address spender
-) {
+  modifier isOwner(uint256 tokenId, address spender) {
     IERC721 nft = IERC721(collection);
     address owner = nft.ownerOf(tokenId);
     if (spender != owner) {
-        revert NotOwner();
+      revert NotOwner();
     }
     _;
-}
+  }
 
-event NewOffer(uint256 tokenId, address bidder, uint256 bid);
-event Withdraw(uint256 tokenId, address bidder, uint256 bid);
-event AcceptOffer(uint256 tokenId, address bidder, uint256 bid);
+  event NewOffer(uint256 tokenId, address owner, address bidder, uint256 bid);
+  event RemoveOffer(uint256 tokenId, address bidder, uint256 bid);
+  event Withdraw(uint256 tokenId, address bidder, uint256 bid);
+  event AcceptOffer(
+    uint256 tokenId,
+    address owner,
+    address bidder,
+    uint256 bid
+  );
 
-
-constructor(address _collection, address _nftVendor) {
+  constructor(address _collection, address _nftVendor) {
     collection = _collection;
     nftVendor = NftVendor(_nftVendor);
-}
+  }
 
-function makeOffer(uint256 _tokenId) public payable {
-
+  function makeOffer(uint256 _tokenId) public payable {
     // Ensure that the buyer is making a valid offer
 
-    require(msg.value > 0,'Offer price is too low');
+    require(msg.value > 0, "Offer price is too low");
+
+    IERC721 nft = IERC721(collection);
+    address owner = nft.ownerOf(_tokenId);
 
     if (offerBidsFromTokenId[_tokenId][msg.sender] > 0) {
-        uint amount = offerBidsFromTokenId[_tokenId][msg.sender];
-        payable(msg.sender).transfer(amount);
+      uint amount = offerBidsFromTokenId[_tokenId][msg.sender];
+      payable(msg.sender).transfer(amount);
     }
 
     // No offers made
     if (tokenIdToOffer[_tokenId].highestBid == 0) {
-        IERC721 nft = IERC721(collection);
-        address owner = nft.ownerOf(_tokenId);
-        _createNftOffer(_tokenId, msg.value, owner);
+      _createNftOffer(_tokenId, msg.value, owner);
     } else {
-        require(msg.value > tokenIdToOffer[_tokenId].highestBid,'Offer price is too low');
-        _setOffer(_tokenId, msg.value);
-        tokenIdToOffer[_tokenId].highestBidder = msg.sender;
-        tokenIdToOffer[_tokenId].highestBid = msg.value;
+      require(
+        msg.value > tokenIdToOffer[_tokenId].highestBid,
+        "Offer price is too low"
+      );
+      _setOffer(_tokenId, msg.value);
+      tokenIdToOffer[_tokenId].highestBidder = msg.sender;
+      tokenIdToOffer[_tokenId].highestBid = msg.value;
     }
 
-    emit NewOffer(_tokenId,msg.sender, msg.value);
-}
+    emit NewOffer(_tokenId, owner, msg.sender, msg.value);
+  }
 
-function getAddressesBids(uint256 _tokenId) public view returns (address[] memory) {
-  address[] memory bidders = addressesFromTokenId[_tokenId];
-  return bidders;
-}
+  function getAddressesBids(
+    uint256 _tokenId
+  ) public view returns (address[] memory) {
+    address[] memory bidders = addressesFromTokenId[_tokenId];
+    return bidders;
+  }
 
-function getNftOffer(uint256 _tokenId) public view returns (Offer memory) {
+  function getNftOffer(uint256 _tokenId) public view returns (Offer memory) {
     Offer memory offer = tokenIdToOffer[_tokenId];
     return offer;
-}
+  }
 
-function getCountNftOffers(uint256 _tokenId) public view returns (uint256) {
+  function getCountNftOffers(uint256 _tokenId) public view returns (uint256) {
     return addressesFromTokenId[_tokenId].length;
-}
+  }
 
-function withdraw(uint256 _tokenId) external payable returns (bool) {
+  function withdraw(uint256 _tokenId) external payable returns (bool) {
     require(
       offerBidsFromTokenId[_tokenId][msg.sender] > 0,
-      'You must have a bid to be able to witdraw'
+      "You must have a bid to be able to witdraw"
     );
 
     uint amount = offerBidsFromTokenId[_tokenId][msg.sender];
@@ -126,9 +129,16 @@ function withdraw(uint256 _tokenId) external payable returns (bool) {
       tokenIdToOffer[_tokenId].highestBid = 0;
       tokenIdToOffer[_tokenId].highestBidder = tokenIdToOffer[_tokenId].seller;
       for (uint i = 0; i < addressesFromTokenId[_tokenId].length; i++) {
-        if (offerBidsFromTokenId[_tokenId][addressesFromTokenId[_tokenId][i]] > tokenIdToOffer[_tokenId].highestBid) {
-          tokenIdToOffer[_tokenId].highestBid = offerBidsFromTokenId[_tokenId][addressesFromTokenId[_tokenId][i]];
-          tokenIdToOffer[_tokenId].highestBidder = addressesFromTokenId[_tokenId][i];
+        if (
+          offerBidsFromTokenId[_tokenId][addressesFromTokenId[_tokenId][i]] >
+          tokenIdToOffer[_tokenId].highestBid
+        ) {
+          tokenIdToOffer[_tokenId].highestBid = offerBidsFromTokenId[_tokenId][
+            addressesFromTokenId[_tokenId][i]
+          ];
+          tokenIdToOffer[_tokenId].highestBidder = addressesFromTokenId[
+            _tokenId
+          ][i];
         }
       }
     }
@@ -136,10 +146,12 @@ function withdraw(uint256 _tokenId) external payable returns (bool) {
     emit Withdraw(_tokenId, msg.sender, amount);
 
     return true;
-}
+  }
 
-function payRoyaltiesAndTransfer(uint256 _tokenId, uint256 highestBid) private {
-
+  function payRoyaltiesAndTransfer(
+    uint256 _tokenId,
+    uint256 highestBid
+  ) private {
     CCNft nft = CCNft(collection);
     uint256 royalty;
 
@@ -150,20 +162,21 @@ function payRoyaltiesAndTransfer(uint256 _tokenId, uint256 highestBid) private {
     royalty = nftVendor.calculateRoyaltyForAcceptedOffer(_tokenId, highestBid);
 
     if (excluded) {
-        seller.transfer(highestBid);
+      seller.transfer(highestBid);
     } else {
-        creator.transfer(royalty);
-        seller.transfer(highestBid - royalty);
+      creator.transfer(royalty);
+      seller.transfer(highestBid - royalty);
     }
-}
+  }
 
-function acceptOffer(uint256 _tokenId) public payable isOwner(_tokenId, msg.sender) hasOffers(_tokenId) {
-
+  function acceptOffer(
+    uint256 _tokenId
+  ) public payable isOwner(_tokenId, msg.sender) hasOffers(_tokenId) {
     CCNft nft = CCNft(collection);
     if (nft.getApproved(_tokenId) != address(this)) {
-        revert NotApprovedForMarketplace();
+      revert NotApprovedForMarketplace();
     }
-    
+    address owner = nft.ownerOf(_tokenId);
     uint256 highestBid = tokenIdToOffer[_tokenId].highestBid;
     address highestBidder = tokenIdToOffer[_tokenId].highestBidder;
 
@@ -174,27 +187,25 @@ function acceptOffer(uint256 _tokenId) public payable isOwner(_tokenId, msg.send
     _removeOffer(_tokenId, highestBidder);
     delete tokenIdToOffer[_tokenId];
 
-    emit AcceptOffer(_tokenId, highestBidder, highestBid);
+    emit AcceptOffer(_tokenId, owner, highestBidder, highestBid);
+  }
 
-}
-
-function _createNftOffer(uint256 _tokenId, uint256 _nftPrice, address _seller) private  {
+  function _createNftOffer(
+    uint256 _tokenId,
+    uint256 _nftPrice,
+    address _seller
+  ) private {
     // Sanity check that no inputs overflow how many bits we've allocated
     // to store them in the auction struct.
 
     _setOffer(_tokenId, _nftPrice);
 
-    Offer memory offer = Offer(
-        _tokenId,
-        _seller,
-        _nftPrice,
-        msg.sender
-    );
+    Offer memory offer = Offer(_tokenId, _seller, _nftPrice, msg.sender);
 
     _addAuction(_tokenId, offer);
-}
+  }
 
-function _removeOffer(uint256 _tokenId, address bidder) internal {
+  function _removeOffer(uint256 _tokenId, address bidder) internal {
     delete offerBidsFromTokenId[_tokenId][bidder];
 
     uint index = indexOfofferBidsFromAddress[_tokenId][bidder];
@@ -206,18 +217,23 @@ function _removeOffer(uint256 _tokenId, address bidder) internal {
 
     addressesFromTokenId[_tokenId][index] = lastBidder;
     addressesFromTokenId[_tokenId].pop();
-}
+    hasBidFromTokenId[_tokenId][msg.sender] = false;
 
-function _addAuction(uint256 _tokenId, Offer memory _offer) internal {
+    emit RemoveOffer(_tokenId, msg.sender, msg.value);
+  }
+
+  function _addAuction(uint256 _tokenId, Offer memory _offer) internal {
     tokenIdToOffer[_tokenId] = _offer;
-}
+  }
 
-function _setOffer(uint256 _tokenId, uint256 offer) private {
+  function _setOffer(uint256 _tokenId, uint256 offer) private {
     offerBidsFromTokenId[_tokenId][msg.sender] = offer;
-    indexOfofferBidsFromAddress[_tokenId][msg.sender] = addressesFromTokenId[_tokenId].length;
-    addressesFromTokenId[_tokenId].push(msg.sender);
-}
-
-   
-
+    if (!hasBidFromTokenId[_tokenId][msg.sender]) {
+      indexOfofferBidsFromAddress[_tokenId][msg.sender] = addressesFromTokenId[
+        _tokenId
+      ].length;
+      addressesFromTokenId[_tokenId].push(msg.sender);
+      hasBidFromTokenId[_tokenId][msg.sender] = true;
+    }
+  }
 }

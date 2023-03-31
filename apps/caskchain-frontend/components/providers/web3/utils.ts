@@ -4,6 +4,8 @@ import { Web3Dependencies } from '@_types/hooks'
 import { Contract, ethers } from 'ethers'
 import { getContract } from '@wagmi/core'
 
+export const AcceptedChainIds = [1337, 80001]
+
 export type Web3Params = {
   ethereum: any
   provider: any

@@ -15,12 +15,14 @@ const Home: NextPage = () => {
     <>
       <AnimatePresence>
         <BaseLayout>
-          <MainAnimationSection />
-          <HeroSection />
-          <BarrelsSection />
-          <OwnerSection />
-          <NewsletterSection />
-          <FooterSection />
+          <div className="w-full">
+            <MainAnimationSection />
+            <HeroSection />
+            <BarrelsSection />
+            <OwnerSection />
+            <NewsletterSection />
+            <FooterSection />
+          </div>
         </BaseLayout>
       </AnimatePresence>
     </>

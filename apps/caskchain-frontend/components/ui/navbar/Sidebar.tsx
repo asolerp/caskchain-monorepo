@@ -49,9 +49,17 @@ const Sidebar: React.FC<SidebarProps> = ({ open }) => {
         <div className="border-t border-b border-gray-700 w-full py-3">
           <Link
             href="/profile"
-            className="font-rela font-semibold text-gray-200 text-2xl"
+            className="font-rela font-medium text-gray-200 text-xl hover:text-cask-chain"
           >
             My cellar
+          </Link>
+        </div>
+        <div className="border-b border-gray-700 w-full py-3">
+          <Link
+            href="/activity/transactions"
+            className="font-rela font-medium text-gray-200 text-xl hover:text-cask-chain"
+          >
+            My transactions
           </Link>
         </div>
       </div>

@@ -13,6 +13,7 @@ const SignInModal: React.FC<Props> = ({ modalIsOpen, closeModal }) => {
 
   return (
     <Modal
+      ariaHideApp={false}
       style={{
         overlay: {
           backgroundColor: '#A8A8A880',

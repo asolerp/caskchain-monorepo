@@ -12,6 +12,27 @@ export class MongoDBOfferDataSource
   }
 
   public async save(id: string, offer: OfferRequestModel) {
+    const collection = await this.collection()
+    const oldOffer = await collection
+      .find<any>({
+        $and: [
+          {
+            tokenId: offer.tokenId,
+          },
+          {
+            bidder: offer.bidder,
+          },
+        ],
+      })
+      .toArray()
+
+    if (oldOffer.length > 0) {
+      await collection.updateOne(
+        { _id: oldOffer[0]._id },
+        { $set: { status: 'canceled' } }
+      )
+    }
+
     await this.persist(id, offer)
   }
 
@@ -19,14 +40,49 @@ export class MongoDBOfferDataSource
     const collection = await this.collection()
     const document = await collection.find<any>({ tokenId: tokenId }).toArray()
 
-    console.log('Document: ', document)
+    return document || null
+  }
 
+  public async searchSentOffers(address: string): Promise<any | null> {
+    const collection = await this.collection()
+    const document = await collection
+      .find<any>({ bidder: address })
+      .sort({ createdAt: -1 })
+      .toArray()
     return document || null
   }
 
   public async searchReceivedOffers(address: string): Promise<any | null> {
     const collection = await this.collection()
-    const document = await collection.find<any>({ address: address }).toArray()
+    const document = await collection
+      .find<any>({ owner: address })
+      .sort({ status: -1 })
+      .toArray()
     return document || null
+  }
+
+  public async removeOffer(tokenId: string, bidder: string) {
+    const collection = await this.collection()
+    const offer = await collection
+      .find<any>({
+        $and: [
+          {
+            tokenId: tokenId,
+          },
+          {
+            bidder: bidder,
+          },
+        ],
+      })
+      .sort({ createdAt: -1 })
+      .toArray()
+
+    if (offer.length > 0) {
+      await collection.updateOne(
+        { _id: offer[0]._id },
+        { $set: { status: 'canceled' } }
+      )
+    }
+    return
   }
 }

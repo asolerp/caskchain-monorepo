@@ -38,7 +38,7 @@ import { RecordOffer } from './domain/use-cases/offer/record-offer'
 import { OfferImpl } from './domain/repositories/offer-repository'
 import { MongoDBOfferDataSource } from './data/data-sources/mongodb/MongoDBOfferDataSource'
 import OffersRouter from './presentation/routers/offers-router'
-import { GetOffers } from './domain/use-cases/offer/get-offers'
+
 import { RecordOfferImpl } from './domain/repositories/record-offer-repository'
 
 import OnMint from './presentation/subscriptions/on-mint'
@@ -47,6 +47,10 @@ import { user } from './presentation/routers/models/user'
 import { getNfts } from './presentation/routers/models/getNfts'
 import { GetTransactionByWalletAddress } from './domain/use-cases/transaction/get-transaction-by-wallet-address-use-case'
 import { GetReceivedOffers } from './domain/use-cases/offer/get-received-offers'
+import { GetSentOffers } from './domain/use-cases/offer/get-sent-offers'
+import OnRemoveOffer from './presentation/subscriptions/on-remove-offer'
+import { RemoveOffer } from './domain/use-cases/offer/remove-offer'
+import { RemoveOfferImpl } from './domain/repositories/remove-offer-repository'
 ;(async () => {
   const clientDB = MongoClientFactory.createClient(
     process.env.CONTEXT_NAME as string,
@@ -54,8 +58,6 @@ import { GetReceivedOffers } from './domain/use-cases/offer/get-received-offers'
       url: process.env.MONGO_DB_URL,
     }
   )
-
-  console.log('ENV', process.env)
 
   const { client: web3Client, wsClient: web3WsClient } =
     Web3ClientFactory.createClient(
@@ -141,7 +143,7 @@ import { GetReceivedOffers } from './domain/use-cases/offer/get-received-offers'
   )
 
   const offers = OffersRouter(
-    new GetOffers(new OfferImpl(new MongoDBOfferDataSource(clientDB))),
+    new GetSentOffers(new OfferImpl(new MongoDBOfferDataSource(clientDB))),
     new GetReceivedOffers(new OfferImpl(new MongoDBOfferDataSource(clientDB)))
   )
 
@@ -181,6 +183,10 @@ import { GetReceivedOffers } from './domain/use-cases/offer/get-received-offers'
     new RecordOffer(new RecordOfferImpl(new MongoDBOfferDataSource(clientDB)))
   )
 
+  const handleRemoveOffer = OnRemoveOffer(
+    new RemoveOffer(new RemoveOfferImpl(new MongoDBOfferDataSource(clientDB)))
+  )
+
   eventsHandler.subscribeLogEvent('CCNft', 'Mint', handelOnMint)
   eventsHandler.subscribeLogEvent('CCNft', 'Approval')
   eventsHandler.subscribeLogEvent(
@@ -189,6 +195,7 @@ import { GetReceivedOffers } from './domain/use-cases/offer/get-received-offers'
     (transaction: any) => handleOnTransfer(transaction, 'item-bought')
   )
   eventsHandler.subscribeLogEvent('NftOffers', 'NewOffer', handleOnNewOffer)
+  eventsHandler.subscribeLogEvent('NftOffers', 'RemoveOffer', handleRemoveOffer)
 
   server.use(
     '/api/user',

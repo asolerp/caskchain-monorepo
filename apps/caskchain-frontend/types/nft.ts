@@ -45,6 +45,16 @@ export type FractionBalance = {
   canRedem: boolean
 }
 
+export type Offers = {
+  id: string
+  bidder: string
+  createdAt: Date
+  owner: string
+  bid: number
+  tokenId: string
+  status: string
+}
+
 export type TransactionHistory = {
   id: string
   from: string

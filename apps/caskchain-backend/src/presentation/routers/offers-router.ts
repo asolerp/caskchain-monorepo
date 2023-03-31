@@ -1,25 +1,25 @@
 import express from 'express'
 import { Request, Response } from 'express'
-import { GetOffersUseCase } from '../../domain/interfaces/use-cases/offers/get-offers'
 import { GetReceivedOffersUseCase } from '../../domain/interfaces/use-cases/offers/get-received-offers'
+import { GetSentOffersUseCase } from '../../domain/interfaces/use-cases/offers/get-sent-offers'
 
 import { authenticateToken } from '../middlewares/authenticateToken'
 import { extractAddressFromToken } from '../utils/extractTokenFromRequest'
 
 export default function OffersRouter(
-  getOffers: GetOffersUseCase,
+  getSentOffers: GetSentOffersUseCase,
   getReceivedOffers: GetReceivedOffersUseCase
 ) {
   const router = express.Router()
 
   router.get(
-    '/:caskId',
+    '/sent',
     authenticateToken,
     async (req: Request, res: Response) => {
-      const caskId = req.params.caskId
-      console.log('CaskId: ', caskId)
-      const offers = await getOffers.execute(caskId)
-      res.json(offers)
+      const address = extractAddressFromToken(req)
+      console.log('Address offers: ', address)
+      const sendOffers = await getSentOffers.execute(address)
+      res.json(sendOffers)
     }
   )
 

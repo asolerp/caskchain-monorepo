@@ -12,12 +12,26 @@ const API_URL =
 console.log('API_URL', API_URL)
 
 const nextConfig = {
+  async redirects() {
+    return [
+      {
+        source: '/marketplace',
+        destination: '/marketplace/search',
+        permanent: true,
+      },
+    ]
+  },
   async rewrites() {
     return [
       {
         source: '/api/:path*',
         destination: `${API_URL}/api/:path*`, // Proxy to Backend
       },
+      // {
+      //   source: '/marketplace/',
+      //   destination: '/marketplace/search/',
+      //   permanent: true,
+      // },
     ]
   },
   reactStrictMode: true,

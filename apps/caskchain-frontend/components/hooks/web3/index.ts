@@ -60,3 +60,12 @@ export const useOwnedNfts = () => {
     nfts: swrRes,
   }
 }
+
+export const useMyActivity = () => {
+  const hooks = useHooks()
+  const swrRes = hooks.useMyActivity()
+
+  return {
+    myActivity: swrRes,
+  }
+}

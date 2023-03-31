@@ -114,7 +114,6 @@ export const hookFactory: OwnedNftsHookFactory =
 
     const approveSell = async (tokenId: number) => {
       try {
-        console.log('CONTRACT ADDRESS', nftOffers!.address)
         const gasPrice = await provider?.getGasPrice()
 
         const result = await _ccNft?.approve(
