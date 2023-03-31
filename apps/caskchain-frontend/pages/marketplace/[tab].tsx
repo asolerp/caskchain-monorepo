@@ -10,7 +10,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import Spacer from '@ui/common/Spacer'
 
 const tabs = [
   { name: 'All barrels', href: '#', key: 'search' },

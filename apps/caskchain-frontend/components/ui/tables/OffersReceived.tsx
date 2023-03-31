@@ -83,7 +83,9 @@ const OffersReceived: React.FC<OffersReceivedProps> = ({
                         <tr
                           key={i}
                           className={
-                            item.status === 'live' && 'border border-cask-chain'
+                            item.status === 'live'
+                              ? 'border border-cask-chain'
+                              : ''
                           }
                         >
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100">
@@ -107,7 +109,7 @@ const OffersReceived: React.FC<OffersReceivedProps> = ({
                             {addressSimplifier(item.owner)}
                           </td>
                           <td className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap">
-                            {item.createdAt}
+                            <p>{item.createdAt}</p>
                           </td>
                           <td className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap">
                             {item?.bid &&

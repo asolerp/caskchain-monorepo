@@ -48,7 +48,7 @@ export type FractionBalance = {
 export type Offers = {
   id: string
   bidder: string
-  createdAt: Date
+  createdAt: any
   owner: string
   bid: number
   tokenId: string

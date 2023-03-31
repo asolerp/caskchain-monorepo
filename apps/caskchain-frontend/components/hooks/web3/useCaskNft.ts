@@ -59,8 +59,8 @@ export const hookFactory: CaskNftHookFactory =
 
     const handleUserState = useCallback(() => {
       if (
-        provider &&
-        provider?.chains.some((c: any) =>
+        provider.chains &&
+        provider.chains.some((c: any) =>
           AcceptedChainIds.some((aChainId) => aChainId === c)
         )
       ) {

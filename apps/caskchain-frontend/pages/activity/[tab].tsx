@@ -100,7 +100,7 @@ const Transactions: NextPage = () => {
                   {myActivity?.sentOffers?.length === 0 ? (
                     <div className="w-full flex flex-col border border-gray-700 p-6 rounded-lg justify-center items-center">
                       <h3 className="font-poppins text-2xl text-gray-300">
-                        You haven't sent any offers yet.
+                        {`You haven't sent any offers yet.`}
                       </h3>
                     </div>
                   ) : (
@@ -113,7 +113,7 @@ const Transactions: NextPage = () => {
                   {myActivity?.receivedOffers?.length === 0 ? (
                     <div className="w-full flex flex-col border border-gray-700 p-6 rounded-lg justify-center items-center">
                       <h3 className="font-poppins text-2xl text-gray-300">
-                        You haven't received any offers yet.
+                        {`You haven't received any offers yet.`}
                       </h3>
                     </div>
                   ) : (
