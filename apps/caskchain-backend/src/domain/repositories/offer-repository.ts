@@ -11,6 +11,10 @@ export class OfferImpl implements OfferRepository {
     return await this.offerDataSource.search(caskId)
   }
 
+  async getSentOffers(address: string): Promise<any> {
+    return await this.offerDataSource.searchSentOffers(address)
+  }
+
   async getReceivedOffers(address: string) {
     return await this.offerDataSource.searchReceivedOffers(address)
   }

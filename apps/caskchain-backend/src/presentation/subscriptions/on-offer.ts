@@ -6,9 +6,12 @@ import { OfferRequestModel } from '../../domain/model/Offer'
 export default function OnOffer(recordNewOfferUseCase: RecordNewOfferUseCase) {
   const handleOnNewOffer = async (offer: OfferRequestModel) => {
     await recordNewOfferUseCase.execute(uuidv4(), {
+      createdAt: new Date(),
+      owner: offer.owner.toLowerCase(),
       tokenId: offer.tokenId,
-      bidder: offer.bidder,
+      bidder: offer.bidder.toLowerCase(),
       bid: offer.bid,
+      status: 'live',
     })
   }
 

@@ -4,7 +4,28 @@ require('dotenv-mono').load(
     : { path: '.env' }
 )
 
+const API_URL = 'https://caskchain-backend.herokuapp.com/'
+
+console.log('API_URL', API_URL)
+
 const nextConfig = {
+  async redirects() {
+    return [
+      {
+        source: '/marketplace',
+        destination: '/marketplace/search',
+        permanent: true,
+      },
+    ]
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: `${API_URL}/api/:path*`, // Proxy to Backend
+      },
+    ]
+  },
   reactStrictMode: true,
   async rewrites() {
     return [

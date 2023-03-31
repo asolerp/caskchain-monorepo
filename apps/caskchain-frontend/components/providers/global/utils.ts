@@ -4,6 +4,7 @@ export type GlobalState = {
   user: any
   token: string | null
   signInModal: boolean
+  networkModal: boolean
   sideBar: boolean
   userInfoModal: boolean
   mainAnimationFinished: boolean
@@ -15,6 +16,7 @@ export type GlobalState = {
 }
 
 export enum GlobalTypes {
+  SET_NETWORK_MODAL = 'SET_NETWORK_MODAL',
   SET_ANIMATIN_EXECUTED = 'SET_ANIMATIN_EXECUTED',
   SET_MAIN_ANIMATION_FINISHED = 'SET_MAIN_ANIMATION_FINISHED',
   SET_SIGN_IN_MODAL = 'SET_SIGN_IN_MODAL',
@@ -22,6 +24,11 @@ export enum GlobalTypes {
   SET_USER = 'SET_USER',
   SET_TOKEN = 'SET_TOKEN',
   SET_SIDE_BAR = 'SET_SIDE_BAR',
+}
+
+type SetNetworkModal = {
+  type: typeof GlobalTypes.SET_NETWORK_MODAL
+  payload: any
 }
 
 type SetAnimationsExecuted = {
@@ -67,12 +74,14 @@ export type GlobalActionTypes =
   | SetSideBar
   | SetMainAnimationFinished
   | SetAnimationsExecuted
+  | SetNetworkModal
 
 export const initialState: GlobalState = {
   user: null,
   token: null,
   sideBar: false,
   signInModal: false,
+  networkModal: false,
   userInfoModal: false,
   mainAnimationFinished: false,
   animationsExecuted: {

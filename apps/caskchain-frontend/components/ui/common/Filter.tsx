@@ -20,7 +20,7 @@ const Filter: React.FC<Props> = ({ active = false, name, onPress }) => {
       } flex items-center justify-center`}
       onClick={onPress}
     >
-      <span className="font-bold">{name}</span>
+      <span className="font-bold text-xs">{name}</span>
     </div>
   )
 }

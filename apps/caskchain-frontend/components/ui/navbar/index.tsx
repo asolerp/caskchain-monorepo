@@ -15,11 +15,15 @@ import Link from 'next/link'
 import { getCookie } from 'cookies-next'
 import Image from 'next/image'
 import Sidebar from './Sidebar'
+import NetworkModal from '@ui/modals/NetworkModal'
 
 const navigation = [
-  { name: 'Home', href: '/' },
-  // { name: 'Explore', href: '/explore' },
-  { name: 'Marketplace', href: '/marketplace' },
+  { name: 'Home', href: '/', url: '/' },
+  {
+    name: 'Marketplace',
+    href: '/marketplace/search',
+    url: '/marketplace/[tab]',
+  },
   // { name: 'About us', href: '/about' },
 ]
 
@@ -33,7 +37,7 @@ export default function Navbar() {
   const { network } = useNetwork()
   const token = getCookie('token') as string
   const {
-    state: { userInfoModal, signInModal, user, sideBar },
+    state: { userInfoModal, signInModal, networkModal, user, sideBar },
     dispatch,
   } = useGlobal()
 
@@ -41,6 +45,15 @@ export default function Navbar() {
 
   return (
     <>
+      <NetworkModal
+        modalIsOpen={networkModal}
+        closeModal={() =>
+          dispatch({
+            type: GlobalTypes.SET_NETWORK_MODAL,
+            payload: { status: false },
+          })
+        }
+      />
       <SignInModal
         modalIsOpen={signInModal}
         closeModal={() =>
@@ -106,6 +119,7 @@ export default function Navbar() {
                           activeclass="text-cask-chain border-b-2 border-b-cask-chain"
                           key={item.name}
                           href={item.href}
+                          url={item.url}
                         >
                           <span
                             className={

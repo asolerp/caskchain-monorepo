@@ -1,5 +1,6 @@
 import { useGlobal } from '@providers/global'
 import { GlobalTypes } from '@providers/global/utils'
+import { AcceptedChainIds } from '@providers/web3/utils'
 import { CryptoHookFactory } from '@_types/hooks'
 import { Nft } from '@_types/nft'
 import axios from 'axios'
@@ -8,10 +9,8 @@ import { ethers } from 'ethers'
 import axiosClient from 'lib/fetcher/axiosInstance'
 import { useCallback, useState } from 'react'
 import { toast } from 'react-toastify'
-
 import useSWR from 'swr'
-
-// const USDTAddress = process.env.NEXT_PUBLIC_USDT_TOKEN as string
+import { useNetwork, useProvider } from 'wagmi'
 
 type CaskNftHookFactory = CryptoHookFactory<Nft[]>
 
@@ -21,6 +20,8 @@ export const hookFactory: CaskNftHookFactory =
   ({ nftOffers, nftVendor, nftFractionsVendor, nftFractionToken }) =>
   ({ caskId }) => {
     const [tokenAmmount, setTokenAmmount] = useState<number | undefined>(0)
+    const { chain } = useNetwork()
+    const provider = useProvider()
 
     const {
       state: { user },
@@ -50,12 +51,24 @@ export const hookFactory: CaskNftHookFactory =
     const _nftVendor = nftVendor
     const _nftFractionsVendor = nftFractionsVendor
 
-    const isUserNeededDataFilled = user?.email && token
+    const isUserNeededDataFilled =
+      user?.email && token && AcceptedChainIds.some((id) => id === chain!.id)
     const hasOffersFromUser = data?.offer?.bidders?.some(
       (bidder: string) => bidder === user?.address
     )
 
     const handleUserState = useCallback(() => {
+      if (
+        provider &&
+        provider?.chains.some((c: any) =>
+          AcceptedChainIds.some((aChainId) => aChainId === c)
+        )
+      ) {
+        return dispatch({
+          type: GlobalTypes.SET_NETWORK_MODAL,
+          payload: { state: true },
+        })
+      }
       if (!user?.email) {
         return dispatch({
           type: GlobalTypes.SET_USER_INFO_MODAL,

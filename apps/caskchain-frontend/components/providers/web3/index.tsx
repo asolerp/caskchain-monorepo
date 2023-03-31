@@ -116,7 +116,6 @@ const Web3Provider: React.FC<Props> = ({ children }) => {
         //   return _signedTokenContract
         // }
 
-        console.log('SET GLOBAL LISTENERS', window.ethereum)
         setGlobalListeners(window.ethereum, logout)
         setWeb3Api(
           createWeb3State({

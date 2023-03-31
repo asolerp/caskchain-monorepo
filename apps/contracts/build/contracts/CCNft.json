@@ -28761,12 +28761,21 @@
         }
       },
       "links": {},
+<<<<<<< HEAD
       "address": "0x8c300Ec62b1c7D9272a8488F8cB12521a92902EC",
       "transactionHash": "0x9c0c42074171c975cf407b1d33dce1c88329310ed83c9020b299f0ddbd7520ac"
     }
   },
   "schemaVersion": "3.4.11",
   "updatedAt": "2023-03-30T08:10:34.256Z",
+=======
+      "address": "0x32A12954Ca96d26c69cDcC98084196327Ec5f559",
+      "transactionHash": "0x634a7cd497b0beb58e96fed5db943731c2cb311f58467d117190bea091b96001"
+    }
+  },
+  "schemaVersion": "3.4.11",
+  "updatedAt": "2023-03-31T09:57:38.490Z",
+>>>>>>> dev
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

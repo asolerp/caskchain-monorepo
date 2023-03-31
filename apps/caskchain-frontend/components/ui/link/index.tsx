@@ -4,16 +4,18 @@ import { useRouter } from 'next/router'
 
 type LinkProps = {
   href: string
+  url: string
   children: ReactElement
   activeclass: string
 }
 
 const ActiveLink: React.FC<LinkProps> = ({ children, ...props }) => {
   const { pathname } = useRouter()
+  console.log(pathname, props.url, 'pathname')
   let className = children!.props.className || ''
   const _defaultClass = `${className} text-gray-100`
 
-  if (pathname === props.href) {
+  if (pathname === props.url) {
     className = `${className} ${props.activeclass}`
   } else {
     className = _defaultClass
