@@ -13,11 +13,7 @@ module.exports = async function (callback) {
     console.log("ccNft fetched", ccNft.address);
 
     // Set up exchange users
-<<<<<<< HEAD
     const user1 = "0x54Ca6E36FE4C534D89A1bFbbc5567F1C3dA78988";
-=======
-    const user1 = "0x915c94a3cc7ab4ef1d9829be509b1f816c838908";
->>>>>>> dev
 
     // User 1 Deposits Ether
     await ccNft.mintNFT(

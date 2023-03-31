@@ -23643,130 +23643,14 @@
   },
   "networks": {
     "80001": {
-      "events": {
-        "0x263223b1dd81e51054a4e6f791d45a4a1ddb4aadcd93a2dfd892615c3fdac187": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "buyer",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "seller",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "uint256",
-              "name": "tokenId",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "price",
-              "type": "uint256"
-            }
-          ],
-          "name": "ItemBought",
-          "type": "event"
-        },
-        "0x9ba1a3cb55ce8d63d072a886f94d2a744f50cddf82128e897d0661f5ec623158": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "seller",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "nftAddress",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "uint256",
-              "name": "tokenId",
-              "type": "uint256"
-            }
-          ],
-          "name": "ItemCanceled",
-          "type": "event"
-        },
-        "0xd547e933094f12a9159076970143ebe73234e64480317844b0dcb36117116de4": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "seller",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "nftAddress",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "uint256",
-              "name": "tokenId",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "price",
-              "type": "uint256"
-            }
-          ],
-          "name": "ItemListed",
-          "type": "event"
-        },
-        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "previousOwner",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "newOwner",
-              "type": "address"
-            }
-          ],
-          "name": "OwnershipTransferred",
-          "type": "event"
-        }
-      },
+      "events": {},
       "links": {},
-<<<<<<< HEAD
-      "address": "0x811CBD2FA2A87a96B1298EF845D8BDf8439B1b60",
-      "transactionHash": "0x14ff1dc5be3064a106052eb31afda36a45e6ea32d646ae935ac64df747619f11"
+      "address": "0x2061912cBD0C91C4A8389173387fbF9e86463C84",
+      "transactionHash": "0xfb1a39b01f4c6eafbe63db2250ac052e7c81c86b4237712c07c64e5888664388"
     }
   },
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-03-30T08:10:34.278Z",
-=======
-      "address": "0x6fef772D344B956381a134e7a034548c78E87E5d",
-      "transactionHash": "0x30749bae1a7f8bd46094dbc5902fc3399b2b19b170ca7b2f8a738f72080ddfb9"
-    }
-  },
-  "schemaVersion": "3.4.11",
-  "updatedAt": "2023-03-31T09:57:38.513Z",
->>>>>>> dev
+  "updatedAt": "2023-03-31T11:04:44.832Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

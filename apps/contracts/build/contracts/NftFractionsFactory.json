@@ -9170,106 +9170,14 @@
   },
   "networks": {
     "80001": {
-      "events": {
-        "0xf9c32fbc56ff04f32a233ebc26e388564223745e28abd8d0781dd906537f563e": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "token",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "id",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "price",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "vault",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "vaultId",
-              "type": "uint256"
-            }
-          ],
-          "name": "Mint",
-          "type": "event"
-        },
-        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "previousOwner",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "newOwner",
-              "type": "address"
-            }
-          ],
-          "name": "OwnershipTransferred",
-          "type": "event"
-        },
-        "0x62e78cea01bee320cd4e420270b5ea74000d11b0c9f74754ebdbfc544b05a258": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "account",
-              "type": "address"
-            }
-          ],
-          "name": "Paused",
-          "type": "event"
-        },
-        "0x5db9ee0a495bf2e6ff9c91a7834c1ba4fdd244a5e8aa4e537bd38aeae4b073aa": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "account",
-              "type": "address"
-            }
-          ],
-          "name": "Unpaused",
-          "type": "event"
-        }
-      },
+      "events": {},
       "links": {},
-<<<<<<< HEAD
-      "address": "0x80C3F9D4F2Fd172B0262269aa0371B98d8545D0F",
-      "transactionHash": "0x96d13efc00568012fbb85c37887bdf597db76838fd5b9ee2fdb478be5e43cde6"
+      "address": "0xf1cFb470F69c74DF1D2e36A5e1f1cCAe8593B07a",
+      "transactionHash": "0x45847e3ca9c7b7d99e0fe436cbd7a24c055f0f2eed6140277cdfc31526e14f71"
     }
   },
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-03-30T08:10:51.625Z",
-=======
-      "address": "0xDcdb20e2500dBBFd317873053E0134B732D9415d",
-      "transactionHash": "0x8b03ea8ee29817926abb52fae7047044c4951eca82c64bb384dac0bea0d828de"
-    }
-  },
-  "schemaVersion": "3.4.11",
-  "updatedAt": "2023-03-31T09:57:38.883Z",
->>>>>>> dev
+  "updatedAt": "2023-03-31T11:05:05.882Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

@@ -15655,99 +15655,14 @@
   },
   "networks": {
     "80001": {
-      "events": {
-        "0x9f25f19f4c5c9535d6114be907c32cb1692ce9db9cad630da2d7296ceecd695a": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "tokenId",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "bidder",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "bid",
-              "type": "uint256"
-            }
-          ],
-          "name": "AcceptOffer",
-          "type": "event"
-        },
-        "0x807b4f3a2cbecd0aaf3901534108511941eb0791a301b39b3593e8e20a2c759d": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "tokenId",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "bidder",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "bid",
-              "type": "uint256"
-            }
-          ],
-          "name": "NewOffer",
-          "type": "event"
-        },
-        "0x9da6493a92039daf47d1f2d7a782299c5994c6323eb1e972f69c432089ec52bf": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "tokenId",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "bidder",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "bid",
-              "type": "uint256"
-            }
-          ],
-          "name": "Withdraw",
-          "type": "event"
-        }
-      },
+      "events": {},
       "links": {},
-<<<<<<< HEAD
-      "address": "0xad6E139017Bf48FC6eB9059bec9f8F5256269a96",
-      "transactionHash": "0x4db30d8cca1e9e275c66d0bc2a64297efbd02ff749bfb624367cc75fae6ab656"
+      "address": "0x2553CAB8bbA272FC0789885F24f81629B3c8F9Ed",
+      "transactionHash": "0x2995d27d44fbff766a31ecc4e24ffd005562e0af3b1749bc7b2e9d4a643a9229"
     }
   },
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-03-30T08:10:34.290Z",
-=======
-      "address": "0x1bf44E2E552D6C021eEBad4b8D958D15E132d2cb",
-      "transactionHash": "0x11a109d0900982a9d2e683d964e25887c7d34302ec73a3849c824816473dd5c2"
-    }
-  },
-  "schemaVersion": "3.4.11",
-  "updatedAt": "2023-03-31T09:57:38.524Z",
->>>>>>> dev
+  "updatedAt": "2023-03-31T11:04:44.850Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
