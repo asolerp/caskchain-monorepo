@@ -8,7 +8,7 @@
     "start": "node ./dist/main.js",
     "build": "tsc",
     "postinstall": "tsc",
-    "test": "jest --watchAll --collectCoverage",
+    "test": "jest --watchAll ",
     "dev": "ts-node-dev --files --ignore-watch node_modules ./src/main.ts"
   },
   "dependencies": {

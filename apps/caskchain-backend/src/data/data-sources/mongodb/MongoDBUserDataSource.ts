@@ -21,13 +21,14 @@ export class MongoDBUserDataSource
     const favorites = document?.favorites && Object.keys(document?.favorites)
     let updatedFavorites
     let updatedState
+
     if (favorites?.includes(caskId)) {
       updatedFavorites = Object.fromEntries(
         Object.entries(document?.favorites).filter(([key]) => key !== caskId)
       )
       updatedState = 'removed'
     } else {
-      updatedFavorites = { ...document.favorites, [caskId]: true }
+      updatedFavorites = { ...document?.favorites, [caskId]: true }
       updatedState = 'added'
     }
     this.save(userId, { favorites: updatedFavorites })

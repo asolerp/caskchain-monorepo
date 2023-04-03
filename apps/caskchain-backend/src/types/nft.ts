@@ -11,6 +11,13 @@ export type NftMeta = {
   image: string
   attributes: NftAttribute[]
 }
+export type Nft = {
+  meta: NftMeta
+  erc20Prices?: ERC20Price[]
+  transactions?: TransactionHistory[]
+  bidders?: string[]
+  offer?: any
+} & NftCore
 
 export type NftCore = {
   tokenURI: string
@@ -35,14 +42,6 @@ export type TransactionHistory = {
   tokenId: string
   value: string
 }
-
-export type Nft = {
-  meta: NftMeta
-  erc20Prices?: ERC20Price[]
-  transactions?: TransactionHistory[]
-  bidders?: string[]
-  offer?: any
-} & NftCore
 
 export type FileReq = {
   bytes: Uint8Array

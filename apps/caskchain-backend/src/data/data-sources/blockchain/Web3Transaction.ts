@@ -19,7 +19,7 @@ export class Web3Transaction extends Web3Repository {
     )
   }
 
-  private async sendSignedTransaction(signedTx: any): Promise<any> {
+  private async sendSignedTransaction(signedTx: any) {
     try {
       return await this.client().eth.sendSignedTransaction(
         signedTx.rawTransaction
