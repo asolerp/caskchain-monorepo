@@ -11,15 +11,9 @@ import { toast } from 'react-toastify'
 
 import useSWR from 'swr'
 
-type UseAllNftsResponse = {
-  // withdraw: (tokenId: number) => Promise<void>
-  // makeOffer: (tokenId: number, offer: string) => Promise<void>
-  // buyShares: (tokenId: number, shares: number) => Promise<void>
-}
+type AllNftsHookFactory = CryptoHookFactory<Nft[], any>
 
-type AllNftsHookFactory = CryptoHookFactory<Nft[], UseAllNftsResponse>
-
-export type UseAllNftsHook = ReturnType<AllNftsHookFactory>
+export type UseAllNftsHook = ReturnType<any>
 
 export const hookFactory: AllNftsHookFactory =
   ({}) =>

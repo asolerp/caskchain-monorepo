@@ -4,10 +4,7 @@ import { TransactionHistory } from '@_types/nft'
 import { ethers } from 'ethers'
 import { addressSimplifier } from 'utils/addressSimplifier'
 import Link from 'next/link'
-import {
-  ArrowTopRightOnSquareIcon,
-  ShareIcon,
-} from '@heroicons/react/24/outline'
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
 
 type TransactionsHistoryProps = {
   transactions?: TransactionHistory[]

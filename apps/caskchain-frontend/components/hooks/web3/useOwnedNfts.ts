@@ -3,7 +3,7 @@ import { Nft } from '@_types/nft'
 import useLoading from '@hooks/common/useLoading'
 import { ethers } from 'ethers'
 import axiosClient from 'lib/fetcher/axiosInstance'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { toast } from 'react-toastify'
 import useSWR from 'swr'
 
@@ -47,11 +47,7 @@ export const hookFactory: OwnedNftsHookFactory =
       return nfts
     })
 
-    const {
-      data: favorites,
-      isLoading: favoritesIsLoading,
-      isValidating: favoritesIsValidating,
-    } = useSWR('/api/casks/favorites', async () => {
+    const { data: favorites } = useSWR('/api/casks/favorites', async () => {
       const favoritesNfts: any = await axiosClient.get('/api/casks/favorites')
       console.log('FAVORITES', favoritesNfts)
       return favoritesNfts.data
@@ -179,14 +175,6 @@ export const hookFactory: OwnedNftsHookFactory =
         setActiveNft(nft)
       }
     }
-
-    // useEffect(() => {
-    //   if (data && data.length > 0) {
-    //     setActiveNft(undefined)
-    //   } else {
-    //     setActiveNft(undefined)
-    //   }
-    // }, [data])
 
     return {
       listNft,

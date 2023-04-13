@@ -31,6 +31,8 @@ let CaskIllustration = ({ src }: { src: string }) => {
   )
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 CaskIllustration = React.memo(CaskIllustration)
 
 // import React from 'react'
