@@ -18,6 +18,7 @@
     "start:caskchain-frontend": "turbo run start --filter=caskchain-frontend",
     "start:caskchain-backend": "turbo run start --filter=caskchain-backend",
     "heroku-postbuild": "if [ $CLIENT_ENV ]; then yarn run prod-frontend; elif [ $SERVER_ENV ]; then yarn run prod-backend; else echo no environment detected, please set CLIENT_ENV or SERVER_ENV; fi",
+    "heroku-cleanup": "rm -rf .next/cache && find node_modules/@next -depth -maxdepth 1 -type d -name 'swc*' -exec rm -rf {} \\; -prune #Remove cache and SWC binaries to reduce heroku slug size",
     "prod-frontend": "yarn run build:caskchain-frontend",
     "prod-backend": "yarn run build:caskchain-backend"
   },
