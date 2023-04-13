@@ -48,7 +48,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open }) => {
       <div>
         <div className="border-t border-b border-gray-700 w-full py-3">
           <Link
-            href="/profile"
+            href="/profile/my-collection"
             className="font-rela font-medium text-gray-200 text-xl hover:text-cask-chain"
           >
             My cellar

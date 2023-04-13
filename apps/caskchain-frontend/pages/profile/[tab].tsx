@@ -6,11 +6,8 @@ import { BaseLayout } from '@ui'
 import { Nft } from '@_types/nft'
 import { useOwnedNfts } from '@hooks/web3'
 
-import TransactionsHistory from '@ui/ntf/transactionsHistory'
 import { useRouter } from 'next/router'
 
-import { ethers } from 'ethers'
-import { useState } from 'react'
 import FractionBalances from '@ui/ntf/fractionBalance'
 import { auth } from 'utils/auth'
 import Spacer from '@ui/common/Spacer'
@@ -18,11 +15,12 @@ import Button from '@ui/common/Button'
 import Image from 'next/image'
 import { useGlobal } from '@providers/global'
 import { addressSimplifier } from 'utils/addressSimplifier'
-import { LoadingAnimation } from '@ui/common/Loading/LoadingAnimation'
+import Link from 'next/link'
+import BarrelNft from '@ui/ntf/item/BarrelNft'
 
 const tabs = [
-  { name: 'Your Collection', href: '#', key: 'collection' },
-  // { name: 'Your Fractions', href: '#', key: 'fractions' },
+  { name: 'Your Collection', href: '#', key: 'my-collection' },
+  { name: 'My selection', href: '#', key: 'my-selection' },
 ]
 
 function classNames(...classes: string[]) {
@@ -36,12 +34,13 @@ const Profile: NextPage = () => {
     state: { user },
   } = useGlobal()
   const { nfts } = useOwnedNfts()
-  const [activeTab, setActiveTab] = useState('collection')
   const router = useRouter()
+
+  const _selectedTab = (router.query.tab as string) ?? 'my-collection'
+  const selectedIndex = tabs.map((t) => t.key).indexOf(_selectedTab) ?? 0
 
   return (
     <BaseLayout background="bg-gradient-to-r from-[#0F0F0F] via-[#161616] to-[#000000]">
-      {(nfts.isLoading || nfts.isValidating) && <LoadingAnimation />}
       <div className="py-16 pt-40 px-2 sm:px-6 lg:w-3/4">
         <div className="flex-1 flex flex-col">
           <div className="flex-1 flex space-x-4 items-stretch">
@@ -71,19 +70,22 @@ const Profile: NextPage = () => {
                         className=" -mb-px flex space-x-6 xl:space-x-8 border-b border-gray-600 w-full"
                         aria-label="Tabs"
                       >
-                        {tabs.map((tab) => (
+                        {tabs.map((tab, index) => (
                           <a
-                            onClick={() => setActiveTab(tab.key)}
+                            onClick={() =>
+                              router.replace(`/profile/${tab.key}`, undefined, {
+                                shallow: true,
+                              })
+                            }
                             key={tab.name}
-                            href={tab.href}
                             aria-current={
-                              tab.key === activeTab ? 'page' : undefined
+                              selectedIndex === index ? 'page' : undefined
                             }
                             className={classNames(
-                              tab.key === activeTab
+                              selectedIndex === index
                                 ? 'border-cask-chain text-cask-chain'
                                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                              'whitespace-nowrap pb-2 px-1 border-b-2 font-medium text-2xl'
+                              'whitespace-nowrap pb-2 px-1 border-b-2 font-medium text-2xl cursor-pointer'
                             )}
                           >
                             {tab.name}
@@ -94,7 +96,7 @@ const Profile: NextPage = () => {
                   </div>
                 </div>
 
-                {activeTab === 'collection' && (
+                {_selectedTab === 'my-collection' && (
                   <section
                     className="mt-8 pb-16"
                     aria-labelledby="gallery-heading"
@@ -105,12 +107,12 @@ const Profile: NextPage = () => {
                           role="list"
                           className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 px-4"
                         >
-                          {(nfts.data as Nft[])?.map((nft) => (
+                          {(nfts?.data as Nft[])?.map((nft) => (
                             <li
                               key={nft.meta.name}
                               onClick={() => {
                                 nfts.setIsApproved(false)
-                                nfts.setActiveNft(nft)
+                                nfts.handleActiveNft(nft)
                               }}
                               className="relative"
                             >
@@ -152,65 +154,6 @@ const Profile: NextPage = () => {
                         <Spacer size="xl" />
                         {/* <div className="w-full border-b border-gray-700" /> */}
                         <Spacer size="xl" />
-                        {nfts.activeNft && (
-                          <div>
-                            {nfts.activeNft?.offer && (
-                              <div>
-                                <h3 className="font-rale text-white text-4xl mb-4">
-                                  Received Offers
-                                </h3>
-
-                                <div
-                                  key={nfts.activeNft?.offer?.bidder}
-                                  className="flex flex-row justify-between items-center w-3/4 mb-2"
-                                >
-                                  <div>
-                                    <h3 className="font-poppins text-cask-chain font-medium">
-                                      Bidder
-                                    </h3>
-                                    <p className="text-white">
-                                      {nfts.activeNft?.offer?.highestBidder}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <h3 className="font-poppins text-cask-chain font-medium">
-                                      Bid
-                                    </h3>
-                                    <p className="text-white">
-                                      {nfts.activeNft?.offer?.bid &&
-                                        ethers.utils.formatEther(
-                                          nfts.activeNft?.offer?.bid
-                                        )}{' '}
-                                      ETH
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <Button
-                                      onClick={() =>
-                                        nfts.acceptOffer(nfts.activeNft.tokenId)
-                                      }
-                                    >
-                                      Accept Offer
-                                    </Button>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-                            <Spacer size="xl" />
-                            <div className="w-full border-b border-gray-700" />
-                            {nfts.activeNft?.transactions?.length && (
-                              <>
-                                <Spacer size="xl" />
-                                <h3 className="font-rale text-white text-4xl mb-4">
-                                  Transactions History
-                                </h3>
-                                <TransactionsHistory
-                                  transactions={nfts.activeNft?.transactions}
-                                />
-                              </>
-                            )}
-                          </div>
-                        )}
                       </>
                     ) : (
                       <div className="flex flex-col border border-gray-700 p-6 rounded-lg justify-center items-center">
@@ -225,7 +168,21 @@ const Profile: NextPage = () => {
                     )}
                   </section>
                 )}
-                {activeTab === 'fractions' && (
+                {_selectedTab === 'my-selection' && (
+                  <section
+                    className="mt-8 pb-16 px-4 flex flex-row flex-wrap justify-start space-x-6"
+                    aria-labelledby="gallery-heading"
+                  >
+                    <>
+                      {nfts?.favorites?.map((nft: Nft) => (
+                        <Link key={nft.tokenId} href={`/cask/${nft.tokenId}`}>
+                          <BarrelNft isMarketPlace item={nft} blow />
+                        </Link>
+                      ))}
+                    </>
+                  </section>
+                )}
+                {_selectedTab === 'fractions' && (
                   <section
                     className="mt-8 pb-16 px-4"
                     aria-labelledby="gallery-heading"

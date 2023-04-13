@@ -93,7 +93,6 @@ export const hookFactory: AccountHookFactory = () => () => {
   }
 
   const multiConnect = async () => {
-    console.log('OPEN')
     try {
       open()
     } catch (e) {
@@ -108,13 +107,13 @@ export const hookFactory: AccountHookFactory = () => () => {
     if (!user?.email) {
       return dispatch({
         type: GlobalTypes.SET_USER_INFO_MODAL,
-        payload: { state: true },
+        payload: { status: true },
       })
     }
     if (!token) {
       return dispatch({
         type: GlobalTypes.SET_SIGN_IN_MODAL,
-        payload: { state: true },
+        payload: { status: true },
       })
     }
   }

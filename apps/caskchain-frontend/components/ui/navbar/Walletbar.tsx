@@ -43,7 +43,7 @@ const Walletbar: React.FC<WalletbarProps> = ({
   const handleOpenSidebar = () => {
     dispatch({
       type: GlobalTypes.SET_SIDE_BAR,
-      payload: { state: !sideBar },
+      payload: { status: !sideBar },
     })
   }
 

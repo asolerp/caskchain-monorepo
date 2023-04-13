@@ -177,27 +177,26 @@ pm2.connect(false, async function (err) {
       spinner.info(
         `View log output: ${chalk.cyanBright("npx pm2 logs emulator")}${"\n"}`
       );
-
-      const accountsKeys = jetpack.read("./ganache-accounts.json");
-      const parsedAccountsKeys = JSON.parse(accountsKeys);
-
-      const [address, privateKey] = Object.entries(
-        parsedAccountsKeys.private_keys
-      )[0];
-
-      insertInEnvFile({
-        params: {
-          PUBLIC_KEY: address,
-          PRIVATE_KEY: privateKey,
-          NETWORK_ID: 4447,
-          TARGET_CHAIN_ID: 1337,
-          MONGO_DB_URL: "mongodb://localhost:27017/CASKCHAIN_DB",
-          API_URL: "http://localhost:4000",
-          BLOCKCHAIN_URL: "http://127.0.0.1:8545",
-          BLOCKCHAIN_WS_URL: "ws://127.0.0.1:8545",
-        },
-      });
     }
+    const accountsKeys = jetpack.read("./ganache-accounts.json");
+    const parsedAccountsKeys = JSON.parse(accountsKeys);
+
+    const [address, privateKey] = Object.entries(
+      parsedAccountsKeys.private_keys
+    )[0];
+
+    insertInEnvFile({
+      params: {
+        PUBLIC_KEY: address,
+        PRIVATE_KEY: privateKey,
+        NETWORK_ID: 4447,
+        TARGET_CHAIN_ID: 1337,
+        MONGO_DB_URL: "mongodb://localhost:27017/CASKCHAIN_DB",
+        API_URL: "http://localhost:4000",
+        BLOCKCHAIN_URL: "http://127.0.0.1:8545",
+        BLOCKCHAIN_WS_URL: "ws://127.0.0.1:8545",
+      },
+    });
   } else {
     const envFileMumbai = jetpack.read(".env.mumbai");
     const buf = Buffer.from(envFileMumbai);

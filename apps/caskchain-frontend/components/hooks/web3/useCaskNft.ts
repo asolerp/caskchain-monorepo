@@ -7,10 +7,11 @@ import axios from 'axios'
 import { getCookie } from 'cookies-next'
 import { ethers } from 'ethers'
 import axiosClient from 'lib/fetcher/axiosInstance'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import useSWR from 'swr'
 import { useNetwork, useProvider } from 'wagmi'
+import useLoading from '@hooks/common/useLoading'
 
 type CaskNftHookFactory = CryptoHookFactory<Nft[]>
 
@@ -20,8 +21,10 @@ export const hookFactory: CaskNftHookFactory =
   ({ nftOffers, nftVendor, nftFractionsVendor, nftFractionToken }) =>
   ({ caskId }) => {
     const [tokenAmmount, setTokenAmmount] = useState<number | undefined>(0)
+    const [totalFavorites, setTotalFavorites] = useState<number | undefined>(0)
     const { chain } = useNetwork()
     const provider = useProvider()
+    const [isFavorite, setIsFavorite] = useState<boolean>(false)
 
     const {
       state: { user },
@@ -30,7 +33,19 @@ export const hookFactory: CaskNftHookFactory =
 
     const token = getCookie('token')
 
-    const { data, ...swr } = useSWR(
+    useEffect(() => {
+      if (user?.favorites?.[caskId]) {
+        setIsFavorite(true)
+      } else {
+        setIsFavorite(false)
+      }
+    }, [user, caskId])
+
+    const {
+      data,
+      isLoading: isLoadingNft,
+      isValidating: isValidatingNft,
+    } = useSWR(
       'web3/useCaskNft',
       async () => {
         const { data: nfts }: any = await axios.get(`/api/casks/${caskId}`)
@@ -44,18 +59,59 @@ export const hookFactory: CaskNftHookFactory =
           ...nfts,
         }
       },
-      { revalidateOnFocus: true }
+      { revalidateOnFocus: false }
     )
+
+    const { data: totalFavoritesData } = useSWR(
+      'api/casks/:caskId/totalFavorites',
+      async () => {
+        const {
+          data: { totalFavorites },
+        }: any = await axios.get(`/api/casks/${caskId}/totalFavorites`)
+        return totalFavorites
+      },
+      { revalidateOnFocus: false }
+    )
+
+    const isLoading = isLoadingNft
+    const isValidating = isValidatingNft
+
+    useLoading({
+      loading: isLoading || isValidating,
+    })
 
     const _nftOffers = nftOffers
     const _nftVendor = nftVendor
     const _nftFractionsVendor = nftFractionsVendor
 
     const isUserNeededDataFilled =
-      user?.email && token && AcceptedChainIds.some((id) => id === chain!.id)
+      user?.email && token && AcceptedChainIds.some((id) => id === chain?.id)
     const hasOffersFromUser = data?.offer?.bidders?.some(
       (bidder: string) => bidder === user?.address
     )
+
+    useEffect(() => {
+      setTotalFavorites(totalFavoritesData)
+    }, [totalFavoritesData])
+
+    const handleAddFavorite = async () => {
+      const response = await axiosClient
+        .post(`/api/casks/${caskId}/favorite`, {
+          userId: user?._id,
+        })
+        .catch((err: any) => {
+          toast.error(err?.response?.data?.message)
+        })
+      setTotalFavorites(response?.data?.totalFavorites)
+      setIsFavorite(!isFavorite)
+    }
+
+    const handleShareCask = () => {
+      dispatch({
+        type: GlobalTypes.SET_SHARE_MODAL,
+        payload: { status: true },
+      })
+    }
 
     const handleUserState = useCallback(() => {
       if (
@@ -66,19 +122,19 @@ export const hookFactory: CaskNftHookFactory =
       ) {
         return dispatch({
           type: GlobalTypes.SET_NETWORK_MODAL,
-          payload: { state: true },
+          payload: { status: true },
         })
       }
       if (!user?.email) {
         return dispatch({
           type: GlobalTypes.SET_USER_INFO_MODAL,
-          payload: { state: true },
+          payload: { status: true },
         })
       }
       if (!token) {
         return dispatch({
           type: GlobalTypes.SET_SIGN_IN_MODAL,
-          payload: { state: true },
+          payload: { status: true },
         })
       }
     }, [dispatch, token, user?.email])
@@ -160,8 +216,6 @@ export const hookFactory: CaskNftHookFactory =
                 )
               ) / unitPrice
 
-            console.log(tokenAddress)
-
             await _nftFractionsVendor?.buyTokens(tokenAddress, {
               value: value.toString(),
             })
@@ -213,14 +267,19 @@ export const hookFactory: CaskNftHookFactory =
 
     return {
       data,
-      ...swr,
       buyNft,
       makeOffer,
+      isLoading,
+      isFavorite,
       cancelOffer,
       buyFractions,
+      isValidating,
       tokenAmmount,
       hasFractions,
+      totalFavorites,
+      handleShareCask,
       setTokenAmmount,
+      handleAddFavorite,
       hasOffersFromUser,
       buyFractionizedNft,
     }

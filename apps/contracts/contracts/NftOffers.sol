@@ -37,6 +37,7 @@ contract NftOffers is ReentrancyGuard {
   mapping(uint256 => address[]) public addressesFromTokenId;
   // NFT Id => Address => bool
   mapping(uint256 => mapping(address => bool)) public hasBidFromTokenId;
+  mapping(address => uint256) public pendingWithdrawals;
 
   modifier hasOffers(uint256 tokenId) {
     if (addressesFromTokenId[tokenId].length == 0) {
@@ -72,19 +73,25 @@ contract NftOffers is ReentrancyGuard {
   function makeOffer(uint256 _tokenId) public payable {
     // Ensure that the buyer is making a valid offer
 
-    require(msg.value > 0, "Offer price is too low");
+    require(msg.value > 0, "Offer price must be greater than 0");
 
     IERC721 nft = IERC721(collection);
-    address owner = nft.ownerOf(_tokenId);
+    require(nft.ownerOf(_tokenId) != address(0), "Invalid token ID");
 
-    if (offerBidsFromTokenId[_tokenId][msg.sender] > 0) {
-      uint amount = offerBidsFromTokenId[_tokenId][msg.sender];
-      payable(msg.sender).transfer(amount);
+    uint256 previousBid = offerBidsFromTokenId[_tokenId][msg.sender];
+    if (previousBid > 0) {
+      // Use a separate withdraw function to avoid reentrancy attacks
+      pendingWithdrawals[msg.sender] += previousBid;
     }
+
+    // if (offerBidsFromTokenId[_tokenId][msg.sender] > 0) {
+    //   uint amount = offerBidsFromTokenId[_tokenId][msg.sender];
+    //   payable(msg.sender).transfer(amount);
+    // }
 
     // No offers made
     if (tokenIdToOffer[_tokenId].highestBid == 0) {
-      _createNftOffer(_tokenId, msg.value, owner);
+      _createNftOffer(_tokenId, msg.value, nft.ownerOf(_tokenId));
     } else {
       require(
         msg.value > tokenIdToOffer[_tokenId].highestBid,
@@ -95,7 +102,7 @@ contract NftOffers is ReentrancyGuard {
       tokenIdToOffer[_tokenId].highestBid = msg.value;
     }
 
-    emit NewOffer(_tokenId, owner, msg.sender, msg.value);
+    emit NewOffer(_tokenId, nft.ownerOf(_tokenId), msg.sender, msg.value);
   }
 
   function getAddressesBids(
@@ -114,36 +121,50 @@ contract NftOffers is ReentrancyGuard {
     return addressesFromTokenId[_tokenId].length;
   }
 
-  function withdraw(uint256 _tokenId) external payable returns (bool) {
+  function withdrawOldOffers() external {
+    uint256 amount = pendingWithdrawals[msg.sender];
+    require(amount > 0, "No pending withdrawals");
+
+    // IMPORTANT: set the pending amount to 0 before sending to prevent re-entrancy attacks
+    pendingWithdrawals[msg.sender] = 0;
+
+    (bool success, ) = msg.sender.call{ value: amount }("");
+    require(success, "Withdrawal failed");
+  }
+
+  function withdraw(uint256 _tokenId) external returns (bool) {
+    require(
+      _tokenId > 0 && tokenIdToOffer[_tokenId].seller != address(0),
+      "Invalid token ID"
+    );
     require(
       offerBidsFromTokenId[_tokenId][msg.sender] > 0,
-      "You must have a bid to be able to witdraw"
+      "No active bid found"
     );
 
-    uint amount = offerBidsFromTokenId[_tokenId][msg.sender];
-    payable(msg.sender).transfer(amount);
+    uint256 amount = offerBidsFromTokenId[_tokenId][msg.sender];
+    delete offerBidsFromTokenId[_tokenId][msg.sender];
+
+    (bool success, ) = msg.sender.call{ value: amount }("");
+    require(success, "Transfer failed");
+
+    emit Withdraw(_tokenId, msg.sender, amount);
 
     _removeOffer(_tokenId, msg.sender);
 
-    if (tokenIdToOffer[_tokenId].highestBidder == msg.sender) {
+    if (amount > 0 && tokenIdToOffer[_tokenId].highestBidder == msg.sender) {
       tokenIdToOffer[_tokenId].highestBid = 0;
       tokenIdToOffer[_tokenId].highestBidder = tokenIdToOffer[_tokenId].seller;
-      for (uint i = 0; i < addressesFromTokenId[_tokenId].length; i++) {
-        if (
-          offerBidsFromTokenId[_tokenId][addressesFromTokenId[_tokenId][i]] >
-          tokenIdToOffer[_tokenId].highestBid
-        ) {
-          tokenIdToOffer[_tokenId].highestBid = offerBidsFromTokenId[_tokenId][
-            addressesFromTokenId[_tokenId][i]
-          ];
-          tokenIdToOffer[_tokenId].highestBidder = addressesFromTokenId[
-            _tokenId
-          ][i];
+
+      for (uint256 i = 0; i < addressesFromTokenId[_tokenId].length; i++) {
+        address bidder = addressesFromTokenId[_tokenId][i];
+        uint256 bidAmount = offerBidsFromTokenId[_tokenId][bidder];
+        if (bidAmount > tokenIdToOffer[_tokenId].highestBid) {
+          tokenIdToOffer[_tokenId].highestBid = bidAmount;
+          tokenIdToOffer[_tokenId].highestBidder = bidder;
         }
       }
     }
-
-    emit Withdraw(_tokenId, msg.sender, amount);
 
     return true;
   }
@@ -152,33 +173,40 @@ contract NftOffers is ReentrancyGuard {
     uint256 _tokenId,
     uint256 highestBid
   ) private {
-    CCNft nft = CCNft(collection);
-    uint256 royalty;
+    require(_tokenId != 0, "Invalid token ID");
+    require(highestBid > 0, "Invalid bid amount");
 
+    CCNft nft = CCNft(collection);
     bool excluded = nftVendor.isExcluded();
     address payable seller = payable(msg.sender);
     address payable creator = payable(nft.getNftCreator(_tokenId));
+    uint256 royalty = nftVendor.calculateRoyaltyForAcceptedOffer(
+      _tokenId,
+      highestBid
+    );
+    uint256 totalAmount = highestBid;
 
-    royalty = nftVendor.calculateRoyaltyForAcceptedOffer(_tokenId, highestBid);
-
-    if (excluded) {
-      seller.transfer(highestBid);
-    } else {
+    if (!excluded) {
+      require(creator != address(0), "Invalid creator address");
+      totalAmount -= royalty;
       creator.transfer(royalty);
-      seller.transfer(highestBid - royalty);
     }
+    seller.transfer(totalAmount);
   }
 
   function acceptOffer(
     uint256 _tokenId
   ) public payable isOwner(_tokenId, msg.sender) hasOffers(_tokenId) {
     CCNft nft = CCNft(collection);
-    if (nft.getApproved(_tokenId) != address(this)) {
-      revert NotApprovedForMarketplace();
-    }
+    require(
+      nft.getApproved(_tokenId) == address(this),
+      "NotApprovedForMarketplace"
+    );
+
+    Offer memory offer = tokenIdToOffer[_tokenId];
     address owner = nft.ownerOf(_tokenId);
-    uint256 highestBid = tokenIdToOffer[_tokenId].highestBid;
-    address highestBidder = tokenIdToOffer[_tokenId].highestBidder;
+    uint256 highestBid = offer.highestBid;
+    address highestBidder = offer.highestBidder;
 
     payRoyaltiesAndTransfer(_tokenId, highestBid);
 
@@ -206,6 +234,11 @@ contract NftOffers is ReentrancyGuard {
   }
 
   function _removeOffer(uint256 _tokenId, address bidder) internal {
+    require(
+      _tokenId > 0 && tokenIdToOffer[_tokenId].seller != address(0),
+      "Invalid token ID"
+    );
+    require(bidder != address(0), "Invalid bidder address");
     delete offerBidsFromTokenId[_tokenId][bidder];
 
     uint index = indexOfofferBidsFromAddress[_tokenId][bidder];

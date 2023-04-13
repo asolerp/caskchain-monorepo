@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
-import '@openzeppelin/contracts/token/ERC721/IERC721.sol';
-import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
-import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
-import '@openzeppelin/contracts/token/common/ERC2981.sol';
-import '@openzeppelin/contracts/utils/Counters.sol';
-import '@openzeppelin/contracts/access/Ownable.sol';
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/token/common/ERC2981.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 // Check out https://github.com/Fantom-foundation/Artion-Contracts/blob/5c90d2bc0401af6fb5abf35b860b762b31dfee02/contracts/FantomMarketplace.sol
 // For a full decentralized nft marketplace
@@ -33,21 +33,21 @@ contract NftVendor is ERC2981, ReentrancyGuard, Ownable {
   }
 
   event ItemListed(
-    address indexed seller,
+    address indexed from,
     address indexed nftAddress,
     uint256 indexed tokenId,
     uint256 price
   );
 
   event ItemCanceled(
-    address indexed seller,
+    address indexed from,
     address indexed nftAddress,
     uint256 indexed tokenId
   );
 
   event ItemBought(
-    address indexed buyer,
-    address indexed seller,
+    address indexed to,
+    address indexed from,
     uint256 indexed tokenId,
     uint256 price
   );
@@ -178,13 +178,15 @@ contract NftVendor is ERC2981, ReentrancyGuard, Ownable {
     bool isEscluded = isExcluded();
 
     if (isEscluded) {
-      (bool success1, ) = payable(listedItem.seller).call{value: msg.value}('');
+      (bool success1, ) = payable(listedItem.seller).call{ value: msg.value }(
+        ""
+      );
       require(success1);
     } else {
       _payTxFee(royaltyAmount);
       (bool success1, ) = payable(listedItem.seller).call{
         value: msg.value - royaltyAmount
-      }('');
+      }("");
       require(success1);
     }
 
@@ -198,11 +200,15 @@ contract NftVendor is ERC2981, ReentrancyGuard, Ownable {
     emit ItemBought(msg.sender, listedItem.seller, tokenId, listedItem.price);
   }
 
-   function payERC20Royalties(uint256 _tokenId, uint256 _nftPrice, address _erc20Token) private  {
-      IERC20 token = IERC20(_erc20Token);
-      address owner = IERC721(collection).ownerOf(_tokenId);
-      (, uint256 royalty) = royaltyInfo(_tokenId, _nftPrice);
-      bool isEscluded = isExcluded();
+  function payERC20Royalties(
+    uint256 _tokenId,
+    uint256 _nftPrice,
+    address _erc20Token
+  ) private {
+    IERC20 token = IERC20(_erc20Token);
+    address owner = IERC721(collection).ownerOf(_tokenId);
+    (, uint256 royalty) = royaltyInfo(_tokenId, _nftPrice);
+    bool isEscluded = isExcluded();
 
     if (isEscluded) {
       token.transferFrom(msg.sender, owner, _nftPrice);
@@ -210,26 +216,22 @@ contract NftVendor is ERC2981, ReentrancyGuard, Ownable {
       token.transferFrom(msg.sender, creator, royalty);
       token.transferFrom(msg.sender, owner, _nftPrice - royalty);
     }
+  }
 
-   }
+  function buyNFTWithERC20(
+    uint256 tokenId,
+    address erc20Token
+  ) external isListed(tokenId) isNotOwner(tokenId, msg.sender) nonReentrant {
+    Listing memory listedItem = s_listings[tokenId];
+    IERC20 token = IERC20(erc20Token);
 
+    uint256 nftPrice = s_priceTokens[erc20Token][tokenId];
+    require(
+      token.allowance(msg.sender, address(this)) >= nftPrice,
+      "Insufficient allowance."
+    );
 
-   function buyNFTWithERC20(uint256 tokenId, address erc20Token)     
-    external 
-    isListed(tokenId)
-    isNotOwner(tokenId, msg.sender)
-    nonReentrant 
-    {
-     Listing memory listedItem = s_listings[tokenId];
-     IERC20 token = IERC20(erc20Token);
-
-     uint256 nftPrice = s_priceTokens[erc20Token][tokenId];
-     require(
-       token.allowance(msg.sender, address(this)) >= nftPrice,
-       'Insufficient allowance.'
-     );
-
-    require(token.balanceOf(msg.sender) >= nftPrice, 'Insufficient balance.');
+    require(token.balanceOf(msg.sender) >= nftPrice, "Insufficient balance.");
 
     payERC20Royalties(tokenId, nftPrice, erc20Token);
     //token.transferFrom(msg.sender, owner, nftPrice);
@@ -242,8 +244,7 @@ contract NftVendor is ERC2981, ReentrancyGuard, Ownable {
     );
     _removeTokenFromAllListedTokensEnumeration(tokenId);
     emit ItemBought(msg.sender, collection, tokenId, listedItem.price);
-
-   }
+  }
 
   /*
    * @notice Method for updating listing
@@ -277,8 +278,8 @@ contract NftVendor is ERC2981, ReentrancyGuard, Ownable {
       revert NoProceeds();
     }
     s_proceeds[msg.sender] = 0;
-    (bool sent, ) = msg.sender.call{value: proceeds}('');
-    require(sent, 'Failed to withdraw');
+    (bool sent, ) = msg.sender.call{ value: proceeds }("");
+    require(sent, "Failed to withdraw");
   }
 
   function totalSupply() public view returns (uint256) {
@@ -286,7 +287,7 @@ contract NftVendor is ERC2981, ReentrancyGuard, Ownable {
   }
 
   function tokenByIndex(uint index) public view returns (uint) {
-    require(index < totalSupply(), 'Index out of bounds');
+    require(index < totalSupply(), "Index out of bounds");
     return _allListedNfts[index];
   }
 
@@ -326,16 +327,20 @@ contract NftVendor is ERC2981, ReentrancyGuard, Ownable {
     return isEscluded;
   }
 
-  function addERC20Token(address erc20Token) onlyOwner external  {
+  function addERC20Token(address erc20Token) external onlyOwner {
     s_acceptedTokens[erc20Token] = true;
     _allERC20Tokens.push(erc20Token);
   }
 
-  function removeERC20Token(address erc20Token) onlyOwner external  {
+  function removeERC20Token(address erc20Token) external onlyOwner {
     s_acceptedTokens[erc20Token] = false;
   }
 
-  function updateERC20TokenPrice(uint256 tokenId, address erc20Token, uint256 price) isOwner(tokenId, msg.sender) external {
+  function updateERC20TokenPrice(
+    uint256 tokenId,
+    address erc20Token,
+    uint256 price
+  ) external isOwner(tokenId, msg.sender) {
     s_priceTokens[erc20Token][tokenId] = price;
   }
 
@@ -358,7 +363,7 @@ contract NftVendor is ERC2981, ReentrancyGuard, Ownable {
   }
 
   function _payTxFee(uint256 royalty) public {
-    (bool success1, ) = payable(creator).call{value: royalty}('');
+    (bool success1, ) = payable(creator).call{ value: royalty }("");
     require(success1);
   }
 

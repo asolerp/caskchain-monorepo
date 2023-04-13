@@ -32,9 +32,8 @@ const GlobalProvider: React.FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(globalReducer, initialState)
 
   const handleRouteChange = useCallback(() => {
-    console.log(state)
     if (state.sideBar)
-      dispatch({ type: GlobalTypes.SET_SIDE_BAR, payload: { state: false } })
+      dispatch({ type: GlobalTypes.SET_SIDE_BAR, payload: { status: false } })
   }, [state])
 
   useEffect(() => {

@@ -5,6 +5,7 @@ import { GetSentOffersUseCase } from '../../domain/interfaces/use-cases/offers/g
 
 import { authenticateToken } from '../middlewares/authenticateToken'
 import { extractAddressFromToken } from '../utils/extractTokenFromRequest'
+import logger from '../utils/logger' // Import the logger
 
 export default function OffersRouter(
   getSentOffers: GetSentOffersUseCase,
@@ -16,10 +17,15 @@ export default function OffersRouter(
     '/sent',
     authenticateToken,
     async (req: Request, res: Response) => {
-      const address = extractAddressFromToken(req)
-      console.log('Address offers: ', address)
-      const sendOffers = await getSentOffers.execute(address)
-      res.json(sendOffers)
+      try {
+        const address = extractAddressFromToken(req)
+        logger.info('Getting sent offers for address: %s', address)
+        const sendOffers = await getSentOffers.execute(address)
+        res.json(sendOffers)
+      } catch (error: any) {
+        logger.error('Failed to get sent offers: %s', error.message, { error })
+        res.status(500).json({ error: 'Failed to get sent offers' })
+      }
     }
   )
 
@@ -27,9 +33,17 @@ export default function OffersRouter(
     '/received',
     authenticateToken,
     async (req: Request, res: Response) => {
-      const address = extractAddressFromToken(req)
-      const receivedOffers = await getReceivedOffers.execute(address)
-      res.json(receivedOffers)
+      try {
+        const address = extractAddressFromToken(req)
+        logger.info('Getting received offers for address: %s', address)
+        const receivedOffers = await getReceivedOffers.execute(address)
+        res.json(receivedOffers)
+      } catch (error: any) {
+        logger.error('Failed to get received offers: %s', error.message, {
+          error,
+        })
+        res.status(500).json({ error: 'Failed to get received offers' })
+      }
     }
   )
 

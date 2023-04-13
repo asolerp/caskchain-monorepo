@@ -56,7 +56,7 @@ export type Offers = {
 }
 
 export type TransactionHistory = {
-  id: string
+  _id: string
   from: string
   to: string
   date: Date

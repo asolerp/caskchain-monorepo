@@ -39,8 +39,11 @@ export class Web3Events extends Web3Repository {
           log.data,
           log.topics.slice(1)
         )
-        console.log('EVENTO', event)
-        callback && callback(event)
+        console.log('EVENTO', {
+          ...event,
+          transactionHash: log.transactionHash,
+        })
+        callback && callback({ ...event, transactionHash: log.transactionHash })
       })
 
     this.subscribedEvents[eventName] = subscription

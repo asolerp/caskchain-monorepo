@@ -21,6 +21,14 @@ export class MongoDBNFTDataSource
     return document[0]?.favorites
   }
 
+  public async updateOwnerNft(id: string, owner: string): Promise<void> {
+    const collection = await this.collection()
+    await collection.updateOne(
+      { _id: id },
+      { $set: { owner: { address: owner } } }
+    )
+  }
+
   public async updateFavoriteCounter(
     id: string,
     action: string

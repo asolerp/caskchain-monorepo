@@ -51,6 +51,10 @@ import { GetSentOffers } from './domain/use-cases/offer/get-sent-offers'
 import OnRemoveOffer from './presentation/subscriptions/on-remove-offer'
 import { RemoveOffer } from './domain/use-cases/offer/remove-offer'
 import { RemoveOfferImpl } from './domain/repositories/remove-offer-repository'
+import OnAcceptOffer from './presentation/subscriptions/on-accept-offer'
+import { AcceptOffer } from './domain/use-cases/offer/accept-offer'
+import { AcceptOfferImpl } from './domain/repositories/accept-offer-repository'
+import { UpdateOwnerNft } from './domain/use-cases/nft/update-owner-nft'
 ;(async () => {
   const clientDB = MongoClientFactory.createClient(
     process.env.CONTEXT_NAME as string,
@@ -172,6 +176,12 @@ import { RemoveOfferImpl } from './domain/repositories/remove-offer-repository'
   )
 
   const handleOnTransfer = OnTransfer(
+    new UpdateOwnerNft(
+      new NFTRepositoryImpl(
+        new Web3Transaction(web3Client, web3WsClient, web3Contracts),
+        new MongoDBNFTDataSource(clientDB)
+      )
+    ),
     new CreateTransaction(
       new TransactionRepositoryImpl(
         new MongoDBTransactionHistoryDataSource(clientDB)
@@ -183,12 +193,25 @@ import { RemoveOfferImpl } from './domain/repositories/remove-offer-repository'
     new RecordOffer(new RecordOfferImpl(new MongoDBOfferDataSource(clientDB)))
   )
 
+  const handleAcceptOffer = OnAcceptOffer(
+    new AcceptOffer(new AcceptOfferImpl(new MongoDBOfferDataSource(clientDB))),
+    new CreateTransaction(
+      new TransactionRepositoryImpl(
+        new MongoDBTransactionHistoryDataSource(clientDB)
+      )
+    )
+  )
+
   const handleRemoveOffer = OnRemoveOffer(
     new RemoveOffer(new RemoveOfferImpl(new MongoDBOfferDataSource(clientDB)))
   )
 
   eventsHandler.subscribeLogEvent('CCNft', 'Mint', handelOnMint)
   eventsHandler.subscribeLogEvent('CCNft', 'Approval')
+  eventsHandler.subscribeLogEvent('CCNft', 'Transfer', (transaction: any) =>
+    handleOnTransfer(transaction, 'transfer')
+  )
+
   eventsHandler.subscribeLogEvent(
     'NftVendor',
     'ItemBought',
@@ -196,6 +219,7 @@ import { RemoveOfferImpl } from './domain/repositories/remove-offer-repository'
   )
   eventsHandler.subscribeLogEvent('NftOffers', 'NewOffer', handleOnNewOffer)
   eventsHandler.subscribeLogEvent('NftOffers', 'RemoveOffer', handleRemoveOffer)
+  eventsHandler.subscribeLogEvent('NftOffers', 'AcceptOffer', handleAcceptOffer)
 
   server.use(
     '/api/user',

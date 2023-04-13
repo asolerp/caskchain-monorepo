@@ -1,8 +1,6 @@
 import { useAllNfts } from '@hooks/web3'
 import { BaseLayout } from '@ui'
 
-import { LoadingAnimation } from '@ui/common/Loading/LoadingAnimation'
-
 import BarrelNft from '@ui/ntf/item/BarrelNft'
 import { Nft } from '@_types/nft'
 import { NextPage } from 'next'
@@ -10,6 +8,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { useGlobal } from '@providers/global'
 
 const tabs = [
   { name: 'All barrels', href: '#', key: 'search' },
@@ -24,11 +23,17 @@ function classNames(...classes: string[]) {
 
 const NFTCaskWorld: NextPage = () => {
   const { nfts } = useAllNfts()
-
+  const {
+    state: { user },
+  } = useGlobal()
   const router = useRouter()
   const _selectedTab = (router.query.tab as string) ?? 'search'
   const selectedIndex = tabs.map((t) => t.key).indexOf(_selectedTab) ?? 0
   const [filteredNfts, setFilteredNfts] = useState(nfts?.data)
+
+  const hasFavoirte = (nftId: string) => {
+    return user?.favorites?.[nftId]
+  }
 
   useEffect(() => {
     const filtered = nfts?.data?.filter((nft: Nft) => {
@@ -49,21 +54,8 @@ const NFTCaskWorld: NextPage = () => {
     return null
   }
 
-  // const filteredNfts = nfts?.data?.filter((nft: Nft) => {
-  //   if (filter === 'all') {
-  //     return true
-  //   }
-  //   if (filter === 'onSale' && nft?.price) {
-  //     return nft?.price > 0
-  //   }
-  //   if (filter === 'fractionized') {
-  //     return nft?.fractions?.total > 0
-  //   }
-  // })
-
   return (
     <BaseLayout background="bg-gradient-to-r from-[#0F0F0F] via-[#161616] to-[#000000]">
-      {(nfts?.isLoading || nfts?.isValidating) && <LoadingAnimation />}
       <div className="py-16 sm:px-6 pt-40 w-3/4  px-4">
         <h2 className="tracking-tight font-extrabold text-gray-100 font-rale sm:text-6xl">
           Marketplace
@@ -105,9 +97,18 @@ const NFTCaskWorld: NextPage = () => {
             {filteredNfts?.length ? (
               <>
                 {filteredNfts?.map((nft: Nft) => (
-                  <Link key={nft.tokenId} href={`/cask/${nft.tokenId}`}>
-                    <BarrelNft isMarketPlace item={nft} blow />
-                  </Link>
+                  // <Link key={nft.tokenId} href={`/cask/${nft.tokenId}`}>
+                  <BarrelNft
+                    key={nft?.tokenId}
+                    isMarketPlace
+                    item={nft}
+                    onPressFavorite={(nftId: string) =>
+                      nfts.handleAddFavorite(nftId)
+                    }
+                    isFavorite={hasFavoirte(nft?.tokenId)}
+                    blow
+                  />
+                  // </Link>
                 ))}
               </>
             ) : (

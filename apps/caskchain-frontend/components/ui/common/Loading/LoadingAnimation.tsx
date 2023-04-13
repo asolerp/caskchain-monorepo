@@ -9,8 +9,14 @@ export const LoadingAnimation = () => {
   const [lottie, setLottie] = useState<LottiePlayer | null>(null)
 
   useEffect(() => {
-    document.body.style.overflow = 'hidden'
     import('lottie-web').then((Lottie) => setLottie(Lottie.default))
+  }, [])
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = 'auto'
+    }
   }, [])
 
   useEffect(() => {
@@ -25,7 +31,6 @@ export const LoadingAnimation = () => {
       })
 
       return () => {
-        document.body.style.overflow = 'auto'
         animation.destroy()
       }
     }

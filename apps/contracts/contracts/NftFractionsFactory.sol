@@ -1,28 +1,33 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import '@openzeppelin/contracts/access/Ownable.sol';
-import '@openzeppelin/contracts/security/Pausable.sol';
-import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
-import '@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol';
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
 
-import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
-import '@openzeppelin/contracts/utils/math/SafeMath.sol';
-import '@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol';
-import '@openzeppelin/contracts/utils/math/SafeMath.sol';
-import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-import './InitializedProxy.sol';
-import './NftFractionToken.sol';
+import "./InitializedProxy.sol";
+import "./NftFractionToken.sol";
 
 contract NftFractionsFactory is Ownable, Pausable {
+  struct Vault {
+    address vaultAddress;
+    uint256 count;
+  }
   /// @notice the number of ERC721 vaults
   uint256 public vaultCount;
   address[] public tokenAddressCreated;
 
   /// @notice the mapping of vault number to vault contract
-  mapping(uint256 => address) public vaults;
-  mapping(uint256 => address) public vaultByTokenId;
+  mapping(uint256 => Vault) public vaults;
+
+  mapping(address => mapping(uint256 => bool)) public nftToVault;
 
   /// @notice the TokenVault logic contract
   address public immutable logic;
@@ -57,8 +62,18 @@ contract NftFractionsFactory is Ownable, Pausable {
     uint256 _fee,
     uint256 _listPrice
   ) external whenNotPaused returns (uint256) {
+    require(!nftToVault[_token][_id], "NFT already locked in a vault");
+    // Check if the caller owns the token or is approved for transfer
+    require(
+      IERC721(_token).getApproved(_id) == address(this) ||
+        IERC721(_token).ownerOf(_id) == msg.sender,
+      "Caller must be approved or owner of token"
+    );
+
+    nftToVault[_token][_id] = true;
+
     bytes memory _initializationCalldata = abi.encodeWithSignature(
-      'initialize(address,address,uint256,uint256,uint256,uint256,string,string)',
+      "initialize(address,address,uint256,uint256,uint256,uint256,string,string)",
       msg.sender,
       _token,
       _id,
@@ -73,40 +88,64 @@ contract NftFractionsFactory is Ownable, Pausable {
       new InitializedProxy(logic, _initializationCalldata)
     );
 
-    emit Mint(_token, _id, _listPrice, vault, vaultCount);
+    vaults[vaultCount] = Vault(vault, vaultCount);
+    tokenAddressCreated.push(vault);
+    vaultCount++;
 
+    // Interact with external contracts after updating state
     IERC721(_token).safeTransferFrom(msg.sender, vault, _id);
 
-    vaultByTokenId[_id] = vault;
-    vaults[vaultCount] = vault;
-    tokenAddressCreated.push(vault);
-
-    vaultCount++;
+    emit Mint(_token, _id, _listPrice, vault, vaultCount);
 
     return vaultCount - 1;
   }
 
+  function vaultExists(
+    address _token,
+    uint256 nftId
+  ) public view returns (bool) {
+    return nftToVault[_token][nftId];
+  }
+
+  function getVaultIndexByAddress(
+    address _vaultAddress
+  ) internal view returns (uint256) {
+    for (uint256 i = 0; i < vaultCount; i++) {
+      if (vaults[i].vaultAddress == _vaultAddress) {
+        return i;
+      }
+    }
+    revert("Vault not found");
+  }
+
   function getVaultContractByTokenId(
     uint256 _tokenId
-  ) external view returns (ERC20) {
-    ERC20 vault = ERC20(vaultByTokenId[_tokenId]);
-    return vault;
+  ) external view returns (Vault memory) {
+    address vaultAddress = vaults[_tokenId].vaultAddress;
+    require(vaultAddress != address(0), "Invalid Token ID");
+    return vaults[getVaultIndexByAddress(vaultAddress)];
   }
 
   function getAllCreatedVaults() external view returns (address[] memory) {
     return tokenAddressCreated;
   }
 
-  function getVaultContract(uint256 _id) external view returns (ERC20) {
-    ERC20 vault = ERC20(vaults[_id]);
+  function getVaultContract(uint256 _id) external view returns (Vault memory) {
+    Vault memory vault = vaults[_id];
     return vault;
   }
 
-  function pause() external onlyOwner {
+  function pause() external onlyOwner whenNotPaused {
     _pause();
+    emit Paused(msg.sender);
   }
 
-  function unpause() external onlyOwner {
+  function unpause() external onlyOwner whenPaused {
     _unpause();
+    emit Unpaused(msg.sender);
+  }
+
+  fallback() external {
+    revert("This contract does not accept ETH or tokens");
   }
 }

@@ -37,6 +37,7 @@ export const hookFactory: NetworkHookFactory =
         if (!chainId) {
           throw 'Cannot retreive network. Please, refresh browser or connect to other one.'
         }
+
         return NETWORKS[chainId]
       },
       {

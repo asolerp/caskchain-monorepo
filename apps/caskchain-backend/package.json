@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@truffle/hdwallet-provider": "^2.1.4",
+    "@types/winston-loggly-bulk": "^3.0.3",
     "abi-decoder": "^2.4.0",
     "amqplib": "^0.10.3",
     "axios": "^1.2.1",
@@ -36,6 +37,7 @@
     "jsonwebtoken": "^9.0.0",
     "jwt-decode": "^3.1.2",
     "mongodb": "^4.13.0",
+    "mongodb-memory-server": "^8.12.2",
     "nodemon": "^2.0.20",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
@@ -43,7 +45,9 @@
     "ts-node-dev": "^2.0.0",
     "uuid": "^9.0.0",
     "uuidv4": "^6.2.13",
-    "web3": "^1.8.1"
+    "web3": "^1.8.1",
+    "winston": "^3.8.2",
+    "winston-loggly-bulk": "^3.2.1"
   },
   "devDependencies": {
     "@types/amqplib": "^0.10.1",

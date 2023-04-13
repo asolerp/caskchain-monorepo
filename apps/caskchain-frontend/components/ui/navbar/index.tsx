@@ -1,3 +1,4 @@
+import React from 'react'
 import { Disclosure } from '@headlessui/react'
 import { Bars3Icon, WalletIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
@@ -16,6 +17,7 @@ import { getCookie } from 'cookies-next'
 import Image from 'next/image'
 import Sidebar from './Sidebar'
 import NetworkModal from '@ui/modals/NetworkModal'
+import ShareModal from '@ui/modals/ShareModal'
 
 const navigation = [
   { name: 'Home', href: '/', url: '/' },
@@ -30,14 +32,20 @@ const navigation = [
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
-
-export default function Navbar() {
+const Navbar = () => {
   useAuth()
   const { account } = useAccount()
   const { network } = useNetwork()
   const token = getCookie('token') as string
   const {
-    state: { userInfoModal, signInModal, networkModal, user, sideBar },
+    state: {
+      userInfoModal,
+      signInModal,
+      networkModal,
+      shareModal,
+      user,
+      sideBar,
+    },
     dispatch,
   } = useGlobal()
 
@@ -50,6 +58,15 @@ export default function Navbar() {
         closeModal={() =>
           dispatch({
             type: GlobalTypes.SET_NETWORK_MODAL,
+            payload: { status: false },
+          })
+        }
+      />
+      <ShareModal
+        modalIsOpen={shareModal}
+        closeModal={() =>
+          dispatch({
+            type: GlobalTypes.SET_SHARE_MODAL,
             payload: { status: false },
           })
         }
@@ -195,3 +212,6 @@ export default function Navbar() {
     </>
   )
 }
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default React.memo(Navbar)

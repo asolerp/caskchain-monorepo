@@ -95,7 +95,7 @@ const UserInfoModal: React.FC<Props> = ({ modalIsOpen, closeModal }) => {
                       setTimeout(() => {
                         return dispatch({
                           type: GlobalTypes.SET_SIGN_IN_MODAL,
-                          payload: { state: true },
+                          payload: { status: true },
                         })
                       }, 300)
                     },

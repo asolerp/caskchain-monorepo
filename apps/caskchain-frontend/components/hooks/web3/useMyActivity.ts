@@ -1,7 +1,9 @@
 import { CryptoHookFactory } from '@_types/hooks'
+import useLoading from '@hooks/common/useLoading'
 import axiosClient from 'lib/fetcher/axiosInstance'
 import { toast } from 'react-toastify'
 import useSWR from 'swr'
+import { useAccount } from 'wagmi'
 
 type UseMyActivityResponse = {
   sentOffers: any[]
@@ -15,6 +17,27 @@ export type UseMyActivityHook = ReturnType<MyActivityHookFactory>
 export const hookFactory: MyActivityHookFactory =
   ({ ccNft, nftOffers }) =>
   () => {
+    const { address } = useAccount()
+
+    const {
+      data: transactions,
+      isLoading: transactionsLoading,
+      isValidating: transactionsValidating,
+      mutate: transactionsRefetch,
+    } = useSWR(
+      '/api/transactions',
+      async () => {
+        const offers: any = await axiosClient.get(
+          `/api/transactions?wallet_address=${address}`
+        )
+        return offers.data
+      },
+      {
+        revalidateOnFocus: false,
+        revalidateOnMount: false,
+      }
+    )
+
     const {
       data: sentOffers,
       isLoading: sentOffersLoading,
@@ -52,6 +75,13 @@ export const hookFactory: MyActivityHookFactory =
     const _ccNft = ccNft
     const _nftOffers = nftOffers
 
+    const isLoading =
+      sentOffersLoading || receivedOffersLoading || transactionsLoading
+    const isValidating =
+      sentOffersValidating || receivedOffersValidating || transactionsValidating
+
+    useLoading({ loading: isLoading || isValidating })
+
     const acceptOffer = async (tokenId: string) => {
       try {
         await _ccNft
@@ -64,6 +94,7 @@ export const hookFactory: MyActivityHookFactory =
               error: 'Processing error',
             })
           })
+        receivedOffersRefetch()
       } catch (e: any) {
         console.log(e)
       }
@@ -74,9 +105,11 @@ export const hookFactory: MyActivityHookFactory =
       receivedOffersLoading,
       receivedOffersRefetch,
       sentOffersValidating,
+      transactionsRefetch,
       sentOffersLoading,
       sentOffersRefetch,
       receivedOffers,
+      transactions,
       acceptOffer,
       sentOffers,
     }

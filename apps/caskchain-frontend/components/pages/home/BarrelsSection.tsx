@@ -96,6 +96,7 @@ const BarrelsSection = () => {
             {barrels.map((barrel, i) => (
               <BarrelNft
                 key={i}
+                showFavorite={false}
                 active={true}
                 isMarketPlace={false}
                 item={barrel}

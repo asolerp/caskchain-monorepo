@@ -13,6 +13,7 @@ import { authenticateToken } from '../middlewares/authenticateToken'
 import { DeleteTokensUseCase } from '../../domain/interfaces/use-cases/auth/delete-tokens'
 import { GetBalancesUseCase } from '../../domain/interfaces/use-cases/get-balances'
 import jwt_decode from 'jwt-decode'
+import logger from '../utils/logger'
 
 export default function UserRouter(
   getUser: GetUserUseCase,
@@ -28,11 +29,24 @@ export default function UserRouter(
     '/balances',
     authenticateToken,
     async (req: Request, res: Response) => {
-      const authHeader = req.headers['authorization']
-      const token = authHeader && authHeader.split(' ')[1]
-      const { address } = jwt_decode(token as string) as any
-      const balances = await getBalances.execute(address.toLowerCase())
-      return res.json(balances)
+      try {
+        const authHeader = req.headers['authorization']
+        const token = authHeader && authHeader.split(' ')[1]
+        const { address } = jwt_decode(token as string) as any
+        const balances = await getBalances.execute(address.toLowerCase())
+        logger.info('Successfully retrieved balances for address %s', address, {
+          metadata: {
+            service: 'user-router',
+          },
+        })
+        return res.json(balances)
+      } catch (error: any) {
+        logger.error('Failed to retrieve balances: %s', error.message, {
+          error,
+          metadata: { service: 'user-router' },
+        })
+        return res.status(422).send({ message: 'Cannot get balances' })
+      }
     }
   )
 
@@ -40,6 +54,11 @@ export default function UserRouter(
     '/verify',
     authenticateToken,
     async (req: Request, res: Response) => {
+      logger.info('Access verified', {
+        metadata: {
+          service: 'user-router',
+        },
+      })
       res.status(200).send({ message: 'Allowed access' })
     }
   )
@@ -47,9 +66,22 @@ export default function UserRouter(
   router.get(
     '/:userAddress/cleanTokens',
     async (req: Request, res: Response) => {
-      const address = req.params.userAddress
-      await removeTokens.execute(address)
-      res.status(200).send({ message: 'Logout correctly' })
+      try {
+        const address = req.params.userAddress
+        await removeTokens.execute(address)
+        logger.info('Tokens successfully cleaned for address %s', address, {
+          metadata: {
+            service: 'user-router',
+          },
+        })
+        res.status(200).send({ message: 'Logout correctly' })
+      } catch (error: any) {
+        logger.error('Failed to clean tokens: %s', error.message, {
+          error,
+          metadata: { service: 'user-router' },
+        })
+        return res.status(422).send({ message: 'Cannot clean tokens' })
+      }
     }
   )
 
@@ -69,11 +101,24 @@ export default function UserRouter(
           user = await getUser.execute(userAddress.toLowerCase())
         }
 
+        logger.info(
+          'Successfully retrieved user with address %s',
+          userAddress,
+          {
+            metadata: {
+              service: 'user-router',
+            },
+          }
+        )
         return res.json({ ...user })
       } else {
-        throw 'Token id is necessary'
+        throw new Error('Token id is necessary')
       }
-    } catch {
+    } catch (error: any) {
+      logger.error('Failed to get user: %s', error.message, {
+        error,
+        metadata: { service: 'user-router' },
+      })
       return res.status(422).send({ message: 'Cannot get the user' })
     }
   })
@@ -82,8 +127,17 @@ export default function UserRouter(
     try {
       const userAddress = req.params?.userAddress as string
       const user = await getUser.execute(userAddress.toLowerCase())
+      logger.info('Successfully retrieved nonce for address %s', userAddress, {
+        metadata: {
+          service: 'user-router',
+        },
+      })
       return res.json(user!.nonce)
-    } catch {
+    } catch (error: any) {
+      logger.error('Failed to get nonce: %s', error.message, {
+        error,
+        metadata: { service: 'user-router' },
+      })
       return res.status(422).send({ message: 'Cannot get nonce' })
     }
   })
@@ -101,8 +155,12 @@ export default function UserRouter(
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET as string,
       (err: any, user: any) => {
-        console.log('REFRESH TOKEN USER', user)
-        if (err) return res.sendStatus(403)
+        if (err) {
+          logger.error('Failed to verify refresh token: %s', err.message, {
+            err,
+          })
+          return res.sendStatus(403)
+        }
         const accessToken = jwt.sign(
           {
             _id: user._id,
@@ -110,6 +168,15 @@ export default function UserRouter(
           },
           process.env.TOKEN_SECRET as string,
           { expiresIn: '60m' }
+        )
+        logger.info(
+          'Refresh token verified and new access token generated',
+          null,
+          {
+            metadata: {
+              service: 'user-router',
+            },
+          }
         )
         res.json({ token: accessToken })
       }
@@ -129,7 +196,6 @@ export default function UserRouter(
             JSON.parse(message),
             signature
           )
-
           // Check if address matches
           if (address.toLowerCase() === signerAddr.toLowerCase()) {
             // Change user nonce
@@ -137,7 +203,11 @@ export default function UserRouter(
               nonce: JSON.stringify(generateNonce()),
             })
 
-            console.log('USER ADDRESS: ', user.address)
+            logger.info('Address matched, user is authenticated', null, {
+              metadata: {
+                service: 'user-router',
+              },
+            })
 
             // Set jwt token
             const token = jwt.sign(
@@ -174,11 +244,19 @@ export default function UserRouter(
             })
           } else {
             // User is not authenticated
+            logger.warn('Address mismatch, invalid credentials', null, {
+              metadata: {
+                service: 'user-router',
+              },
+            })
             res.status(401).send('Invalid credentials')
           }
         }
-      } catch (err) {
-        console.log(err)
+      } catch (err: any) {
+        logger.error('Failed to sign user: %s', err.message, {
+          err,
+          metadata: { service: 'user-router' },
+        })
         return res.status(422).send({ message: 'Cannot sign the user' })
       }
     }
@@ -188,8 +266,17 @@ export default function UserRouter(
     const { id, email, nickname } = req.body
     try {
       await saveUser.execute(id, { email, nickname })
+      logger.info('User with ID %s updated', id, {
+        metadata: {
+          service: 'user-router',
+        },
+      })
       res.status(201).send({ message: 'User updated' })
-    } catch (err) {
+    } catch (err: any) {
+      logger.error('Failed to save user: %s', err.message, {
+        err,
+        metadata: { service: 'user-router' },
+      })
       return res.status(422).send({ message: 'Cannot save the user' })
     }
   })

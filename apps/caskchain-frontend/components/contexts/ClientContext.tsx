@@ -84,54 +84,6 @@ export function ClientContextProvider({
     resetApp()
   }, [ethereumProvider])
 
-  const _subscribeToProviderEvents = useCallback(
-    async (_client: UniversalProvider) => {
-      if (typeof _client === 'undefined') {
-        throw new Error('WalletConnect is not initialized')
-      }
-
-      _client.on('display_uri', async () => {
-        console.log('EVENT', 'QR Code Modal open')
-      })
-
-      // Subscribe to session ping
-      _client.on(
-        'session_ping',
-        ({ id, topic }: { id: number; topic: string }) => {
-          console.log('EVENT', 'session_ping')
-          console.log(id, topic)
-        }
-      )
-
-      // Subscribe to session event
-      _client.on(
-        'session_event',
-        ({ event, chainId }: { event: any; chainId: string }) => {
-          console.log('EVENT', 'session_event')
-          console.log(event, chainId)
-        }
-      )
-
-      // Subscribe to session update
-      _client.on(
-        'session_update',
-        ({ session }: { topic: string; session: SessionTypes.Struct }) => {
-          console.log('EVENT', 'session_updated', session)
-        }
-      )
-
-      // Subscribe to session delete
-      _client.on(
-        'session_delete',
-        ({ id, topic }: { id: number; topic: string }) => {
-          console.log('EVENT', 'session_deleted')
-          console.log(id, topic)
-        }
-      )
-    },
-    []
-  )
-
   const createClient = useCallback(async () => {
     try {
       setIsInitializing(true)
@@ -171,10 +123,6 @@ export function ClientContextProvider({
         throw new ReferenceError('WalletConnect Client is not initialized.')
       }
 
-      const chainId = caipChainId.split(':').pop()
-
-      console.log('Enabling EthereumProvider for chainId: ', chainId)
-
       const session = await ethereumProvider.connect({
         namespaces: {
           eip155: {
@@ -198,7 +146,6 @@ export function ClientContextProvider({
 
       createWeb3Provider(ethereumProvider)
       const _accounts = await ethereumProvider.enable()
-      console.log('_accounts', _accounts)
       setAccounts(_accounts)
       setSession(session)
 
@@ -215,15 +162,12 @@ export function ClientContextProvider({
       const allNamespaceAccounts = Object.values(_session.namespaces)
         .map((namespace) => namespace.accounts)
         .flat()
-      const allNamespaceChains = Object.keys(_session.namespaces)
 
       const chainData = allNamespaceAccounts[0].split(':')
       const caipChainId = `${chainData[0]}:${chainData[1]}`
-      console.log('restored caipChainId', caipChainId)
       setChain(caipChainId)
       setSession(_session)
       setAccounts(allNamespaceAccounts.map((account) => account.split(':')[2]))
-      console.log('RESTORED', allNamespaceChains, allNamespaceAccounts)
       createWeb3Provider(ethereumProvider)
     },
     [ethereumProvider, createWeb3Provider]
@@ -237,12 +181,10 @@ export function ClientContextProvider({
       const pairings = provider.client.pairing.getAll({ active: true })
       // populates existing pairings to state
       setPairings(pairings)
-      console.log('RESTORED PAIRINGS: ', pairings)
       if (typeof session !== 'undefined') return
       // populates (the last) existing session to state
       if (ethereumProvider?.session) {
         const _session = ethereumProvider?.session
-        console.log('RESTORED SESSION:', _session)
         await onSessionConnected(_session)
         return _session
       }
@@ -255,11 +197,6 @@ export function ClientContextProvider({
       createClient()
     }
   }, [client, createClient])
-
-  useEffect(() => {
-    if (ethereumProvider && web3Modal)
-      _subscribeToProviderEvents(ethereumProvider)
-  }, [_subscribeToProviderEvents, ethereumProvider, web3Modal])
 
   useEffect(() => {
     const fetchBalances = async () => {

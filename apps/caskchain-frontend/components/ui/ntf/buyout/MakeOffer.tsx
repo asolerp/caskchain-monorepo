@@ -1,3 +1,4 @@
+import React from 'react'
 import Button from '@ui/common/Button'
 import Input from '@ui/common/Input'
 import Spacer from '@ui/common/Spacer'
@@ -23,8 +24,6 @@ const MakeOffer: React.FC<Props> = ({
 }) => {
   const [offer, setOffer] = useState<number>()
   const { address } = useAccount()
-
-  console.log("hola")
 
   const hasOffer = cask?.offer?.bidders?.some(
     (bidder: string) => bidder === address
@@ -91,4 +90,4 @@ const MakeOffer: React.FC<Props> = ({
   )
 }
 
-export default MakeOffer
+export default React.memo(MakeOffer)

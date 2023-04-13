@@ -11,7 +11,6 @@ type LinkProps = {
 
 const ActiveLink: React.FC<LinkProps> = ({ children, ...props }) => {
   const { pathname } = useRouter()
-  console.log(pathname, props.url, 'pathname')
   let className = children!.props.className || ''
   const _defaultClass = `${className} text-gray-100`
 

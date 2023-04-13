@@ -7,7 +7,9 @@ import { useEffect } from 'react'
 import useSWR from 'swr'
 import { useAccount } from 'wagmi'
 
-type UseAuthResponse = void
+type UseAuthResponse = {
+  refetchUser: () => Promise<any>
+}
 
 type AuthHookFactory = GeneralHookFactory<UseAuthResponse>
 
@@ -17,10 +19,13 @@ export const hookFactory: AuthHookFactory = () => () => {
   const { address } = useAccount()
   const { dispatch } = useGlobal()
 
-  const { data: user } = useSWR(
+  const { data: user, mutate: refetchUser } = useSWR(
     address ? `/api/user/${address.toLowerCase()}` : null,
     async (url: string) => {
       return axiosClient.get(url).then((res: any) => res.data)
+    },
+    {
+      revalidateOnFocus: false,
     }
   )
 
@@ -32,4 +37,8 @@ export const hookFactory: AuthHookFactory = () => () => {
       })
     }
   }, [user, dispatch, address])
+
+  return {
+    refetchUser,
+  }
 }

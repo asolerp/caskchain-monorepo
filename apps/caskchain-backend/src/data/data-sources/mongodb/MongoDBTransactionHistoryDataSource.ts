@@ -25,14 +25,16 @@ export class MongoDBTransactionHistoryDataSource
   public async searchByWalletAddress(
     walletAddress: string
   ): Promise<any | null> {
-    console.log('WALLET ADDRESS: ' + walletAddress)
     const collection = await this.collection()
     const document = await collection
-      .find<any>({ from: walletAddress })
+      .find<any>({
+        $and: [
+          {
+            $or: [{ from: walletAddress }, { to: walletAddress }],
+          },
+        ],
+      })
       .toArray()
-
-    // console.log('HOLA')
-    // console.log(document)
 
     return document || null
   }

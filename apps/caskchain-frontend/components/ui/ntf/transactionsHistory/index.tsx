@@ -3,6 +3,11 @@ import React from 'react'
 import { TransactionHistory } from '@_types/nft'
 import { ethers } from 'ethers'
 import { addressSimplifier } from 'utils/addressSimplifier'
+import Link from 'next/link'
+import {
+  ArrowTopRightOnSquareIcon,
+  ShareIcon,
+} from '@heroicons/react/24/outline'
 
 type TransactionsHistoryProps = {
   transactions?: TransactionHistory[]
@@ -29,6 +34,12 @@ const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({
                     scope="col"
                     className="text-lg font-medium text-cask-chain px-6 py-4 text-left"
                   >
+                    Barrel ID
+                  </th>
+                  <th
+                    scope="col"
+                    className="text-lg font-medium text-cask-chain px-6 py-4 text-left"
+                  >
                     From
                   </th>
                   <th
@@ -49,16 +60,26 @@ const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({
                   >
                     Price
                   </th>
+                  <th
+                    scope="col"
+                    className="text-lg font-medium text-cask-chain px-6 py-4 text-left"
+                  >
+                    TX
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 <>
                   {transactions &&
                     transactions?.map((item, i) => {
+                      console.log('ITEM', item._id)
                       return (
                         <tr key={i} className="">
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100">
                             {i}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100">
+                            <p className="text-center">#{item?.tokenId}</p>
                           </td>
                           <td className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap">
                             {addressSimplifier(item.from)}
@@ -76,6 +97,13 @@ const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({
                                 .toString()}{' '}
                             ETH
                           </td>
+                          <td className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap">
+                            <Link
+                              href={`https://mumbai.polygonscan.com/tx/${item?._id}`}
+                            >
+                              <ArrowTopRightOnSquareIcon className="h-6 w-6 text-cask-chain" />
+                            </Link>
+                          </td>
                         </tr>
                       )
                     })}
@@ -89,4 +117,4 @@ const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({
   )
 }
 
-export default TransactionsHistory
+export default React.memo(TransactionsHistory)

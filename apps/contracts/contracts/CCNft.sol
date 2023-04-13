@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
-import '@openzeppelin/contracts/token/common/ERC2981.sol';
-import '@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol';
-import '@openzeppelin/contracts/access/Ownable.sol';
-import '@openzeppelin/contracts/utils/Counters.sol';
-import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
-import '@openzeppelin/contracts/utils/math/SafeMath.sol';
-import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
+import "@openzeppelin/contracts/token/common/ERC2981.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract CCNft is ERC721URIStorage, ERC2981, Ownable {
   using SafeMath for uint256;
@@ -29,7 +29,7 @@ contract CCNft is ERC721URIStorage, ERC2981, Ownable {
   uint256 constant SECONDS_PER_DAY = 24 * 60 * 60;
   int256 constant OFFSET19700101 = 2440588;
   bool public paused = false;
-
+  IERC721 private _nft;
   Counters.Counter private _tokenIds;
 
   // TokenURI => Bool (Is used?)
@@ -56,54 +56,58 @@ contract CCNft is ERC721URIStorage, ERC2981, Ownable {
 
   event NftItemCreated(uint256 tokenId, address creator);
 
-  constructor() ERC721('CasksNFT', 'CSKNFT') {}
+  constructor() ERC721("CasksNFT", "CSKNFT") {
+    _nft = IERC721(address(this));
+  }
 
   /////////////////////
   // Main Functions //
   /////////////////////
 
-  function mintNFT(string memory tokenURI) public onlyOwner returns (uint256) {
-    require(!_tokenURIExists(tokenURI), 'Token URI already exists');
+  function mintNFT(string memory _tokenURI) public onlyOwner returns (uint256) {
+    require(bytes(_tokenURI).length > 0, "Token URI must not be empty");
+    require(!_usedTokenURIs[_tokenURI], "Token URI already exists");
 
     _tokenIds.increment();
-
     uint256 newItemId = _tokenIds.current();
-    uint256 year = getYear(block.timestamp);
 
     _safeMint(msg.sender, newItemId);
+    _setTokenURI(newItemId, _tokenURI);
 
-    _setTokenURI(newItemId, tokenURI);
-    _createNftItem(newItemId);
-    _usedTokenURIs[tokenURI] = true;
+    uint256 year = getYear(block.timestamp);
     _tokensExtractionsByYear[newItemId][year] = 0;
 
-    // _createNftOffer(newItemId, price, msg.sender);
+    _usedTokenURIs[_tokenURI] = true;
+    _createNftItem(newItemId);
 
-    emit Mint(msg.sender, newItemId, tokenURI);
+    emit Mint(msg.sender, newItemId, _tokenURI);
 
     return newItemId;
   }
 
   function burn(uint256 tokenId) public onlyOwner {
-    super._burn(tokenId);
+    require(_exists(tokenId), "Token does not exist");
+    require(
+      ownerOf(tokenId) == _msgSender(),
+      "Ownable: caller is not the owner"
+    );
     _resetTokenRoyalty(tokenId);
+    super._burn(tokenId);
   }
 
   function getNftInfo(uint256 tokenId) external view returns (NftItem memory) {
-    NftItem storage item = _idToNftItem[tokenId];
+    require(_nft.ownerOf(tokenId) != address(0), "NFT does not exist");
+    NftItem memory item = _idToNftItem[tokenId];
     return item;
   }
 
   function getAllNFTs() external view returns (NftItem[] memory) {
-    uint allItemsCounts = totalSupply();
-    uint currentIndex = 0;
-    NftItem[] memory items = new NftItem[](_tokenIds.current());
+    uint256 totalItemsCount = totalSupply();
+    NftItem[] memory items = new NftItem[](totalItemsCount);
 
-    for (uint i = 0; i < allItemsCounts; i++) {
-      uint tokenId = tokenByIndex(i);
-      NftItem storage item = _idToNftItem[tokenId];
-      items[currentIndex] = item;
-      currentIndex += 1;
+    for (uint256 i = 0; i < totalItemsCount; i++) {
+      uint256 tokenId = tokenByIndex(i);
+      items[i] = _idToNftItem[tokenId];
     }
 
     return items;
@@ -112,13 +116,11 @@ contract CCNft is ERC721URIStorage, ERC2981, Ownable {
   function getAllNftsOnSale(
     uint256[] memory _tokensIds
   ) external view returns (NftItem[] memory) {
-    uint currentIndex = 0;
     NftItem[] memory items = new NftItem[](_tokensIds.length);
 
-    for (uint i = 0; i < _tokensIds.length; i++) {
-      NftItem storage item = _idToNftItem[_tokensIds[i]];
-      items[currentIndex] = item;
-      currentIndex += 1;
+    for (uint256 i = 0; i < _tokensIds.length; i++) {
+      NftItem memory item = _idToNftItem[_tokensIds[i]];
+      items[i] = item;
     }
 
     return items;
@@ -128,9 +130,9 @@ contract CCNft is ERC721URIStorage, ERC2981, Ownable {
     uint ownedItemsCount = ERC721.balanceOf(msg.sender);
     NftItem[] memory items = new NftItem[](ownedItemsCount);
 
-    for (uint i = 0; i < ownedItemsCount; i++) {
-      uint tokenId = tokenOfOwnerByIndex(msg.sender, i);
-      NftItem storage item = _idToNftItem[tokenId];
+    for (uint256 i = 0; i < ownedItemsCount; i++) {
+      uint256 tokenId = tokenOfOwnerByIndex(msg.sender, i);
+      NftItem memory item = _idToNftItem[tokenId];
       items[i] = item;
     }
 
@@ -148,7 +150,7 @@ contract CCNft is ERC721URIStorage, ERC2981, Ownable {
   }
 
   function tokenByIndex(uint index) public view returns (uint) {
-    require(index < totalSupply(), 'Index out of bounds');
+    require(index < totalSupply(), "Index out of bounds");
     return _allNfts[index];
   }
 
@@ -156,7 +158,7 @@ contract CCNft is ERC721URIStorage, ERC2981, Ownable {
     address owner,
     uint index
   ) public view returns (uint) {
-    require(index < ERC721.balanceOf(owner), 'Index out of bounds');
+    require(index < ERC721.balanceOf(owner), "Index out of bounds");
     return _ownedTokens[owner][index];
   }
 

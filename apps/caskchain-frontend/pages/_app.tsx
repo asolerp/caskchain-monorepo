@@ -1,3 +1,4 @@
+import '../scripts/wdyr'
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { Web3Provider } from '@providers'
@@ -10,6 +11,7 @@ import { Web3Modal } from '@web3modal/react'
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
 import { localhost, polygonMumbai } from 'wagmi/chains'
 import { AnimatePresence } from 'framer-motion'
+import LoadingWrapper from 'components/pages/Loading'
 
 const chains = [localhost, polygonMumbai]
 const projectId = '7ba8a5909e41332fb0abe840c1d4923e'
@@ -33,7 +35,9 @@ export default function App({ Component, pageProps }: AppProps) {
           <Web3Provider>
             <ParallaxProvider>
               <AnimatePresence mode="wait" initial={false}>
-                <Component {...pageProps} />
+                <LoadingWrapper>
+                  <Component {...pageProps} />
+                </LoadingWrapper>
               </AnimatePresence>
             </ParallaxProvider>
             <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />

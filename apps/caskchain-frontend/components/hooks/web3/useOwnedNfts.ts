@@ -1,5 +1,6 @@
 import { CryptoHookFactory } from '@_types/hooks'
 import { Nft } from '@_types/nft'
+import useLoading from '@hooks/common/useLoading'
 import { ethers } from 'ethers'
 import axiosClient from 'lib/fetcher/axiosInstance'
 import { useEffect, useState } from 'react'
@@ -24,7 +25,11 @@ export const hookFactory: OwnedNftsHookFactory =
     const [isApproved, setIsApproved] = useState(false)
     const [listPrice, setListPrice] = useState('')
 
-    const { data, ...swr } = useSWR('/api/casks/me', async () => {
+    const {
+      data,
+      isLoading: isLoadingMe,
+      isValidating: isValidatingMe,
+    } = useSWR('/api/casks/me', async () => {
       const ownedNfts: any = await axiosClient.get('/api/casks/me')
 
       const nfts = [] as any[]
@@ -42,44 +47,50 @@ export const hookFactory: OwnedNftsHookFactory =
       return nfts
     })
 
-    const { data: dataBalances } = useSWR(
-      nftFractionToken ? '/api/user/balances' : null,
-      async () => {
-        const balances: any = await axiosClient.get('/api/user/balances')
+    const {
+      data: favorites,
+      isLoading: favoritesIsLoading,
+      isValidating: favoritesIsValidating,
+    } = useSWR('/api/casks/favorites', async () => {
+      const favoritesNfts: any = await axiosClient.get('/api/casks/favorites')
+      console.log('FAVORITES', favoritesNfts)
+      return favoritesNfts.data
+    })
 
-        const balancesWithRedem = await Promise.all(
-          balances.data.map(async (tokenAddress: any) => {
-            try {
-              const tokenContract = await nftFractionToken!(
-                tokenAddress.address
-              )
-              const canRedem = await tokenContract.canRedeem()
+    const {
+      data: dataBalances,
+      isLoading: isLoadingBalances,
+      isValidating: isValidatingBalances,
+    } = useSWR(nftFractionToken ? '/api/user/balances' : null, async () => {
+      const balances: any = await axiosClient.get('/api/user/balances')
 
-              return {
-                ...tokenAddress,
-                canRedem,
-              }
-            } catch (e: any) {
-              console.log(e)
+      const balancesWithRedem = await Promise.all(
+        balances.data.map(async (tokenAddress: any) => {
+          try {
+            const tokenContract = await nftFractionToken!(tokenAddress.address)
+            const canRedem = await tokenContract.canRedeem()
+
+            return {
+              ...tokenAddress,
+              canRedem,
             }
-          })
-        )
+          } catch (e: any) {
+            console.log(e)
+          }
+        })
+      )
 
-        return balancesWithRedem.filter(
-          (tokenAddress: any) => tokenAddress.balance > 0
-        )
-      }
-    )
+      return balancesWithRedem.filter(
+        (tokenAddress: any) => tokenAddress.balance > 0
+      )
+    })
 
-    const { data: offersData } = useSWR(
-      activeNft ? '/api/offer' : null,
-      async () => {
-        const offers: any = await axiosClient.get(
-          `/api/offer/${activeNft?.tokenId}`
-        )
-        return offers.data
-      }
-    )
+    const isLoading = isLoadingBalances || isLoadingMe
+    const isValidating = isValidatingBalances || isValidatingMe
+
+    useLoading({
+      loading: isLoading || isValidating,
+    })
 
     const redeemFractions = async (tokenAddress: string, amount: number) => {
       try {
@@ -116,6 +127,8 @@ export const hookFactory: OwnedNftsHookFactory =
       try {
         const gasPrice = await provider?.getGasPrice()
 
+        console.log('nftVendor!.address', nftVendor!.address)
+
         const result = await _ccNft?.approve(
           nftVendor!.address as string,
           tokenId,
@@ -131,12 +144,11 @@ export const hookFactory: OwnedNftsHookFactory =
           error: 'Processing error',
         })
         const txStatus = await result?.wait()
-        console.log(txStatus, 'STATUS')
         if (txStatus?.status === 1) {
           setIsApproved(true)
         }
       } catch (e: any) {
-        console.log(e)
+        console.log('ERROR', e)
       }
     }
 
@@ -160,27 +172,37 @@ export const hookFactory: OwnedNftsHookFactory =
       }
     }
 
-    useEffect(() => {
-      if (data && data.length > 0) {
-        setActiveNft(data[0])
-      } else {
+    const handleActiveNft = (nft: Nft) => {
+      if (activeNft?.tokenId === nft.tokenId) {
         setActiveNft(undefined)
+      } else {
+        setActiveNft(nft)
       }
-    }, [data])
+    }
+
+    // useEffect(() => {
+    //   if (data && data.length > 0) {
+    //     setActiveNft(undefined)
+    //   } else {
+    //     setActiveNft(undefined)
+    //   }
+    // }, [data])
 
     return {
-      ...swr,
       listNft,
+      favorites,
       activeNft,
       listPrice,
-      offersData,
+      isLoading,
       isApproved,
       approveSell,
       acceptOffer,
+      isValidating,
       setActiveNft,
       dataBalances,
       setListPrice,
       setIsApproved,
+      handleActiveNft,
       redeemFractions,
       data: data || [],
     }

@@ -35,6 +35,14 @@ export class MongoDBUserDataSource
     return updatedState
   }
 
+  public async getFavorites(address: string) {
+    const collection = await this.collection()
+    const document = await collection.findOne<any>({ address: address })
+
+    const favorites = document?.favorites && Object.keys(document?.favorites)
+    return favorites
+  }
+
   public async save(id: string, user: UserRequestModel) {
     await this.persist(id, user)
   }

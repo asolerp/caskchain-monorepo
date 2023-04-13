@@ -12,6 +12,7 @@ import { GetNFTs } from '../../../domain/use-cases/nft/get-nfts'
 import { GetOwnedNFTs } from '../../../domain/use-cases/nft/get-owned-nfts'
 import { NftFavoriteCounter } from '../../../domain/use-cases/nft/nft-favorite-counter'
 import GetNftsRouter from '../get-nfts'
+import { GetFavoriteNfts } from '../../../domain/use-cases/nft/get-favorite-nfts'
 
 export const getNfts = (
   clientDB: Promise<MongoClient>,
@@ -27,6 +28,12 @@ export const getNfts = (
       )
     ),
     new GetCaskInfo(
+      new NFTRepositoryImpl(
+        new Web3Transaction(web3Client, web3WsClient, web3Contracts),
+        new MongoDBNFTDataSource(clientDB)
+      )
+    ),
+    new GetFavoriteNfts(
       new NFTRepositoryImpl(
         new Web3Transaction(web3Client, web3WsClient, web3Contracts),
         new MongoDBNFTDataSource(clientDB)

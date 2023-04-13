@@ -3,10 +3,12 @@ import { isValidAddress } from 'ethereumjs-util'
 import { ethers } from 'ethers'
 
 import NftFractionToken from 'contracts/build/contracts/NftFractionToken.json'
+
 import { MongoClientFactory } from '../mongodb/MongoClientFactory'
 import { MongoDBUserDataSource } from '../mongodb/MongoDBUserDataSource'
 import { Fraction } from './Models/Fraction'
 import { Web3Repository } from './Web3Repository'
+import getFractionData from './utils/getFractionData'
 
 const nullAddress = '0x0000000000000000000000000000000000000000'
 const USDTAddress = '0x4289231D30cf6cD58aa63aBa44b44E321c43eE57'
@@ -53,32 +55,14 @@ export class Web3Transaction extends Web3Repository {
         throw new Error('Cask not found')
       }
 
-      let fractionTokenContract
-      let unitPrice
-
-      const fractionTokenAddress = await NftFractionsFactory.methods
-        .getVaultContractByTokenId(nft.tokenId)
-        .call()
-
-      if (fractionTokenAddress !== nullAddress) {
-        const contract = new client.eth.Contract(
-          NftFractionToken.abi as any,
-          fractionTokenAddress
-        )
-        fractionTokenContract = new Fraction(
-          contract,
-          fractionTokenAddress,
-          nft.tokenId
-        )
-
-        const tokenInfoPrice = await NftFractionsVendor.methods
-          ?.tokens(fractionTokenAddress)
-          .call()
-
-        unitPrice = tokenInfoPrice?.totalSupply / tokenInfoPrice?.listingPrice
-      }
-
-      const fractionData = await fractionTokenContract?.getFractionData()
+      const { fractionData, unitPrice, fractionTokenAddress, vaultExists } =
+        await getFractionData({
+          tokenId: nft.tokenId,
+          NftFractionsFactory,
+          client,
+          NftFractionToken,
+          NftFractionsVendor,
+        })
 
       const tokenURI = await CCNft.methods!.tokenURI(caskId).call()
 
@@ -129,7 +113,7 @@ export class Web3Transaction extends Web3Repository {
           address: owner,
           nickname: ownerName?.nickname || '',
         },
-        fractions: fractionTokenContract
+        fractions: vaultExists
           ? { ...fractionData, tokenAddress: fractionTokenAddress, unitPrice }
           : null,
         price: listedPrice?.price?.toString(),
@@ -175,31 +159,14 @@ export class Web3Transaction extends Web3Repository {
 
       const nfts = await Promise.all(
         listNfts.map(async function (nft: any) {
-          let fractionTokenContract
-          let unitPrice
-          const fractionTokenAddress = await NftFractionsFactory.methods
-            .getVaultContractByTokenId(nft.tokenId)
-            .call()
-
-          if (fractionTokenAddress !== nullAddress) {
-            const contract = new client.eth.Contract(
-              NftFractionToken.abi as any,
-              fractionTokenAddress
-            )
-            fractionTokenContract = new Fraction(
-              contract,
-              fractionTokenAddress,
-              nft.tokenId
-            )
-            const tokenInfoPrice = await NftFractionsVendor.methods
-              ?.tokens(fractionTokenAddress)
-              .call()
-
-            unitPrice =
-              tokenInfoPrice?.totalSupply / tokenInfoPrice?.listingPrice
-          }
-
-          const fractionData = await fractionTokenContract?.getFractionData()
+          const { fractionData, unitPrice, fractionTokenAddress, vaultExists } =
+            await getFractionData({
+              tokenId: nft.tokenId,
+              NftFractionsFactory,
+              client,
+              NftFractionToken,
+              NftFractionsVendor,
+            })
 
           const tokenURI = await CCNft.methods!.tokenURI(nft.tokenId).call()
           const owner = await CCNft.methods.ownerOf(nft.tokenId).call()
@@ -247,7 +214,112 @@ export class Web3Transaction extends Web3Repository {
           return {
             tokenId: nft.tokenId,
             creator: nft.creator,
-            fractions: fractionTokenContract
+            fractions: vaultExists
+              ? {
+                  ...fractionData,
+                  tokenAddress: fractionTokenAddress,
+                  unitPrice,
+                }
+              : null,
+            owner: {
+              address: owner,
+              nickname: ownerName?.nickname || '',
+            },
+            price: listedPrice?.price?.toString(),
+            offer:
+              offer?.nftId != 0
+                ? {
+                    bid: offer?.highestBid?.toString(),
+                    highestBidder: offer?.highestBidder,
+                    bidders,
+                  }
+                : null,
+            meta,
+          }
+        })
+      )
+
+      return nfts
+    } catch (e: any) {
+      console.error(e)
+    }
+  }
+
+  public async getFavoriteNfts(account: string) {
+    try {
+      const clientDB = MongoClientFactory.createClient(
+        process.env.CONTEXT_NAME as string,
+        {
+          url: process.env.MONGO_DB_URL,
+        }
+      )
+
+      const mongoUserDataSource = new MongoDBUserDataSource(clientDB)
+
+      const client = this.client()
+      const CCNft = this.contracts()['CCNft']
+      const NftVendor = this.contracts()['NftVendor']
+      const NftOffers = this.contracts()['NftOffers']
+      const NftFractionsFactory = this.contracts()['NftFractionsFactory']
+      const NftFractionsVendor = this.contracts()['NftFractionsVendor']
+
+      const listNfts = await mongoUserDataSource.getFavorites(account)
+
+      const nfts = await Promise.all(
+        listNfts?.map(async function (nftId: string) {
+          const { fractionData, unitPrice, fractionTokenAddress, vaultExists } =
+            await getFractionData({
+              tokenId: nftId,
+              NftFractionsFactory,
+              client,
+              NftFractionToken,
+              NftFractionsVendor,
+            })
+
+          const tokenURI = await CCNft.methods!.tokenURI(nftId).call()
+          const creator = await CCNft.methods.owner().call()
+          const owner = await CCNft.methods.ownerOf(nftId).call()
+          const meta = await axios
+            .get(tokenURI, {
+              headers: {
+                'x-pinata-gateway-token': process.env.PINATA_GATEWAY_TOKEN,
+              },
+            })
+            .then((res) => {
+              return res.data
+            })
+            .catch(() => {
+              return {
+                description:
+                  'El secreto de su exquisita calidad descansa en el tiempo, el silencio y el microclima de nuestras bodegas subterráneas acorazadas por un muro de un metro y ochenta centímetros intraspasable por los olores y los ruidos.',
+                image:
+                  'https://gateway.pinata.cloud/ipfs/QmNqh9WW1qmzU9CtD6ZjtvD9P2ZQJTbUU7SDjwEDnpFJni',
+                name: 'Classic Cask Brandy Suau SIN INFO',
+                attributes: [
+                  { trait_type: 'year', value: '1990' },
+                  { trait_type: 'extractions', value: '0' },
+                  { trait_type: 'country', value: 'Spain' },
+                  { trait_type: 'region', value: 'Balearic Islands' },
+                ],
+              }
+            })
+          const listedPrice = await NftVendor.methods.getListing(nftId).call()
+          const offer = await NftOffers.methods.getNftOffer(nftId).call()
+          const ownerName = await mongoUserDataSource.search(
+            owner.toLowerCase()
+          )
+          let bidders
+
+          if (offer?.nftId != 0) {
+            bidders = await NftOffers.methods
+              .getAddressesBids(offer?.nftId)
+              .call()
+          }
+
+          return {
+            tokenId: nftId,
+            creator,
+            fractions: vaultExists
               ? {
                   ...fractionData,
                   tokenAddress: fractionTokenAddress,
@@ -285,6 +357,7 @@ export class Web3Transaction extends Web3Repository {
       const NftVendor = this.contracts()['NftVendor']
       const NftOffers = this.contracts()['NftOffers']
       const NftFractionsFactory = this.contracts()['NftFractionsFactory']
+      const NftFractionsVendor = this.contracts()['NftFractionsVendor']
 
       const listNfts = await CCNft.methods
         .getOwnedNfts()
@@ -292,21 +365,14 @@ export class Web3Transaction extends Web3Repository {
 
       const nfts = await Promise.all(
         listNfts.map(async function (nft: any) {
-          let fractionTokenContract
-          const fractionTokenAddress = await NftFractionsFactory.methods
-            .getVaultContractByTokenId(nft.tokenId)
-            .call()
-
-          if (fractionTokenAddress !== nullAddress) {
-            fractionTokenContract = new client.eth.Contract(
-              NftFractionToken.abi as any,
-              fractionTokenAddress
-            )
-          }
-
-          const totalFractions =
-            fractionTokenContract &&
-            (await fractionTokenContract?.methods?.totalSupply().call())
+          const { fractionData, unitPrice, fractionTokenAddress, vaultExists } =
+            await getFractionData({
+              tokenId: nft.tokenId,
+              NftFractionsFactory,
+              client,
+              NftFractionToken,
+              NftFractionsVendor,
+            })
 
           const tokenURI = await CCNft.methods!.tokenURI(nft.tokenId).call()
           const owner = await CCNft.methods.ownerOf(nft.tokenId).call()
@@ -349,11 +415,11 @@ export class Web3Transaction extends Web3Repository {
           return {
             tokenId: nft.tokenId,
             creator: nft.creator,
-            fractions: totalFractions
+            fractions: vaultExists
               ? {
-                  total: Number(
-                    ethers.utils.formatEther(totalFractions.toString())
-                  ),
+                  ...fractionData,
+                  tokenAddress: fractionTokenAddress,
+                  unitPrice,
                 }
               : null,
             owner,

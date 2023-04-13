@@ -1,8 +1,6 @@
 import { useMyActivity } from '@hooks/web3'
 import { BaseLayout } from '@ui'
 
-import { LoadingAnimation } from '@ui/common/Loading/LoadingAnimation'
-
 import { NextPage } from 'next'
 
 import { useRouter } from 'next/router'
@@ -13,6 +11,7 @@ import { auth } from 'utils/auth'
 import { useEffect } from 'react'
 import OffersSent from '@ui/tables/OffersSent'
 import OffersReceived from '@ui/tables/OffersReceived'
+import TransactionsHistory from '@ui/ntf/transactionsHistory'
 
 const tabs = [
   { name: 'Transactions', href: '#', key: 'transactions' },
@@ -40,6 +39,9 @@ const Transactions: NextPage = () => {
     if (_selectedTab === 'offers-received') {
       myActivity.receivedOffersRefetch()
     }
+    if (_selectedTab === 'transactions') {
+      myActivity.transactionsRefetch()
+    }
   }, [_selectedTab])
 
   if (!router.isReady) {
@@ -48,9 +50,6 @@ const Transactions: NextPage = () => {
 
   return (
     <>
-      {(myActivity?.sentOffersLoading || myActivity?.sentOffersValidating) && (
-        <LoadingAnimation />
-      )}
       <BaseLayout background="bg-gradient-to-r from-[#0F0F0F] via-[#161616] to-[#000000]">
         <div className="py-16 sm:px-6 pt-40 w-3/4  px-4">
           <h2 className="tracking-tight font-extrabold text-gray-100 font-rale sm:text-6xl">
@@ -122,6 +121,21 @@ const Transactions: NextPage = () => {
                         myActivity?.acceptOffer(tokenId)
                       }
                       offersReceived={myActivity?.receivedOffers}
+                    />
+                  )}
+                </>
+              )}
+              {_selectedTab === 'transactions' && (
+                <>
+                  {myActivity?.transactions?.length === 0 ? (
+                    <div className="w-full flex flex-col border border-gray-700 p-6 rounded-lg justify-center items-center">
+                      <h3 className="font-poppins text-2xl text-gray-300">
+                        {`There is no transactions with your address.`}
+                      </h3>
+                    </div>
+                  ) : (
+                    <TransactionsHistory
+                      transactions={myActivity?.transactions}
                     />
                   )}
                 </>

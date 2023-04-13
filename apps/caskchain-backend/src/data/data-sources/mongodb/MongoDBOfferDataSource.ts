@@ -61,6 +61,31 @@ export class MongoDBOfferDataSource
     return document || null
   }
 
+  public async acceptOffer(tokenId: string, bidder: string) {
+    const collection = await this.collection()
+    const offer = await collection
+      .find<any>({
+        $and: [
+          {
+            tokenId: tokenId,
+          },
+          {
+            bidder: bidder,
+          },
+        ],
+      })
+      .sort({ createdAt: -1 })
+      .toArray()
+
+    if (offer.length > 0) {
+      await collection.updateOne(
+        { _id: offer[0]._id },
+        { $set: { status: 'accepted' } }
+      )
+    }
+    return
+  }
+
   public async removeOffer(tokenId: string, bidder: string) {
     const collection = await this.collection()
     const offer = await collection

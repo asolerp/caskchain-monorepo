@@ -1,11 +1,8 @@
-import { v4 as uuidv4 } from 'uuid'
-
 import { RecordNewOfferUseCase } from '../../domain/interfaces/use-cases/record-new-offer-use-case'
-import { OfferRequestModel } from '../../domain/model/Offer'
 
 export default function OnOffer(recordNewOfferUseCase: RecordNewOfferUseCase) {
-  const handleOnNewOffer = async (offer: OfferRequestModel) => {
-    await recordNewOfferUseCase.execute(uuidv4(), {
+  const handleOnNewOffer = async (offer: any) => {
+    await recordNewOfferUseCase.execute(offer.transactionHash, {
       createdAt: new Date(),
       owner: offer.owner.toLowerCase(),
       tokenId: offer.tokenId,

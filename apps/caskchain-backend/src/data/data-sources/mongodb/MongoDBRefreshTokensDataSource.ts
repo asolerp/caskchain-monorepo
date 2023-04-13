@@ -26,8 +26,6 @@ export class MongoDBRefreshTokensDataSource
       'refreshToken.refreshToken': refreshToken,
     })
 
-    console.log(document)
-
     return document || null
   }
 }

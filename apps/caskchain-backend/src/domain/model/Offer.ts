@@ -7,6 +7,13 @@ export interface OfferRequestModel {
   status: 'live' | 'canceled' | 'accepted'
 }
 
+export interface AccpetOfferRequestModel {
+  tokenId: string
+  owner: string
+  bidder: string
+  bid: string
+}
+
 export interface RemoveOfferRequestModel {
   tokenId: string
   bidder: string

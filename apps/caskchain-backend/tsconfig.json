@@ -9,6 +9,7 @@
     "module": "commonjs",
     "rootDir": "./src",
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "checkJs": true,
     "outDir": "./dist",
     "esModuleInterop": true,

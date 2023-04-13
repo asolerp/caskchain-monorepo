@@ -26,6 +26,14 @@ export class NFTRepositoryImpl implements NFTRepository {
     return await this.nftsDataSource.updateFavoriteCounter(id, action)
   }
 
+  async updateOwnerNft(id: string, owner: string): Promise<void> {
+    await this.nftsDataSource.updateOwnerNft(id, owner)
+  }
+
+  async getFavoriteNfts(address: string): Promise<any> {
+    return await this.web3Transaction.getFavoriteNfts(address)
+  }
+
   async getBalances(address: string): Promise<any> {
     return await this.web3Transaction.getBalances(address)
   }
