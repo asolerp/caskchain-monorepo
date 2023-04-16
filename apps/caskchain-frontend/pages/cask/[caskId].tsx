@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { ShareIcon } from '@heroicons/react/24/outline'
 import BookmarkIcon from 'public/icons/bookmark.svg'
 
@@ -17,7 +17,6 @@ import { NextPageContext } from 'next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import NFTLatestOffers from '@ui/tables/NFTLatestOffers'
-import HoverVideoPlayer from 'react-hover-video-player'
 
 let CaskIllustration = ({
   src,
@@ -26,8 +25,6 @@ let CaskIllustration = ({
   src: string
   activeAsset: number
 }) => {
-  const videoRef = useRef<HTMLVideoElement>(null)
-
   return (
     <div className="flex flex-1 justify-center col-span-2">
       {activeAsset === 1 && (
