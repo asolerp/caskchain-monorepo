@@ -55,6 +55,8 @@ import OnAcceptOffer from './presentation/subscriptions/on-accept-offer'
 import { AcceptOffer } from './domain/use-cases/offer/accept-offer'
 import { AcceptOfferImpl } from './domain/repositories/accept-offer-repository'
 import { UpdateOwnerNft } from './domain/use-cases/nft/update-owner-nft'
+import { GetNFTLatestOffers } from './domain/use-cases/offer/get-nft-latest-offers'
+import { GetNftSalesHistory } from './domain/use-cases/sales/get-nft-sales-history'
 ;(async () => {
   const clientDB = MongoClientFactory.createClient(
     process.env.CONTEXT_NAME as string,
@@ -128,9 +130,16 @@ import { UpdateOwnerNft } from './domain/use-cases/nft/update-owner-nft'
   const signature = SignatureRouter()
   const orderBottleMiddleWare = OrderBottleRouter()
   const transactionsHistory = TransactionsHistoryRouter(
+    new GetNftSalesHistory(
+      new NFTRepositoryImpl(
+        new Web3Transaction(web3Client, web3WsClient, web3Contracts),
+        new MongoDBNFTDataSource(clientDB)
+      )
+    ),
     new GetTransactionByTokenId(
-      new TransactionRepositoryImpl(
-        new MongoDBTransactionHistoryDataSource(clientDB)
+      new NFTRepositoryImpl(
+        new Web3Transaction(web3Client, web3WsClient, web3Contracts),
+        new MongoDBNFTDataSource(clientDB)
       )
     ),
     new GetTransactionByWalletAddress(
@@ -148,7 +157,13 @@ import { UpdateOwnerNft } from './domain/use-cases/nft/update-owner-nft'
 
   const offers = OffersRouter(
     new GetSentOffers(new OfferImpl(new MongoDBOfferDataSource(clientDB))),
-    new GetReceivedOffers(new OfferImpl(new MongoDBOfferDataSource(clientDB)))
+    new GetReceivedOffers(new OfferImpl(new MongoDBOfferDataSource(clientDB))),
+    new GetNFTLatestOffers(
+      new NFTRepositoryImpl(
+        new Web3Transaction(web3Client, web3WsClient, web3Contracts),
+        new MongoDBNFTDataSource(clientDB)
+      )
+    )
   )
 
   const webhook = WebhookRouter(

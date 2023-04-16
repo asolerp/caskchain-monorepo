@@ -55,11 +55,16 @@ contract NftOffers is ReentrancyGuard {
     _;
   }
 
-  event NewOffer(uint256 tokenId, address owner, address bidder, uint256 bid);
-  event RemoveOffer(uint256 tokenId, address bidder, uint256 bid);
-  event Withdraw(uint256 tokenId, address bidder, uint256 bid);
+  event NewOffer(
+    uint256 indexed tokenId,
+    address owner,
+    address bidder,
+    uint256 bid
+  );
+  event RemoveOffer(uint256 indexed tokenId, address bidder, uint256 bid);
+  event Withdraw(uint256 indexed tokenId, address bidder, uint256 bid);
   event AcceptOffer(
-    uint256 tokenId,
+    uint256 indexed tokenId,
     address owner,
     address bidder,
     uint256 bid

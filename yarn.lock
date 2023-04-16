@@ -8979,6 +8979,11 @@ data-uri-to-buffer@^4.0.0:
   resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-4.0.1.tgz#d8feb2b2881e6a4f58c2e08acfd0e2834e26222e"
   integrity sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==
 
+date-fns@^2.29.3:
+  version "2.29.3"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.29.3.tgz#27402d2fc67eb442b511b70bbdf98e6411cd68a8"
+  integrity sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==
+
 dateformat@^3.0.0:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-3.0.3.tgz#a6e37499a4d9a9cf85ef5872044d62901c9889ae"
@@ -16752,6 +16757,11 @@ react-easy-swipe@^0.0.21:
   integrity sha512-OeR2jAxdoqUMHIn/nS9fgreI5hSpgGoL5ezdal4+oO7YSSgJR8ga+PkYGJrSrJ9MKlPcQjMQXnketrD7WNmNsg==
   dependencies:
     prop-types "^15.5.8"
+
+react-hover-video-player@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/react-hover-video-player/-/react-hover-video-player-10.0.0.tgz#476baa40b6ff824733357d8c686c40f86b7d4359"
+  integrity sha512-wfGUQEOdBJrx++8yx9JGOJWGWVcqnPHgZiCl3TsSiXhADBir8AXNse2MWNYdaamXZF5p/EjEKcAj0qRoQY5gOQ==
 
 react-is@^16.10.2, react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"

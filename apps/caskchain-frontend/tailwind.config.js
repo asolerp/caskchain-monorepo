@@ -23,9 +23,9 @@ module.exports = {
         poppins: ['Poppins', 'sans-serif'],
       },
       backgroundImage: {
-        hero: "url('/images/bg.png')",
-        caskChain: "url('/images/caskChainBg.png')",
-        bg_owner: "url('/images/bg_owner.png')",
+        hero: "url('https://res.cloudinary.com/enalbis/image/upload/v1681538253/CaskChain/wtqf3wuruba9zqpezbah.png')",
+        bg_owner:
+          "url('https://res.cloudinary.com/enalbis/image/upload/v1681538336/CaskChain/vr0svpapyh5wv6580jyj.png')",
       },
     },
   },

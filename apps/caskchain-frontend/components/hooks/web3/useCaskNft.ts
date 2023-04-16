@@ -13,6 +13,8 @@ import useSWR from 'swr'
 import { useNetwork, useProvider } from 'wagmi'
 import useLoading from '@hooks/common/useLoading'
 
+import useDebounce from '@hooks/common/useDebounce'
+
 type CaskNftHookFactory = CryptoHookFactory<Nft[]>
 
 export type UseCaskNftsHook = ReturnType<CaskNftHookFactory>
@@ -49,17 +51,41 @@ export const hookFactory: CaskNftHookFactory =
       'web3/useCaskNft',
       async () => {
         const { data: nfts }: any = await axios.get(`/api/casks/${caskId}`)
-        const transactions = await axiosClient.get(
-          `/api/transactions?tokenId=${caskId}`
-        )
-        if (transactions.data.length) {
-          nfts.transactions = transactions.data
-        }
         return {
           ...nfts,
         }
       },
-      { revalidateOnFocus: false }
+      { revalidateOnFocus: true }
+    )
+
+    const {
+      data: salesHistory,
+      isLoading: salesHistoryIsLoading,
+      // isValidating: latestOffersIsValidating,
+    } = useSWR(
+      'api/transactions/sales-history',
+      async () => {
+        const { data: salesHistoryData }: any = await axios.get(
+          `/api/transactions/sales-history/${caskId}`
+        )
+        console.log('offers', salesHistoryData)
+        return salesHistoryData
+      },
+      { revalidateOnFocus: true }
+    )
+
+    const {
+      data: latestOffers,
+      isLoading: latestOffersIsLoading,
+      // isValidating: latestOffersIsValidating,
+    } = useSWR(
+      'api/offers',
+      async () => {
+        const { data: offers }: any = await axios.get(`/api/offers/${caskId}`)
+        console.log('offers', offers)
+        return offers
+      },
+      { revalidateOnFocus: true }
     )
 
     const { data: totalFavoritesData } = useSWR(
@@ -70,14 +96,14 @@ export const hookFactory: CaskNftHookFactory =
         }: any = await axios.get(`/api/casks/${caskId}/totalFavorites`)
         return totalFavorites
       },
-      { revalidateOnFocus: false }
+      { revalidateOnFocus: true }
     )
 
     const isLoading = isLoadingNft
     const isValidating = isValidatingNft
 
     useLoading({
-      loading: isLoading || isValidating,
+      loading: isLoading || latestOffersIsLoading || salesHistoryIsLoading,
     })
 
     const _nftOffers = nftOffers
@@ -105,6 +131,8 @@ export const hookFactory: CaskNftHookFactory =
       setTotalFavorites(response?.data?.totalFavorites)
       setIsFavorite(!isFavorite)
     }
+
+    const debounceAddFavorite = useDebounce(() => handleAddFavorite(), 300)
 
     const handleShareCask = () => {
       dispatch({
@@ -273,14 +301,17 @@ export const hookFactory: CaskNftHookFactory =
       isFavorite,
       cancelOffer,
       buyFractions,
+      latestOffers,
       isValidating,
       tokenAmmount,
       hasFractions,
+      salesHistory,
       totalFavorites,
       handleShareCask,
       setTokenAmmount,
-      handleAddFavorite,
       hasOffersFromUser,
       buyFractionizedNft,
+      debounceAddFavorite,
+      isUserNeededDataFilled,
     }
   }

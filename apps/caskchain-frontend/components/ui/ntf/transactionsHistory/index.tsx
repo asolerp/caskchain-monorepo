@@ -1,4 +1,5 @@
 import React from 'react'
+import { format } from 'date-fns'
 
 import { TransactionHistory } from '@_types/nft'
 import { ethers } from 'ethers'
@@ -25,11 +26,17 @@ const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({
                     scope="col"
                     className="text-lg font-medium text-cask-chain px-6 py-4 text-left"
                   >
-                    #
+                    Buyer
                   </th>
                   <th
                     scope="col"
-                    className="text-lg font-medium text-cask-chain px-6 py-4 text-left"
+                    className="text-lg font-medium text-cask-chain px-6 py-4 text-center"
+                  >
+                    Sale Price
+                  </th>
+                  <th
+                    scope="col"
+                    className="text-lg font-medium text-cask-chain px-6 py-4 text-center"
                   >
                     Barrel ID
                   </th>
@@ -37,25 +44,7 @@ const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({
                     scope="col"
                     className="text-lg font-medium text-cask-chain px-6 py-4 text-left"
                   >
-                    From
-                  </th>
-                  <th
-                    scope="col"
-                    className="text-lg font-medium text-cask-chain px-6 py-4 text-left"
-                  >
-                    To
-                  </th>
-                  <th
-                    scope="col"
-                    className="text-lg font-medium text-cask-chain px-6 py-4 text-left"
-                  >
                     Date
-                  </th>
-                  <th
-                    scope="col"
-                    className="text-lg font-medium text-cask-chain px-6 py-4 text-left"
-                  >
-                    Price
                   </th>
                   <th
                     scope="col"
@@ -69,34 +58,34 @@ const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({
                 <>
                   {transactions &&
                     transactions?.map((item, i) => {
-                      console.log('ITEM', item._id)
                       return (
                         <tr key={i} className="">
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100">
-                            {i}
+                            {item?.to}
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100">
-                            <p className="text-center">#{item?.tokenId}</p>
-                          </td>
-                          <td className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap">
-                            {addressSimplifier(item.from)}
-                          </td>
-                          <td className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap">
-                            {addressSimplifier(item.to)}
-                          </td>
-                          <td className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap">
-                            {item.date.toString()}
-                          </td>
-                          <td className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap">
-                            {item?.value &&
+                          <td
+                            align="center"
+                            className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap"
+                          >
+                            {item?.purchasePrice &&
                               ethers.utils
-                                .formatEther(item?.value)
+                                .formatEther(item?.purchasePrice)
                                 .toString()}{' '}
                             ETH
                           </td>
+                          <td
+                            align="center"
+                            className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap"
+                          >
+                            {item.tokenId}
+                          </td>
+                          <td className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap">
+                            <p>{format(new Date(item?.timestamp), 'PP p')}</p>
+                          </td>
+
                           <td className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap">
                             <Link
-                              href={`https://mumbai.polygonscan.com/tx/${item?._id}`}
+                              href={`https://mumbai.polygonscan.com/tx/${item?.txHash}`}
                             >
                               <ArrowTopRightOnSquareIcon className="h-6 w-6 text-cask-chain" />
                             </Link>

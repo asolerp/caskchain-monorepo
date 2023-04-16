@@ -2,7 +2,7 @@ import Button from '@ui/common/Button'
 import { NftAttribute } from '@_types/nft'
 
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { addressSimplifier } from 'utils/addressSimplifier'
 import BookmarkIcon from 'public/icons/bookmark.svg'
 import { useRouter } from 'next/router'
@@ -25,11 +25,22 @@ const BarrelNft: React.FC<NftItemProps> = ({
   isMarketPlace = false,
   onPressFavorite,
 }) => {
+  const videoRef = useRef<HTMLVideoElement>(null)
   const [isHover, setIsHover] = useState(active)
   const router = useRouter()
   const isMarketPlaceClass = isMarketPlace
     ? 'h-full w-80'
     : 'h-full w-[460px] m-0'
+
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isHover) {
+        videoRef.current.play()
+      } else {
+        videoRef.current.pause()
+      }
+    }
+  }, [isHover])
 
   return (
     <div className="relative">
@@ -56,13 +67,26 @@ const BarrelNft: React.FC<NftItemProps> = ({
         >
           <div className="relative">
             <div className="flex justify-center items-center rounded-md">
-              <Image
-                className={`w-full object-contain rounded-tl-[40px] rounded-tr-[40px]`}
-                src={'/images/nft.png'}
-                alt="New NFT"
-                width={300}
-                height={0}
-              />
+              {!isHover && (
+                <Image
+                  className={`w-full object-contain rounded-tl-[40px] rounded-tr-[40px]`}
+                  src={'/images/nft.png'}
+                  alt="New NFT"
+                  width={300}
+                  height={300}
+                />
+              )}
+              {isHover && (
+                <video
+                  ref={videoRef}
+                  width="600"
+                  height="600"
+                  className="h-[400px]"
+                  // className="w-100 h-100"
+                  controls={false}
+                  src="https://res.cloudinary.com/enalbis/video/upload/v1681586853/CaskChain/flofru3viqsirclxlapx.mp4"
+                />
+              )}
             </div>
           </div>
           <div className="relative">

@@ -11,13 +11,11 @@ import { auth } from 'utils/auth'
 import { useEffect } from 'react'
 import OffersSent from '@ui/tables/OffersSent'
 import OffersReceived from '@ui/tables/OffersReceived'
-import TransactionsHistory from '@ui/ntf/transactionsHistory'
 
 const tabs = [
   { name: 'Transactions', href: '#', key: 'transactions' },
   { name: 'Offers received', href: '#', key: 'offers-received' },
   { name: 'Offers sent', href: '#', key: 'offers-sent' },
-  // { name: 'Your Fractions', href: '#', key: 'fractions' },
 ]
 
 function classNames(...classes: string[]) {
@@ -127,7 +125,7 @@ const Transactions: NextPage = () => {
               )}
               {_selectedTab === 'transactions' && (
                 <>
-                  {myActivity?.transactions?.length === 0 ? (
+                  {/* {myActivity?.transactions?.length === 0 ? (
                     <div className="w-full flex flex-col border border-gray-700 p-6 rounded-lg justify-center items-center">
                       <h3 className="font-poppins text-2xl text-gray-300">
                         {`There is no transactions with your address.`}
@@ -137,7 +135,7 @@ const Transactions: NextPage = () => {
                     <TransactionsHistory
                       transactions={myActivity?.transactions}
                     />
-                  )}
+                  )} */}
                 </>
               )}
             </div>
