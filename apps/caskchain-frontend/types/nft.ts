@@ -45,6 +45,18 @@ export type FractionBalance = {
   canRedem: boolean
 }
 
+type Bidder = {
+  address: string
+  nickname: string
+}
+
+export type LatestOffers = {
+  bid: number
+  bidder: Bidder
+  createdAt: Date
+  txHash: string
+}
+
 export type Offers = {
   id: string
   bidder: string
@@ -56,12 +68,13 @@ export type Offers = {
 }
 
 export type TransactionHistory = {
-  _id: string
+  _id?: string
   from: string
-  to: string
+  to: Bidder
   date: Date
-  tokenId: string
-  value: string
+  tokenId?: string
+  txHash: string
+  value?: string
 }
 
 export type Nft = {

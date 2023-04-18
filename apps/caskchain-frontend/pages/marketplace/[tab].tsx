@@ -4,7 +4,7 @@ import { BaseLayout } from '@ui'
 import BarrelNft from '@ui/ntf/item/BarrelNft'
 import { Nft } from '@_types/nft'
 import { NextPage } from 'next'
-import Link from 'next/link'
+
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
@@ -31,7 +31,7 @@ const NFTCaskWorld: NextPage = () => {
   const selectedIndex = tabs.map((t) => t.key).indexOf(_selectedTab) ?? 0
   const [filteredNfts, setFilteredNfts] = useState(nfts?.data)
 
-  const hasFavoirte = (nftId: string) => {
+  const hasFavorite = (nftId: number) => {
     return user?.favorites?.[nftId]
   }
 
@@ -105,7 +105,7 @@ const NFTCaskWorld: NextPage = () => {
                     onPressFavorite={(nftId: string) =>
                       nfts.handleAddFavorite(nftId)
                     }
-                    isFavorite={hasFavoirte(nft?.tokenId)}
+                    isFavorite={hasFavorite(nft?.tokenId)}
                     blow
                   />
                   // </Link>

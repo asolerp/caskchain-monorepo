@@ -2,7 +2,11 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
+<<<<<<< HEAD
       "outputs": ["dist/**", ".build/**", ".next/**"]
+=======
+      "outputs": ["dist/**", "build/**", ".next/**"]
+>>>>>>> main
     },
     "start": {
       "dependsOn": ["^build"]

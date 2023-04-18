@@ -6,10 +6,12 @@ import { GetSentOffersUseCase } from '../../domain/interfaces/use-cases/offers/g
 import { authenticateToken } from '../middlewares/authenticateToken'
 import { extractAddressFromToken } from '../utils/extractTokenFromRequest'
 import logger from '../utils/logger' // Import the logger
+import { GetOffersUseCase } from '../../domain/interfaces/use-cases/offers/get-offers'
 
 export default function OffersRouter(
   getSentOffers: GetSentOffersUseCase,
-  getReceivedOffers: GetReceivedOffersUseCase
+  getReceivedOffers: GetReceivedOffersUseCase,
+  getNFTLatestOffer: GetOffersUseCase
 ) {
   const router = express.Router()
 
@@ -46,6 +48,20 @@ export default function OffersRouter(
       }
     }
   )
+
+  router.get('/:tokenId', async (req: Request, res: Response) => {
+    const { tokenId } = req.params
+    try {
+      logger.info('Getting received offers for NFT: %s', tokenId)
+      const receivedOffers = await getNFTLatestOffer.execute(tokenId)
+      res.json(receivedOffers)
+    } catch (error: any) {
+      logger.error('Failed to get received offers: %s', error.message, {
+        error,
+      })
+      res.status(500).json({ error: 'Failed to get received offers' })
+    }
+  })
 
   return router
 }

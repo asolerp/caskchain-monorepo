@@ -6,6 +6,9 @@ export interface NFTRepository {
   getAllNfts(): Promise<Nft[]>
   getFavoriteNfts(address: string): Promise<Nft[]>
   getNFTFavoriteCounter(id: string): Promise<number>
+  getNftTransfers(id: string): Promise<any>
+  getNftSalesHistory(id: string): Promise<any>
+  getNftOffers(tokenId: string): Promise<any>
   getBalances(address: string): Promise<any>
   getOwnedNfts(owner: string): Promise<Nft[]>
   getCaskInfo(caskId: string): Promise<Nft>

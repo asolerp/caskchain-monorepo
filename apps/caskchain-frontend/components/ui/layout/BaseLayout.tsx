@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 import Navbar from '../navbar'
+import FooterSection from 'components/pages/home/FooterSection'
 
 interface Props {
   background?: string
@@ -17,6 +18,7 @@ const BaseLayout: React.FC<Props> = ({ background, children }) => {
           <div className="flex flex-col justify-center items-center w-full h-full">
             {children}
           </div>
+          <FooterSection />
         </div>
       </div>
     </>

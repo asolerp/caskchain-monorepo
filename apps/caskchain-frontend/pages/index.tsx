@@ -7,7 +7,6 @@ import HeroSection from 'components/pages/home/HeroSection'
 import BarrelsSection from 'components/pages/home/BarrelsSection'
 import OwnerSection from 'components/pages/home/OwnerSection'
 import NewsletterSection from 'components/pages/home/NewsletterSection'
-import FooterSection from 'components/pages/home/FooterSection'
 import MainAnimationSection from 'components/pages/home/MainAnimationSection'
 
 const Home: NextPage = () => {
@@ -21,7 +20,6 @@ const Home: NextPage = () => {
             <BarrelsSection />
             <OwnerSection />
             <NewsletterSection />
-            <FooterSection />
           </div>
         </BaseLayout>
       </AnimatePresence>

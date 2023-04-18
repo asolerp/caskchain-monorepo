@@ -57,6 +57,7 @@ export const initiWebSocket = (
         date: new Date(),
         tokenId: transaction.tokenId,
         value: transaction.value,
+        txHash: transaction.transactionHash,
         type: '',
       })
 

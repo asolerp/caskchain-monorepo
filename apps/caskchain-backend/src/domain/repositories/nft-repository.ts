@@ -34,6 +34,18 @@ export class NFTRepositoryImpl implements NFTRepository {
     return await this.web3Transaction.getFavoriteNfts(address)
   }
 
+  async getNftOffers(tokenId: string): Promise<any> {
+    return await this.web3Transaction.getNftOffers(tokenId)
+  }
+
+  async getNftTransfers(id: string): Promise<any> {
+    return await this.web3Transaction.getNftTransfers(id)
+  }
+
+  async getNftSalesHistory(id: string): Promise<any> {
+    return await this.web3Transaction.getNftSalesHistory(id)
+  }
+
   async getBalances(address: string): Promise<any> {
     return await this.web3Transaction.getBalances(address)
   }

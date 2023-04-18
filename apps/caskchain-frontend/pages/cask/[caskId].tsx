@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { ShareIcon } from '@heroicons/react/24/outline'
 import BookmarkIcon from 'public/icons/bookmark.svg'
 
@@ -16,27 +16,48 @@ import { ethers } from 'ethers'
 import { NextPageContext } from 'next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import NFTLatestOffers from '@ui/tables/NFTLatestOffers'
 
-let CaskIllustration = ({ src }: { src: string }) => {
+let CaskIllustration = ({
+  src,
+  activeAsset,
+}: {
+  src: string
+  activeAsset: number
+}) => {
   return (
-    <div className="flex flex-1 justify-end">
-      <Image
-        className={` mb-6 object-contain  rounded-3xl`}
-        src={src}
-        alt="New NFT"
-        width={500}
-        height={300}
-      />
+    <div className="flex flex-1 justify-center col-span-2">
+      {activeAsset === 1 && (
+        <Image
+          className={`object-contain  rounded-3xl`}
+          src={src}
+          alt="New NFT"
+          width={350}
+          height={400}
+        />
+      )}
+      {activeAsset === 2 && (
+        <video
+          width="500"
+          height="300"
+          autoPlay={true}
+          controls={false}
+          src="https://res.cloudinary.com/enalbis/video/upload/v1681586853/CaskChain/flofru3viqsirclxlapx.mp4"
+        />
+      )}
     </div>
   )
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 CaskIllustration = React.memo(CaskIllustration)
 
 // import React from 'react'
 function CaskDetail() {
   const route = useRouter()
   const { cask } = useCaskNft({ caskId: route.query.caskId as string })
+  const [activeAsset, setActiveAsset] = useState(1)
 
   const handleCancelOffer = useCallback(() => {
     cask?.cancelOffer()
@@ -46,30 +67,67 @@ function CaskDetail() {
     <>
       <BaseLayout background="bg-gradient-to-r from-[#0F0F0F] via-[#161616] to-[#000000]">
         <div className="lg:w-3/4 mx-auto pt-40 pb-8 rounded-lg">
-          {cask?.data?.tokenId ? (
+          {cask?.data?.tokenId && !cask?.isLoading ? (
             <div>
-              <div className="grid grid-cols-2 gap-10 mx-auto mb-20 rounded-lg">
-                <CaskIllustration src={'/images/nft.png'} />
-
-                <div className="flex flex-col">
-                  <div className="flex flex-row space-x-2">
+              <div className="grid grid-cols-5 gap-10 mx-auto mb-20 rounded-lg">
+                <div>
+                  <div className="flex flex-col justify-end items-end">
                     <div
-                      onClick={() => cask.handleAddFavorite()}
-                      className={`cursor-pointer border ${
-                        cask.isFavorite
-                          ? 'border-cask-chain'
-                          : 'border-gray-600'
-                      }  w-fit p-2 rounded-md flex flex-row space-x-2 justify-center items-center`}
+                      onClick={() => setActiveAsset(1)}
+                      className={`${
+                        activeAsset === 1 ? 'border-2 border-cask-chain' : ''
+                      } p-2 rounded-xl flex items-center justify-center`}
                     >
-                      <p className="text-white">{cask.totalFavorites}</p>
-                      <BookmarkIcon
-                        color={cask.isFavorite ? '#CAFC01' : '#fff'}
-                        fill={cask.isFavorite ? '#CAFC01' : 'transparent'}
-                        className="cursor-pointer"
-                        width={20}
-                        height={20}
+                      <Image
+                        className={`object-contain rounded-3xl`}
+                        src={'/images/nft.png'}
+                        alt="New NFT"
+                        width={100}
+                        height={150}
                       />
                     </div>
+                    <Spacer size="xs" />
+                    <div
+                      onClick={() => setActiveAsset(2)}
+                      className={`${
+                        activeAsset === 2 ? 'border-2 border-cask-chain' : ''
+                      } p-2 rounded-xl flex items-center justify-center`}
+                    >
+                      <Image
+                        className={`object-contain rounded-3xl`}
+                        src={'/images/frame.png'}
+                        alt="New NFT"
+                        width={100}
+                        height={150}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <CaskIllustration
+                  src={'/images/nft.png'}
+                  activeAsset={activeAsset}
+                />
+                <div className="flex flex-col col-span-2">
+                  <div className="flex flex-row space-x-2">
+                    {cask?.isUserNeededDataFilled && (
+                      <div
+                        onClick={() => cask.debounceAddFavorite()}
+                        className={`cursor-pointer border ${
+                          cask.isFavorite
+                            ? 'border-cask-chain'
+                            : 'border-gray-600'
+                        }  w-fit p-2 rounded-md flex flex-row space-x-2 justify-center items-center`}
+                      >
+                        <p className="text-white">{cask.totalFavorites}</p>
+                        <BookmarkIcon
+                          color={cask.isFavorite ? '#CAFC01' : '#fff'}
+                          fill={cask.isFavorite ? '#CAFC01' : 'transparent'}
+                          className="cursor-pointer"
+                          width={20}
+                          height={20}
+                        />
+                      </div>
+                    )}
                     <div
                       onClick={() => cask.handleShareCask()}
                       className={`cursor-pointer border border-gray-600  w-fit p-2 rounded-md flex flex-row space-x-2 justify-center items-center`}
@@ -77,7 +135,7 @@ function CaskDetail() {
                       <ShareIcon
                         width={20}
                         height={20}
-                        className="text-gray-600"
+                        className="text-white"
                       />
                     </div>
                   </div>
@@ -134,11 +192,11 @@ function CaskDetail() {
                     <h2 className="text-white text-5xl font-semibold">
                       Cask Stats
                     </h2>
-                    <div className="grid grid-cols-2 mt-6">
+                    <div className="grid grid-cols-2 gap-4 mt-6">
                       {cask?.data?.meta?.attributes?.map((attribute: any) => (
                         <div
                           key={attribute.trait_type}
-                          className="flex flex-col my-2"
+                          className="flex flex-col border border-cask-chain rounded-xl p-4"
                         >
                           <dt className="order-2 text-xl font-medium text-gray-400">
                             {attribute.trait_type.toUpperCase()}
@@ -184,16 +242,43 @@ function CaskDetail() {
                     />
                   </div>
                 )}
-                {cask?.data?.transactions?.length > 0 && (
-                  <div className="mt-14">
-                    <h2 className="text-white text-5xl font-semibold mb-4">
-                      TRANSACTIONS HISTORY
-                    </h2>
-                    <TransactionsHistory
-                      transactions={cask?.data?.transactions}
-                    />
-                  </div>
-                )}
+                <Spacer size="3xl" />
+                <div>
+                  <h2 className="text-white pb-3 text-5xl font-semibold border-b border-cask-chain">
+                    LAST OFFERS
+                  </h2>
+                  <Spacer size="md" />
+
+                  {cask?.latestOffers?.length > 0 ? (
+                    <div>
+                      <NFTLatestOffers nftLatestOffers={cask?.latestOffers} />
+                    </div>
+                  ) : (
+                    <div className="mt-14">
+                      <h2 className="text-white font-poppins text-3xl">
+                        No offers
+                      </h2>
+                    </div>
+                  )}
+                </div>
+                <Spacer size="xl" />
+                <div>
+                  <h2 className="text-white pb-3 text-5xl font-semibold border-b border-cask-chain">
+                    SALES HISTORY
+                  </h2>
+                  <Spacer size="md" />
+                  {cask?.salesHistory?.length > 0 ? (
+                    <div>
+                      <TransactionsHistory transactions={cask?.salesHistory} />
+                    </div>
+                  ) : (
+                    <div className="mt-14">
+                      <h2 className="text-white font-poppins text-3xl">
+                        No transactions
+                      </h2>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           ) : (

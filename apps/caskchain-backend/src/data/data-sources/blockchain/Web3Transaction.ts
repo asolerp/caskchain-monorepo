@@ -1,16 +1,14 @@
 import axios from 'axios'
 import { isValidAddress } from 'ethereumjs-util'
-import { ethers } from 'ethers'
 
 import NftFractionToken from 'contracts/build/contracts/NftFractionToken.json'
 
 import { MongoClientFactory } from '../mongodb/MongoClientFactory'
 import { MongoDBUserDataSource } from '../mongodb/MongoDBUserDataSource'
-import { Fraction } from './Models/Fraction'
+
 import { Web3Repository } from './Web3Repository'
 import getFractionData from './utils/getFractionData'
 
-const nullAddress = '0x0000000000000000000000000000000000000000'
 const USDTAddress = '0x4289231D30cf6cD58aa63aBa44b44E321c43eE57'
 
 export class Web3Transaction extends Web3Repository {
@@ -80,19 +78,7 @@ export class Web3Transaction extends Web3Repository {
           return res.data
         })
         .catch(() => {
-          return {
-            description:
-              'El secreto de su exquisita calidad descansa en el tiempo, el silencio y el microclima de nuestras bodegas subterráneas acorazadas por un muro de un metro y ochenta centímetros intraspasable por los olores y los ruidos.',
-            image:
-              'https://gateway.pinata.cloud/ipfs/QmNqh9WW1qmzU9CtD6ZjtvD9P2ZQJTbUU7SDjwEDnpFJni',
-            name: 'Classic Cask Brandy Suau SIN INFO',
-            attributes: [
-              { trait_type: 'year', value: '1990' },
-              { trait_type: 'extractions', value: '0' },
-              { trait_type: 'country', value: 'Spain' },
-              { trait_type: 'region', value: 'Balearic Islands' },
-            ],
-          }
+          throw 'Failed to fetch metadata'
         })
 
       const listedPrice = await NftVendor.methods.getListing(nft.tokenId).call()
@@ -114,7 +100,11 @@ export class Web3Transaction extends Web3Repository {
           nickname: ownerName?.nickname || '',
         },
         fractions: vaultExists
-          ? { ...fractionData, tokenAddress: fractionTokenAddress, unitPrice }
+          ? {
+              ...(fractionData as any),
+              tokenAddress: fractionTokenAddress,
+              unitPrice,
+            }
           : null,
         price: listedPrice?.price?.toString(),
         erc20Prices: {
@@ -216,7 +206,7 @@ export class Web3Transaction extends Web3Repository {
             creator: nft.creator,
             fractions: vaultExists
               ? {
-                  ...fractionData,
+                  ...(fractionData as any),
                   tokenAddress: fractionTokenAddress,
                   unitPrice,
                 }
@@ -240,6 +230,139 @@ export class Web3Transaction extends Web3Repository {
       )
 
       return nfts
+    } catch (e: any) {
+      console.error(e)
+    }
+  }
+
+  public async getNftOffers(tokenId: string) {
+    const NftOffers = this.contracts()['NftOffers']
+
+    const clientDB = MongoClientFactory.createClient(
+      process.env.CONTEXT_NAME as string,
+      {
+        url: process.env.MONGO_DB_URL,
+      }
+    )
+
+    const mongoUserDataSource = new MongoDBUserDataSource(clientDB)
+
+    try {
+      const events = await NftOffers.getPastEvents('NewOffer', {
+        filter: { tokenId },
+        fromBlock: 0,
+        toBlock: 'latest',
+      })
+      const latestOffers = events.map(async (event: any) => {
+        const ownerName = await mongoUserDataSource.search(
+          event.returnValues.bidder.toLowerCase()
+        )
+
+        const block = await this.client().eth.getBlock(event.blockNumber)
+        return {
+          tokenId: event.returnValues.tokenId,
+          bidder: ownerName?.nickname || '',
+          txHash: event.transactionHash,
+          timestamp: (block.timestamp as number) * 1000,
+          offer: event.returnValues.bid,
+        }
+      })
+      const lOffers = await Promise.all(latestOffers)
+      return lOffers.sort((a: any, b: any) => b.timestamp - a.timestamp)
+    } catch (e: any) {
+      console.error(e)
+    }
+  }
+
+  public async getNftSalesHistory(tokenId: string) {
+    const NftVendor = this.contracts()['NftVendor']
+    const NftOffers = this.contracts()['NftOffers']
+
+    try {
+      const clientDB = MongoClientFactory.createClient(
+        process.env.CONTEXT_NAME as string,
+        {
+          url: process.env.MONGO_DB_URL,
+        }
+      )
+
+      const mongoUserDataSource = new MongoDBUserDataSource(clientDB)
+
+      const eventsItemBought = await NftVendor.getPastEvents('ItemBought', {
+        filter: { tokenId },
+        fromBlock: 0,
+        toBlock: 'latest',
+      })
+
+      const eventsAcceptOffer = await NftOffers.getPastEvents('AcceptOffer', {
+        filter: { tokenId },
+        fromBlock: 0,
+        toBlock: 'latest',
+      })
+
+      const itemsBought = eventsItemBought.map(async (event: any) => {
+        const fromNickname = await mongoUserDataSource.search(
+          event.returnValues.from.toLowerCase()
+        )
+        const toNickname = await mongoUserDataSource.search(
+          event.returnValues.to.toLowerCase()
+        )
+
+        const block = await this.client().eth.getBlock(event.blockNumber)
+        return {
+          tokenId: event.returnValues.tokenId,
+          from: fromNickname?.nickname || '',
+          to: toNickname?.nickname || '',
+          txHash: event.transactionHash,
+          timestamp: (block.timestamp as number) * 1000,
+          purchasePrice: event.returnValues.price,
+        }
+      })
+
+      const offersAccepted = eventsAcceptOffer.map(async (event: any) => {
+        const fromNickname = await mongoUserDataSource.search(
+          event.returnValues.owner.toLowerCase()
+        )
+        const toNickname = await mongoUserDataSource.search(
+          event.returnValues.bidder.toLowerCase()
+        )
+        const block = await this.client().eth.getBlock(event.blockNumber)
+        return {
+          tokenId: event.returnValues.tokenId,
+          from: fromNickname?.nickname || '',
+          to: toNickname?.nickname || '',
+          txHash: event.transactionHash,
+          timestamp: (block.timestamp as number) * 1000,
+          purchasePrice: event.returnValues.bid,
+        }
+      })
+
+      return await Promise.all([...itemsBought, ...offersAccepted])
+    } catch (e: any) {
+      console.error(e)
+    }
+  }
+
+  public async getNftTransfers(tokenId: string) {
+    const CCNft = this.contracts()['CCNft']
+    try {
+      const events = await CCNft.getPastEvents('Transfer', {
+        filter: { tokenId },
+        fromBlock: 0,
+        toBlock: 'latest',
+      })
+      const transferHistory = events.map(async (event: any) => {
+        const block = await this.client().eth.getBlock(event.blockNumber)
+        return {
+          tokenId: event.returnValues.tokenId,
+          from: event.returnValues.from,
+          to: event.returnValues.to,
+          txHash: event.transactionHash,
+          timestamp: (block.timestamp as number) * 1000,
+        }
+      })
+
+      return await Promise.all(transferHistory)
     } catch (e: any) {
       console.error(e)
     }
@@ -321,7 +444,7 @@ export class Web3Transaction extends Web3Repository {
             creator,
             fractions: vaultExists
               ? {
-                  ...fractionData,
+                  ...(fractionData as any),
                   tokenAddress: fractionTokenAddress,
                   unitPrice,
                 }
@@ -417,7 +540,7 @@ export class Web3Transaction extends Web3Repository {
             creator: nft.creator,
             fractions: vaultExists
               ? {
-                  ...fractionData,
+                  ...(fractionData as any),
                   tokenAddress: fractionTokenAddress,
                   unitPrice,
                 }
@@ -445,7 +568,7 @@ export class Web3Transaction extends Web3Repository {
 
   public async fractionalizeNft({ fractionInfo }: { fractionInfo: any }) {
     try {
-      let initialNonce = null
+      let initialNonce: number | null = null
 
       const { name, symbol, collection, tokenId, supply, listPrice } =
         fractionInfo
@@ -485,7 +608,7 @@ export class Web3Transaction extends Web3Repository {
 
   public async transferNFT(toAddress: string, tokenId: string, index: number) {
     try {
-      let initialNonce = null
+      let initialNonce: number | null = null
 
       const nftContract = this.contracts()['CCNft']
 

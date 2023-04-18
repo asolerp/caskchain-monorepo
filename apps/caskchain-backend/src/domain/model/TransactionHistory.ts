@@ -4,6 +4,7 @@ export interface TransactionHistoryRequestModel {
   date: Date
   tokenId: string
   value: string
+  txHash: string
   type: string
 }
 

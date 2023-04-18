@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { NextFunction } from 'express'
 import { Request, Response } from 'express'
 
 import { GetUserUseCase } from '../../domain/interfaces/use-cases/get-user'
@@ -52,7 +52,8 @@ export default function UserRouter(
 
   router.get(
     '/verify',
-    authenticateToken,
+    (req: Request, res: Response, next: NextFunction) =>
+      authenticateToken(req, res, next),
     async (req: Request, res: Response) => {
       logger.info('Access verified', {
         metadata: {
@@ -165,6 +166,7 @@ export default function UserRouter(
           {
             _id: user._id,
             address: user.address,
+            role: user.address === process.env.PUBLIC_KEY ? 'admin' : 'user',
           },
           process.env.TOKEN_SECRET as string,
           { expiresIn: '60m' }
@@ -214,6 +216,8 @@ export default function UserRouter(
               {
                 _id: user._id,
                 address: user.address,
+                role:
+                  user.address === process.env.PUBLIC_KEY ? 'admin' : 'user',
               },
               process.env.TOKEN_SECRET as string,
               { expiresIn: '60m' }
@@ -223,6 +227,8 @@ export default function UserRouter(
               {
                 _id: user._id,
                 address: user.address,
+                role:
+                  user.address === process.env.PUBLIC_KEY ? 'admin' : 'user',
               },
               process.env.REFRESH_TOKEN_SECRET as string,
               { expiresIn: '24h' }

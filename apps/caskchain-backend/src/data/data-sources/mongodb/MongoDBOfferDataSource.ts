@@ -1,5 +1,6 @@
 import { OfferRequestModel } from '../../../domain/model/Offer'
 import { OfferDataSource } from '../../interfaces/data-sources/OfferDataSource'
+import { MongoDBUserDataSource } from './MongoDBUserDataSource'
 
 import { MongoRepository } from './MongoRepository'
 
@@ -37,10 +38,27 @@ export class MongoDBOfferDataSource
   }
 
   public async search(tokenId: string): Promise<any | null> {
+    const clientDB = this.client()
+    const mongoUserDataSource = new MongoDBUserDataSource(clientDB)
+
     const collection = await this.collection()
+
     const document = await collection.find<any>({ tokenId: tokenId }).toArray()
 
-    return document || null
+    const documentsWithUser = await Promise.all(
+      document.map(async (offer) => {
+        const user = await mongoUserDataSource.search(offer.bidder)
+        return {
+          ...offer,
+          bidder: {
+            address: user.address,
+            nickname: user.nickname,
+          },
+        }
+      })
+    )
+
+    return documentsWithUser || null
   }
 
   public async searchSentOffers(address: string): Promise<any | null> {

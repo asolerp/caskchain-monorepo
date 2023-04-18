@@ -8,6 +8,7 @@ dotenv.config(
 import express from 'express'
 import cors from 'cors'
 import session from 'express-session'
+import errorHandler from './presentation/middlewares/errorHandler'
 
 const server = express()
 
@@ -36,5 +37,7 @@ server.use((req, res, next) => {
   }
 })
 server.use(express.urlencoded({ extended: true, limit: '25mb' }))
+
+server.use(errorHandler)
 
 export default server
