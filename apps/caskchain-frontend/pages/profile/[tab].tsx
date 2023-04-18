@@ -27,7 +27,7 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-export const getServerSideProps = (context: any) => auth(context)
+export const getServerSideProps = (context: any) => auth(context, 'user')
 
 const Profile: NextPage = () => {
   const {

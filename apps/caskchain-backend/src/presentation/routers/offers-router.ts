@@ -6,12 +6,12 @@ import { GetSentOffersUseCase } from '../../domain/interfaces/use-cases/offers/g
 import { authenticateToken } from '../middlewares/authenticateToken'
 import { extractAddressFromToken } from '../utils/extractTokenFromRequest'
 import logger from '../utils/logger' // Import the logger
-import { GetNFTLatestOffersUserCase } from '../../domain/interfaces/use-cases/offers/get-nft-latest-offers-user-case'
+import { GetOffersUseCase } from '../../domain/interfaces/use-cases/offers/get-offers'
 
 export default function OffersRouter(
   getSentOffers: GetSentOffersUseCase,
   getReceivedOffers: GetReceivedOffersUseCase,
-  getNFTLatestOffer: GetNFTLatestOffersUserCase
+  getNFTLatestOffer: GetOffersUseCase
 ) {
   const router = express.Router()
 

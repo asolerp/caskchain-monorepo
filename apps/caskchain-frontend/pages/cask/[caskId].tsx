@@ -256,7 +256,7 @@ function CaskDetail() {
                   ) : (
                     <div className="mt-14">
                       <h2 className="text-white font-poppins text-3xl">
-                        No transactions
+                        No offers
                       </h2>
                     </div>
                   )}

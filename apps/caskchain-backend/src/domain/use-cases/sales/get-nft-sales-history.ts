@@ -1,14 +1,16 @@
-import { NFTRepository } from '../../interfaces/repository/nft-repository'
+import { TransactionRepository } from '../../interfaces/repository/transaction-repository'
 import { GetNFTSalesHistoryUseCase } from '../../interfaces/use-cases/sales/get-nft-sales-history-use-case'
 
 export class GetNftSalesHistory implements GetNFTSalesHistoryUseCase {
-  web3Repository: NFTRepository
-  constructor(web3Repository: NFTRepository) {
-    this.web3Repository = web3Repository
+  transactionHistoryRepository: TransactionRepository
+  constructor(transactionHistoryRepository: TransactionRepository) {
+    this.transactionHistoryRepository = transactionHistoryRepository
   }
 
   async execute(tokenId: string) {
-    const result = await this.web3Repository.getNftSalesHistory(tokenId)
+    const result = await this.transactionHistoryRepository.getTransactions(
+      tokenId
+    )
     return result
   }
 }

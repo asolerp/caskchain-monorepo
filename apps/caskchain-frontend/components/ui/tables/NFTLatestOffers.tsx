@@ -48,16 +48,16 @@ const NFTLatestOffers: React.FC<NFTLatestOffersProps> = ({
                       return (
                         <tr key={i}>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100">
-                            {ethers.utils.formatEther(item.offer)} ETH
+                            {ethers.utils.formatEther(item.bid)} ETH
                           </td>
                           <td
                             align="left"
                             className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap"
                           >
-                            @{item.bidder}
+                            @{item?.bidder?.nickname}
                           </td>
                           <td className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap">
-                            {format(item.timestamp, 'PP p')}
+                            {format(new Date(item.createdAt), 'PP p')}
                           </td>
                           <td className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap">
                             <Link

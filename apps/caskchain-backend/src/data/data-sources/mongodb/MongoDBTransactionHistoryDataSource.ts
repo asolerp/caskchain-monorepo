@@ -1,5 +1,6 @@
 import { TransactionHistoryRequestModel } from '../../../domain/model/TransactionHistory'
 import { TransactionHistoryDataSource } from '../../interfaces/data-sources/TransactionHistoryDataSource'
+import { MongoDBUserDataSource } from './MongoDBUserDataSource'
 
 import { MongoRepository } from './MongoRepository'
 
@@ -16,10 +17,37 @@ export class MongoDBTransactionHistoryDataSource
   }
 
   public async search(tokenId: string): Promise<any | null> {
-    const collection = await this.collection()
-    const document = await collection.find<any>({ tokenId: tokenId }).toArray()
+    const clientDB = this.client()
+    const mongoUserDataSource = new MongoDBUserDataSource(clientDB)
 
-    return document || null
+    const collection = await this.collection()
+    const document = await collection
+      .find<any>({
+        $and: [
+          {
+            tokenId: tokenId,
+          },
+          {
+            type: { $ne: 'transfer' },
+          },
+        ],
+      })
+      .toArray()
+
+    const documentsWithUser = await Promise.all(
+      document.map(async (sale) => {
+        const user = await mongoUserDataSource.search(sale.to)
+        return {
+          ...sale,
+          to: {
+            address: user.address,
+            nickname: user.nickname,
+          },
+        }
+      })
+    )
+
+    return documentsWithUser || null
   }
 
   public async searchByWalletAddress(

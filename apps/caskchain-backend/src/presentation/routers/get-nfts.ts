@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { NextFunction } from 'express'
 import { Request, Response } from 'express'
 import { FractionalizeNftUseCase } from '../../domain/interfaces/use-cases/fractionalize-nft'
 import { GetCaskInfoUseCase } from '../../domain/interfaces/use-cases/casks/get-cask-info'
@@ -45,34 +45,40 @@ export default function GetNftsRouter(
     }
   })
 
-  router.get('/me', authenticateToken, async (req: Request, res: Response) => {
-    const address = extractAddressFromToken(req)
-    try {
-      const nfts = await getOwnedNfts.execute(address)
-      logger.info('Successfully fetched owned NFTs for address %s', address, {
-        metadata: {
-          service: 'nfts-router',
-        },
-      })
-      return res.json(nfts)
-    } catch (error: any) {
-      logger.error(
-        'Error fetching owned NFTs for address %s: %s',
-        address,
-        error.message,
-        {
+  router.get(
+    '/me',
+    async (req: Request, res: Response, next: NextFunction) =>
+      authenticateToken(req, res, next, 'user'),
+    async (req: Request, res: Response) => {
+      const address = extractAddressFromToken(req)
+      try {
+        const nfts = await getOwnedNfts.execute(address)
+        logger.info('Successfully fetched owned NFTs for address %s', address, {
           metadata: {
             service: 'nfts-router',
           },
-        }
-      )
-      return res.status(500).send({ message: 'Error fetching owned NFTs' })
+        })
+        return res.json(nfts)
+      } catch (error: any) {
+        logger.error(
+          'Error fetching owned NFTs for address %s: %s',
+          address,
+          error.message,
+          {
+            metadata: {
+              service: 'nfts-router',
+            },
+          }
+        )
+        return res.status(500).send({ message: 'Error fetching owned NFTs' })
+      }
     }
-  })
+  )
 
   router.get(
     '/favorites',
-    authenticateToken,
+    async (req: Request, res: Response, next: NextFunction) =>
+      authenticateToken(req, res, next, 'user'),
     async (req: Request, res: Response) => {
       const address = extractAddressFromToken(req)
       try {
@@ -124,40 +130,45 @@ export default function GetNftsRouter(
     }
   })
 
-  router.post('/:caskId/favorite', async (req: Request, res: Response) => {
-    const { caskId } = req.params
-    const { userId } = req.body
+  router.post(
+    '/:caskId/favorite',
+    async (req: Request, res: Response, next: NextFunction) =>
+      authenticateToken(req, res, next, 'user'),
+    async (req: Request, res: Response) => {
+      const { caskId } = req.params
+      const { userId } = req.body
 
-    if (!caskId || caskId === 'undefined' || !userId) {
-      throw new Error('caskId and userId are required')
-    }
+      if (!caskId || caskId === 'undefined' || !userId) {
+        throw new Error('caskId and userId are required')
+      }
 
-    try {
-      const favoriteAction = await favoriteNft.execute(userId, caskId)
-      const totalFavorites = await nftFavoriteCounter.execute(
-        caskId,
-        favoriteAction
-      )
-      logger.info('Successfully favorited NFT with cask ID %s', caskId, {
-        metadata: {
-          service: 'nfts-router',
-        },
-      })
-      return res.json({ totalFavorites })
-    } catch (error: any) {
-      logger.error(
-        'Error favoriting NFT with cask ID %s: %s',
-        caskId,
-        error.message,
-        {
+      try {
+        const favoriteAction = await favoriteNft.execute(userId, caskId)
+        const totalFavorites = await nftFavoriteCounter.execute(
+          caskId,
+          favoriteAction
+        )
+        logger.info('Successfully favorited NFT with cask ID %s', caskId, {
           metadata: {
             service: 'nfts-router',
           },
-        }
-      )
-      return res.status(500).send({ message: 'Error favoriting NFT' })
+        })
+        return res.json({ totalFavorites })
+      } catch (error: any) {
+        logger.error(
+          'Error favoriting NFT with cask ID %s: %s',
+          caskId,
+          error.message,
+          {
+            metadata: {
+              service: 'nfts-router',
+            },
+          }
+        )
+        return res.status(500).send({ message: 'Error favoriting NFT' })
+      }
     }
-  })
+  )
 
   router.get('/:caskId/totalFavorites', async (req: Request, res: Response) => {
     const { caskId } = req.params

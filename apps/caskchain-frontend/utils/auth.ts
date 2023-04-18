@@ -3,7 +3,7 @@ import { deleteCookie, getCookie, setCookie } from 'cookies-next'
 
 import { toast } from 'react-toastify'
 
-export const auth = async (context: any) => {
+export const auth = async (context: any, role: 'user' | 'admin') => {
   const { req, res } = context
   const session = getCookie('token', { req, res })
   if (!session) {
@@ -18,7 +18,7 @@ export const auth = async (context: any) => {
     try {
       // we call the api that verifies the token.
       const data = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/user/verify`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/user/verify?role=${role}`,
         {
           headers: {
             Authorization: `Bearer ${session}`,

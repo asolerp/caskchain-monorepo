@@ -3,6 +3,7 @@ export interface OfferRequestModel {
   owner: string
   bidder: string
   bid: string
+  txHash: string
   createdAt: Date
   status: 'live' | 'canceled' | 'accepted'
 }

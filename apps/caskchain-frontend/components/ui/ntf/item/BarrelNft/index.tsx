@@ -12,6 +12,7 @@ type NftItemProps = {
   active?: boolean
   isFavorite?: boolean
   isMarketPlace?: boolean
+  showAnimation?: boolean
   showFavorite?: boolean
   onPressFavorite?: (nftId: string) => void
   blow?: boolean
@@ -20,6 +21,7 @@ type NftItemProps = {
 const BarrelNft: React.FC<NftItemProps> = ({
   item,
   active = false,
+  showAnimation = true,
   isFavorite = false,
   showFavorite = true,
   isMarketPlace = false,
@@ -67,7 +69,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
         >
           <div className="relative">
             <div className="flex justify-center items-center rounded-md">
-              {!isHover && (
+              {(!isHover || !showAnimation) && (
                 <Image
                   className={`w-full object-contain rounded-tl-[40px] rounded-tr-[40px]`}
                   src={'/images/nft.png'}
@@ -76,9 +78,10 @@ const BarrelNft: React.FC<NftItemProps> = ({
                   height={300}
                 />
               )}
-              {isHover && (
+              {isHover && showAnimation && (
                 <video
                   ref={videoRef}
+                  fluid={false}
                   width="600"
                   height="600"
                   className="h-[400px]"

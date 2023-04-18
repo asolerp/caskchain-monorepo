@@ -61,15 +61,15 @@ const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({
                       return (
                         <tr key={i} className="">
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100">
-                            {item?.to}
+                            @{item?.to?.nickname}
                           </td>
                           <td
                             align="center"
                             className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap"
                           >
-                            {item?.purchasePrice &&
+                            {item?.value &&
                               ethers.utils
-                                .formatEther(item?.purchasePrice)
+                                .formatEther(item?.value)
                                 .toString()}{' '}
                             ETH
                           </td>
@@ -80,7 +80,7 @@ const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({
                             {item.tokenId}
                           </td>
                           <td className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap">
-                            <p>{format(new Date(item?.timestamp), 'PP p')}</p>
+                            <p>{format(new Date(item?.date), 'PP p')}</p>
                           </td>
 
                           <td className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap">

@@ -21,7 +21,6 @@ export default function TransactionsHistoryRouter(
       }
       try {
         const salesHistory = await getNFTSalesHistory.execute(tokenId)
-        console.log(salesHistory)
         return res.json(salesHistory)
       } catch (error: any) {
         next(error)
