@@ -81,7 +81,6 @@ const BarrelNft: React.FC<NftItemProps> = ({
               {isHover && showAnimation && (
                 <video
                   ref={videoRef}
-                  fluid={false}
                   width="600"
                   height="600"
                   className="h-[400px]"
