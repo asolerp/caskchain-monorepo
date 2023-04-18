@@ -19,7 +19,7 @@
     "start:caskchain-admin": "turbo run start --filter=caskchain-admin",
     "start:caskchain-frontend": "turbo run start --filter=caskchain-frontend",
     "start:caskchain-backend": "turbo run start --filter=caskchain-backend",
-    "heroku-postbuild": "if [ $ADMIN_ENV ]; then yarn run prod-admin; if [ $CLIENT_ENV ]; then yarn run prod-frontend; elif [ $SERVER_ENV ]; then yarn run prod-backend; else echo no environment detected, please set ADMIN_ENV or CLIENT_ENV or SERVER_ENV; fi",
+    "heroku-postbuild": "if [ $ADMIN_ENV ]; then yarn run prod-admin; elif [ $CLIENT_ENV ]; then yarn run prod-frontend; elif [ $SERVER_ENV ]; then yarn run prod-backend; else echo no environment detected, please set ADMIN_ENV or CLIENT_ENV or SERVER_ENV; fi",
     "heroku-cleanup": "rm -rf .next/cache && find node_modules/@next -depth -maxdepth 1 -type d -name 'swc*' -exec rm -rf {} \\; -prune #Remove cache and SWC binaries to reduce heroku slug size",
     "prod-admin": "yarn run build:caskchain-admin",
     "prod-frontend": "yarn run build:caskchain-frontend",
