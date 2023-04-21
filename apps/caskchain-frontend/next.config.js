@@ -61,6 +61,7 @@ const nextConfig = {
       },
     ]
   },
+  transpilePackages: ['caskchain-lib'],
   swcMinify: true,
   experimental: {
     appDir: true,

@@ -4,29 +4,15 @@ import { Request, Response } from 'express'
 import { GetTransactionsByTokenIdUseCase } from '../../domain/interfaces/use-cases/get-transaction-by-token-id-use-case'
 import { GetTransactionsByWalletAddressUseCase } from '../../domain/interfaces/use-cases/transactions/get-transaction-by-wallet-address-use-case'
 import { GetNFTSalesHistoryUseCase } from '../../domain/interfaces/use-cases/sales/get-nft-sales-history-use-case'
+import { GetTransactionsUseCase } from '../../domain/interfaces/use-cases/transactions/get-transactions-use-case'
 
 export default function TransactionsHistoryRouter(
   getNFTSalesHistory: GetNFTSalesHistoryUseCase,
+  getTransactions: GetTransactionsUseCase,
   getTransactionsByTokenId: GetTransactionsByTokenIdUseCase,
   getTransactionByWalletAddress: GetTransactionsByWalletAddressUseCase
 ) {
   const router = express.Router()
-
-  router.get(
-    '/sales-history/:tokenId',
-    async (req: Request, res: Response, next: NextFunction) => {
-      const { tokenId } = req.params
-      if (!tokenId) {
-        throw new Error('Token ID is required')
-      }
-      try {
-        const salesHistory = await getNFTSalesHistory.execute(tokenId)
-        return res.json(salesHistory)
-      } catch (error: any) {
-        next(error)
-      }
-    }
-  )
 
   router.get('/', async (req: Request, res: Response) => {
     try {
@@ -50,6 +36,34 @@ export default function TransactionsHistoryRouter(
       return res.status(422).send({ message: 'Cannot get transaction history' })
     }
   })
+
+  router.get(
+    '/sales-history/:tokenId',
+    async (req: Request, res: Response, next: NextFunction) => {
+      const { tokenId } = req.params
+      if (!tokenId) {
+        throw new Error('Token ID is required')
+      }
+      try {
+        const salesHistory = await getNFTSalesHistory.execute(tokenId)
+        return res.json(salesHistory)
+      } catch (error: any) {
+        next(error)
+      }
+    }
+  )
+
+  router.get(
+    '/all',
+    async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const salesHistory = await getTransactions.execute()
+        return res.json(salesHistory)
+      } catch (error: any) {
+        next(error)
+      }
+    }
+  )
 
   return router
 }

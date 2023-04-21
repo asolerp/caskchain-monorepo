@@ -1,6 +1,7 @@
 import { UserRequestModel } from '../../../domain/model/User'
 
 import { UsersDataSource } from '../../interfaces/data-sources/UsersDataSource'
+import { MongoDBStatsDataSource } from './MongoDBStatsDataSource'
 
 import { MongoRepository } from './MongoRepository'
 

@@ -57,6 +57,15 @@ import { AcceptOfferImpl } from './domain/repositories/accept-offer-repository'
 import { UpdateOwnerNft } from './domain/use-cases/nft/update-owner-nft'
 import { GetNftSalesHistory } from './domain/use-cases/sales/get-nft-sales-history'
 import { GetOffers } from './domain/use-cases/offer/get-offers'
+import StatsRouter from './presentation/routers/stats-router'
+import { GetTotalUsers } from './domain/use-cases/stats/get-total-users'
+import { StatsImpl } from './domain/repositories/stats-repository'
+import { MongoDBStatsDataSource } from './data/data-sources/mongodb/MongoDBStatsDataSource'
+import { GetTotalNfts } from './domain/use-cases/stats/get-total-nfts'
+import { GetTransactions } from './domain/use-cases/transaction/get-transactions-use-case'
+import { MongoDBUsersWatcher } from './data/data-sources/mongodb/MongoDBUsersWatcher'
+import UserDBWatcher from './presentation/watchers/user-db-watcher'
+import { IncrementTotalUsers } from './domain/use-cases/stats/increment-total-users'
 ;(async () => {
   const clientDB = MongoClientFactory.createClient(
     process.env.CONTEXT_NAME as string,
@@ -125,12 +134,19 @@ import { GetOffers } from './domain/use-cases/offer/get-offers'
 
   const payments = stripeConnection()
 
+  // ROUTES
+
   const verifyMiddleWare = VerifyRouter()
   const verifyImageMiddleWare = VerifyImageRouter()
   const signature = SignatureRouter()
   const orderBottleMiddleWare = OrderBottleRouter()
   const transactionsHistory = TransactionsHistoryRouter(
     new GetNftSalesHistory(
+      new TransactionRepositoryImpl(
+        new MongoDBTransactionHistoryDataSource(clientDB)
+      )
+    ),
+    new GetTransactions(
       new TransactionRepositoryImpl(
         new MongoDBTransactionHistoryDataSource(clientDB)
       )
@@ -153,13 +169,20 @@ import { GetOffers } from './domain/use-cases/offer/get-offers'
       new RecordPaymentsImpl(new MongoDBRecordPaymentsDataSource(clientDB))
     )
   )
-
+  const stats = StatsRouter(
+    new GetTotalUsers(new StatsImpl(new MongoDBStatsDataSource(clientDB))),
+    new GetTotalNfts(
+      new NFTRepositoryImpl(
+        new Web3Transaction(web3Client, web3WsClient, web3Contracts),
+        new MongoDBNFTDataSource(clientDB)
+      )
+    )
+  )
   const offers = OffersRouter(
     new GetSentOffers(new OfferImpl(new MongoDBOfferDataSource(clientDB))),
     new GetReceivedOffers(new OfferImpl(new MongoDBOfferDataSource(clientDB))),
     new GetOffers(new OfferImpl(new MongoDBOfferDataSource(clientDB)))
   )
-
   const webhook = WebhookRouter(
     new GetPaymentByPaymentId(
       new RecordPaymentsImpl(new MongoDBRecordPaymentsDataSource(clientDB))
@@ -175,6 +198,8 @@ import { GetOffers } from './domain/use-cases/offer/get-offers'
     )
   )
 
+  // EVENTS
+
   const handelOnMint = OnMint(
     new CreateNFT(
       new NFTRepositoryImpl(
@@ -183,7 +208,6 @@ import { GetOffers } from './domain/use-cases/offer/get-offers'
       )
     )
   )
-
   const handleOnTransfer = OnTransfer(
     new UpdateOwnerNft(
       new NFTRepositoryImpl(
@@ -197,11 +221,9 @@ import { GetOffers } from './domain/use-cases/offer/get-offers'
       )
     )
   )
-
   const handleOnNewOffer = OnOffer(
     new RecordOffer(new RecordOfferImpl(new MongoDBOfferDataSource(clientDB)))
   )
-
   const handleAcceptOffer = OnAcceptOffer(
     new AcceptOffer(new AcceptOfferImpl(new MongoDBOfferDataSource(clientDB))),
     new CreateTransaction(
@@ -210,7 +232,6 @@ import { GetOffers } from './domain/use-cases/offer/get-offers'
       )
     )
   )
-
   const handleRemoveOffer = OnRemoveOffer(
     new RemoveOffer(new RemoveOfferImpl(new MongoDBOfferDataSource(clientDB)))
   )
@@ -230,11 +251,27 @@ import { GetOffers } from './domain/use-cases/offer/get-offers'
   eventsHandler.subscribeLogEvent('NftOffers', 'RemoveOffer', handleRemoveOffer)
   eventsHandler.subscribeLogEvent('NftOffers', 'AcceptOffer', handleAcceptOffer)
 
+  // WATCHERS
+  const usersWatcher = new MongoDBUsersWatcher(clientDB)
+
+  const { incrementTotalUsers } = UserDBWatcher(
+    new IncrementTotalUsers(new StatsImpl(new MongoDBStatsDataSource(clientDB)))
+  )
+
+  usersWatcher.watchCollection((event) => {
+    console.log('EVENT', event)
+    if (event.operationType === 'insert') {
+      console.log('INSERTING')
+      incrementTotalUsers()
+    }
+  })
+
   server.use(
     '/api/user',
     user(clientDB, web3Client, web3WsClient, web3Contracts)
   )
 
+  server.use('/api/stats', stats)
   server.use('/api/signature', signature)
   server.use('/api/verify', verifyMiddleWare)
   server.use('/api/verify-image', verifyImageMiddleWare)

@@ -48,7 +48,7 @@ export default function GetNftsRouter(
   router.get(
     '/me',
     async (req: Request, res: Response, next: NextFunction) =>
-      authenticateToken(req, res, next, 'user'),
+      authenticateToken(req, res, next),
     async (req: Request, res: Response) => {
       const address = extractAddressFromToken(req)
       try {
@@ -78,7 +78,7 @@ export default function GetNftsRouter(
   router.get(
     '/favorites',
     async (req: Request, res: Response, next: NextFunction) =>
-      authenticateToken(req, res, next, 'user'),
+      authenticateToken(req, res, next),
     async (req: Request, res: Response) => {
       const address = extractAddressFromToken(req)
       try {

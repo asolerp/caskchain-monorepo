@@ -1,0 +1,14 @@
+{
+  "name": "caskchain-ui",
+  "version": "1.0.0",
+  "description": "Logic to interact with the blockchain",
+  "sideEffects": false,
+  "main": "index.ts",
+  "types": "index.ts",
+  "author": "CaskChain",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^18.2.0",
+    "typescript": "^5.0.4"
+  }
+}

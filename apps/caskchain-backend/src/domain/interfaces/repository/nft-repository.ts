@@ -4,6 +4,7 @@ export interface NFTRepository {
   createNFT(id: string, nft: any): Promise<any>
   updateNFTFavoriteCounter(id: string, action: string): Promise<any>
   getAllNfts(): Promise<Nft[]>
+  getTotalNftsSupply(): Promise<number>
   getFavoriteNfts(address: string): Promise<Nft[]>
   getNFTFavoriteCounter(id: string): Promise<number>
   getNftTransfers(id: string): Promise<any>

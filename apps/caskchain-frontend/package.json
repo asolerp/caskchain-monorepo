@@ -15,6 +15,7 @@
     "genNFtFractionTokenContractType": "abi-types-generator './public/contracts/NftFractionToken.json' --output='./types' --name=nftFractionTokenContract --provider=ethers_v5"
   },
   "dependencies": {
+    "caskchain-lib": "*",
     "@headlessui/react": "^1.7.5",
     "@heroicons/react": "^2.0.13",
     "@metamask/providers": "^10.2.1",

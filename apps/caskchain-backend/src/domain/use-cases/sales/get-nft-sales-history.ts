@@ -8,9 +8,8 @@ export class GetNftSalesHistory implements GetNFTSalesHistoryUseCase {
   }
 
   async execute(tokenId: string) {
-    const result = await this.transactionHistoryRepository.getTransactions(
-      tokenId
-    )
+    const result =
+      await this.transactionHistoryRepository.getTransactionsByTokenId(tokenId)
     return result
   }
 }

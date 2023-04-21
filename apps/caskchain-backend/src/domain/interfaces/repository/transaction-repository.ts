@@ -5,11 +5,12 @@ import {
 } from '../../model/TransactionHistory'
 
 export interface TransactionRepository {
+  getTransactions(): Promise<any | null>
   createTransaction(
     id: string,
     transaction: TransactionHistoryRequestModel
   ): Promise<void>
-  getTransactions(
+  getTransactionsByTokenId(
     tokenId: string
   ): Promise<TransactionHistoryResponseModel[] | null>
   getTransactionByWalletAddress(

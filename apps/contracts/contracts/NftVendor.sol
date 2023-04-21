@@ -52,6 +52,8 @@ contract NftVendor is ERC2981, ReentrancyGuard, Ownable {
     uint256 price
   );
 
+  event TxFeePaid(uint256 royalty);
+
   address public collection;
   address public creator;
   uint256[] private _allListedNfts;
@@ -365,6 +367,7 @@ contract NftVendor is ERC2981, ReentrancyGuard, Ownable {
   function _payTxFee(uint256 royalty) public {
     (bool success1, ) = payable(creator).call{ value: royalty }("");
     require(success1);
+    emit TxFeePaid(royalty);
   }
 
   function _addTokenToAllTokensEnumeration(uint tokenId) private {

@@ -12,7 +12,12 @@ import errorHandler from './presentation/middlewares/errorHandler'
 
 const server = express()
 
-server.use(cors({ credentials: true, origin: 'http://localhost:3000' }))
+server.use(
+  cors({
+    credentials: true,
+    origin: ['http://localhost:3000', 'http://localhost:3001'],
+  })
+)
 
 server.use(
   session({

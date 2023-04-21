@@ -19,6 +19,12 @@ export class Web3Transaction extends Web3Repository {
     )
   }
 
+  public async getTotalNftSupply() {
+    const CCNft = this.contracts()['CCNft']
+    const totalSupply = await CCNft.methods.totalSupply().call()
+    return totalSupply
+  }
+
   private async sendSignedTransaction(signedTx: any) {
     try {
       return await this.client().eth.sendSignedTransaction(

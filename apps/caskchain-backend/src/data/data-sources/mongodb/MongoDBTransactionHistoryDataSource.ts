@@ -16,6 +16,12 @@ export class MongoDBTransactionHistoryDataSource
     await this.persist(id, transaction)
   }
 
+  public async getTransactions(): Promise<any | null> {
+    const collection = await this.collection()
+    const document = await collection.find<any>({}).toArray()
+    return document || null
+  }
+
   public async search(tokenId: string): Promise<any | null> {
     const clientDB = this.client()
     const mongoUserDataSource = new MongoDBUserDataSource(clientDB)
