@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/common/ERC2981.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "./NftVendor.sol";
-import "./CCNft.sol";
+import "./CCNftData.sol";
 
 // Check out https://github.com/Fantom-foundation/Artion-Contracts/blob/5c90d2bc0401af6fb5abf35b860b762b31dfee02/contracts/FantomMarketplace.sol
 // For a full decentralized nft marketplace
@@ -26,7 +26,8 @@ contract NftOffers is ReentrancyGuard {
 
   address public collection;
   NftVendor public nftVendor;
-
+  address private ccNftUpgradeableAddress;
+  CCNftData private _ccNftData;
   // Map from token ID to their corresponding auction.
   mapping(uint256 => Offer) tokenIdToOffer;
   // NFT Id => Account Address => Bid
@@ -70,9 +71,14 @@ contract NftOffers is ReentrancyGuard {
     uint256 bid
   );
 
-  constructor(address _collection, address _nftVendor) {
-    collection = _collection;
+  constructor(
+    address _nftStorageAddress,
+    address _collection,
+    address _nftVendor
+  ) {
+    ccNftUpgradeableAddress = _collection;
     nftVendor = NftVendor(_nftVendor);
+    _ccNftData = CCNftData(_nftStorageAddress);
   }
 
   function makeOffer(uint256 _tokenId) public payable {
@@ -181,10 +187,9 @@ contract NftOffers is ReentrancyGuard {
     require(_tokenId != 0, "Invalid token ID");
     require(highestBid > 0, "Invalid bid amount");
 
-    CCNft nft = CCNft(collection);
     bool excluded = nftVendor.isExcluded();
     address payable seller = payable(msg.sender);
-    address payable creator = payable(nft.getNftCreator(_tokenId));
+    address payable creator = payable(_ccNftData.getNftCreator(_tokenId));
     uint256 royalty = nftVendor.calculateRoyaltyForAcceptedOffer(
       _tokenId,
       highestBid
@@ -202,7 +207,7 @@ contract NftOffers is ReentrancyGuard {
   function acceptOffer(
     uint256 _tokenId
   ) public payable isOwner(_tokenId, msg.sender) hasOffers(_tokenId) {
-    CCNft nft = CCNft(collection);
+    IERC721 nft = IERC721(collection);
     require(
       nft.getApproved(_tokenId) == address(this),
       "NotApprovedForMarketplace"
