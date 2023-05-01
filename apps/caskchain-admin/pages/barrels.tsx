@@ -11,9 +11,11 @@ const Barrels = () => {
         <h1 className="font-semibold text-4xl font-poppins text-black-light">
           Barrels
         </h1>
-        <div className="flex flex-row flex-wrap space-x-4">
+        <div className="flex flex-row flex-wrap space-x-4 mt-20">
           {nfts?.data &&
-            nfts?.data.map((nft: any) => <BarrelNft item={nft} key={nft.id} />)}
+            nfts?.data.map((nft: any) => (
+              <BarrelNft isMarketPlace item={nft} key={nft.id} />
+            ))}
         </div>
       </div>
     </BaseLayout>

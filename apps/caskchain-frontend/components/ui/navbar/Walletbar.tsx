@@ -62,7 +62,7 @@ const Walletbar: React.FC<WalletbarProps> = ({
 
   if (token && user?.email && isConnected) {
     return (
-      <div className="ml-3 relative ">
+      <div className="ml-3 relative invisible">
         <div className="flex justify-center items-center">
           <div>
             <div

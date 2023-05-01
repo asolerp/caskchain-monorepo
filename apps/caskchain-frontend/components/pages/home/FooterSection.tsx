@@ -24,7 +24,7 @@ const SocialIcon: React.FC<SocialIconProps> = ({ social, width, height }) => {
 
 const FooterSection = () => {
   return (
-    <div>
+    <div className="flex flex-col">
       <Image
         src="/images/wave2.svg"
         width={1000}
@@ -32,8 +32,8 @@ const FooterSection = () => {
         alt="wave"
         className="w-full"
       />
-      <div className="grid grid-cols-2 bg-black-light px-32 pb-20">
-        <div className="flex flex-col justify-center items-start">
+      <div className="grid grid-cols-2 bg-black-light px-6 lg:px-32 lg:pb-20 pt-10 lg:pt-0">
+        <div className="flex col-span-2 lg:col-span-1  flex-col justify-center items-start">
           <Image src="/images/logo.svg" width={150} height={100} alt="logo" />
           <Spacer size="sm" />
           <p className="font-poppins text-gray-400 font-thin max-w-sm">
@@ -49,8 +49,8 @@ const FooterSection = () => {
             <SocialIcon social="instagram" />
           </div>
         </div>
-        <div className="grid grid-cols-3">
-          <div className="flex flex-col justify-start items-start">
+        <div className="grid col-span-2 lg:col-span-1 grid-cols-3 gap-4 lg:gap-0 mt-10 lg:mt-0">
+          <div className="flex flex-col col-span-3 lg:col-span-1 justify-start items-start">
             <h4 className="font-poppins text-white font-medium text-xl">
               Company
             </h4>
@@ -73,7 +73,7 @@ const FooterSection = () => {
               </p>
             </div>
           </div>
-          <div className="flex flex-col justify-start items-start">
+          <div className="flex flex-col col-span-3 lg:col-span-1 justify-start items-start">
             <h4 className="font-poppins text-white font-medium text-xl">
               Support
             </h4>
@@ -96,14 +96,14 @@ const FooterSection = () => {
               </p>
             </div>
           </div>
-          <div className="flex flex-col justify-start items-start">
+          <div className="flex flex-col col-span-3 lg:col-span-1 justify-start items-start">
             <h4 className="font-poppins text-white font-medium text-xl">
               Stay up to date
             </h4>
             <Spacer size="sm" />
-            <div className="flex flex-row space-x-4 items-center px-4 py-3 bg-gray-500 rounded-3xl">
+            <div className="flex flex-row w-full lg:w-fit space-x-4 items-center px-4 py-3 bg-gray-500 rounded-3xl">
               <input
-                className="bg-transparent placeholder-gray-300 font-poppins text-sm font-thin  text-gray-300"
+                className="bg-transparent w-full lg:w-fit placeholder-gray-300 font-poppins text-sm font-thin  text-gray-300"
                 placeholder="Your email address"
               ></input>
               <PaperAirplaneIcon className="w-4 h-4 -rotate-45 text-gray-300" />

@@ -100,18 +100,18 @@ const Navbar = () => {
                 className={`absolute z-50 mx-auto w-full px-2 sm:px-6 lg:px-32 transition-all duration-500 ${openClass}`}
               >
                 <div className="relative bg-transparent flex h-24 items-center justify-between">
-                  <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                  <div className="absolute inset-y-0 right-0 flex items-center sm:hidden">
                     {/* Mobile menu button*/}
-                    <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                    <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                       <span className="sr-only">Open main menu</span>
                       {open ? (
                         <XMarkIcon
-                          className="block h-6 w-6"
+                          className="block h-10 w-10"
                           aria-hidden="true"
                         />
                       ) : (
                         <Bars3Icon
-                          className="block h-6 w-6"
+                          className="block h-10 w-10"
                           aria-hidden="true"
                         />
                       )}
@@ -125,12 +125,13 @@ const Navbar = () => {
                             src="/images/logo.svg"
                             width={205}
                             height={200}
+                            className="w-40 h-40 lg:w-62 lg:h-62"
                             alt="caskchain_logo"
                           />
                         </div>
                       </Link>
                     </div>
-                    <div className="flex flex-grow space-x-3 justify-center items-center">
+                    <div className="hidden lg:flex flex-grow space-x-3 justify-center items-center">
                       {navigation.map((item) => (
                         <ActiveLink
                           activeclass="text-cask-chain border-b-2 border-b-cask-chain"
@@ -148,7 +149,7 @@ const Navbar = () => {
                         </ActiveLink>
                       ))}
                     </div>
-                    <div className="flex flex-1 justify-end items-center pr-2 sm:static sm:inset-auto sm:pr-0">
+                    <div className="hidden lg:flex flex-1 justify-end items-center pr-2 sm:static sm:inset-auto sm:pr-0">
                       <WalletIcon
                         onClick={() => account.multiConnect()}
                         width={40}

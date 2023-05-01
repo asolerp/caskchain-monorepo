@@ -19,14 +19,14 @@ const CustomArrow: React.FC<CustomArrowProps> = ({
   return (
     <div
       onClick={onClick}
-      className={`cursor-pointer bg-white w-16 h-16 rounded-full z-50 shadow-2xl absolute ${
+      className={`cursor-pointer bg-white w-10 h-10 lg:w-16 lg:h-16 rounded-full z-50 shadow-2xl absolute ${
         positon === 'left' ? 'left-2' : 'right-2'
       } flex items-center justify-center`}
     >
       {positon === 'left' ? (
-        <ArrowLeftIcon className="w-8" />
+        <ArrowLeftIcon className="w-6 lg:w-8" />
       ) : (
-        <ArrowRightIcon className="w-8" />
+        <ArrowRightIcon className="w-6 lg:w-8" />
       )}
     </div>
   )
@@ -34,13 +34,13 @@ const CustomArrow: React.FC<CustomArrowProps> = ({
 
 const BarrelsSection = () => {
   return (
-    <div className="h-screen flex flex-col items-center justify-center bg-white py-20">
+    <div className="h-full lg:h-screen flex flex-col items-center justify-center bg-white py-10 lg:py-20">
       <div className="flex flex-col w-full items-center">
-        <h2 className="font-rale font-semibold text-center text-6xl">
+        <h2 className="font-rale font-semibold text-center text-4xl lg:text-6xl">
           The Best Barrels
         </h2>
-        <Spacer size="3xl" />
-        <div className="w-full flex flex-row items-center justify-center ">
+        <Spacer sm="md" size="3xl" />
+        <div className="w-full flex flex-row items-center justify-center px-2 lg:px-0 ">
           <Carousel
             additionalTransfrom={0}
             arrows
@@ -94,14 +94,15 @@ const BarrelsSection = () => {
             swipeable
           >
             {barrels.map((barrel, i) => (
-              <BarrelNft
-                key={i}
-                showAnimation={false}
-                showFavorite={false}
-                active={true}
-                isMarketPlace={false}
-                item={barrel}
-              />
+              <div key={i} className="mx-2 lg:mx-0">
+                <BarrelNft
+                  showAnimation={false}
+                  showFavorite={false}
+                  active={true}
+                  isMarketPlace={false}
+                  item={barrel}
+                />
+              </div>
             ))}
           </Carousel>
         </div>
