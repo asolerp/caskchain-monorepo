@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "caskchain-lib": "*",
+    "caskchain-ui": "*",
     "@headlessui/react": "^1.7.5",
     "@heroicons/react": "^2.0.13",
     "@metamask/providers": "^10.2.1",

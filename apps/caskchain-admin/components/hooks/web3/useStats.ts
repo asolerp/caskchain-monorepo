@@ -44,7 +44,6 @@ export const hookFactory: UseStatsHookFactory =
     } = useSWR(
       ccNft ? 'web3/useStats' : null,
       async () => {
-        console.log('HOLA HOLA', ccNft)
         const totalSupply: any = await ccNft?.getNftTotalSupply()
         return totalSupply?.toString()
       },

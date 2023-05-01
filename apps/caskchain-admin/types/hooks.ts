@@ -1,5 +1,5 @@
 import { SWRResponse } from 'swr'
-import { CcNftContract } from './ccNftContract'
+
 // import { NftFractionTokenContract } from './nftFractionTokenContract'
 import { NftOffersContract } from './nftOffersContract'
 import { NftVendorContract } from './nftVendorContract'
@@ -14,7 +14,7 @@ export type Web3Dependencies = {
   nftFractionToken?: any
   nftOffers?: NftOffersContract
   provider: any | undefined
-  ccNft: CcNftContract
+  ccNft: any | undefined
   nftVendor: NftVendorContract
   ethereum: any | undefined
   isLoading: boolean
