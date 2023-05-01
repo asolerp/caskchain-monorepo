@@ -12,7 +12,7 @@ type UseStatsHookFactory = CryptoHookFactory<UseStatsResponse>
 export type UseStatsHook = ReturnType<UseStatsHookFactory>
 
 export const hookFactory: UseStatsHookFactory =
-  ({}) =>
+  ({ ccNft }) =>
   () => {
     const {
       data: totalUsers,
@@ -42,13 +42,11 @@ export const hookFactory: UseStatsHookFactory =
       // isValidating: totalUsersValidating,
       // mutate: totalUsersRefetch,
     } = useSWR(
-      '/api/stats/total-nfts',
+      ccNft ? 'web3/useStats' : null,
       async () => {
-        const totalStatsData: any = await axiosClient.get(
-          `/api/stats/total-nfts`
-        )
-
-        return totalStatsData.data
+        console.log('HOLA HOLA', ccNft)
+        const totalSupply: any = await ccNft!.getNftTotalSupply()
+        return totalSupply?.toString()
       },
       {
         revalidateOnFocus: false,

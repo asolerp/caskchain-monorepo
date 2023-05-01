@@ -2,6 +2,12 @@ const dotenv = require("dotenv");
 dotenv.config({ path: `../../../.env` });
 
 const CCNft = artifacts.require("CCNft");
+const NftOffers = artifacts.require("NftOffers");
+const NftVendor = artifacts.require("NftVendor");
+const CCNftStorage = artifacts.require("CCNftStorage");
+const NftOffersStorage = artifacts.require("NftOffersStorage");
+
+const CCNftContract = require("../build/contracts/CCNft.json");
 
 module.exports = async function (callback) {
   try {
@@ -9,11 +15,23 @@ module.exports = async function (callback) {
     // const accounts = await web3.eth.getAccounts();
 
     // Fetch the deployed exchange
-    const ccNft = await CCNft.deployed();
+    const ccNftStorage = await CCNftStorage.deployed();
+    const nftVendor = await NftVendor.deployed();
+    const nftOffers = await NftOffers.deployed();
+    const nftOffersStorage = await NftOffersStorage.deployed();
+
+    const ccNft = await CCNft.at(CCNftContract.networks[4447].address);
+
+    await ccNftStorage.addAllowedAddress(ccNft.address);
+    await ccNftStorage.addAllowedAddress(nftOffers.address);
+    await ccNftStorage.addAllowedAddress(nftVendor.address);
+
+    await nftOffersStorage.addAllowedAddress(nftOffers.address);
+
     console.log("ccNft fetched", ccNft.address);
 
     // Set up exchange users
-    const user1 = "0x88540418303a3a6c7c176db12f6499b9862d959e";
+    const user1 = "0x7fa312b2e1ba41b0258497612c7594021774711e";
 
     // User 1 Deposits Ether
     await ccNft.mintNFT(

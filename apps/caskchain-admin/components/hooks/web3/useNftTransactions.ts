@@ -33,7 +33,28 @@ export const hookFactory: NftTransactionsHookFactory =
       }
     )
 
+    const {
+      data: allRoyalties,
+      // isLoading: totalUsersLoading,
+      // isValidating: totalUsersValidating,
+      // mutate: totalUsersRefetch,
+    } = useSWR(
+      '/api/transactions/royalties',
+      async () => {
+        const allRoyaltiesData: any = await axiosClient.get(
+          `/api/transactions/royalties`
+        )
+
+        return allRoyaltiesData.data
+      },
+      {
+        revalidateOnFocus: false,
+        revalidateOnMount: true,
+      }
+    )
+
     return {
+      allRoyalties,
       allTransactions,
     }
   }

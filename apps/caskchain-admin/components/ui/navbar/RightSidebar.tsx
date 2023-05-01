@@ -1,10 +1,14 @@
-import { useAccount } from '@hooks/web3'
+import { useAccount, useNftTransactions } from '@hooks/web3'
 import Card from '@ui/common/Card'
+
 import ClientOnly from 'components/pages/ClientOnly'
+import { format } from 'date-fns'
+import { ethers } from 'ethers'
 import { useBalance } from 'wagmi'
 
 const RightSidebar = () => {
   const { account } = useAccount()
+  const { transactions } = useNftTransactions()
 
   const { data } = useBalance({
     address: account?.data,
@@ -29,6 +33,33 @@ const RightSidebar = () => {
               </h5>
             )}
           </Card>
+        </div>
+        <div className="mb-32" />
+        <h1 className="font-semibold text-4xl font-poppins text-black-light mb-6">
+          Last royalties
+        </h1>
+        <div className="w-full">
+          {transactions?.allRoyalties?.map((royalty: any, index: number) => (
+            <>
+              <div
+                className="flex flex-row justify-between items-center"
+                key={index}
+              >
+                <div>
+                  <p className="font-semibold font-poppins text-xl">
+                    Barrel #{royalty?.tokenId}
+                  </p>
+                  <p className="font-poppins text-gray-500 text-sm">
+                    {format(new Date(royalty?.createdAt), 'PP p')}
+                  </p>
+                </div>
+                <p className="font-poppins text-xl font-bold text-black">
+                  {ethers.utils.formatEther(royalty?.royalty)}ETH
+                </p>
+              </div>
+              <div className="w-full border-b border-gray-500 my-3"></div>
+            </>
+          ))}
         </div>
       </ClientOnly>
     </div>

@@ -121,15 +121,21 @@ export const hookFactory: CaskNftHookFactory =
     }, [totalFavoritesData])
 
     const handleAddFavorite = async () => {
-      const response = await axiosClient
-        .post(`/api/casks/${caskId}/favorite`, {
-          userId: user?._id,
+      try {
+        const response = await axiosClient.post(
+          `/api/casks/${caskId}/favorite`,
+          {
+            userId: user?._id,
+          }
+        )
+
+        setTotalFavorites(response?.data?.totalFavorites)
+        setIsFavorite(!isFavorite)
+      } catch (err) {
+        toast.error("Couldn't add favorite", {
+          theme: 'dark',
         })
-        .catch((err: any) => {
-          toast.error(err?.response?.data?.message)
-        })
-      setTotalFavorites(response?.data?.totalFavorites)
-      setIsFavorite(!isFavorite)
+      }
     }
 
     const debounceAddFavorite = useDebounce(() => handleAddFavorite(), 300)

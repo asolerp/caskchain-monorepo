@@ -89,7 +89,7 @@ export class Web3Transaction extends Web3Repository {
 
       const listedPrice = await NftVendor.methods.getListing(nft.tokenId).call()
       const usdtPrice = await NftVendor.methods
-        .s_priceTokens(USDTAddress, nft.tokenId)
+        .getPriceByToken(USDTAddress, nft.tokenId)
         .call()
 
       const offer = await NftOffers.methods.getNftOffer(nft.tokenId).call()

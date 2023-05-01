@@ -20,10 +20,9 @@ export const authenticateToken = (
     (err, decodedToken: any) => {
       if (err) return res.sendStatus(403)
       if (role || req.query.role) {
-        console.log(
-          'decodedToken?.role',
-          decodedToken?.role !== (role || req.query.role)
-        )
+        if (decodedToken?.role === 'admin') {
+          return next()
+        }
         if (decodedToken?.role !== (role || req.query.role)) {
           return res.sendStatus(401)
         }

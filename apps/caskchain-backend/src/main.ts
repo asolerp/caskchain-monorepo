@@ -66,6 +66,11 @@ import { GetTransactions } from './domain/use-cases/transaction/get-transactions
 import { MongoDBUsersWatcher } from './data/data-sources/mongodb/MongoDBUsersWatcher'
 import UserDBWatcher from './presentation/watchers/user-db-watcher'
 import { IncrementTotalUsers } from './domain/use-cases/stats/increment-total-users'
+import OnRoyalty from './presentation/subscriptions/on-royalty'
+import { SaveRoyalty } from './domain/use-cases/payments/save-royalty'
+import { RoyaltyImpl } from './domain/repositories/royalty-repository'
+import { MongoDBRoyaltyDataSource } from './data/data-sources/mongodb/MongoDBRoyaltiesDataSource'
+import { GetRoyalties } from './domain/use-cases/transaction/get-royalties'
 ;(async () => {
   const clientDB = MongoClientFactory.createClient(
     process.env.CONTEXT_NAME as string,
@@ -146,6 +151,7 @@ import { IncrementTotalUsers } from './domain/use-cases/stats/increment-total-us
         new MongoDBTransactionHistoryDataSource(clientDB)
       )
     ),
+    new GetRoyalties(new RoyaltyImpl(new MongoDBRoyaltyDataSource(clientDB))),
     new GetTransactions(
       new TransactionRepositoryImpl(
         new MongoDBTransactionHistoryDataSource(clientDB)
@@ -200,6 +206,10 @@ import { IncrementTotalUsers } from './domain/use-cases/stats/increment-total-us
 
   // EVENTS
 
+  const handleOnRoyalty = OnRoyalty(
+    new SaveRoyalty(new RoyaltyImpl(new MongoDBRoyaltyDataSource(clientDB)))
+  )
+
   const handelOnMint = OnMint(
     new CreateNFT(
       new NFTRepositoryImpl(
@@ -250,6 +260,7 @@ import { IncrementTotalUsers } from './domain/use-cases/stats/increment-total-us
   eventsHandler.subscribeLogEvent('NftOffers', 'NewOffer', handleOnNewOffer)
   eventsHandler.subscribeLogEvent('NftOffers', 'RemoveOffer', handleRemoveOffer)
   eventsHandler.subscribeLogEvent('NftOffers', 'AcceptOffer', handleAcceptOffer)
+  eventsHandler.subscribeLogEvent('NftVendor', 'TxFeePaid', handleOnRoyalty)
 
   // WATCHERS
   const usersWatcher = new MongoDBUsersWatcher(clientDB)

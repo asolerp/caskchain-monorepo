@@ -1,34 +1,47 @@
 const dotenv = require("dotenv");
-const { deployProxy } = require("@openzeppelin/truffle-upgrades");
-const { insertInEnvFile } = require("../utils/helpers");
+// const { insertInEnvFile } = require("../utils/helpers");
 dotenv.config({ path: `../../../.env` });
+const { deployProxy } = require("@openzeppelin/truffle-upgrades");
 
 const CCNft = artifacts.require("CCNft");
-const CCNftData = artifacts.require("CCNftData");
+const CCNftStorage = artifacts.require("CCNftStorage");
 
 const MockUSDT = artifacts.require("MockUSDT");
 const NftVendor = artifacts.require("NftVendor");
+
 const NftOffers = artifacts.require("NftOffers");
+const NftOffersStorage = artifacts.require("NftOffersStorage");
 
 const CREATOR_ADDRESS = process.env.PUBLIC_KEY;
 
 module.exports = function (deployer) {
   deployer.then(async () => {
+    const ccNftStorage = await deployer.deploy(CCNftStorage);
     await deployer.deploy(MockUSDT, "USDT", "USDT", "1000000");
-    const ccNftData = await deployer.deploy(CCNftData);
-    const collection = await deployProxy(CCNft, [ccNftData.address], {
+    const collection = await deployProxy(CCNft, [ccNftStorage.address], {
       deployer,
     });
-    const nftVendor = await deployer.deploy(
+    const nftVendor = await deployProxy(
       NftVendor,
-      collection.address,
-      CREATOR_ADDRESS
+      [collection.address, CREATOR_ADDRESS],
+      {
+        deployer,
+      }
     );
-    await deployer.deploy(
+
+    const nftOffersStorage = await deployer.deploy(NftOffersStorage);
+
+    await deployProxy(
       NftOffers,
-      ccNftData.address,
-      collection.address,
-      nftVendor.address
+      [
+        collection.address,
+        nftVendor.address,
+        ccNftStorage.address,
+        nftOffersStorage.address,
+      ],
+      {
+        deployer,
+      }
     );
   });
 };

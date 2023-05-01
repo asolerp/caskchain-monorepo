@@ -123,8 +123,6 @@ export const hookFactory: OwnedNftsHookFactory =
       try {
         const gasPrice = await provider?.getGasPrice()
 
-        console.log('nftVendor!.address', nftVendor!.address)
-
         const result = await _ccNft?.approve(
           nftVendor!.address as string,
           tokenId,

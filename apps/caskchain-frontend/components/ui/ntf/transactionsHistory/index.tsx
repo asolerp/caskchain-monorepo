@@ -36,12 +36,6 @@ const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({
                   </th>
                   <th
                     scope="col"
-                    className="text-lg font-medium text-cask-chain px-6 py-4 text-center"
-                  >
-                    Barrel ID
-                  </th>
-                  <th
-                    scope="col"
                     className="text-lg font-medium text-cask-chain px-6 py-4 text-left"
                   >
                     Date
@@ -72,12 +66,6 @@ const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({
                                 .formatEther(item?.value)
                                 .toString()}{' '}
                             ETH
-                          </td>
-                          <td
-                            align="center"
-                            className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap"
-                          >
-                            {item.tokenId}
                           </td>
                           <td className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap">
                             <p>{format(new Date(item?.date), 'PP p')}</p>

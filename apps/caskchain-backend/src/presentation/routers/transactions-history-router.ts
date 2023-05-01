@@ -5,9 +5,12 @@ import { GetTransactionsByTokenIdUseCase } from '../../domain/interfaces/use-cas
 import { GetTransactionsByWalletAddressUseCase } from '../../domain/interfaces/use-cases/transactions/get-transaction-by-wallet-address-use-case'
 import { GetNFTSalesHistoryUseCase } from '../../domain/interfaces/use-cases/sales/get-nft-sales-history-use-case'
 import { GetTransactionsUseCase } from '../../domain/interfaces/use-cases/transactions/get-transactions-use-case'
+import { authenticateToken } from '../middlewares/authenticateToken'
+import { GetRoyaltiesUseCase } from '../../domain/interfaces/use-cases/transactions/get-royalties-use-case'
 
 export default function TransactionsHistoryRouter(
   getNFTSalesHistory: GetNFTSalesHistoryUseCase,
+  getRoyalties: GetRoyaltiesUseCase,
   getTransactions: GetTransactionsUseCase,
   getTransactionsByTokenId: GetTransactionsByTokenIdUseCase,
   getTransactionByWalletAddress: GetTransactionsByWalletAddressUseCase
@@ -36,6 +39,20 @@ export default function TransactionsHistoryRouter(
       return res.status(422).send({ message: 'Cannot get transaction history' })
     }
   })
+
+  router.get(
+    '/royalties',
+    (req: Request, res: Response, next: NextFunction) =>
+      authenticateToken(req, res, next, 'admin'),
+    async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const royalties = await getRoyalties.execute()
+        return res.json(royalties)
+      } catch (error) {
+        next(error)
+      }
+    }
+  )
 
   router.get(
     '/sales-history/:tokenId',

@@ -1,4 +1,3 @@
-import Button from '@ui/common/Button'
 import { NftAttribute } from '@_types/nft'
 
 import Image from 'next/image'
@@ -6,6 +5,7 @@ import { useEffect, useRef, useState } from 'react'
 import { addressSimplifier } from 'utils/addressSimplifier'
 import BookmarkIcon from 'public/icons/bookmark.svg'
 import { useRouter } from 'next/router'
+import { Button } from 'caskchain-ui'
 
 type NftItemProps = {
   item: any

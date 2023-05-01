@@ -5,7 +5,10 @@ require('dotenv-mono').load(
     : { path: '.env' }
 )
 
-const withTM = require('next-transpile-modules')(['caskchain-ui'])
+const withTM = require('next-transpile-modules')([
+  'caskchain-ui',
+  'caskchain-lib',
+])
 
 const API_URL = 'https://caskchain-backend.herokuapp.com/'
 

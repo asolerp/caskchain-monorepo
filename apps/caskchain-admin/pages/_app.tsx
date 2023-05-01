@@ -28,7 +28,7 @@ const ethereumClient = new EthereumClient(wagmiClient, chains)
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <ToastContainer />
+      <ToastContainer theme="dark" closeOnClick />
       <GlobalProvider>
         <WagmiConfig client={wagmiClient}>
           <Web3Provider>

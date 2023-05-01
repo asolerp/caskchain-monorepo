@@ -41,7 +41,12 @@ const Home: NextPage = () => {
             CaskChain Admin Portal
           </h1>
           <Spacer size="sm" />
-          <Button onClick={() => account.connect()}>Connect</Button>
+          <Button
+            containerStyle="rounded-full px-6 py-3"
+            onClick={() => account.connect()}
+          >
+            Connect
+          </Button>
         </div>
       </AnimatePresence>
     </>

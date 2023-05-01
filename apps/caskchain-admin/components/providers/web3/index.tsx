@@ -13,12 +13,12 @@ import {
   Web3State,
 } from './utils'
 
-import { CcNftContract } from '@_types/ccNftContract'
-import { NftVendorContract } from '@_types/nftVendorContract'
-import { NftOffersContract } from '@_types/nftOffersContract'
+import { CcNftContract } from 'contracts/types/ccNftContract'
+import { NftVendorContract } from 'contracts/types/nftVendorContract'
+import { NftOffersContract } from 'contracts/types/nftOffersContract'
 
 // import { NftFractionsVendorContract } from '@_types/nftFractionsVendorContract'
-import { NftFractionsFactoryContract } from '@_types/nftFractionsFactoryContract'
+import { NftFractionsFactoryContract } from 'contracts/types/nftFractionsFactoryContract'
 import { useAccount, useProvider } from 'wagmi'
 import { Provider, Signer } from '@wagmi/core'
 import { deleteCookie } from 'cookies-next'
