@@ -19,6 +19,8 @@ module.exports = async function (callback) {
     // const accounts = await web3.eth.getAccounts();
 
     // Fetch the deployed exchange
+    const ccNft = await CCNft.at(CCNftContract.networks[80001].address);
+
     const ccNftStorage = await CCNftStorage.at(
       CCNftStorageContract.networks[80001].address
     );
@@ -32,8 +34,6 @@ module.exports = async function (callback) {
       NftOffersStorageContract.networks[80001].address
     );
 
-    const ccNft = await CCNft.at(CCNftContract.networks[80001].address);
-
     await ccNftStorage.addAllowedAddress(ccNft.address);
     await ccNftStorage.addAllowedAddress(nftOffers.address);
     await ccNftStorage.addAllowedAddress(nftVendor.address);
@@ -43,7 +43,7 @@ module.exports = async function (callback) {
     console.log("ccNft fetched", ccNft.address);
 
     // Set up exchange users
-    const user1 = "0x7fa312b2e1ba41b0258497612c7594021774711e";
+    const user1 = "0x54Ca6E36FE4C534D89A1bFbbc5567F1C3dA78988";
 
     // User 1 Deposits Ether
     await ccNft.mintNFT(
