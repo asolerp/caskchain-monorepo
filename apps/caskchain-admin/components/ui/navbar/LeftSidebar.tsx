@@ -1,10 +1,3 @@
-import { Sidebar } from 'flowbite-react'
-import {
-  HiChartPie,
-  HiUser,
-  HiShoppingBag,
-  HiArrowSmRight,
-} from 'react-icons/hi'
 import { useAccount } from '@hooks/web3'
 import Image from 'next/image'
 import Link from 'next/link'

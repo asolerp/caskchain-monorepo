@@ -135,10 +135,7 @@ export const hookFactory: CaskNftHookFactory =
     const debounceAddFavorite = useDebounce(() => handleAddFavorite(), 300)
 
     const handleShareCask = () => {
-      dispatch({
-        type: GlobalTypes.SET_SHARE_MODAL,
-        payload: { status: true },
-      })
+      return
     }
 
     const handleUserState = useCallback(() => {
@@ -154,16 +151,10 @@ export const hookFactory: CaskNftHookFactory =
         })
       }
       if (!user?.email) {
-        return dispatch({
-          type: GlobalTypes.SET_USER_INFO_MODAL,
-          payload: { status: true },
-        })
+        return
       }
       if (!token) {
-        return dispatch({
-          type: GlobalTypes.SET_SIGN_IN_MODAL,
-          payload: { status: true },
-        })
+        return
       }
     }, [dispatch, token, user?.email])
 
