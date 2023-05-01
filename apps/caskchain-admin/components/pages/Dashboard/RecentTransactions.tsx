@@ -25,7 +25,7 @@ const RecentTransactions: React.FC<RecentTransactionsProps> = ({
           </Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {transactions?.allTransactions?.map((transaction: any, i) => {
+          {transactions?.allTransactions?.map((transaction: any, i: number) => {
             return (
               <Table.Row key={i} className="border-gray-700 dark:bg-gray-800">
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">

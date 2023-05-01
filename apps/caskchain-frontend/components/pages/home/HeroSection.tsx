@@ -1,7 +1,6 @@
 import Button from '@ui/common/Button'
 import Spacer from '@ui/common/Spacer'
-import React, { useEffect } from 'react'
-import formatNumber from 'utils/formatNumber'
+import { useEffect } from 'react'
 import { motion, useAnimation } from 'framer-motion'
 
 import { useGlobal } from '@providers/global'
