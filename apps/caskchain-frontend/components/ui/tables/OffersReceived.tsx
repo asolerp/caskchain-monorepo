@@ -11,10 +11,12 @@ import Button from '@ui/common/Button'
 type OffersReceivedProps = {
   onAccept: (tokenId: string) => void
   offersReceived?: Offers[]
+  loading?: boolean
 }
 
 const OffersReceived: React.FC<OffersReceivedProps> = ({
   onAccept,
+  loading,
   offersReceived,
 }) => {
   return (
@@ -129,6 +131,7 @@ const OffersReceived: React.FC<OffersReceivedProps> = ({
                           <td className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap">
                             {item.status === 'live' ? (
                               <Button
+                                loading={loading}
                                 labelStyle="text-black"
                                 onClick={() => onAccept(item.tokenId)}
                               >

@@ -115,6 +115,7 @@ const Transactions: NextPage = () => {
                     </div>
                   ) : (
                     <OffersReceived
+                      loading={myActivity?.loadingTransactions}
                       onAccept={(tokenId: string) =>
                         myActivity?.acceptOffer(tokenId)
                       }

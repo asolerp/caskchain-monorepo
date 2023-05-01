@@ -124,11 +124,10 @@ const Web3Provider: React.FC<Props> = ({ children }) => {
             // erc20Contracts: { [usdtERC20.address]: sigendNftVendorContract },
             nftFractionToken: signedNftFractionToken,
             nftFractionsVendor: signednftFractionsVendor as unknown as any,
-            nftFractionsFactory:
-              signednftFractionsFactory as unknown as NftFractionsFactoryContract,
-            ccNft: signedCCNftContract as unknown as CcNftContract,
-            nftVendor: sigendNftVendorContract as unknown as NftVendorContract,
-            nftOffers: signedNftOffersContract as unknown as NftOffersContract,
+            nftFractionsFactory: signednftFractionsFactory as any,
+            ccNft: signedCCNftContract as any,
+            nftVendor: sigendNftVendorContract as any,
+            nftOffers: signedNftOffersContract as any,
             isLoading: false,
           })
         )

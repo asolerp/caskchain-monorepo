@@ -1,6 +1,8 @@
 import { CryptoHookFactory } from '@_types/hooks'
 import useLoading from '@hooks/common/useLoading'
+
 import axiosClient from 'lib/fetcher/axiosInstance'
+import { useState } from 'react'
 import { toast } from 'react-toastify'
 import useSWR from 'swr'
 import { useAccount } from 'wagmi'
@@ -17,6 +19,7 @@ export type UseMyActivityHook = ReturnType<MyActivityHookFactory>
 export const hookFactory: MyActivityHookFactory =
   ({ ccNft, nftOffers }) =>
   () => {
+    const [loadingTransactions, setLoadingTransactions] = useState(false)
     const { address } = useAccount()
 
     const {
@@ -83,20 +86,29 @@ export const hookFactory: MyActivityHookFactory =
     useLoading({ loading: isLoading || isValidating })
 
     const acceptOffer = async (tokenId: string) => {
+      setLoadingTransactions(true)
       try {
-        await _ccNft
-          ?.approve(_nftOffers!.address as string, tokenId)
-          .then(async () => {
-            const result = await _nftOffers?.acceptOffer(tokenId)
-            await toast.promise(result!.wait(), {
-              pending: 'Processing transaction',
-              success: 'The sell was approved',
-              error: 'Processing error',
-            })
+        const transaction = await _ccNft?.approve(
+          _nftOffers!.address as string,
+          tokenId
+        )
+
+        const response = await transaction!.wait()
+
+        if (response.status === 1) {
+          const result = await _nftOffers?.acceptOffer(tokenId)
+          await toast.promise(result!.wait(), {
+            pending: 'Processing transaction',
+            success: 'The sell was approved',
+            error: 'Processing error',
           })
+        }
+
         receivedOffersRefetch()
       } catch (e: any) {
         console.log(e)
+      } finally {
+        setLoadingTransactions(false)
       }
     }
 
@@ -105,6 +117,7 @@ export const hookFactory: MyActivityHookFactory =
       receivedOffersLoading,
       receivedOffersRefetch,
       sentOffersValidating,
+      loadingTransactions,
       transactionsRefetch,
       sentOffersLoading,
       sentOffersRefetch,

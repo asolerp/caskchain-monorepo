@@ -24,6 +24,8 @@ module.exports = {
       },
       backgroundImage: {
         hero: "url('https://res.cloudinary.com/enalbis/image/upload/v1681538253/CaskChain/wtqf3wuruba9zqpezbah.png')",
+        header_1:
+          "url('https://res.cloudinary.com/enalbis/image/upload/v1682948719/CaskChain/header/gvl80mkyiqfhpqaydvkw.png')",
         bg_owner:
           "url('https://res.cloudinary.com/enalbis/image/upload/v1681538336/CaskChain/vr0svpapyh5wv6580jyj.png')",
       },
