@@ -52,7 +52,7 @@ export function ClientContextProvider({
 }: {
   children: ReactNode | ReactNode[]
 }) {
-  const [client, setClient] = useState<Client>()
+  const [client, setClient] = useState<any>()
   const [pairings, setPairings] = useState<PairingTypes.Struct[]>([])
   const [session, setSession] = useState<SessionTypes.Struct>()
 
