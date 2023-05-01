@@ -15,8 +15,6 @@
     "genNFtFractionTokenContractType": "abi-types-generator './public/contracts/NftFractionToken.json' --output='./types' --name=nftFractionTokenContract --provider=ethers_v5"
   },
   "dependencies": {
-    "caskchain-lib": "*",
-    "caskchain-ui": "*",
     "@headlessui/react": "^1.7.5",
     "@heroicons/react": "^2.0.13",
     "@metamask/providers": "^10.2.1",
@@ -37,6 +35,8 @@
     "add": "^2.0.6",
     "axios": "^1.2.1",
     "caip-api": "^1.4.6",
+    "caskchain-lib": "*",
+    "caskchain-ui": "*",
     "cookies-next": "^2.1.1",
     "date-fns": "^2.29.3",
     "dotenv": "^16.0.3",
@@ -54,6 +54,7 @@
     "next": "13.0.6",
     "next-http-proxy-middleware": "^1.2.5",
     "next-iron-session": "^4.2.0",
+    "next-transpile-modules": "^10.0.0",
     "prettier-plugin-solidity": "^1.1.1",
     "react": "18.2.0",
     "react-circular-progressbar": "^2.1.0",
