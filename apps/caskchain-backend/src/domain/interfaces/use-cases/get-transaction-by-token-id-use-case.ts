@@ -1,6 +1,5 @@
-import { TransactionHistoryRequestModel } from "../../model/TransactionHistory";
-
+import { TransactionHistoryResponseModel } from '../../model/TransactionHistory'
 
 export interface GetTransactionsByTokenIdUseCase {
-    execute(id: string): Promise<TransactionHistoryRequestModel[] | null>;
+  execute(id: string): Promise<TransactionHistoryResponseModel[] | null>
 }

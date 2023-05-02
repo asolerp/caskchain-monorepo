@@ -56,6 +56,16 @@ export class MongoDBTransactionHistoryDataSource
     return documentsWithUser || null
   }
 
+  public async searchByTokenId(tokenId: string): Promise<any | null> {
+    const collection = await this.collection()
+    const document = await collection
+      .find<any>({
+        tokenId: tokenId,
+      })
+      .toArray()
+    return document || null
+  }
+
   public async searchByWalletAddress(
     walletAddress: string
   ): Promise<any | null> {

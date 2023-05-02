@@ -158,9 +158,8 @@ import { GetRoyalties } from './domain/use-cases/transaction/get-royalties'
       )
     ),
     new GetTransactionByTokenId(
-      new NFTRepositoryImpl(
-        new Web3Transaction(web3Client, web3WsClient, web3Contracts),
-        new MongoDBNFTDataSource(clientDB)
+      new TransactionRepositoryImpl(
+        new MongoDBTransactionHistoryDataSource(clientDB)
       )
     ),
     new GetTransactionByWalletAddress(
