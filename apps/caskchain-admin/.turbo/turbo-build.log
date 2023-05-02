@@ -1,23 +1,43 @@
-$ react-scripts build
-Creating an optimized production build...
-Compiled successfully.
+warning package.json: "dependencies" has dependency "@types/node" with range "18.11.13" that collides with a dependency in "devDependencies" of the same name with version "17.0.23"
+warning package.json: "dependencies" has dependency "@types/react" with range "18.0.26" that collides with a dependency in "devDependencies" of the same name with version "17.0.43"
+warning package.json: "dependencies" has dependency "@types/react-dom" with range "18.0.9" that collides with a dependency in "devDependencies" of the same name with version "17.0.14"
+warning package.json: "dependencies" has dependency "eslint" with range "8.29.0" that collides with a dependency in "devDependencies" of the same name with version "8.12.0"
+warning package.json: "dependencies" has dependency "eslint-config-next" with range "13.0.6" that collides with a dependency in "devDependencies" of the same name with version "12.1.4"
+$ next build
+warn  - Invalid next.config.js options detected: 
+  - The root value has an unexpected property, transpilePackages, which is not in the list of allowed properties (amp, analyticsId, assetPrefix, basePath, cleanDistDir, compiler, compress, crossOrigin, devIndicators, distDir, env, eslint, excludeDefaultMomentLocales, experimental, exportPathMap, generateBuildId, generateEtags, headers, httpAgentOptions, i18n, images, onDemandEntries, optimizeFonts, output, outputFileTracing, pageExtensions, poweredByHeader, productionBrowserSourceMaps, publicRuntimeConfig, reactStrictMode, redirects, rewrites, sassOptions, serverRuntimeConfig, staticPageGenerationTimeout, swcMinify, trailingSlash, typescript, useFileSystemPublicRoutes, webpack).
 
-File sizes after gzip:
+See more info here: https://nextjs.org/docs/messages/invalid-next-config
+warn  - You have enabled experimental feature (appDir) in next.config.js.
+warn  - Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
 
-  46.62 kB  build/static/js/main.b62f7680.js
-  1.79 kB   build/static/js/415.f8bb8315.chunk.js
-  541 B     build/static/css/main.073c9b0a.css
+info  - Thank you for testing `appDir` please leave your feedback at https://nextjs.link/app-feedback
+info  - Linting and checking validity of types...
+warn  - The Next.js plugin was not detected in your ESLint configuration. See https://nextjs.org/docs/basic-features/eslint#migrating-existing-config
+info  - Creating an optimized production build...
+info  - Compiled successfully
+info  - Collecting page data...
+info  - Generating static pages (0/4)
+info  - Generating static pages (1/4)
+info  - Generating static pages (2/4)
+info  - Generating static pages (3/4)
+info  - Generating static pages (4/4)
+info  - Finalizing page optimization...
 
-The project was built assuming it is hosted at /.
-You can control this with the homepage field in your package.json.
+Route (pages)                              Size     First Load JS
+┌ ○ / (460 ms)                             1.85 kB         291 kB
+├   /_app                                  0 B             286 kB
+├ ○ /404                                   184 B           286 kB
+├ λ /api/utils                             0 B             286 kB
+├ ○ /barrels (684 ms)                      2.81 kB         302 kB
+└ λ /dashboard                             34.3 kB         333 kB
++ First Load JS shared by all              293 kB
+  ├ chunks/framework-8481453c61ae3f4a.js   45.4 kB
+  ├ chunks/main-2ee788310223a0e6.js        30.4 kB
+  ├ chunks/pages/_app-b0e0ce2ba3ee341f.js  207 kB
+  ├ chunks/webpack-50cbb9de65ba8654.js     2.9 kB
+  └ css/1bc304d2b1f4bb14.css               7.53 kB
 
-The build folder is ready to be deployed.
-You may serve it with a static server:
-
-  npm install -g serve
-  serve -s build
-
-Find out more about deployment here:
-
-  https://cra.link/deployment
+λ  (Server)  server-side renders at runtime (uses getInitialProps or getServerSideProps)
+○  (Static)  automatically rendered as static HTML (uses no initial props)
 

@@ -5,15 +5,28 @@ require('dotenv-mono').load(
     : { path: '.env' }
 )
 
+const API_URL = 'https://caskchain-backend.herokuapp.com/'
+
 const withTM = require('next-transpile-modules')([
   'caskchain-ui',
   'caskchain-lib',
 ])
 
-const API_URL = 'https://caskchain-backend.herokuapp.com/'
-
 const nextConfig = withTM({
-  webpack(config) {
+  webpack(config, { dev, isServer }) {
+    if (dev && !isServer) {
+      const originalEntry = config.entry
+      config.entry = async () => {
+        const wdrPath = path.resolve(__dirname, './scripts/wdyr.ts')
+        const entries = await originalEntry()
+
+        if (entries['main.js'] && !entries['main.js'].includes(wdrPath)) {
+          entries['main.js'].push(wdrPath)
+        }
+        return entries
+      }
+    }
+
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) =>
       rule.test?.test?.('.svg')
@@ -40,15 +53,6 @@ const nextConfig = withTM({
 
     return config
   },
-  async redirects() {
-    return [
-      {
-        source: '/marketplace',
-        destination: '/marketplace/search',
-        permanent: true,
-      },
-    ]
-  },
   async rewrites() {
     return [
       {
@@ -58,6 +62,9 @@ const nextConfig = withTM({
     ]
   },
   reactStrictMode: true,
+  images: {
+    domains: ['res.cloudinary.com'],
+  },
   async rewrites() {
     return [
       {
@@ -66,6 +73,7 @@ const nextConfig = withTM({
       },
     ]
   },
+  transpilePackages: ['caskchain-lib, caskchain-ui'],
   swcMinify: true,
   experimental: {
     appDir: true,
