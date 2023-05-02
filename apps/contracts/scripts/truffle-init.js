@@ -1,5 +1,5 @@
 const dotenv = require("dotenv");
-dotenv.config({ path: `../../../.env` });
+dotenv.config();
 
 const CCNft = artifacts.require("CCNft");
 const NftOffers = artifacts.require("NftOffers");
@@ -27,8 +27,6 @@ module.exports = async function (callback) {
     await ccNftStorage.addAllowedAddress(nftVendor.address);
 
     await nftOffersStorage.addAllowedAddress(nftOffers.address);
-
-    console.log("ccNft fetched", ccNft.address);
 
     // Set up exchange users
     const user1 = "0x7fa312b2e1ba41b0258497612c7594021774711e";
