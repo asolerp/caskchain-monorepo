@@ -8,19 +8,33 @@ const CCNftStorage = artifacts.require("CCNftStorage");
 const NftOffersStorage = artifacts.require("NftOffersStorage");
 
 const CCNftContract = require("../build/contracts/CCNft.json");
+const NftOffersContract = require("../build/contracts/NftOffers.json");
+const NftVendorContract = require("../build/contracts/NftVendor.json");
+const CCNftStorageContract = require("../build/contracts/CCNftStorage.json");
+const NftOffersStorageContract = require("../build/contracts/NftOffersStorage.json");
 
 module.exports = async function (callback) {
   try {
     // Fetch accounts from wallet - these are unlocked
     // const accounts = await web3.eth.getAccounts();
 
-    // Fetch the deployed exchange
-    const ccNftStorage = await CCNftStorage.deployed();
-    const nftVendor = await NftVendor.deployed();
-    const nftOffers = await NftOffers.deployed();
-    const nftOffersStorage = await NftOffersStorage.deployed();
+    console.log("PROCESS", process.env);
 
+    // Fetch the deployed exchange
     const ccNft = await CCNft.at(CCNftContract.networks[4447].address);
+
+    const ccNftStorage = await CCNftStorage.at(
+      CCNftStorageContract.networks[4447].address
+    );
+    const nftVendor = await NftVendor.at(
+      NftVendorContract.networks[4447].address
+    );
+    const nftOffers = await NftOffers.at(
+      NftOffersContract.networks[4447].address
+    );
+    const nftOffersStorage = await NftOffersStorage.at(
+      NftOffersStorageContract.networks[4447].address
+    );
 
     await ccNftStorage.addAllowedAddress(ccNft.address);
     await ccNftStorage.addAllowedAddress(nftOffers.address);

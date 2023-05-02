@@ -64,7 +64,7 @@ const HeroSection = () => {
               animate={controls}
               variants={titleVariants}
               transition={{ duration: 1 }}
-              className="font-rale text-5xl font-semibold leading-[56px] text-white text-center"
+              className="font-rale text-5xl font-semibold leading-[56px] text-white text-center px-2"
             >
               Discover, collect, and take the best
               <span className="text-cask-chain"> NFT Cask</span>

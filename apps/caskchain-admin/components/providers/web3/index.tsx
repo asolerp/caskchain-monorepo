@@ -13,12 +13,6 @@ import {
   Web3State,
 } from './utils'
 
-import { CcNftContract } from 'contracts/types/ccNftContract'
-import { NftVendorContract } from 'contracts/types/nftVendorContract'
-import { NftOffersContract } from 'contracts/types/nftOffersContract'
-
-// import { NftFractionsVendorContract } from '@_types/nftFractionsVendorContract'
-import { NftFractionsFactoryContract } from 'contracts/types/nftFractionsFactoryContract'
 import { useAccount, useProvider } from 'wagmi'
 import { Provider, Signer } from '@wagmi/core'
 import { deleteCookie } from 'cookies-next'
@@ -125,9 +119,9 @@ const Web3Provider: React.FC<Props> = ({ children }) => {
             nftFractionToken: signedNftFractionToken,
             nftFractionsVendor: signednftFractionsVendor as unknown as any,
             nftFractionsFactory: signednftFractionsFactory as any,
-            ccNft: signedCCNftContract as any,
-            nftVendor: sigendNftVendorContract as any,
-            nftOffers: signedNftOffersContract as any,
+            ccNft: signedCCNftContract as unknown as any,
+            nftVendor: sigendNftVendorContract as unknown as any,
+            nftOffers: signedNftOffersContract as unknown as any,
             isLoading: false,
           })
         )

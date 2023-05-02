@@ -5,12 +5,12 @@ require('dotenv-mono').load(
     : { path: '.env' }
 )
 
+const API_URL = 'https://caskchain-backend.herokuapp.com/'
+
 const withTM = require('next-transpile-modules')([
   'caskchain-ui',
   'caskchain-lib',
 ])
-
-const API_URL = 'https://caskchain-backend.herokuapp.com/'
 
 const nextConfig = withTM({
   webpack(config) {
@@ -40,15 +40,6 @@ const nextConfig = withTM({
 
     return config
   },
-  async redirects() {
-    return [
-      {
-        source: '/marketplace',
-        destination: '/marketplace/search',
-        permanent: true,
-      },
-    ]
-  },
   async rewrites() {
     return [
       {
@@ -58,6 +49,9 @@ const nextConfig = withTM({
     ]
   },
   reactStrictMode: true,
+  images: {
+    domains: ['res.cloudinary.com'],
+  },
   async rewrites() {
     return [
       {
@@ -66,6 +60,7 @@ const nextConfig = withTM({
       },
     ]
   },
+  transpilePackages: ['caskchain-lib, caskchain-ui'],
   swcMinify: true,
   experimental: {
     appDir: true,

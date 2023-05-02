@@ -25,7 +25,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open }) => {
 
   return (
     <div
-      className={`absolute flex flex-col p-4 mt-24 right-0 h-[calc(100vh-96px)] w-[500px] shadow-2xl border-l border-t border-gray-700 bg-black-light transition-transform ease-in-out duration-500 z-50 ${openClass}`}
+      className={`hidden absolute lg:flex flex-col p-4 mt-24 right-0 h-[calc(100vh-96px)] w-[500px] shadow-2xl border-l border-t border-gray-700 bg-black-light transition-transform ease-in-out duration-500 z-50 ${openClass}`}
     >
       <ClientOnly>
         <div className="flex flex-col items-center border border-gray-700 rounded-xl p-4">

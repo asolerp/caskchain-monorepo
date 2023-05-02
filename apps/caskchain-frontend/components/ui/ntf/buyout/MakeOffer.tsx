@@ -43,7 +43,8 @@ const MakeOffer: React.FC<Props> = ({
             </h1>
             <p className="text-cask-chain">OWNER</p>
             <p className="text-gray-300">
-              {cask?.owner?.nickname || addressSimplifier(cask?.owner?.address)}
+              {`@${cask?.owner?.nickname}` ||
+                addressSimplifier(cask?.owner?.address)}
             </p>
           </div>
           <Spacer size="md" />

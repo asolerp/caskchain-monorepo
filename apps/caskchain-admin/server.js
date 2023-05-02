@@ -24,8 +24,6 @@ app
   .then(() => {
     const server = express()
 
-    console.log('HOLA HOLA')
-
     if (isDevelopment) {
       server.use('/api', createProxyMiddleware(apiPaths['/api']))
     }

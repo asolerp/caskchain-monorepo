@@ -57,7 +57,7 @@ const Navbar = () => {
   const openClass = sideBar ? 'bg-black-light' : ''
 
   return (
-    <>
+    <div className="w-screen">
       <NetworkModal
         modalIsOpen={networkModal}
         closeModal={() =>
@@ -95,7 +95,7 @@ const Navbar = () => {
         }
       />
 
-      <Sidebar open={sideBar} />
+      {/* <Sidebar open={sideBar} /> */}
 
       <div>
         <Disclosure as="nav">
@@ -106,7 +106,6 @@ const Navbar = () => {
               >
                 <div className="relative bg-transparent flex h-24 items-center justify-between">
                   <div className="absolute inset-y-0 right-0 flex items-center sm:hidden">
-                    {/* Mobile menu button*/}
                     <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                       <span className="sr-only">Open main menu</span>
                       {open ? (
@@ -122,7 +121,7 @@ const Navbar = () => {
                       )}
                     </Disclosure.Button>
                   </div>
-                  <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                  <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start px-2 lg:px-0">
                     <div className="flex flex-1 items-center">
                       <Link href={`/`}>
                         <div className="flex flex-row space-x-3 items-center">
@@ -190,8 +189,7 @@ const Navbar = () => {
                   </div>
                 </div>
               </div>
-
-              <Disclosure.Panel className="sm:hidden">
+              {/* <Disclosure.Panel className="sm:hidden">
                 <div className="space-y-1 px-2 pt-2 pb-3">
                   {navigation.map((item: any) => (
                     <Disclosure.Button
@@ -210,12 +208,12 @@ const Navbar = () => {
                     </Disclosure.Button>
                   ))}
                 </div>
-              </Disclosure.Panel>
+              </Disclosure.Panel> */}
             </>
           )}
         </Disclosure>
       </div>
-    </>
+    </div>
   )
 }
 

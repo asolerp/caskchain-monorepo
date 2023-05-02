@@ -394,6 +394,10 @@ export class Web3Transaction extends Web3Repository {
 
       const listNfts = await mongoUserDataSource.getFavorites(account)
 
+      console.log('listNfts', listNfts)
+
+      if (!listNfts) return null
+
       const nfts = await Promise.all(
         listNfts?.map(async function (nftId: string) {
           const { fractionData, unitPrice, fractionTokenAddress, vaultExists } =

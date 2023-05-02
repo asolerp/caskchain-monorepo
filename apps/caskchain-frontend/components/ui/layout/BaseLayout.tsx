@@ -13,7 +13,7 @@ const BaseLayout: React.FC<Props> = ({ background, children }) => {
   return (
     <>
       <div className={`overflow-hidden min-h-screen ${backgroundClass}`}>
-        <div className=" bg-opacity-80 mx-auto backdrop-blur-xl	">
+        <div className=" bg-opacity-80 backdrop-blur-xl w-screen  ">
           <Navbar />
           <div className="flex flex-col justify-center items-center w-full h-full">
             {children}

@@ -7,7 +7,12 @@ require('dotenv-mono').load(
 
 const API_URL = 'https://caskchain-backend.herokuapp.com/'
 
-const nextConfig = {
+const withTM = require('next-transpile-modules')([
+  'caskchain-ui',
+  'caskchain-lib',
+])
+
+const nextConfig = withTM({
   webpack(config) {
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) =>
@@ -73,6 +78,6 @@ const nextConfig = {
     ['NEXT_PUBLIC_NETWORK_ID']: process.env.NETWORK_ID,
     ['NEXT_PUBLIC_API_URL']: process.env.API_URL,
   },
-}
+})
 
 module.exports = nextConfig
