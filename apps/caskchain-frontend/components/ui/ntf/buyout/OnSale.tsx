@@ -2,6 +2,7 @@ import Button from '@ui/common/Button'
 import Spacer from '@ui/common/Spacer'
 import { Nft } from '@_types/nft'
 import { ethers } from 'ethers'
+import { addressSimplifier } from 'utils/addressSimplifier'
 
 type Props = {
   cask: Nft
@@ -16,7 +17,10 @@ const OnSale: React.FC<Props> = ({ cask, onBuy }) => {
           {cask?.meta?.name.toUpperCase()}
         </h1>
         <p className="text-cask-chain">SOLD BY</p>
-        <p className="text-gray-300">CASK CHAIN</p>
+        <p className="text-gray-300">
+          {`@${cask?.owner?.nickname}` ||
+            addressSimplifier(cask?.owner?.address)}
+        </p>
       </div>
       <Spacer size="md" />
       <div className="flex items-center">

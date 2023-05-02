@@ -107,7 +107,8 @@ const BarrelNft: React.FC<NftItemProps> = ({
               </div>
               <div>
                 <p className="text-cask-chain font-poppins text-sm">
-                  {addressSimplifier(item.owner.address)}
+                  {`@${item.owner.nickname}` ||
+                    addressSimplifier(item.owner.address)}
                 </p>
               </div>
               <div className="flex-1">

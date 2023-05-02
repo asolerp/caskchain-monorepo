@@ -26,6 +26,11 @@ const navigation = [
     href: '/marketplace/search',
     url: '/marketplace/[tab]',
   },
+  {
+    name: 'About us',
+    href: '/about',
+    url: '/about',
+  },
   // { name: 'About us', href: '/about' },
 ]
 
