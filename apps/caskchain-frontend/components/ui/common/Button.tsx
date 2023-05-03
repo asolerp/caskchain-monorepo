@@ -3,6 +3,7 @@ import Spinner from './Spinner'
 
 type ButtonProps = {
   fit?: boolean
+  width?: string
   active?: boolean
   loading?: boolean
   disabled?: boolean
@@ -13,6 +14,7 @@ type ButtonProps = {
 }
 
 const Button: React.FC<ButtonProps> = ({
+  width,
   onClick,
   loading,
   children,
@@ -32,7 +34,7 @@ const Button: React.FC<ButtonProps> = ({
     <div
       onClick={onClick}
       className={`${
-        fit ? 'w-fit' : 'w-full'
+        width ? width : fit ? 'w-fit' : 'w-full'
       } cursor-pointer rounded-full hover:bg-opacity-80 ${activeClass} ${containerClass} ${disabledClass}`}
     >
       {loading ? (

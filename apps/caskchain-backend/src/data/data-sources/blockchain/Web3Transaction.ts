@@ -8,6 +8,7 @@ import { MongoDBUserDataSource } from '../mongodb/MongoDBUserDataSource'
 
 import { Web3Repository } from './Web3Repository'
 import getFractionData from './utils/getFractionData'
+import logger from '../../../presentation/utils/logger'
 
 const USDTAddress = '0x4289231D30cf6cD58aa63aBa44b44E321c43eE57'
 
@@ -74,8 +75,10 @@ export class Web3Transaction extends Web3Repository {
 
       const ownerName = await mongoUserDataSource.search(owner.toLowerCase())
 
+      const ipfsHash = tokenURI.split('/ipfs/')[1]
+
       const meta = await axios
-        .get(tokenURI, {
+        .get(`${process.env.PINATA_GATEWAY_URL}/${ipfsHash}`, {
           headers: {
             'x-pinata-gateway-token': process.env.PINATA_GATEWAY_TOKEN,
           },
@@ -171,8 +174,10 @@ export class Web3Transaction extends Web3Repository {
             owner.toLowerCase()
           )
 
+          const ipfsHash = tokenURI.split('/ipfs/')[1]
+
           const meta = await axios
-            .get(tokenURI, {
+            .get(`${process.env.PINATA_GATEWAY_URL}/${ipfsHash}`, {
               headers: {
                 'x-pinata-gateway-token': process.env.PINATA_GATEWAY_TOKEN,
               },
@@ -180,20 +185,13 @@ export class Web3Transaction extends Web3Repository {
             .then((res) => {
               return res.data
             })
-            .catch(() => {
-              return {
-                description:
-                  'El secreto de su exquisita calidad descansa en el tiempo, el silencio y el microclima de nuestras bodegas subterráneas acorazadas por un muro de un metro y ochenta centímetros intraspasable por los olores y los ruidos.',
-                image:
-                  'https://gateway.pinata.cloud/ipfs/QmNqh9WW1qmzU9CtD6ZjtvD9P2ZQJTbUU7SDjwEDnpFJni',
-                name: 'Classic Cask Brandy Suau SIN INFO',
-                attributes: [
-                  { trait_type: 'year', value: '1990' },
-                  { trait_type: 'extractions', value: '0' },
-                  { trait_type: 'country', value: 'Spain' },
-                  { trait_type: 'region', value: 'Balearic Islands' },
-                ],
-              }
+            .catch((err) => {
+              logger.error('Error fetching metadata from IPFS', err.message, {
+                metadata: {
+                  service: 'web3-transactions',
+                },
+              })
+              return null
             })
           const listedPrice = await NftVendor.methods
             .getListing(nft.tokenId)

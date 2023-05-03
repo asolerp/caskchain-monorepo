@@ -127,7 +127,7 @@ const Profile: NextPage = () => {
                                 <Image
                                   width={300}
                                   height={100}
-                                  src={'/images/nft.png'}
+                                  src={nft.meta.image}
                                   alt=""
                                   className={classNames(
                                     nft.tokenId === nfts.activeNft?.tokenId
@@ -205,7 +205,7 @@ const Profile: NextPage = () => {
                         <Image
                           width={350}
                           height={50}
-                          src={'/images/nft.png'}
+                          src={nfts.activeNft.meta.image}
                           alt=""
                           className="object-cover w-full"
                         />

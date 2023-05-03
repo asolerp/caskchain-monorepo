@@ -1,11 +1,12 @@
 import Button from '@ui/common/Button'
-import { NftAttribute } from '@_types/nft'
 
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { addressSimplifier } from 'utils/addressSimplifier'
 import BookmarkIcon from 'public/icons/bookmark.svg'
 import { useRouter } from 'next/router'
+import { ethers } from 'ethers'
+import Spacer from '@ui/common/Spacer'
 
 type NftItemProps = {
   item: any
@@ -13,10 +14,13 @@ type NftItemProps = {
   isFavorite?: boolean
   isMarketPlace?: boolean
   showAnimation?: boolean
+  defaultImage?: boolean
   showFavorite?: boolean
   onPressFavorite?: (nftId: string) => void
   blow?: boolean
 }
+
+const DEFAULT_IMAGE = '/images/nft.png'
 
 const BarrelNft: React.FC<NftItemProps> = ({
   item,
@@ -24,6 +28,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
   showAnimation = true,
   isFavorite = false,
   showFavorite = true,
+  defaultImage = false,
   isMarketPlace = false,
   onPressFavorite,
 }) => {
@@ -32,7 +37,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
   const router = useRouter()
   const isMarketPlaceClass = isMarketPlace
     ? 'h-full w-80'
-    : 'h-full w-[460px] m-0'
+    : 'h-[600px] w-[460px] m-0'
 
   useEffect(() => {
     if (videoRef.current) {
@@ -45,7 +50,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
   }, [isHover])
 
   return (
-    <div className="relative">
+    <div className="relative cursor-pointer">
       {showFavorite && (
         <div className="absolute right-5 top-5 z-50">
           <BookmarkIcon
@@ -60,19 +65,35 @@ const BarrelNft: React.FC<NftItemProps> = ({
       )}
       <div
         onClick={() => router.push(`/cask/${item.tokenId}`)}
-        className="relative flex flex-row justify-center items-center"
-        onMouseEnter={() => !active && setIsHover(true)}
-        onMouseLeave={() => !active && setIsHover(false)}
+        className="relative flex flex-row justify-center items-center h-full"
       >
         <div
           className={`bg-black-light rounded-[40px] bg-clip-padding backdrop-filter backdrop-blur-sm border border-gray-800 ${isMarketPlaceClass}`}
         >
           <div className="relative">
-            <div className="flex justify-center items-center rounded-md">
+            <div className="relative w-full flex justify-center items-center rounded-md">
+              {isMarketPlace && (
+                <div className={`absolute w-full -bottom-4 px-4 pb-6`}>
+                  <Button
+                    width="w-40"
+                    containerStyle="bg-gray-100 rounded-full px-4 py-2 "
+                    labelStyle="text-black text-center text-xs font-poppins font-semibold"
+                    fit={false}
+                  >
+                    {item.price > 0
+                      ? `Buy for ${ethers.utils.formatEther(item.price)} ETH`
+                      : 'Make an offer'}
+                  </Button>
+                </div>
+              )}
               {(!isHover || !showAnimation) && (
                 <Image
-                  className={`w-full object-contain rounded-tl-[40px] rounded-tr-[40px]`}
-                  src={'/images/nft.png'}
+                  onMouseEnter={() => setIsHover(true)}
+                  onMouseLeave={() => setIsHover(false)}
+                  className={`w-full rounded-tl-[40px] rounded-tr-[40px] ${
+                    isMarketPlace ? 'h-[300px]' : 'h-[450px]'
+                  } object-cover`}
+                  src={defaultImage ? DEFAULT_IMAGE : item?.meta?.image}
                   alt="New NFT"
                   width={300}
                   height={300}
@@ -83,8 +104,9 @@ const BarrelNft: React.FC<NftItemProps> = ({
                   ref={videoRef}
                   width="600"
                   height="600"
-                  className="h-[400px]"
-                  // className="w-100 h-100"
+                  onEnded={() => setIsHover(false)}
+                  onMouseLeave={() => setIsHover(false)}
+                  className="h-[300px]"
                   controls={false}
                   src="https://res.cloudinary.com/enalbis/video/upload/v1681586853/CaskChain/flofru3viqsirclxlapx.mp4"
                 />
@@ -93,25 +115,24 @@ const BarrelNft: React.FC<NftItemProps> = ({
           </div>
           <div className="relative">
             <div
-              className={`flex-1 px-4 py-6 mt-2 flex flex-col justify-between ${
-                isHover ? '-translate-y-20' : ''
-              } transition-transform`}
+              className={`flex-1 px-4 py-6 mt-2 flex flex-col justify-between `}
             >
               <div className="w-full ">
                 <p className="font-poppins text-cask-chain">
                   Cask Number {`#${item.tokenId}`}
                 </p>
+                <div>
+                  <p className="text-cask-chain font-poppins text-sm">
+                    {`@${item.owner.nickname}` ||
+                      addressSimplifier(item.owner.address)}
+                  </p>
+                </div>
+                <Spacer size="xs" />
                 <h3 className="text-2xl font-rale text-white font-semibold w-3/4">
                   {item.meta.name}
                 </h3>
               </div>
-              <div>
-                <p className="text-cask-chain font-poppins text-sm">
-                  {`@${item.owner.nickname}` ||
-                    addressSimplifier(item.owner.address)}
-                </p>
-              </div>
-              <div className="flex-1">
+              {/* <div className="flex-1">
                 <div className="mt-4">
                   <div className="flex flex-row items-start justify-start flex-wrap space-x-1">
                     {item.meta.attributes.map((attribute: NftAttribute) => (
@@ -129,14 +150,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
                     ))}
                   </div>
                 </div>
-              </div>
-            </div>
-            <div
-              className={`absolute w-full bottom-0 left-0 px-4 pb-6 ${
-                isHover ? 'opacity-100' : 'opacity-0'
-              } transition-all duration-500`}
-            >
-              <Button fit={false}>Place a bid</Button>
+              </div> */}
             </div>
           </div>
         </div>

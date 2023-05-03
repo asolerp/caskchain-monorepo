@@ -13,8 +13,8 @@ const BaseLayout: React.FC<Props> = ({ background, children }) => {
 
   return (
     <>
-      <div className={` min-h-screen ${backgroundClass}`}>
-        <div className="flex flex-row mx-auto">
+      <div className={`min-h-screen ${backgroundClass}`}>
+        <div className="flex flex-row mx-auto min-h-screen">
           <LeftSidebar />
           <div className="flex flex-col justify-center items-center w-full h-full">
             {children}

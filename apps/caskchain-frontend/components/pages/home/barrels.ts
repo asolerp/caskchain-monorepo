@@ -1,5 +1,6 @@
 export const barrels = [
   {
+    tokenId: 125,
     owner: {
       nickname: 'Cask',
       address: '0x1234567890123456789012345678901234567890',
@@ -18,6 +19,7 @@ export const barrels = [
     },
   },
   {
+    tokenId: 115,
     owner: {
       nickname: 'Cask',
       address: '0x1234567890123456789012345678901234567890',
@@ -36,6 +38,7 @@ export const barrels = [
     },
   },
   {
+    tokenId: 25,
     owner: {
       nickname: 'Cask',
       address: '0x1234567890123456789012345678901234567890',

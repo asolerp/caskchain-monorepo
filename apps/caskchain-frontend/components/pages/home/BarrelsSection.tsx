@@ -96,6 +96,7 @@ const BarrelsSection = () => {
             {barrels.map((barrel, i) => (
               <div key={i} className="mx-2 lg:mx-0">
                 <BarrelNft
+                  defaultImage
                   showAnimation={false}
                   showFavorite={false}
                   active={true}

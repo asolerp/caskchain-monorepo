@@ -29,7 +29,7 @@ let CaskIllustration = ({
     <div className="flex flex-1 justify-center col-span-2">
       {activeAsset === 1 && (
         <Image
-          className={`object-contain  rounded-3xl`}
+          className={`object-contain  rounded-2xl`}
           src={src}
           alt="New NFT"
           width={350}
@@ -80,7 +80,7 @@ function CaskDetail() {
                     >
                       <Image
                         className={`object-contain rounded-3xl`}
-                        src={'/images/nft.png'}
+                        src={cask?.data?.meta?.image}
                         alt="New NFT"
                         width={100}
                         height={150}
@@ -104,7 +104,7 @@ function CaskDetail() {
                   </div>
                 </div>
                 <CaskIllustration
-                  src={'/images/nft.png'}
+                  src={cask?.data?.meta?.image}
                   activeAsset={activeAsset}
                 />
                 <div className="flex flex-col col-span-2">
@@ -187,21 +187,22 @@ function CaskDetail() {
                 <h2 className="text-xl text-gray-100">
                   {cask?.data?.meta?.description}
                 </h2>
-                <div className="grid grid-cols-2 gap-0 mt-14">
+                <div className="grid grid-cols-1 gap-0 mt-14">
                   <div className="flex flex-col justify-center">
                     <h2 className="text-white text-5xl font-semibold">
                       Cask Stats
                     </h2>
-                    <div className="grid grid-cols-2 gap-4 mt-6">
+                    <div className="grid grid-cols-4 gap-4 mt-6">
                       {cask?.data?.meta?.attributes?.map((attribute: any) => (
                         <div
                           key={attribute.trait_type}
                           className="flex flex-col border border-cask-chain rounded-xl p-4"
                         >
-                          <dt className="order-2 text-xl font-medium text-gray-400">
+                          <dt className="text-xl font-medium text-gray-400">
                             {attribute.trait_type.toUpperCase()}
                           </dt>
-                          <dd className="order-1 text-3xl font-extrabold text-cask-chain">
+                          <Spacer size="xs" />
+                          <dd className=" text-2xl font-extrabold text-cask-chain">
                             {attribute.value}
                           </dd>
                         </div>

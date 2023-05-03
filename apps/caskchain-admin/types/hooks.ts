@@ -1,21 +1,15 @@
 import { SWRResponse } from 'swr'
 
-import { CcNftContract } from 'contracts/types/ccNftContract'
-import { NftVendorContract } from 'contracts/types/nftVendorContract'
-import { NftOffersContract } from 'contracts/types/nftOffersContract'
-import { NftFractionsVendorContract } from 'contracts/types/nftFractionsVendorContract'
-import { NftFractionsFactoryContract } from 'contracts/types/nftFractionsFactoryContract'
-
 export type Web3Dependencies = {
   web3Modal?: any
   erc20Contracts?: any
-  nftFractionsVendor?: NftFractionsVendorContract
-  nftFractionsFactory?: NftFractionsFactoryContract
+  nftFractionsVendor?: any
+  nftFractionsFactory?: any
   nftFractionToken?: any
-  nftOffers?: NftOffersContract
+  nftOffers?: any
   provider: any | undefined
-  ccNft: CcNftContract
-  nftVendor: NftVendorContract
+  ccNft: any
+  nftVendor: any
   ethereum: any | undefined
   isLoading: boolean
 }

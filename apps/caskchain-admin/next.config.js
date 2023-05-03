@@ -50,7 +50,7 @@ const nextConfig = withTM({
   },
   reactStrictMode: true,
   images: {
-    domains: ['res.cloudinary.com'],
+    domains: ['res.cloudinary.com', 'gateway.pinata.cloud'],
   },
   async rewrites() {
     return [
@@ -68,6 +68,10 @@ const nextConfig = withTM({
   env: {
     ['NEXT_PUBLIC_NETWORK_ID']: process.env.NETWORK_ID,
     ['NEXT_PUBLIC_API_URL']: process.env.API_URL,
+    ['NEXT_PUBLIC_PINATA_DOMAIN']: process.env.PINATA_DOMAIN,
+    ['NEXT_PUBLIC_PINATA_GATEWAY_TOKEN']: process.env.PINATA_GATEWAY_TOKEN,
+    ['NEXT_PUBLIC_PINATA_PUBLIC_URL']: process.env.PINATA_PUBLIC_URL,
+    ['NEXT_PUBLIC_PINATA_GATEWAY_URL']: process.env.PINATA_GATEWAY_URL,
   },
 })
 

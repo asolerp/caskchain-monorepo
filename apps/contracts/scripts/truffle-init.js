@@ -18,8 +18,6 @@ module.exports = async function (callback) {
     // Fetch accounts from wallet - these are unlocked
     // const accounts = await web3.eth.getAccounts();
 
-    console.log("PROCESS", process.env);
-
     // Fetch the deployed exchange
     const ccNft = await CCNft.at(CCNftContract.networks[4447].address);
 
@@ -42,20 +40,16 @@ module.exports = async function (callback) {
 
     await nftOffersStorage.addAllowedAddress(nftOffers.address);
 
-    // Set up exchange users
-    const user1 = "0x7fa312b2e1ba41b0258497612c7594021774711e";
+    // // Set up exchange users
+    // const user1 = "0x7fa312b2e1ba41b0258497612c7594021774711e";
 
-    // User 1 Deposits Ether
-    await ccNft.mintNFT(
-      "https://ivory-worthy-sparrow-388.mypinata.cloud/ipfs/QmRaEHHk53Ra9bmQ1q3LJ4t2UUs1NmGenDa1Vn4Bx7WNW1",
-      { from: user1 }
-    );
-    await ccNft.mintNFT(
-      "https://ivory-worthy-sparrow-388.mypinata.cloud/ipfs/QmSSU68Aqkwi1uWUs9SbppsjEmGyA7k2wjR8LFUpAyjWDQ",
-      { from: user1 }
-    );
+    // // User 1 Deposits Ether
+    // await ccNft.mintNFT(
+    //   "https://ivory-worthy-sparrow-388.mypinata.cloud/ipfs/QmdKPYuk7CoDoz6hSo8ZM6icG9sZYgCtPkxEeQeZKgr966?pinataGatewayToken=s_pCLBusA0GJxHX5F6DmiHij0U33q-GXZvLcNlkI35Sg6fiD1q4D9FbL1qJJ6aNa&_gl=1*1dak5lw*rs_ga*OWNhMWQ1ZmUtODBkMC00MDVmLTk0MGMtOWY4ZDZmNmE1NWY5*rs_ga_5RMPXG14TE*MTY4MzExMTAwMi42LjAuMTY4MzExMTAwMi42MC4wLjA.",
+    //   { from: user1 }
+    // );
 
-    console.log(`Minted NFTs from ${user1}`);
+    console.log(`Init complete!`);
   } catch (error) {
     console.log(error);
   }

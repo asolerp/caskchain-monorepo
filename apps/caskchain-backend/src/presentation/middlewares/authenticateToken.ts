@@ -14,6 +14,8 @@ export const authenticateToken = (
     return res.sendStatus(401)
   }
 
+  console.log('Role: ', role)
+
   jwt.verify(
     token,
     process.env.TOKEN_SECRET as string,

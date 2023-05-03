@@ -33,6 +33,15 @@ export const useNetwork = () => {
   }
 }
 
+export const useCreateNft = () => {
+  const hooks = useHooks()
+  const swrRes = hooks.useCreateNft()
+
+  return {
+    nft: swrRes,
+  }
+}
+
 export const useAllNfts = () => {
   const hooks = useHooks()
   const swrRes = hooks.useAllNfts()

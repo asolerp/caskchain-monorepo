@@ -6,17 +6,17 @@ const LeftSidebar = () => {
   const { account } = useAccount()
 
   return (
-    <div className="h-full bg-gray-200">
+    <div className="flex bg-gray-200">
       <div
         aria-label="Default sidebar example"
-        className="flex flex-col h-full justify-center border-r-2 border-gray-300 px-6"
+        className="flex flex-col justify-start border-r-2 border-gray-300 px-6"
       >
         <aside
           id="default-sidebar"
-          className="w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+          className="w-64 transition-transform -translate-x-full sm:translate-x-0"
           aria-label="Sidebar"
         >
-          <div className="h-full px-3 py-4 overflow-y-auto dark:bg-gray-800">
+          <div className="px-3 py-4 overflow-y-auto dark:bg-gray-800">
             <ul className="space-y-2 font-medium ">
               <li>
                 <div className="flex flex-col w-full justify-center items-center bg-transparent mb-40">

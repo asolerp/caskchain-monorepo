@@ -1,8 +1,22 @@
-export type Trait = 'year' | 'extractions' | 'country' | 'region'
+export type Trait =
+  | 'liquor'
+  | 'age'
+  | 'distillery'
+  | 'type'
+  | 'cask_wood'
+  | 'cask_size'
+  | 'location'
+  | 'abv'
+  | 'flavor'
+  | 'rarity'
+  | 'historical'
+  | 'awards'
 
 export type NftAttribute = {
   trait_type: Trait
   value: string
+  type: 'text' | 'number'
+  editable: boolean
 }
 
 export type NftMeta = {

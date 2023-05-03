@@ -3,6 +3,9 @@ import { BaseLayout } from '@ui'
 import BarrelNft from '@ui/ntf/item/BarrelNft'
 import { Button, Spacer } from 'caskchain-ui'
 import { useRouter } from 'next/router'
+import { auth } from 'utils/auth'
+
+export const getServerSideProps = (context: any) => auth(context, 'admin')
 
 const Barrels = () => {
   const { nfts } = useAllNfts()

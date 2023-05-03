@@ -34,9 +34,6 @@ const navigation = [
   // { name: 'About us', href: '/about' },
 ]
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
-}
 const Navbar = () => {
   useAuth()
   const { account } = useAccount()
@@ -95,7 +92,7 @@ const Navbar = () => {
         }
       />
 
-      {/* <Sidebar open={sideBar} /> */}
+      <Sidebar open={sideBar} />
 
       <div>
         <Disclosure as="nav">
