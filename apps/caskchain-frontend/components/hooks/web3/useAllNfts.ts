@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CryptoHookFactory } from '@_types/hooks'
-import { Nft } from '@_types/nft'
+import { Nft, NftsPaginated } from '@_types/nft'
 import { useAuth } from '@hooks/auth'
 import useLoading from '@hooks/common/useLoading'
 import { useGlobal } from '@providers/global'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import axiosClient from 'lib/fetcher/axiosInstance'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import useSWR from 'swr'
@@ -21,16 +22,37 @@ export const hookFactory: AllNftsHookFactory =
     const {
       state: { user },
     } = useGlobal()
-    const { auth } = useAuth()
-    const { data, isLoading, isValidating } = useSWR(
-      'web3/useAllNfts',
-      async () => {
-        const nfts: any = await axios.get('/api/casks')
-        return nfts?.data || []
-      }
-    )
 
-    useLoading({ loading: isLoading || isValidating })
+    const [pageSize, setPageSize] = useState(10)
+    const { auth } = useAuth()
+
+    const fetchNFTs = async (): Promise<NftsPaginated> => {
+      const response: AxiosResponse = await axios.get(
+        `/api/casks?page=1&pageSize=${pageSize}`
+      )
+      return response.data
+    }
+
+    const {
+      data,
+      isLoading,
+      isValidating,
+      mutate: refetchData,
+    } = useSWR('web3/useAllNfts', fetchNFTs, {
+      revalidateOnFocus: false,
+    })
+
+    useLoading({ loading: isLoading })
+
+    const fetchMoreBarrels = async () => {
+      if (pageSize < parseInt(data?.totalItems as string)) {
+        setPageSize((prev) => prev + 1)
+      }
+    }
+
+    useEffect(() => {
+      refetchData()
+    }, [pageSize])
 
     const handleAddFavorite = async (nftId: string) => {
       try {
@@ -46,6 +68,7 @@ export const hookFactory: AllNftsHookFactory =
     return {
       isLoading,
       isValidating,
+      fetchMoreBarrels,
       handleAddFavorite,
       data: data || [],
     }

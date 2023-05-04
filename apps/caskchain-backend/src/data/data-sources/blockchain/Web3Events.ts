@@ -1,3 +1,4 @@
+import logger from '../../../presentation/utils/logger'
 import { Web3Repository } from './Web3Repository'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import * as _ from 'lodash'
@@ -30,8 +31,18 @@ export class Web3Events extends Web3Repository {
 
     const subscription = this.wsClient()
       .eth.subscribe('logs', options, (error) => {
-        if (!error) console.log('got result')
-        else console.log(error)
+        if (!error)
+          logger.info('Got result from subscription', {
+            metadata: {
+              service: 'nfts-subscription',
+            },
+          })
+        else
+          logger.error('Error from subscription', error, {
+            metadata: {
+              service: 'nfts-subscription',
+            },
+          })
       })
       .on('data', (log) => {
         const event = this.client().eth.abi.decodeLog(
@@ -39,17 +50,29 @@ export class Web3Events extends Web3Repository {
           log.data,
           log.topics.slice(1)
         )
-        console.log('EVENTO', {
-          ...event,
-          transactionHash: log.transactionHash,
-        })
+        logger.info(
+          'Received event',
+          {
+            ...event,
+            transactionHash: log.transactionHash,
+          },
+          {
+            metadata: {
+              service: 'nfts-subscription',
+            },
+          }
+        )
         callback && callback({ ...event, transactionHash: log.transactionHash })
       })
 
     this.subscribedEvents[eventName] = subscription
-
-    console.log(
-      `Subscribed to event '${eventName}' of contract '${contracts[contractName].options.address}' `
+    logger.info(
+      `Subscribed to event '${eventName}' of contract '${contracts[contractName].options.address}'`,
+      {
+        metadata: {
+          service: 'nfts-subscription',
+        },
+      }
     )
   }
 
@@ -58,7 +81,12 @@ export class Web3Events extends Web3Repository {
       error: any,
       success: any
     ) {
-      if (success) console.log('Successfully unsubscribed!')
+      if (success)
+        logger.info(`Successfully unsubscribed from event '${eventName}'`, {
+          metadata: {
+            service: 'nfts-subscription',
+          },
+        })
     })
   }
 }

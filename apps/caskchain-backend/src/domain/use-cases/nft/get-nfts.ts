@@ -7,7 +7,7 @@ export class GetNFTs implements GetNFTsUseCase {
     this.web3Repository = web3Repository
   }
 
-  async execute() {
-    return await this.web3Repository.getAllNfts()
+  async execute(page: number, pageSize: number) {
+    return await this.web3Repository.getAllNfts(page, pageSize)
   }
 }

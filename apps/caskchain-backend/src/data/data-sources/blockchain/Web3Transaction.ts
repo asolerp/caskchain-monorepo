@@ -135,7 +135,7 @@ export class Web3Transaction extends Web3Repository {
     }
   }
 
-  public async getNfts() {
+  public async getAllNfts(page: number, pageSize: number) {
     try {
       const client = this.client()
 
@@ -154,7 +154,9 @@ export class Web3Transaction extends Web3Repository {
       const NftFractionsFactory = this.contracts()['NftFractionsFactory']
       const NftFractionsVendor = this.contracts()['NftFractionsVendor']
 
-      const listNfts = await CCNft.methods.getAllNFTs().call()
+      const totalItems = await CCNft.methods.getNftTotalSupply().call()
+      const totalPages = Math.ceil(totalItems / pageSize)
+      const listNfts = await CCNft.methods.getAllNFTs(page, pageSize).call()
 
       const nfts = await Promise.all(
         listNfts.map(async function (nft: any) {
@@ -233,7 +235,7 @@ export class Web3Transaction extends Web3Repository {
         })
       )
 
-      return nfts
+      return { items: nfts, totalPages, currentPage: page, totalItems }
     } catch (e: any) {
       console.error(e)
     }
@@ -392,8 +394,6 @@ export class Web3Transaction extends Web3Repository {
 
       const listNfts = await mongoUserDataSource.getFavorites(account)
 
-      console.log('listNfts', listNfts)
-
       if (!listNfts) return null
 
       const nfts = await Promise.all(
@@ -507,8 +507,10 @@ export class Web3Transaction extends Web3Repository {
 
           const tokenURI = await CCNft.methods!.tokenURI(nft.tokenId).call()
           const owner = await CCNft.methods.ownerOf(nft.tokenId).call()
+          const ipfsHash = tokenURI.split('/ipfs/')[1]
+
           const meta = await axios
-            .get(tokenURI, {
+            .get(`${process.env.PINATA_GATEWAY_URL}/${ipfsHash}`, {
               headers: {
                 'x-pinata-gateway-token': process.env.PINATA_GATEWAY_TOKEN,
               },
@@ -516,20 +518,13 @@ export class Web3Transaction extends Web3Repository {
             .then((res) => {
               return res.data
             })
-            .catch(() => {
-              return {
-                description:
-                  'El secreto de su exquisita calidad descansa en el tiempo, el silencio y el microclima de nuestras bodegas subterráneas acorazadas por un muro de un metro y ochenta centímetros intraspasable por los olores y los ruidos.',
-                image:
-                  'https://gateway.pinata.cloud/ipfs/QmNqh9WW1qmzU9CtD6ZjtvD9P2ZQJTbUU7SDjwEDnpFJni',
-                name: 'Classic Cask Brandy Suau SIN INFO',
-                attributes: [
-                  { trait_type: 'year', value: '1990' },
-                  { trait_type: 'extractions', value: '0' },
-                  { trait_type: 'country', value: 'Spain' },
-                  { trait_type: 'region', value: 'Balearic Islands' },
-                ],
-              }
+            .catch((err) => {
+              logger.error('Error fetching metadata from IPFS', err.message, {
+                metadata: {
+                  service: 'web3-transactions',
+                },
+              })
+              return null
             })
           const listedPrice = await NftVendor.methods
             .getListing(nft.tokenId)
@@ -663,8 +658,6 @@ export class Web3Transaction extends Web3Repository {
 
     const balances = Promise.all(
       fractionsAddress.map(async (faddress: string) => {
-        console.log(faddress, 'address')
-
         const contract = new client.eth.Contract(
           NftFractionToken.abi as any,
           faddress
@@ -674,7 +667,6 @@ export class Web3Transaction extends Web3Repository {
         const tokenSymbol = await contract.methods.symbol().call()
 
         const balanceAddress = await contract.methods.balanceOf(address).call()
-        console.log(balanceAddress, 'balance')
 
         return {
           name: tokenName,

@@ -49,11 +49,12 @@ const MainAnimationSection = () => {
         className="h-screen w-full flex justify-center items-center bg-black-light absolute top-0 left-0 z-50 trnslate-y-32"
       >
         <Image
-          src="/images/logo.svg"
+          src="https://res.cloudinary.com/enalbis/image/upload/v1683188732/CaskChain/tpkeirnrtu6to38h1q7f.svg"
           width={300}
           height={200}
           className="object-cover"
           alt="cc"
+          priority
         />
       </motion.div>
     )

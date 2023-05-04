@@ -41,12 +41,16 @@ export const LoadingAnimation = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="absolute w-screen h-screen bg-black-light bg-opacity-70 z-50"
+      className="flex justify-center items-center fixed top-0 left-0 w-full h-full z-50 bg-black-light bg-opacity-70"
     >
-      <div
-        className="absolute w-40 h-40 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-        ref={ref}
-      />
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div
+            className="absolute w-40 h-40 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+            ref={ref}
+          />
+        </div>
+      </div>
     </motion.div>
   )
 }

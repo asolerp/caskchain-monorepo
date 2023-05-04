@@ -5,6 +5,13 @@ export type NftAttribute = {
   value: string
 }
 
+export type NftsPaginated = {
+  totalItems: string | undefined
+  totalPages: number
+  currentPage: number
+  items: Nft[]
+}
+
 export type NftMeta = {
   name: string
   description: string

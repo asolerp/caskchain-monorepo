@@ -30,7 +30,6 @@ export default function TransactionsHistoryRouter(
       }
       if (tokenId) {
         const transactions = await getTransactionsByTokenId.execute(tokenId)
-        console.log(transactions)
         return res.json(transactions)
       } else {
         throw 'Token id is necessary'

@@ -4,55 +4,55 @@ import {
   BytesLike as Arrayish,
   BigNumber,
   BigNumberish,
-} from 'ethers';
-import { EthersContractContextV5 } from 'ethereum-abi-types-generator';
+} from 'ethers'
+import { EthersContractContextV5 } from 'ethereum-abi-types-generator'
 
 export type ContractContext = EthersContractContextV5<
   CcNftContract,
   CcNftContractMethodNames,
   CcNftContractEventsContext,
   CcNftContractEvents
->;
+>
 
 export declare type EventFilter = {
-  address?: string;
-  topics?: Array<string>;
-  fromBlock?: string | number;
-  toBlock?: string | number;
-};
+  address?: string
+  topics?: Array<string>
+  fromBlock?: string | number
+  toBlock?: string | number
+}
 
 export interface ContractTransactionOverrides {
   /**
    * The maximum units of gas for the transaction to use
    */
-  gasLimit?: number;
+  gasLimit?: number
   /**
    * The price (in wei) per unit of gas
    */
-  gasPrice?: BigNumber | string | number | Promise<any>;
+  gasPrice?: BigNumber | string | number | Promise<any>
   /**
    * The nonce to use in the transaction
    */
-  nonce?: number;
+  nonce?: number
   /**
    * The amount to send with the transaction (i.e. msg.value)
    */
-  value?: BigNumber | string | number | Promise<any>;
+  value?: BigNumber | string | number | Promise<any>
   /**
    * The chain ID (or network ID) to use
    */
-  chainId?: number;
+  chainId?: number
 }
 
 export interface ContractCallOverrides {
   /**
    * The address to execute the call as
    */
-  from?: string;
+  from?: string
   /**
    * The maximum units of gas for the transaction to use
    */
-  gasLimit?: number;
+  gasLimit?: number
 }
 export type CcNftContractEvents =
   | 'Approval'
@@ -60,16 +60,17 @@ export type CcNftContractEvents =
   | 'Mint'
   | 'NftItemCreated'
   | 'OwnershipTransferred'
-  | 'Transfer';
+  | 'Transfer'
 export interface CcNftContractEventsContext {
-  Approval(...parameters: any): EventFilter;
-  ApprovalForAll(...parameters: any): EventFilter;
-  Mint(...parameters: any): EventFilter;
-  NftItemCreated(...parameters: any): EventFilter;
-  OwnershipTransferred(...parameters: any): EventFilter;
-  Transfer(...parameters: any): EventFilter;
+  Approval(...parameters: any): EventFilter
+  ApprovalForAll(...parameters: any): EventFilter
+  Mint(...parameters: any): EventFilter
+  NftItemCreated(...parameters: any): EventFilter
+  OwnershipTransferred(...parameters: any): EventFilter
+  Transfer(...parameters: any): EventFilter
 }
 export type CcNftContractMethodNames =
+  | 'address'
   | 'new'
   | '_minimumFee'
   | 'approve'
@@ -97,65 +98,66 @@ export type CcNftContractMethodNames =
   | 'getAllNftsOnSale'
   | 'supportsInterface'
   | 'totalSupply'
-  | 'tokenByIndex';
+  | 'tokenByIndex'
 export interface ApprovalEventEmittedResponse {
-  owner: string;
-  approved: string;
-  tokenId: BigNumberish;
+  owner: string
+  approved: string
+  tokenId: BigNumberish
 }
 export interface ApprovalForAllEventEmittedResponse {
-  owner: string;
-  operator: string;
-  approved: boolean;
+  owner: string
+  operator: string
+  approved: boolean
 }
 export interface MintEventEmittedResponse {
-  owner: string;
-  tokenId: BigNumberish;
-  tokenURI: string;
+  owner: string
+  tokenId: BigNumberish
+  tokenURI: string
 }
 export interface NftItemCreatedEventEmittedResponse {
-  tokenId: BigNumberish;
-  creator: string;
+  tokenId: BigNumberish
+  creator: string
 }
 export interface OwnershipTransferredEventEmittedResponse {
-  previousOwner: string;
-  newOwner: string;
+  previousOwner: string
+  newOwner: string
 }
 export interface TransferEventEmittedResponse {
-  from: string;
-  to: string;
-  tokenId: BigNumberish;
+  from: string
+  to: string
+  tokenId: BigNumberish
 }
 export interface RoyaltyInfoResponse {
-  result0: string;
-  0: string;
-  result1: BigNumber;
-  1: BigNumber;
-  length: 2;
+  result0: string
+  0: string
+  result1: BigNumber
+  1: BigNumber
+  length: 2
 }
 export interface NftitemResponse {
-  tokenId: BigNumber;
-  0: BigNumber;
-  creator: string;
-  1: string;
-  owner: string;
-  2: string;
+  tokenId: BigNumber
+  0: BigNumber
+  creator: string
+  1: string
+  owner: string
+  2: string
 }
 export interface CcNftContract {
+  address(overrides?: ContractCallOverrides): Promise<string>
   /**
    * Payable: false
    * Constant: false
    * StateMutability: nonpayable
    * Type: constructor
    */
-  'new'(overrides?: ContractTransactionOverrides): Promise<ContractTransaction>;
+  'new'(overrides?: ContractTransactionOverrides): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  _minimumFee(overrides?: ContractCallOverrides): Promise<BigNumber>;
+  _minimumFee(overrides?: ContractCallOverrides): Promise<BigNumber>
   /**
    * Payable: false
    * Constant: false
@@ -168,7 +170,7 @@ export interface CcNftContract {
     to: string,
     tokenId: BigNumberish,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: true
@@ -179,14 +181,14 @@ export interface CcNftContract {
   balanceOf(
     owner: string,
     overrides?: ContractCallOverrides
-  ): Promise<BigNumber>;
+  ): Promise<BigNumber>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  bottlePrice(overrides?: ContractCallOverrides): Promise<BigNumber>;
+  bottlePrice(overrides?: ContractCallOverrides): Promise<BigNumber>
   /**
    * Payable: false
    * Constant: true
@@ -197,7 +199,7 @@ export interface CcNftContract {
   getApproved(
     tokenId: BigNumberish,
     overrides?: ContractCallOverrides
-  ): Promise<string>;
+  ): Promise<string>
   /**
    * Payable: false
    * Constant: true
@@ -210,21 +212,21 @@ export interface CcNftContract {
     owner: string,
     operator: string,
     overrides?: ContractCallOverrides
-  ): Promise<boolean>;
+  ): Promise<boolean>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  name(overrides?: ContractCallOverrides): Promise<string>;
+  name(overrides?: ContractCallOverrides): Promise<string>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  owner(overrides?: ContractCallOverrides): Promise<string>;
+  owner(overrides?: ContractCallOverrides): Promise<string>
   /**
    * Payable: false
    * Constant: true
@@ -235,14 +237,14 @@ export interface CcNftContract {
   ownerOf(
     tokenId: BigNumberish,
     overrides?: ContractCallOverrides
-  ): Promise<string>;
+  ): Promise<string>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  paused(overrides?: ContractCallOverrides): Promise<boolean>;
+  paused(overrides?: ContractCallOverrides): Promise<boolean>
   /**
    * Payable: false
    * Constant: false
@@ -251,7 +253,7 @@ export interface CcNftContract {
    */
   renounceOwnership(
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: true
@@ -264,7 +266,7 @@ export interface CcNftContract {
     _tokenId: BigNumberish,
     _salePrice: BigNumberish,
     overrides?: ContractCallOverrides
-  ): Promise<RoyaltyInfoResponse>;
+  ): Promise<RoyaltyInfoResponse>
   /**
    * Payable: true
    * Constant: false
@@ -279,7 +281,7 @@ export interface CcNftContract {
     to: string,
     tokenId: BigNumberish,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: true
    * Constant: false
@@ -296,7 +298,7 @@ export interface CcNftContract {
     tokenId: BigNumberish,
     data: Arrayish,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: false
@@ -309,14 +311,14 @@ export interface CcNftContract {
     operator: string,
     approved: boolean,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  symbol(overrides?: ContractCallOverrides): Promise<string>;
+  symbol(overrides?: ContractCallOverrides): Promise<string>
   /**
    * Payable: false
    * Constant: true
@@ -327,7 +329,7 @@ export interface CcNftContract {
   tokenURI(
     tokenId: BigNumberish,
     overrides?: ContractCallOverrides
-  ): Promise<string>;
+  ): Promise<string>
   /**
    * Payable: true
    * Constant: false
@@ -342,7 +344,7 @@ export interface CcNftContract {
     to: string,
     tokenId: BigNumberish,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: false
@@ -353,14 +355,14 @@ export interface CcNftContract {
   transferOwnership(
     newOwner: string,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  txFeeToken(overrides?: ContractCallOverrides): Promise<string>;
+  txFeeToken(overrides?: ContractCallOverrides): Promise<string>
   /**
    * Payable: false
    * Constant: false
@@ -371,7 +373,7 @@ export interface CcNftContract {
   mintNFT(
     tokenURI: string,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: false
@@ -382,14 +384,14 @@ export interface CcNftContract {
   burn(
     tokenId: BigNumberish,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  getAllNFTs(overrides?: ContractCallOverrides): Promise<NftitemResponse[]>;
+  getAllNFTs(overrides?: ContractCallOverrides): Promise<NftitemResponse[]>
   /**
    * Payable: false
    * Constant: true
@@ -400,7 +402,7 @@ export interface CcNftContract {
   getAllNftsOnSale(
     _tokensIds: BigNumberish[],
     overrides?: ContractCallOverrides
-  ): Promise<NftitemResponse[]>;
+  ): Promise<NftitemResponse[]>
   /**
    * Payable: false
    * Constant: true
@@ -411,14 +413,14 @@ export interface CcNftContract {
   supportsInterface(
     interfaceId: Arrayish,
     overrides?: ContractCallOverrides
-  ): Promise<boolean>;
+  ): Promise<boolean>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  totalSupply(overrides?: ContractCallOverrides): Promise<BigNumber>;
+  totalSupply(overrides?: ContractCallOverrides): Promise<BigNumber>
   /**
    * Payable: false
    * Constant: true
@@ -429,5 +431,5 @@ export interface CcNftContract {
   tokenByIndex(
     index: BigNumberish,
     overrides?: ContractCallOverrides
-  ): Promise<BigNumber>;
+  ): Promise<BigNumber>
 }

@@ -6,7 +6,6 @@ function errorHandler(
   res: Response,
   next: NextFunction
 ) {
-  console.log('Middleware Error Hadnling')
   const errStatus = err.statusCode || 500
   const errMsg = err.message || 'Something went wrong'
   logger.error(

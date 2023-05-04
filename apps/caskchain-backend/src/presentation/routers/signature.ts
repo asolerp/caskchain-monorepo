@@ -19,7 +19,6 @@ export default function SignatureRouter() {
           expiresIn: '2 days',
         }
       )
-      console.log(token)
       return res.json(token)
     }
   )

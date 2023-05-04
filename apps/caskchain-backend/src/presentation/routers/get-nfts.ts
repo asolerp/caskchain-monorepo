@@ -27,8 +27,14 @@ export default function GetNftsRouter(
   const router = express.Router()
 
   router.get('/', async (req: Request, res: Response) => {
+    const { page = 1, pageSize = 10 } = req.query
     try {
-      const nfts = await getNfts.execute()
+      // Parse page and limit values
+      const parsePage = parseInt(page.toString(), 10)
+      const parsedPageSize = parseInt(pageSize.toString(), 10)
+
+      const nfts = await getNfts.execute(parsePage, parsedPageSize)
+
       logger.info('Successfully fetched all NFTs', null, {
         metadata: {
           service: 'nfts-router',

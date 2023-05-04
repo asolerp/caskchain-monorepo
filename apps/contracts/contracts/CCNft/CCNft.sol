@@ -107,15 +107,30 @@ contract CCNft is
     return item;
   }
 
-  function getAllNFTs() external view returns (ICCNftStorage.NftItem[] memory) {
+  function getAllNFTs(
+    uint256 page,
+    uint256 pageSize
+  ) external view returns (ICCNftStorage.NftItem[] memory) {
     uint256 totalItemsCount = _storage.getTotalSupply();
+    uint256 totalPages = (totalItemsCount + pageSize - 1) / pageSize;
+
+    if (page < 1 || page > totalPages) {
+      revert("Invalid page number");
+    }
+
+    uint256 startIndex = (page - 1) * pageSize;
+    uint256 endIndex = startIndex + pageSize > totalItemsCount
+      ? totalItemsCount
+      : startIndex + pageSize;
+
+    uint256 itemsLength = endIndex - startIndex;
     ICCNftStorage.NftItem[] memory items = new ICCNftStorage.NftItem[](
-      totalItemsCount
+      itemsLength
     );
 
-    for (uint256 i = 0; i < totalItemsCount; i++) {
+    for (uint256 i = startIndex; i < endIndex; i++) {
       uint256 tokenId = _storage.getTokenByIndex(i);
-      items[i] = _storage.getIdToNftItem(tokenId);
+      items[i - startIndex] = _storage.getIdToNftItem(tokenId);
     }
 
     return items;

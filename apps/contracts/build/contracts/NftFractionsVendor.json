@@ -10869,10 +10869,10 @@
         715
       ],
       "NftFractionsStorage": [
-        11713
+        11771
       ],
       "NftFractionsVendor": [
-        12091
+        12149
       ],
       "OwnableUpgradeable": [
         131
@@ -10884,12 +10884,12 @@
         851
       ]
     },
-    "id": 12092,
+    "id": 12150,
     "license": "Unlicense",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 11715,
+        "id": 11773,
         "literals": [
           "solidity",
           "^",
@@ -10902,10 +10902,10 @@
       {
         "absolutePath": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol",
         "file": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol",
-        "id": 11716,
+        "id": 11774,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 12092,
+        "scope": 12150,
         "sourceUnit": 716,
         "src": "62:75:58",
         "symbolAliases": [],
@@ -10914,10 +10914,10 @@
       {
         "absolutePath": "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol",
         "file": "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol",
-        "id": 11717,
+        "id": 11775,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 12092,
+        "scope": 12150,
         "sourceUnit": 1664,
         "src": "139:78:58",
         "symbolAliases": [],
@@ -10926,10 +10926,10 @@
       {
         "absolutePath": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
         "file": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol",
-        "id": 11718,
+        "id": 11776,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 12092,
+        "scope": 12150,
         "sourceUnit": 132,
         "src": "218:75:58",
         "symbolAliases": [],
@@ -10938,11 +10938,11 @@
       {
         "absolutePath": "project:/contracts/NftFractions/NftFractionsVendor.sol",
         "file": "./NftFractionsVendor.sol",
-        "id": 11719,
+        "id": 11777,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 12092,
-        "sourceUnit": 12092,
+        "scope": 12150,
+        "sourceUnit": 12150,
         "src": "294:34:58",
         "symbolAliases": [],
         "unitAlias": ""
@@ -10950,11 +10950,11 @@
       {
         "absolutePath": "project:/contracts/NftFractions/NftFractionsStorage.sol",
         "file": "./NftFractionsStorage.sol",
-        "id": 11720,
+        "id": 11778,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 12092,
-        "sourceUnit": 11714,
+        "scope": 12150,
+        "sourceUnit": 11772,
         "src": "329:35:58",
         "symbolAliases": [],
         "unitAlias": ""
@@ -10962,10 +10962,10 @@
       {
         "absolutePath": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol",
         "file": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol",
-        "id": 11721,
+        "id": 11779,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 12092,
+        "scope": 12150,
         "sourceUnit": 852,
         "src": "366:77:58",
         "symbolAliases": [],
@@ -10976,22 +10976,22 @@
         "baseContracts": [
           {
             "baseName": {
-              "id": 11722,
+              "id": 11780,
               "name": "NftFractionsStorage",
               "nameLocations": [
                 "478:19:58"
               ],
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 11713,
+              "referencedDeclaration": 11771,
               "src": "478:19:58"
             },
-            "id": 11723,
+            "id": 11781,
             "nodeType": "InheritanceSpecifier",
             "src": "478:19:58"
           },
           {
             "baseName": {
-              "id": 11724,
+              "id": 11782,
               "name": "Initializable",
               "nameLocations": [
                 "501:13:58"
@@ -11000,13 +11000,13 @@
               "referencedDeclaration": 715,
               "src": "501:13:58"
             },
-            "id": 11725,
+            "id": 11783,
             "nodeType": "InheritanceSpecifier",
             "src": "501:13:58"
           },
           {
             "baseName": {
-              "id": 11726,
+              "id": 11784,
               "name": "OwnableUpgradeable",
               "nameLocations": [
                 "518:18:58"
@@ -11015,13 +11015,13 @@
               "referencedDeclaration": 131,
               "src": "518:18:58"
             },
-            "id": 11727,
+            "id": 11785,
             "nodeType": "InheritanceSpecifier",
             "src": "518:18:58"
           },
           {
             "baseName": {
-              "id": 11728,
+              "id": 11786,
               "name": "UUPSUpgradeable",
               "nameLocations": [
                 "540:15:58"
@@ -11030,7 +11030,7 @@
               "referencedDeclaration": 851,
               "src": "540:15:58"
             },
-            "id": 11729,
+            "id": 11787,
             "nodeType": "InheritanceSpecifier",
             "src": "540:15:58"
           }
@@ -11039,9 +11039,9 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 12091,
+        "id": 12149,
         "linearizedBaseContracts": [
-          12091,
+          12149,
           851,
           536,
           152,
@@ -11049,7 +11049,7 @@
           131,
           3932,
           715,
-          11713
+          11771
         ],
         "name": "NftFractionsVendor",
         "nameLocation": "454:18:58",
@@ -11058,23 +11058,23 @@
           {
             "anonymous": false,
             "eventSelector": "0a37b72bb67eee30e09084cf386f8a17817c57f620c3ab95fb25d6a20356ec77",
-            "id": 11737,
+            "id": 11795,
             "name": "BuyTokens",
             "nameLocation": "566:9:58",
             "nodeType": "EventDefinition",
             "parameters": {
-              "id": 11736,
+              "id": 11794,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11731,
+                  "id": 11789,
                   "indexed": false,
                   "mutability": "mutable",
                   "name": "buyer",
                   "nameLocation": "584:5:58",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11737,
+                  "scope": 11795,
                   "src": "576:13:58",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -11083,7 +11083,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11730,
+                    "id": 11788,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "576:7:58",
@@ -11097,13 +11097,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 11733,
+                  "id": 11791,
                   "indexed": false,
                   "mutability": "mutable",
                   "name": "amountOfMATIC",
                   "nameLocation": "599:13:58",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11737,
+                  "scope": 11795,
                   "src": "591:21:58",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -11112,7 +11112,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 11732,
+                    "id": 11790,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "591:7:58",
@@ -11125,13 +11125,13 @@
                 },
                 {
                   "constant": false,
-                  "id": 11735,
+                  "id": 11793,
                   "indexed": false,
                   "mutability": "mutable",
                   "name": "amountOfTokens",
                   "nameLocation": "622:14:58",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11737,
+                  "scope": 11795,
                   "src": "614:22:58",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -11140,7 +11140,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 11734,
+                    "id": 11792,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "614:7:58",
@@ -11158,7 +11158,7 @@
           },
           {
             "body": {
-              "id": 11748,
+              "id": 11806,
               "nodeType": "Block",
               "src": "683:57:58",
               "statements": [
@@ -11167,7 +11167,7 @@
                     "arguments": [],
                     "expression": {
                       "argumentTypes": [],
-                      "id": 11742,
+                      "id": 11800,
                       "name": "__Ownable_init",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
@@ -11178,7 +11178,7 @@
                         "typeString": "function ()"
                       }
                     },
-                    "id": 11743,
+                    "id": 11801,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -11194,7 +11194,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11744,
+                  "id": 11802,
                   "nodeType": "ExpressionStatement",
                   "src": "689:16:58"
                 },
@@ -11203,7 +11203,7 @@
                     "arguments": [],
                     "expression": {
                       "argumentTypes": [],
-                      "id": 11745,
+                      "id": 11803,
                       "name": "__UUPSUpgradeable_init",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
@@ -11214,7 +11214,7 @@
                         "typeString": "function ()"
                       }
                     },
-                    "id": 11746,
+                    "id": 11804,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -11230,22 +11230,22 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11747,
+                  "id": 11805,
                   "nodeType": "ExpressionStatement",
                   "src": "711:24:58"
                 }
               ]
             },
             "functionSelector": "8129fc1c",
-            "id": 11749,
+            "id": 11807,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
-                "id": 11740,
+                "id": 11798,
                 "kind": "modifierInvocation",
                 "modifierName": {
-                  "id": 11739,
+                  "id": 11797,
                   "name": "initializer",
                   "nameLocations": [
                     "671:11:58"
@@ -11262,18 +11262,18 @@
             "nameLocation": "651:10:58",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11738,
+              "id": 11796,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "661:2:58"
             },
             "returnParameters": {
-              "id": 11741,
+              "id": 11799,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "683:0:58"
             },
-            "scope": 12091,
+            "scope": 12149,
             "src": "642:98:58",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -11284,20 +11284,20 @@
               845
             ],
             "body": {
-              "id": 11757,
+              "id": 11815,
               "nodeType": "Block",
               "src": "808:2:58",
               "statements": []
             },
-            "id": 11758,
+            "id": 11816,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
-                "id": 11755,
+                "id": 11813,
                 "kind": "modifierInvocation",
                 "modifierName": {
-                  "id": 11754,
+                  "id": 11812,
                   "name": "onlyOwner",
                   "nameLocations": [
                     "798:9:58"
@@ -11314,23 +11314,23 @@
             "nameLocation": "753:17:58",
             "nodeType": "FunctionDefinition",
             "overrides": {
-              "id": 11753,
+              "id": 11811,
               "nodeType": "OverrideSpecifier",
               "overrides": [],
               "src": "789:8:58"
             },
             "parameters": {
-              "id": 11752,
+              "id": 11810,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11751,
+                  "id": 11809,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11758,
+                  "scope": 11816,
                   "src": "771:7:58",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -11339,7 +11339,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11750,
+                    "id": 11808,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "771:7:58",
@@ -11355,12 +11355,12 @@
               "src": "770:9:58"
             },
             "returnParameters": {
-              "id": 11756,
+              "id": 11814,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "808:0:58"
             },
-            "scope": 12091,
+            "scope": 12149,
             "src": "744:66:58",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -11368,7 +11368,7 @@
           },
           {
             "body": {
-              "id": 11813,
+              "id": 11871,
               "nodeType": "Block",
               "src": "960:354:58",
               "statements": [
@@ -11380,17 +11380,17 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 11774,
+                        "id": 11832,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
-                          "id": 11772,
+                          "id": 11830,
                           "name": "totalSupply",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11762,
+                          "referencedDeclaration": 11820,
                           "src": "974:11:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -11401,7 +11401,7 @@
                         "operator": ">",
                         "rightExpression": {
                           "hexValue": "30",
-                          "id": 11773,
+                          "id": 11831,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -11423,7 +11423,7 @@
                       },
                       {
                         "hexValue": "546f6b656e2070657220657468206d75737420626520686967686572207468616e2030",
-                        "id": 11775,
+                        "id": 11833,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -11449,7 +11449,7 @@
                           "typeString": "literal_string \"Token per eth must be higher than 0\""
                         }
                       ],
-                      "id": 11771,
+                      "id": 11829,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -11463,7 +11463,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11776,
+                    "id": 11834,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -11479,7 +11479,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11777,
+                  "id": 11835,
                   "nodeType": "ExpressionStatement",
                   "src": "966:63:58"
                 },
@@ -11491,17 +11491,17 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 11781,
+                        "id": 11839,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
-                          "id": 11779,
+                          "id": 11837,
                           "name": "listingPrice",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11764,
+                          "referencedDeclaration": 11822,
                           "src": "1043:12:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -11512,7 +11512,7 @@
                         "operator": ">",
                         "rightExpression": {
                           "hexValue": "30",
-                          "id": 11780,
+                          "id": 11838,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -11534,7 +11534,7 @@
                       },
                       {
                         "hexValue": "546f6b656e2070657220657468206d75737420626520686967686572207468616e2030",
-                        "id": 11782,
+                        "id": 11840,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -11560,7 +11560,7 @@
                           "typeString": "literal_string \"Token per eth must be higher than 0\""
                         }
                       ],
-                      "id": 11778,
+                      "id": 11836,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -11574,7 +11574,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11783,
+                    "id": 11841,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -11590,13 +11590,13 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11784,
+                  "id": 11842,
                   "nodeType": "ExpressionStatement",
                   "src": "1035:64:58"
                 },
                 {
                   "expression": {
-                    "id": 11790,
+                    "id": 11848,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -11604,24 +11604,24 @@
                     "leftHandSide": {
                       "expression": {
                         "baseExpression": {
-                          "id": 11785,
+                          "id": 11843,
                           "name": "tokens",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11690,
+                          "referencedDeclaration": 11748,
                           "src": "1105:6:58",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11685_storage_$",
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11743_storage_$",
                             "typeString": "mapping(address => struct NftFractionsStorage.TokenPaymentInfo storage ref)"
                           }
                         },
-                        "id": 11787,
+                        "id": 11845,
                         "indexExpression": {
-                          "id": 11786,
+                          "id": 11844,
                           "name": "tokenAddress",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11760,
+                          "referencedDeclaration": 11818,
                           "src": "1112:12:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -11635,11 +11635,11 @@
                         "nodeType": "IndexAccess",
                         "src": "1105:20:58",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_TokenPaymentInfo_$11685_storage",
+                          "typeIdentifier": "t_struct$_TokenPaymentInfo_$11743_storage",
                           "typeString": "struct NftFractionsStorage.TokenPaymentInfo storage ref"
                         }
                       },
-                      "id": 11788,
+                      "id": 11846,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
@@ -11647,7 +11647,7 @@
                       "memberLocation": "1126:12:58",
                       "memberName": "tokenAddress",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 11678,
+                      "referencedDeclaration": 11736,
                       "src": "1105:33:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -11657,11 +11657,11 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 11789,
+                      "id": 11847,
                       "name": "tokenAddress",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11760,
+                      "referencedDeclaration": 11818,
                       "src": "1141:12:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
@@ -11674,13 +11674,13 @@
                       "typeString": "address"
                     }
                   },
-                  "id": 11791,
+                  "id": 11849,
                   "nodeType": "ExpressionStatement",
                   "src": "1105:48:58"
                 },
                 {
                   "expression": {
-                    "id": 11797,
+                    "id": 11855,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -11688,24 +11688,24 @@
                     "leftHandSide": {
                       "expression": {
                         "baseExpression": {
-                          "id": 11792,
+                          "id": 11850,
                           "name": "tokens",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11690,
+                          "referencedDeclaration": 11748,
                           "src": "1159:6:58",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11685_storage_$",
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11743_storage_$",
                             "typeString": "mapping(address => struct NftFractionsStorage.TokenPaymentInfo storage ref)"
                           }
                         },
-                        "id": 11794,
+                        "id": 11852,
                         "indexExpression": {
-                          "id": 11793,
+                          "id": 11851,
                           "name": "tokenAddress",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11760,
+                          "referencedDeclaration": 11818,
                           "src": "1166:12:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -11719,11 +11719,11 @@
                         "nodeType": "IndexAccess",
                         "src": "1159:20:58",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_TokenPaymentInfo_$11685_storage",
+                          "typeIdentifier": "t_struct$_TokenPaymentInfo_$11743_storage",
                           "typeString": "struct NftFractionsStorage.TokenPaymentInfo storage ref"
                         }
                       },
-                      "id": 11795,
+                      "id": 11853,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
@@ -11731,7 +11731,7 @@
                       "memberLocation": "1180:11:58",
                       "memberName": "totalSupply",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 11680,
+                      "referencedDeclaration": 11738,
                       "src": "1159:32:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -11741,11 +11741,11 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 11796,
+                      "id": 11854,
                       "name": "totalSupply",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11762,
+                      "referencedDeclaration": 11820,
                       "src": "1194:11:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -11758,13 +11758,13 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 11798,
+                  "id": 11856,
                   "nodeType": "ExpressionStatement",
                   "src": "1159:46:58"
                 },
                 {
                   "expression": {
-                    "id": 11804,
+                    "id": 11862,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -11772,24 +11772,24 @@
                     "leftHandSide": {
                       "expression": {
                         "baseExpression": {
-                          "id": 11799,
+                          "id": 11857,
                           "name": "tokens",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11690,
+                          "referencedDeclaration": 11748,
                           "src": "1211:6:58",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11685_storage_$",
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11743_storage_$",
                             "typeString": "mapping(address => struct NftFractionsStorage.TokenPaymentInfo storage ref)"
                           }
                         },
-                        "id": 11801,
+                        "id": 11859,
                         "indexExpression": {
-                          "id": 11800,
+                          "id": 11858,
                           "name": "tokenAddress",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11760,
+                          "referencedDeclaration": 11818,
                           "src": "1218:12:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -11803,11 +11803,11 @@
                         "nodeType": "IndexAccess",
                         "src": "1211:20:58",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_TokenPaymentInfo_$11685_storage",
+                          "typeIdentifier": "t_struct$_TokenPaymentInfo_$11743_storage",
                           "typeString": "struct NftFractionsStorage.TokenPaymentInfo storage ref"
                         }
                       },
-                      "id": 11802,
+                      "id": 11860,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
@@ -11815,7 +11815,7 @@
                       "memberLocation": "1232:12:58",
                       "memberName": "listingPrice",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 11682,
+                      "referencedDeclaration": 11740,
                       "src": "1211:33:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -11825,11 +11825,11 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 11803,
+                      "id": 11861,
                       "name": "listingPrice",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11764,
+                      "referencedDeclaration": 11822,
                       "src": "1247:12:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -11842,13 +11842,13 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 11805,
+                  "id": 11863,
                   "nodeType": "ExpressionStatement",
                   "src": "1211:48:58"
                 },
                 {
                   "expression": {
-                    "id": 11811,
+                    "id": 11869,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -11856,24 +11856,24 @@
                     "leftHandSide": {
                       "expression": {
                         "baseExpression": {
-                          "id": 11806,
+                          "id": 11864,
                           "name": "tokens",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11690,
+                          "referencedDeclaration": 11748,
                           "src": "1265:6:58",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11685_storage_$",
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11743_storage_$",
                             "typeString": "mapping(address => struct NftFractionsStorage.TokenPaymentInfo storage ref)"
                           }
                         },
-                        "id": 11808,
+                        "id": 11866,
                         "indexExpression": {
-                          "id": 11807,
+                          "id": 11865,
                           "name": "tokenAddress",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11760,
+                          "referencedDeclaration": 11818,
                           "src": "1272:12:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -11887,11 +11887,11 @@
                         "nodeType": "IndexAccess",
                         "src": "1265:20:58",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_TokenPaymentInfo_$11685_storage",
+                          "typeIdentifier": "t_struct$_TokenPaymentInfo_$11743_storage",
                           "typeString": "struct NftFractionsStorage.TokenPaymentInfo storage ref"
                         }
                       },
-                      "id": 11809,
+                      "id": 11867,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
@@ -11899,7 +11899,7 @@
                       "memberLocation": "1286:10:58",
                       "memberName": "enableSell",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 11684,
+                      "referencedDeclaration": 11742,
                       "src": "1265:31:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
@@ -11909,11 +11909,11 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 11810,
+                      "id": 11868,
                       "name": "enableSell",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11766,
+                      "referencedDeclaration": 11824,
                       "src": "1299:10:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
@@ -11926,22 +11926,22 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 11812,
+                  "id": 11870,
                   "nodeType": "ExpressionStatement",
                   "src": "1265:44:58"
                 }
               ]
             },
             "functionSelector": "437e0ff6",
-            "id": 11814,
+            "id": 11872,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
-                "id": 11769,
+                "id": 11827,
                 "kind": "modifierInvocation",
                 "modifierName": {
-                  "id": 11768,
+                  "id": 11826,
                   "name": "onlyOwner",
                   "nameLocations": [
                     "950:9:58"
@@ -11958,17 +11958,17 @@
             "nameLocation": "823:17:58",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11767,
+              "id": 11825,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11760,
+                  "id": 11818,
                   "mutability": "mutable",
                   "name": "tokenAddress",
                   "nameLocation": "854:12:58",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11814,
+                  "scope": 11872,
                   "src": "846:20:58",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -11977,7 +11977,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11759,
+                    "id": 11817,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "846:7:58",
@@ -11991,12 +11991,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 11762,
+                  "id": 11820,
                   "mutability": "mutable",
                   "name": "totalSupply",
                   "nameLocation": "880:11:58",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11814,
+                  "scope": 11872,
                   "src": "872:19:58",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -12005,7 +12005,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 11761,
+                    "id": 11819,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "872:7:58",
@@ -12018,12 +12018,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 11764,
+                  "id": 11822,
                   "mutability": "mutable",
                   "name": "listingPrice",
                   "nameLocation": "905:12:58",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11814,
+                  "scope": 11872,
                   "src": "897:20:58",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -12032,7 +12032,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 11763,
+                    "id": 11821,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "897:7:58",
@@ -12045,12 +12045,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 11766,
+                  "id": 11824,
                   "mutability": "mutable",
                   "name": "enableSell",
                   "nameLocation": "928:10:58",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11814,
+                  "scope": 11872,
                   "src": "923:15:58",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -12059,7 +12059,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 11765,
+                    "id": 11823,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "923:4:58",
@@ -12074,12 +12074,12 @@
               "src": "840:102:58"
             },
             "returnParameters": {
-              "id": 11770,
+              "id": 11828,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "960:0:58"
             },
-            "scope": 12091,
+            "scope": 12149,
             "src": "814:500:58",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -12087,13 +12087,13 @@
           },
           {
             "body": {
-              "id": 11828,
+              "id": 11886,
               "nodeType": "Block",
               "src": "1395:50:58",
               "statements": [
                 {
                   "expression": {
-                    "id": 11826,
+                    "id": 11884,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -12101,24 +12101,24 @@
                     "leftHandSide": {
                       "expression": {
                         "baseExpression": {
-                          "id": 11821,
+                          "id": 11879,
                           "name": "tokens",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11690,
+                          "referencedDeclaration": 11748,
                           "src": "1401:6:58",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11685_storage_$",
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11743_storage_$",
                             "typeString": "mapping(address => struct NftFractionsStorage.TokenPaymentInfo storage ref)"
                           }
                         },
-                        "id": 11823,
+                        "id": 11881,
                         "indexExpression": {
-                          "id": 11822,
+                          "id": 11880,
                           "name": "tokenAddress",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11816,
+                          "referencedDeclaration": 11874,
                           "src": "1408:12:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -12132,11 +12132,11 @@
                         "nodeType": "IndexAccess",
                         "src": "1401:20:58",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_TokenPaymentInfo_$11685_storage",
+                          "typeIdentifier": "t_struct$_TokenPaymentInfo_$11743_storage",
                           "typeString": "struct NftFractionsStorage.TokenPaymentInfo storage ref"
                         }
                       },
-                      "id": 11824,
+                      "id": 11882,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
@@ -12144,7 +12144,7 @@
                       "memberLocation": "1422:10:58",
                       "memberName": "enableSell",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 11684,
+                      "referencedDeclaration": 11742,
                       "src": "1401:31:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
@@ -12154,11 +12154,11 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 11825,
+                      "id": 11883,
                       "name": "state",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11818,
+                      "referencedDeclaration": 11876,
                       "src": "1435:5:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
@@ -12171,14 +12171,14 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 11827,
+                  "id": 11885,
                   "nodeType": "ExpressionStatement",
                   "src": "1401:39:58"
                 }
               ]
             },
             "functionSelector": "77f510ad",
-            "id": 11829,
+            "id": 11887,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -12186,17 +12186,17 @@
             "nameLocation": "1327:26:58",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11819,
+              "id": 11877,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11816,
+                  "id": 11874,
                   "mutability": "mutable",
                   "name": "tokenAddress",
                   "nameLocation": "1362:12:58",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11829,
+                  "scope": 11887,
                   "src": "1354:20:58",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -12205,7 +12205,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11815,
+                    "id": 11873,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1354:7:58",
@@ -12219,12 +12219,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 11818,
+                  "id": 11876,
                   "mutability": "mutable",
                   "name": "state",
                   "nameLocation": "1381:5:58",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11829,
+                  "scope": 11887,
                   "src": "1376:10:58",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -12233,7 +12233,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 11817,
+                    "id": 11875,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "1376:4:58",
@@ -12248,12 +12248,12 @@
               "src": "1353:34:58"
             },
             "returnParameters": {
-              "id": 11820,
+              "id": 11878,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1395:0:58"
             },
-            "scope": 12091,
+            "scope": 12149,
             "src": "1318:127:58",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -12261,37 +12261,37 @@
           },
           {
             "body": {
-              "id": 11844,
+              "id": 11902,
               "nodeType": "Block",
               "src": "1546:52:58",
               "statements": [
                 {
                   "expression": {
-                    "id": 11842,
+                    "id": 11900,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "baseExpression": {
-                        "id": 11838,
+                        "id": 11896,
                         "name": "activeAddressVendor",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11694,
+                        "referencedDeclaration": 11752,
                         "src": "1552:19:58",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_bool_$",
                           "typeString": "mapping(address => bool)"
                         }
                       },
-                      "id": 11840,
+                      "id": 11898,
                       "indexExpression": {
-                        "id": 11839,
+                        "id": 11897,
                         "name": "tokenAddress",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11831,
+                        "referencedDeclaration": 11889,
                         "src": "1572:12:58",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -12312,11 +12312,11 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 11841,
+                      "id": 11899,
                       "name": "state",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 11833,
+                      "referencedDeclaration": 11891,
                       "src": "1588:5:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bool",
@@ -12329,22 +12329,22 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 11843,
+                  "id": 11901,
                   "nodeType": "ExpressionStatement",
                   "src": "1552:41:58"
                 }
               ]
             },
             "functionSelector": "e8d59fa8",
-            "id": 11845,
+            "id": 11903,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
-                "id": 11836,
+                "id": 11894,
                 "kind": "modifierInvocation",
                 "modifierName": {
-                  "id": 11835,
+                  "id": 11893,
                   "name": "onlyOwner",
                   "nameLocations": [
                     "1536:9:58"
@@ -12361,17 +12361,17 @@
             "nameLocation": "1458:24:58",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11834,
+              "id": 11892,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11831,
+                  "id": 11889,
                   "mutability": "mutable",
                   "name": "tokenAddress",
                   "nameLocation": "1496:12:58",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11845,
+                  "scope": 11903,
                   "src": "1488:20:58",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -12380,7 +12380,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11830,
+                    "id": 11888,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1488:7:58",
@@ -12394,12 +12394,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 11833,
+                  "id": 11891,
                   "mutability": "mutable",
                   "name": "state",
                   "nameLocation": "1519:5:58",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11845,
+                  "scope": 11903,
                   "src": "1514:10:58",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -12408,7 +12408,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 11832,
+                    "id": 11890,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "1514:4:58",
@@ -12423,12 +12423,12 @@
               "src": "1482:46:58"
             },
             "returnParameters": {
-              "id": 11837,
+              "id": 11895,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1546:0:58"
             },
-            "scope": 12091,
+            "scope": 12149,
             "src": "1449:149:58",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -12436,7 +12436,7 @@
           },
           {
             "body": {
-              "id": 11862,
+              "id": 11920,
               "nodeType": "Block",
               "src": "1678:86:58",
               "statements": [
@@ -12446,7 +12446,7 @@
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
-                    "id": 11860,
+                    "id": 11918,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -12454,24 +12454,24 @@
                     "leftExpression": {
                       "expression": {
                         "baseExpression": {
-                          "id": 11852,
+                          "id": 11910,
                           "name": "tokens",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11690,
+                          "referencedDeclaration": 11748,
                           "src": "1691:6:58",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11685_storage_$",
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11743_storage_$",
                             "typeString": "mapping(address => struct NftFractionsStorage.TokenPaymentInfo storage ref)"
                           }
                         },
-                        "id": 11854,
+                        "id": 11912,
                         "indexExpression": {
-                          "id": 11853,
+                          "id": 11911,
                           "name": "tokenAddress",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11847,
+                          "referencedDeclaration": 11905,
                           "src": "1698:12:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -12485,11 +12485,11 @@
                         "nodeType": "IndexAccess",
                         "src": "1691:20:58",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_TokenPaymentInfo_$11685_storage",
+                          "typeIdentifier": "t_struct$_TokenPaymentInfo_$11743_storage",
                           "typeString": "struct NftFractionsStorage.TokenPaymentInfo storage ref"
                         }
                       },
-                      "id": 11855,
+                      "id": 11913,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
@@ -12497,7 +12497,7 @@
                       "memberLocation": "1712:11:58",
                       "memberName": "totalSupply",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 11680,
+                      "referencedDeclaration": 11738,
                       "src": "1691:32:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -12509,24 +12509,24 @@
                     "rightExpression": {
                       "expression": {
                         "baseExpression": {
-                          "id": 11856,
+                          "id": 11914,
                           "name": "tokens",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11690,
+                          "referencedDeclaration": 11748,
                           "src": "1726:6:58",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11685_storage_$",
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11743_storage_$",
                             "typeString": "mapping(address => struct NftFractionsStorage.TokenPaymentInfo storage ref)"
                           }
                         },
-                        "id": 11858,
+                        "id": 11916,
                         "indexExpression": {
-                          "id": 11857,
+                          "id": 11915,
                           "name": "tokenAddress",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11847,
+                          "referencedDeclaration": 11905,
                           "src": "1733:12:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -12540,11 +12540,11 @@
                         "nodeType": "IndexAccess",
                         "src": "1726:20:58",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_TokenPaymentInfo_$11685_storage",
+                          "typeIdentifier": "t_struct$_TokenPaymentInfo_$11743_storage",
                           "typeString": "struct NftFractionsStorage.TokenPaymentInfo storage ref"
                         }
                       },
-                      "id": 11859,
+                      "id": 11917,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
@@ -12552,7 +12552,7 @@
                       "memberLocation": "1747:12:58",
                       "memberName": "listingPrice",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 11682,
+                      "referencedDeclaration": 11740,
                       "src": "1726:33:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -12565,15 +12565,15 @@
                       "typeString": "uint256"
                     }
                   },
-                  "functionReturnParameters": 11851,
-                  "id": 11861,
+                  "functionReturnParameters": 11909,
+                  "id": 11919,
                   "nodeType": "Return",
                   "src": "1684:75:58"
                 }
               ]
             },
             "functionSelector": "99eec645",
-            "id": 11863,
+            "id": 11921,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -12581,17 +12581,17 @@
             "nameLocation": "1611:12:58",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11848,
+              "id": 11906,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11847,
+                  "id": 11905,
                   "mutability": "mutable",
                   "name": "tokenAddress",
                   "nameLocation": "1632:12:58",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11863,
+                  "scope": 11921,
                   "src": "1624:20:58",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -12600,7 +12600,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11846,
+                    "id": 11904,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1624:7:58",
@@ -12616,17 +12616,17 @@
               "src": "1623:22:58"
             },
             "returnParameters": {
-              "id": 11851,
+              "id": 11909,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11850,
+                  "id": 11908,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11863,
+                  "scope": 11921,
                   "src": "1669:7:58",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -12635,7 +12635,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 11849,
+                    "id": 11907,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1669:7:58",
@@ -12649,7 +12649,7 @@
               ],
               "src": "1668:9:58"
             },
-            "scope": 12091,
+            "scope": 12149,
             "src": "1602:162:58",
             "stateMutability": "view",
             "virtual": false,
@@ -12657,7 +12657,7 @@
           },
           {
             "body": {
-              "id": 11941,
+              "id": 11999,
               "nodeType": "Block",
               "src": "1862:625:58",
               "statements": [
@@ -12669,14 +12669,14 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 11874,
+                        "id": 11932,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "expression": {
-                            "id": 11871,
+                            "id": 11929,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -12687,7 +12687,7 @@
                               "typeString": "msg"
                             }
                           },
-                          "id": 11872,
+                          "id": 11930,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -12705,7 +12705,7 @@
                         "operator": ">",
                         "rightExpression": {
                           "hexValue": "30",
-                          "id": 11873,
+                          "id": 11931,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -12727,7 +12727,7 @@
                       },
                       {
                         "hexValue": "596f75206e65656420746f2073656e6420736f6d65204d4154494320746f2070726f63656564",
-                        "id": 11875,
+                        "id": 11933,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -12753,7 +12753,7 @@
                           "typeString": "literal_string \"You need to send some MATIC to proceed\""
                         }
                       ],
-                      "id": 11870,
+                      "id": 11928,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -12767,7 +12767,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11876,
+                    "id": 11934,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -12783,7 +12783,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11877,
+                  "id": 11935,
                   "nodeType": "ExpressionStatement",
                   "src": "1868:64:58"
                 },
@@ -12795,7 +12795,7 @@
                           "typeIdentifier": "t_bool",
                           "typeString": "bool"
                         },
-                        "id": 11884,
+                        "id": 11942,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -12803,24 +12803,24 @@
                         "leftExpression": {
                           "expression": {
                             "baseExpression": {
-                              "id": 11879,
+                              "id": 11937,
                               "name": "tokens",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 11690,
+                              "referencedDeclaration": 11748,
                               "src": "1946:6:58",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11685_storage_$",
+                                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11743_storage_$",
                                 "typeString": "mapping(address => struct NftFractionsStorage.TokenPaymentInfo storage ref)"
                               }
                             },
-                            "id": 11881,
+                            "id": 11939,
                             "indexExpression": {
-                              "id": 11880,
+                              "id": 11938,
                               "name": "tokenAddress",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 11865,
+                              "referencedDeclaration": 11923,
                               "src": "1953:12:58",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_address",
@@ -12834,11 +12834,11 @@
                             "nodeType": "IndexAccess",
                             "src": "1946:20:58",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_TokenPaymentInfo_$11685_storage",
+                              "typeIdentifier": "t_struct$_TokenPaymentInfo_$11743_storage",
                               "typeString": "struct NftFractionsStorage.TokenPaymentInfo storage ref"
                             }
                           },
-                          "id": 11882,
+                          "id": 11940,
                           "isConstant": false,
                           "isLValue": true,
                           "isPure": false,
@@ -12846,7 +12846,7 @@
                           "memberLocation": "1967:10:58",
                           "memberName": "enableSell",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 11684,
+                          "referencedDeclaration": 11742,
                           "src": "1946:31:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bool",
@@ -12857,7 +12857,7 @@
                         "operator": "==",
                         "rightExpression": {
                           "hexValue": "74727565",
-                          "id": 11883,
+                          "id": 11941,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -12879,7 +12879,7 @@
                       },
                       {
                         "hexValue": "53656c6c206973206e6f7420656e61626c6564",
-                        "id": 11885,
+                        "id": 11943,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -12905,7 +12905,7 @@
                           "typeString": "literal_string \"Sell is not enabled\""
                         }
                       ],
-                      "id": 11878,
+                      "id": 11936,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -12919,7 +12919,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11886,
+                    "id": 11944,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -12935,23 +12935,23 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11887,
+                  "id": 11945,
                   "nodeType": "ExpressionStatement",
                   "src": "1938:71:58"
                 },
                 {
                   "assignments": [
-                    11889
+                    11947
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 11889,
+                      "id": 11947,
                       "mutability": "mutable",
                       "name": "amountToBuy",
                       "nameLocation": "2024:11:58",
                       "nodeType": "VariableDeclaration",
-                      "scope": 11941,
+                      "scope": 11999,
                       "src": "2016:19:58",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -12960,7 +12960,7 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
-                        "id": 11888,
+                        "id": 11946,
                         "name": "uint256",
                         "nodeType": "ElementaryTypeName",
                         "src": "2016:7:58",
@@ -12972,13 +12972,13 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 11903,
+                  "id": 11961,
                   "initialValue": {
                     "commonType": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
-                    "id": 11902,
+                    "id": 11960,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -12990,14 +12990,14 @@
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
                           },
-                          "id": 11896,
+                          "id": 11954,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
                           "leftExpression": {
                             "expression": {
-                              "id": 11890,
+                              "id": 11948,
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
@@ -13008,7 +13008,7 @@
                                 "typeString": "msg"
                               }
                             },
-                            "id": 11891,
+                            "id": 11949,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -13027,24 +13027,24 @@
                           "rightExpression": {
                             "expression": {
                               "baseExpression": {
-                                "id": 11892,
+                                "id": 11950,
                                 "name": "tokens",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 11690,
+                                "referencedDeclaration": 11748,
                                 "src": "2051:6:58",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11685_storage_$",
+                                  "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11743_storage_$",
                                   "typeString": "mapping(address => struct NftFractionsStorage.TokenPaymentInfo storage ref)"
                                 }
                               },
-                              "id": 11894,
+                              "id": 11952,
                               "indexExpression": {
-                                "id": 11893,
+                                "id": 11951,
                                 "name": "tokenAddress",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 11865,
+                                "referencedDeclaration": 11923,
                                 "src": "2058:12:58",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_address",
@@ -13058,11 +13058,11 @@
                               "nodeType": "IndexAccess",
                               "src": "2051:20:58",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_TokenPaymentInfo_$11685_storage",
+                                "typeIdentifier": "t_struct$_TokenPaymentInfo_$11743_storage",
                                 "typeString": "struct NftFractionsStorage.TokenPaymentInfo storage ref"
                               }
                             },
-                            "id": 11895,
+                            "id": 11953,
                             "isConstant": false,
                             "isLValue": true,
                             "isPure": false,
@@ -13070,7 +13070,7 @@
                             "memberLocation": "2072:11:58",
                             "memberName": "totalSupply",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 11680,
+                            "referencedDeclaration": 11738,
                             "src": "2051:32:58",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -13084,7 +13084,7 @@
                           }
                         }
                       ],
-                      "id": 11897,
+                      "id": 11955,
                       "isConstant": false,
                       "isInlineArray": false,
                       "isLValue": false,
@@ -13102,24 +13102,24 @@
                     "rightExpression": {
                       "expression": {
                         "baseExpression": {
-                          "id": 11898,
+                          "id": 11956,
                           "name": "tokens",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11690,
+                          "referencedDeclaration": 11748,
                           "src": "2093:6:58",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11685_storage_$",
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11743_storage_$",
                             "typeString": "mapping(address => struct NftFractionsStorage.TokenPaymentInfo storage ref)"
                           }
                         },
-                        "id": 11900,
+                        "id": 11958,
                         "indexExpression": {
-                          "id": 11899,
+                          "id": 11957,
                           "name": "tokenAddress",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11865,
+                          "referencedDeclaration": 11923,
                           "src": "2100:12:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -13133,11 +13133,11 @@
                         "nodeType": "IndexAccess",
                         "src": "2093:20:58",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_TokenPaymentInfo_$11685_storage",
+                          "typeIdentifier": "t_struct$_TokenPaymentInfo_$11743_storage",
                           "typeString": "struct NftFractionsStorage.TokenPaymentInfo storage ref"
                         }
                       },
-                      "id": 11901,
+                      "id": 11959,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
@@ -13145,7 +13145,7 @@
                       "memberLocation": "2114:12:58",
                       "memberName": "listingPrice",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 11682,
+                      "referencedDeclaration": 11740,
                       "src": "2093:33:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -13163,17 +13163,17 @@
                 },
                 {
                   "assignments": [
-                    11905
+                    11963
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 11905,
+                      "id": 11963,
                       "mutability": "mutable",
                       "name": "vendorBalance",
                       "nameLocation": "2141:13:58",
                       "nodeType": "VariableDeclaration",
-                      "scope": 11941,
+                      "scope": 11999,
                       "src": "2133:21:58",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -13182,7 +13182,7 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
-                        "id": 11904,
+                        "id": 11962,
                         "name": "uint256",
                         "nodeType": "ElementaryTypeName",
                         "src": "2133:7:58",
@@ -13194,20 +13194,20 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 11915,
+                  "id": 11973,
                   "initialValue": {
                     "arguments": [
                       {
                         "arguments": [
                           {
-                            "id": 11912,
+                            "id": 11970,
                             "name": "this",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
                             "referencedDeclaration": 4294967268,
                             "src": "2213:4:58",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_NftFractionsVendor_$12091",
+                              "typeIdentifier": "t_contract$_NftFractionsVendor_$12149",
                               "typeString": "contract NftFractionsVendor"
                             }
                           }
@@ -13215,11 +13215,11 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_contract$_NftFractionsVendor_$12091",
+                              "typeIdentifier": "t_contract$_NftFractionsVendor_$12149",
                               "typeString": "contract NftFractionsVendor"
                             }
                           ],
-                          "id": 11911,
+                          "id": 11969,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -13231,14 +13231,14 @@
                             "typeString": "type(address)"
                           },
                           "typeName": {
-                            "id": 11910,
+                            "id": 11968,
                             "name": "address",
                             "nodeType": "ElementaryTypeName",
                             "src": "2205:7:58",
                             "typeDescriptions": {}
                           }
                         },
-                        "id": 11913,
+                        "id": 11971,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -13265,11 +13265,11 @@
                       "expression": {
                         "arguments": [
                           {
-                            "id": 11907,
+                            "id": 11965,
                             "name": "tokenAddress",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11865,
+                            "referencedDeclaration": 11923,
                             "src": "2174:12:58",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -13284,7 +13284,7 @@
                               "typeString": "address"
                             }
                           ],
-                          "id": 11906,
+                          "id": 11964,
                           "name": "ERC20Upgradeable",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
@@ -13295,7 +13295,7 @@
                             "typeString": "type(contract ERC20Upgradeable)"
                           }
                         },
-                        "id": 11908,
+                        "id": 11966,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -13311,7 +13311,7 @@
                           "typeString": "contract ERC20Upgradeable"
                         }
                       },
-                      "id": 11909,
+                      "id": 11967,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -13326,7 +13326,7 @@
                         "typeString": "function (address) view external returns (uint256)"
                       }
                     },
-                    "id": 11914,
+                    "id": 11972,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -13353,17 +13353,17 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 11919,
+                        "id": 11977,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
-                          "id": 11917,
+                          "id": 11975,
                           "name": "vendorBalance",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11905,
+                          "referencedDeclaration": 11963,
                           "src": "2238:13:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -13373,11 +13373,11 @@
                         "nodeType": "BinaryOperation",
                         "operator": ">=",
                         "rightExpression": {
-                          "id": 11918,
+                          "id": 11976,
                           "name": "amountToBuy",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11889,
+                          "referencedDeclaration": 11947,
                           "src": "2255:11:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -13392,7 +13392,7 @@
                       },
                       {
                         "hexValue": "56656e646f722068617320696e73756666696369656e7420746f6b656e73",
-                        "id": 11920,
+                        "id": 11978,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -13418,7 +13418,7 @@
                           "typeString": "literal_string \"Vendor has insufficient tokens\""
                         }
                       ],
-                      "id": 11916,
+                      "id": 11974,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -13432,7 +13432,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11921,
+                    "id": 11979,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -13448,23 +13448,23 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11922,
+                  "id": 11980,
                   "nodeType": "ExpressionStatement",
                   "src": "2230:71:58"
                 },
                 {
                   "assignments": [
-                    11924
+                    11982
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 11924,
+                      "id": 11982,
                       "mutability": "mutable",
                       "name": "sent",
                       "nameLocation": "2313:4:58",
                       "nodeType": "VariableDeclaration",
-                      "scope": 11941,
+                      "scope": 11999,
                       "src": "2308:9:58",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -13473,7 +13473,7 @@
                         "typeString": "bool"
                       },
                       "typeName": {
-                        "id": 11923,
+                        "id": 11981,
                         "name": "bool",
                         "nodeType": "ElementaryTypeName",
                         "src": "2308:4:58",
@@ -13485,12 +13485,12 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 11933,
+                  "id": 11991,
                   "initialValue": {
                     "arguments": [
                       {
                         "expression": {
-                          "id": 11929,
+                          "id": 11987,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
@@ -13501,7 +13501,7 @@
                             "typeString": "msg"
                           }
                         },
-                        "id": 11930,
+                        "id": 11988,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -13516,11 +13516,11 @@
                         }
                       },
                       {
-                        "id": 11931,
+                        "id": 11989,
                         "name": "amountToBuy",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11889,
+                        "referencedDeclaration": 11947,
                         "src": "2385:11:58",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -13542,11 +13542,11 @@
                       "expression": {
                         "arguments": [
                           {
-                            "id": 11926,
+                            "id": 11984,
                             "name": "tokenAddress",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11865,
+                            "referencedDeclaration": 11923,
                             "src": "2337:12:58",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -13561,7 +13561,7 @@
                               "typeString": "address"
                             }
                           ],
-                          "id": 11925,
+                          "id": 11983,
                           "name": "ERC20Upgradeable",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
@@ -13572,7 +13572,7 @@
                             "typeString": "type(contract ERC20Upgradeable)"
                           }
                         },
-                        "id": 11927,
+                        "id": 11985,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -13588,7 +13588,7 @@
                           "typeString": "contract ERC20Upgradeable"
                         }
                       },
-                      "id": 11928,
+                      "id": 11986,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -13603,7 +13603,7 @@
                         "typeString": "function (address,uint256) external returns (bool)"
                       }
                     },
-                    "id": 11932,
+                    "id": 11990,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -13626,11 +13626,11 @@
                   "expression": {
                     "arguments": [
                       {
-                        "id": 11935,
+                        "id": 11993,
                         "name": "sent",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11924,
+                        "referencedDeclaration": 11982,
                         "src": "2416:4:58",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
@@ -13639,7 +13639,7 @@
                       },
                       {
                         "hexValue": "4661696c656420746f207472616e7366657220746f6b656e20746f2075736572",
-                        "id": 11936,
+                        "id": 11994,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -13665,7 +13665,7 @@
                           "typeString": "literal_string \"Failed to transfer token to user\""
                         }
                       ],
-                      "id": 11934,
+                      "id": 11992,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -13679,7 +13679,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11937,
+                    "id": 11995,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -13695,32 +13695,32 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11938,
+                  "id": 11996,
                   "nodeType": "ExpressionStatement",
                   "src": "2408:49:58"
                 },
                 {
                   "expression": {
-                    "id": 11939,
+                    "id": 11997,
                     "name": "amountToBuy",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 11889,
+                    "referencedDeclaration": 11947,
                     "src": "2471:11:58",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "functionReturnParameters": 11869,
-                  "id": 11940,
+                  "functionReturnParameters": 11927,
+                  "id": 11998,
                   "nodeType": "Return",
                   "src": "2464:18:58"
                 }
               ]
             },
             "functionSelector": "ec8ac4d8",
-            "id": 11942,
+            "id": 12000,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -13728,17 +13728,17 @@
             "nameLocation": "1777:9:58",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11866,
+              "id": 11924,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11865,
+                  "id": 11923,
                   "mutability": "mutable",
                   "name": "tokenAddress",
                   "nameLocation": "1800:12:58",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11942,
+                  "scope": 12000,
                   "src": "1792:20:58",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -13747,7 +13747,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11864,
+                    "id": 11922,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1792:7:58",
@@ -13763,17 +13763,17 @@
               "src": "1786:30:58"
             },
             "returnParameters": {
-              "id": 11869,
+              "id": 11927,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11868,
+                  "id": 11926,
                   "mutability": "mutable",
                   "name": "tokenAmount",
                   "nameLocation": "1849:11:58",
                   "nodeType": "VariableDeclaration",
-                  "scope": 11942,
+                  "scope": 12000,
                   "src": "1841:19:58",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -13782,7 +13782,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 11867,
+                    "id": 11925,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1841:7:58",
@@ -13796,7 +13796,7 @@
               ],
               "src": "1840:21:58"
             },
-            "scope": 12091,
+            "scope": 12149,
             "src": "1768:719:58",
             "stateMutability": "payable",
             "virtual": false,
@@ -13804,7 +13804,7 @@
           },
           {
             "body": {
-              "id": 12049,
+              "id": 12107,
               "nodeType": "Block",
               "src": "2567:958:58",
               "statements": [
@@ -13816,17 +13816,17 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 11952,
+                        "id": 12010,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
-                          "id": 11950,
+                          "id": 12008,
                           "name": "tokenAmountToSell",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11944,
+                          "referencedDeclaration": 12002,
                           "src": "2588:17:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -13837,7 +13837,7 @@
                         "operator": ">",
                         "rightExpression": {
                           "hexValue": "30",
-                          "id": 11951,
+                          "id": 12009,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -13859,7 +13859,7 @@
                       },
                       {
                         "hexValue": "5370656369667920616e20616d6f756e74206f6620746f6b656e2067726561746572207468616e207a65726f",
-                        "id": 11953,
+                        "id": 12011,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -13885,7 +13885,7 @@
                           "typeString": "literal_string \"Specify an amount of token greater than zero\""
                         }
                       ],
-                      "id": 11949,
+                      "id": 12007,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -13899,7 +13899,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11954,
+                    "id": 12012,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -13915,7 +13915,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11955,
+                  "id": 12013,
                   "nodeType": "ExpressionStatement",
                   "src": "2573:96:58"
                 },
@@ -13927,7 +13927,7 @@
                           "typeIdentifier": "t_bool",
                           "typeString": "bool"
                         },
-                        "id": 11962,
+                        "id": 12020,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -13935,24 +13935,24 @@
                         "leftExpression": {
                           "expression": {
                             "baseExpression": {
-                              "id": 11957,
+                              "id": 12015,
                               "name": "tokens",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 11690,
+                              "referencedDeclaration": 11748,
                               "src": "2683:6:58",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11685_storage_$",
+                                "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11743_storage_$",
                                 "typeString": "mapping(address => struct NftFractionsStorage.TokenPaymentInfo storage ref)"
                               }
                             },
-                            "id": 11959,
+                            "id": 12017,
                             "indexExpression": {
-                              "id": 11958,
+                              "id": 12016,
                               "name": "tokenAddress",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 11946,
+                              "referencedDeclaration": 12004,
                               "src": "2690:12:58",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_address",
@@ -13966,11 +13966,11 @@
                             "nodeType": "IndexAccess",
                             "src": "2683:20:58",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_struct$_TokenPaymentInfo_$11685_storage",
+                              "typeIdentifier": "t_struct$_TokenPaymentInfo_$11743_storage",
                               "typeString": "struct NftFractionsStorage.TokenPaymentInfo storage ref"
                             }
                           },
-                          "id": 11960,
+                          "id": 12018,
                           "isConstant": false,
                           "isLValue": true,
                           "isPure": false,
@@ -13978,7 +13978,7 @@
                           "memberLocation": "2704:10:58",
                           "memberName": "enableSell",
                           "nodeType": "MemberAccess",
-                          "referencedDeclaration": 11684,
+                          "referencedDeclaration": 11742,
                           "src": "2683:31:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bool",
@@ -13989,7 +13989,7 @@
                         "operator": "==",
                         "rightExpression": {
                           "hexValue": "74727565",
-                          "id": 11961,
+                          "id": 12019,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -14011,7 +14011,7 @@
                       },
                       {
                         "hexValue": "53656c6c206973206e6f7420656e61626c6564",
-                        "id": 11963,
+                        "id": 12021,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -14037,7 +14037,7 @@
                           "typeString": "literal_string \"Sell is not enabled\""
                         }
                       ],
-                      "id": 11956,
+                      "id": 12014,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -14051,7 +14051,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11964,
+                    "id": 12022,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -14067,23 +14067,23 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11965,
+                  "id": 12023,
                   "nodeType": "ExpressionStatement",
                   "src": "2675:71:58"
                 },
                 {
                   "assignments": [
-                    11967
+                    12025
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 11967,
+                      "id": 12025,
                       "mutability": "mutable",
                       "name": "userBalance",
                       "nameLocation": "2760:11:58",
                       "nodeType": "VariableDeclaration",
-                      "scope": 12049,
+                      "scope": 12107,
                       "src": "2752:19:58",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -14092,7 +14092,7 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
-                        "id": 11966,
+                        "id": 12024,
                         "name": "uint256",
                         "nodeType": "ElementaryTypeName",
                         "src": "2752:7:58",
@@ -14104,12 +14104,12 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 11975,
+                  "id": 12033,
                   "initialValue": {
                     "arguments": [
                       {
                         "expression": {
-                          "id": 11972,
+                          "id": 12030,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
@@ -14120,7 +14120,7 @@
                             "typeString": "msg"
                           }
                         },
-                        "id": 11973,
+                        "id": 12031,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -14145,11 +14145,11 @@
                       "expression": {
                         "arguments": [
                           {
-                            "id": 11969,
+                            "id": 12027,
                             "name": "tokenAddress",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11946,
+                            "referencedDeclaration": 12004,
                             "src": "2791:12:58",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -14164,7 +14164,7 @@
                               "typeString": "address"
                             }
                           ],
-                          "id": 11968,
+                          "id": 12026,
                           "name": "ERC20Upgradeable",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
@@ -14175,7 +14175,7 @@
                             "typeString": "type(contract ERC20Upgradeable)"
                           }
                         },
-                        "id": 11970,
+                        "id": 12028,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -14191,7 +14191,7 @@
                           "typeString": "contract ERC20Upgradeable"
                         }
                       },
-                      "id": 11971,
+                      "id": 12029,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -14206,7 +14206,7 @@
                         "typeString": "function (address) view external returns (uint256)"
                       }
                     },
-                    "id": 11974,
+                    "id": 12032,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -14233,17 +14233,17 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 11979,
+                        "id": 12037,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
-                          "id": 11977,
+                          "id": 12035,
                           "name": "userBalance",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11967,
+                          "referencedDeclaration": 12025,
                           "src": "2840:11:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -14253,11 +14253,11 @@
                         "nodeType": "BinaryOperation",
                         "operator": ">=",
                         "rightExpression": {
-                          "id": 11978,
+                          "id": 12036,
                           "name": "tokenAmountToSell",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11944,
+                          "referencedDeclaration": 12002,
                           "src": "2855:17:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -14272,7 +14272,7 @@
                       },
                       {
                         "hexValue": "596f75206861766520696e73756666696369656e7420746f6b656e73",
-                        "id": 11980,
+                        "id": 12038,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -14298,7 +14298,7 @@
                           "typeString": "literal_string \"You have insufficient tokens\""
                         }
                       ],
-                      "id": 11976,
+                      "id": 12034,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -14312,7 +14312,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 11981,
+                    "id": 12039,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -14328,23 +14328,23 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 11982,
+                  "id": 12040,
                   "nodeType": "ExpressionStatement",
                   "src": "2832:73:58"
                 },
                 {
                   "assignments": [
-                    11984
+                    12042
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 11984,
+                      "id": 12042,
                       "mutability": "mutable",
                       "name": "amountOfETHToTransfer",
                       "nameLocation": "2920:21:58",
                       "nodeType": "VariableDeclaration",
-                      "scope": 12049,
+                      "scope": 12107,
                       "src": "2912:29:58",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -14353,7 +14353,7 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
-                        "id": 11983,
+                        "id": 12041,
                         "name": "uint256",
                         "nodeType": "ElementaryTypeName",
                         "src": "2912:7:58",
@@ -14365,13 +14365,13 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 11997,
+                  "id": 12055,
                   "initialValue": {
                     "commonType": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     },
-                    "id": 11996,
+                    "id": 12054,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -14383,17 +14383,17 @@
                             "typeIdentifier": "t_uint256",
                             "typeString": "uint256"
                           },
-                          "id": 11990,
+                          "id": 12048,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
                           "lValueRequested": false,
                           "leftExpression": {
-                            "id": 11985,
+                            "id": 12043,
                             "name": "tokenAmountToSell",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11944,
+                            "referencedDeclaration": 12002,
                             "src": "2945:17:58",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -14405,24 +14405,24 @@
                           "rightExpression": {
                             "expression": {
                               "baseExpression": {
-                                "id": 11986,
+                                "id": 12044,
                                 "name": "tokens",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 11690,
+                                "referencedDeclaration": 11748,
                                 "src": "2971:6:58",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11685_storage_$",
+                                  "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11743_storage_$",
                                   "typeString": "mapping(address => struct NftFractionsStorage.TokenPaymentInfo storage ref)"
                                 }
                               },
-                              "id": 11988,
+                              "id": 12046,
                               "indexExpression": {
-                                "id": 11987,
+                                "id": 12045,
                                 "name": "tokenAddress",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 11946,
+                                "referencedDeclaration": 12004,
                                 "src": "2978:12:58",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_address",
@@ -14436,11 +14436,11 @@
                               "nodeType": "IndexAccess",
                               "src": "2971:20:58",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_TokenPaymentInfo_$11685_storage",
+                                "typeIdentifier": "t_struct$_TokenPaymentInfo_$11743_storage",
                                 "typeString": "struct NftFractionsStorage.TokenPaymentInfo storage ref"
                               }
                             },
-                            "id": 11989,
+                            "id": 12047,
                             "isConstant": false,
                             "isLValue": true,
                             "isPure": false,
@@ -14448,7 +14448,7 @@
                             "memberLocation": "2992:12:58",
                             "memberName": "listingPrice",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 11682,
+                            "referencedDeclaration": 11740,
                             "src": "2971:33:58",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -14462,7 +14462,7 @@
                           }
                         }
                       ],
-                      "id": 11991,
+                      "id": 12049,
                       "isConstant": false,
                       "isInlineArray": false,
                       "isLValue": false,
@@ -14480,24 +14480,24 @@
                     "rightExpression": {
                       "expression": {
                         "baseExpression": {
-                          "id": 11992,
+                          "id": 12050,
                           "name": "tokens",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11690,
+                          "referencedDeclaration": 11748,
                           "src": "3008:6:58",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11685_storage_$",
+                            "typeIdentifier": "t_mapping$_t_address_$_t_struct$_TokenPaymentInfo_$11743_storage_$",
                             "typeString": "mapping(address => struct NftFractionsStorage.TokenPaymentInfo storage ref)"
                           }
                         },
-                        "id": 11994,
+                        "id": 12052,
                         "indexExpression": {
-                          "id": 11993,
+                          "id": 12051,
                           "name": "tokenAddress",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11946,
+                          "referencedDeclaration": 12004,
                           "src": "3015:12:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -14511,11 +14511,11 @@
                         "nodeType": "IndexAccess",
                         "src": "3008:20:58",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_TokenPaymentInfo_$11685_storage",
+                          "typeIdentifier": "t_struct$_TokenPaymentInfo_$11743_storage",
                           "typeString": "struct NftFractionsStorage.TokenPaymentInfo storage ref"
                         }
                       },
-                      "id": 11995,
+                      "id": 12053,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
@@ -14523,7 +14523,7 @@
                       "memberLocation": "3029:11:58",
                       "memberName": "totalSupply",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 11680,
+                      "referencedDeclaration": 11738,
                       "src": "3008:32:58",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -14541,17 +14541,17 @@
                 },
                 {
                   "assignments": [
-                    11999
+                    12057
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 11999,
+                      "id": 12057,
                       "mutability": "mutable",
                       "name": "ownerETHBalance",
                       "nameLocation": "3054:15:58",
                       "nodeType": "VariableDeclaration",
-                      "scope": 12049,
+                      "scope": 12107,
                       "src": "3046:23:58",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -14560,7 +14560,7 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
-                        "id": 11998,
+                        "id": 12056,
                         "name": "uint256",
                         "nodeType": "ElementaryTypeName",
                         "src": "3046:7:58",
@@ -14572,19 +14572,19 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 12005,
+                  "id": 12063,
                   "initialValue": {
                     "expression": {
                       "arguments": [
                         {
-                          "id": 12002,
+                          "id": 12060,
                           "name": "this",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 4294967268,
                           "src": "3080:4:58",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_NftFractionsVendor_$12091",
+                            "typeIdentifier": "t_contract$_NftFractionsVendor_$12149",
                             "typeString": "contract NftFractionsVendor"
                           }
                         }
@@ -14592,11 +14592,11 @@
                       "expression": {
                         "argumentTypes": [
                           {
-                            "typeIdentifier": "t_contract$_NftFractionsVendor_$12091",
+                            "typeIdentifier": "t_contract$_NftFractionsVendor_$12149",
                             "typeString": "contract NftFractionsVendor"
                           }
                         ],
-                        "id": 12001,
+                        "id": 12059,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -14608,14 +14608,14 @@
                           "typeString": "type(address)"
                         },
                         "typeName": {
-                          "id": 12000,
+                          "id": 12058,
                           "name": "address",
                           "nodeType": "ElementaryTypeName",
                           "src": "3072:7:58",
                           "typeDescriptions": {}
                         }
                       },
-                      "id": 12003,
+                      "id": 12061,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -14631,7 +14631,7 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 12004,
+                    "id": 12062,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -14656,17 +14656,17 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 12009,
+                        "id": 12067,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
-                          "id": 12007,
+                          "id": 12065,
                           "name": "ownerETHBalance",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11999,
+                          "referencedDeclaration": 12057,
                           "src": "3114:15:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -14676,11 +14676,11 @@
                         "nodeType": "BinaryOperation",
                         "operator": ">=",
                         "rightExpression": {
-                          "id": 12008,
+                          "id": 12066,
                           "name": "amountOfETHToTransfer",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 11984,
+                          "referencedDeclaration": 12042,
                           "src": "3133:21:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -14695,7 +14695,7 @@
                       },
                       {
                         "hexValue": "56656e646f722068617320696e73756666696369656e742066756e6473",
-                        "id": 12010,
+                        "id": 12068,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -14721,7 +14721,7 @@
                           "typeString": "literal_string \"Vendor has insufficient funds\""
                         }
                       ],
-                      "id": 12006,
+                      "id": 12064,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -14735,7 +14735,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 12011,
+                    "id": 12069,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -14751,23 +14751,23 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 12012,
+                  "id": 12070,
                   "nodeType": "ExpressionStatement",
                   "src": "3099:100:58"
                 },
                 {
                   "assignments": [
-                    12014
+                    12072
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 12014,
+                      "id": 12072,
                       "mutability": "mutable",
                       "name": "sent",
                       "nameLocation": "3210:4:58",
                       "nodeType": "VariableDeclaration",
-                      "scope": 12049,
+                      "scope": 12107,
                       "src": "3205:9:58",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -14776,7 +14776,7 @@
                         "typeString": "bool"
                       },
                       "typeName": {
-                        "id": 12013,
+                        "id": 12071,
                         "name": "bool",
                         "nodeType": "ElementaryTypeName",
                         "src": "3205:4:58",
@@ -14788,12 +14788,12 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 12027,
+                  "id": 12085,
                   "initialValue": {
                     "arguments": [
                       {
                         "expression": {
-                          "id": 12019,
+                          "id": 12077,
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
@@ -14804,7 +14804,7 @@
                             "typeString": "msg"
                           }
                         },
-                        "id": 12020,
+                        "id": 12078,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -14821,14 +14821,14 @@
                       {
                         "arguments": [
                           {
-                            "id": 12023,
+                            "id": 12081,
                             "name": "this",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
                             "referencedDeclaration": 4294967268,
                             "src": "3294:4:58",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_contract$_NftFractionsVendor_$12091",
+                              "typeIdentifier": "t_contract$_NftFractionsVendor_$12149",
                               "typeString": "contract NftFractionsVendor"
                             }
                           }
@@ -14836,11 +14836,11 @@
                         "expression": {
                           "argumentTypes": [
                             {
-                              "typeIdentifier": "t_contract$_NftFractionsVendor_$12091",
+                              "typeIdentifier": "t_contract$_NftFractionsVendor_$12149",
                               "typeString": "contract NftFractionsVendor"
                             }
                           ],
-                          "id": 12022,
+                          "id": 12080,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -14852,14 +14852,14 @@
                             "typeString": "type(address)"
                           },
                           "typeName": {
-                            "id": 12021,
+                            "id": 12079,
                             "name": "address",
                             "nodeType": "ElementaryTypeName",
                             "src": "3286:7:58",
                             "typeDescriptions": {}
                           }
                         },
-                        "id": 12024,
+                        "id": 12082,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -14876,11 +14876,11 @@
                         }
                       },
                       {
-                        "id": 12025,
+                        "id": 12083,
                         "name": "tokenAmountToSell",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 11944,
+                        "referencedDeclaration": 12002,
                         "src": "3307:17:58",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -14906,11 +14906,11 @@
                       "expression": {
                         "arguments": [
                           {
-                            "id": 12016,
+                            "id": 12074,
                             "name": "tokenAddress",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11946,
+                            "referencedDeclaration": 12004,
                             "src": "3234:12:58",
                             "typeDescriptions": {
                               "typeIdentifier": "t_address",
@@ -14925,7 +14925,7 @@
                               "typeString": "address"
                             }
                           ],
-                          "id": 12015,
+                          "id": 12073,
                           "name": "ERC20Upgradeable",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
@@ -14936,7 +14936,7 @@
                             "typeString": "type(contract ERC20Upgradeable)"
                           }
                         },
-                        "id": 12017,
+                        "id": 12075,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -14952,7 +14952,7 @@
                           "typeString": "contract ERC20Upgradeable"
                         }
                       },
-                      "id": 12018,
+                      "id": 12076,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -14967,7 +14967,7 @@
                         "typeString": "function (address,address,uint256) external returns (bool)"
                       }
                     },
-                    "id": 12026,
+                    "id": 12084,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -14990,11 +14990,11 @@
                   "expression": {
                     "arguments": [
                       {
-                        "id": 12029,
+                        "id": 12087,
                         "name": "sent",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 12014,
+                        "referencedDeclaration": 12072,
                         "src": "3344:4:58",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
@@ -15003,7 +15003,7 @@
                       },
                       {
                         "hexValue": "4661696c656420746f207472616e7366657220746f6b656e732066726f6d207573657220746f2076656e646f72",
-                        "id": 12030,
+                        "id": 12088,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -15029,7 +15029,7 @@
                           "typeString": "literal_string \"Failed to transfer tokens from user to vendor\""
                         }
                       ],
-                      "id": 12028,
+                      "id": 12086,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -15043,7 +15043,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 12031,
+                    "id": 12089,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -15059,13 +15059,13 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 12032,
+                  "id": 12090,
                   "nodeType": "ExpressionStatement",
                   "src": "3336:62:58"
                 },
                 {
                   "expression": {
-                    "id": 12042,
+                    "id": 12100,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -15073,11 +15073,11 @@
                     "leftHandSide": {
                       "components": [
                         {
-                          "id": 12033,
+                          "id": 12091,
                           "name": "sent",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 12014,
+                          "referencedDeclaration": 12072,
                           "src": "3406:4:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_bool",
@@ -15086,7 +15086,7 @@
                         },
                         null
                       ],
-                      "id": 12034,
+                      "id": 12092,
                       "isConstant": false,
                       "isInlineArray": false,
                       "isLValue": true,
@@ -15105,7 +15105,7 @@
                       "arguments": [
                         {
                           "hexValue": "",
-                          "id": 12040,
+                          "id": 12098,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -15136,7 +15136,7 @@
                           ],
                           "expression": {
                             "expression": {
-                              "id": 12035,
+                              "id": 12093,
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
@@ -15147,7 +15147,7 @@
                                 "typeString": "msg"
                               }
                             },
-                            "id": 12036,
+                            "id": 12094,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -15161,7 +15161,7 @@
                               "typeString": "address"
                             }
                           },
-                          "id": 12037,
+                          "id": 12095,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -15175,7 +15175,7 @@
                             "typeString": "function (bytes memory) payable returns (bool,bytes memory)"
                           }
                         },
-                        "id": 12039,
+                        "id": 12097,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -15186,11 +15186,11 @@
                         "nodeType": "FunctionCallOptions",
                         "options": [
                           {
-                            "id": 12038,
+                            "id": 12096,
                             "name": "amountOfETHToTransfer",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 11984,
+                            "referencedDeclaration": 12042,
                             "src": "3440:21:58",
                             "typeDescriptions": {
                               "typeIdentifier": "t_uint256",
@@ -15204,7 +15204,7 @@
                           "typeString": "function (bytes memory) payable returns (bool,bytes memory)"
                         }
                       },
-                      "id": 12041,
+                      "id": 12099,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -15226,7 +15226,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 12043,
+                  "id": 12101,
                   "nodeType": "ExpressionStatement",
                   "src": "3405:62:58"
                 },
@@ -15234,11 +15234,11 @@
                   "expression": {
                     "arguments": [
                       {
-                        "id": 12045,
+                        "id": 12103,
                         "name": "sent",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 12014,
+                        "referencedDeclaration": 12072,
                         "src": "3481:4:58",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
@@ -15247,7 +15247,7 @@
                       },
                       {
                         "hexValue": "4661696c656420746f2073656e642045544820746f207468652075736572",
-                        "id": 12046,
+                        "id": 12104,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -15273,7 +15273,7 @@
                           "typeString": "literal_string \"Failed to send ETH to the user\""
                         }
                       ],
-                      "id": 12044,
+                      "id": 12102,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -15287,7 +15287,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 12047,
+                    "id": 12105,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -15303,14 +15303,14 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 12048,
+                  "id": 12106,
                   "nodeType": "ExpressionStatement",
                   "src": "3473:47:58"
                 }
               ]
             },
             "functionSelector": "670f7151",
-            "id": 12050,
+            "id": 12108,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -15318,17 +15318,17 @@
             "nameLocation": "2500:10:58",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 11947,
+              "id": 12005,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 11944,
+                  "id": 12002,
                   "mutability": "mutable",
                   "name": "tokenAmountToSell",
                   "nameLocation": "2519:17:58",
                   "nodeType": "VariableDeclaration",
-                  "scope": 12050,
+                  "scope": 12108,
                   "src": "2511:25:58",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -15337,7 +15337,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 11943,
+                    "id": 12001,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "2511:7:58",
@@ -15350,12 +15350,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 11946,
+                  "id": 12004,
                   "mutability": "mutable",
                   "name": "tokenAddress",
                   "nameLocation": "2546:12:58",
                   "nodeType": "VariableDeclaration",
-                  "scope": 12050,
+                  "scope": 12108,
                   "src": "2538:20:58",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -15364,7 +15364,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 11945,
+                    "id": 12003,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "2538:7:58",
@@ -15380,12 +15380,12 @@
               "src": "2510:49:58"
             },
             "returnParameters": {
-              "id": 11948,
+              "id": 12006,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "2567:0:58"
             },
-            "scope": 12091,
+            "scope": 12149,
             "src": "2491:1034:58",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -15393,23 +15393,23 @@
           },
           {
             "body": {
-              "id": 12089,
+              "id": 12147,
               "nodeType": "Block",
               "src": "3566:228:58",
               "statements": [
                 {
                   "assignments": [
-                    12056
+                    12114
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 12056,
+                      "id": 12114,
                       "mutability": "mutable",
                       "name": "ownerBalance",
                       "nameLocation": "3580:12:58",
                       "nodeType": "VariableDeclaration",
-                      "scope": 12089,
+                      "scope": 12147,
                       "src": "3572:20:58",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -15418,7 +15418,7 @@
                         "typeString": "uint256"
                       },
                       "typeName": {
-                        "id": 12055,
+                        "id": 12113,
                         "name": "uint256",
                         "nodeType": "ElementaryTypeName",
                         "src": "3572:7:58",
@@ -15430,19 +15430,19 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 12062,
+                  "id": 12120,
                   "initialValue": {
                     "expression": {
                       "arguments": [
                         {
-                          "id": 12059,
+                          "id": 12117,
                           "name": "this",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
                           "referencedDeclaration": 4294967268,
                           "src": "3603:4:58",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_NftFractionsVendor_$12091",
+                            "typeIdentifier": "t_contract$_NftFractionsVendor_$12149",
                             "typeString": "contract NftFractionsVendor"
                           }
                         }
@@ -15450,11 +15450,11 @@
                       "expression": {
                         "argumentTypes": [
                           {
-                            "typeIdentifier": "t_contract$_NftFractionsVendor_$12091",
+                            "typeIdentifier": "t_contract$_NftFractionsVendor_$12149",
                             "typeString": "contract NftFractionsVendor"
                           }
                         ],
-                        "id": 12058,
+                        "id": 12116,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -15466,14 +15466,14 @@
                           "typeString": "type(address)"
                         },
                         "typeName": {
-                          "id": 12057,
+                          "id": 12115,
                           "name": "address",
                           "nodeType": "ElementaryTypeName",
                           "src": "3595:7:58",
                           "typeDescriptions": {}
                         }
                       },
-                      "id": 12060,
+                      "id": 12118,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -15489,7 +15489,7 @@
                         "typeString": "address"
                       }
                     },
-                    "id": 12061,
+                    "id": 12119,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -15514,17 +15514,17 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 12066,
+                        "id": 12124,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
-                          "id": 12064,
+                          "id": 12122,
                           "name": "ownerBalance",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 12056,
+                          "referencedDeclaration": 12114,
                           "src": "3630:12:58",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -15535,7 +15535,7 @@
                         "operator": ">",
                         "rightExpression": {
                           "hexValue": "30",
-                          "id": 12065,
+                          "id": 12123,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -15557,7 +15557,7 @@
                       },
                       {
                         "hexValue": "4e6f204554482070726573656e7420696e2056656e646f72",
-                        "id": 12067,
+                        "id": 12125,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -15583,7 +15583,7 @@
                           "typeString": "literal_string \"No ETH present in Vendor\""
                         }
                       ],
-                      "id": 12063,
+                      "id": 12121,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -15597,7 +15597,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 12068,
+                    "id": 12126,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -15613,24 +15613,24 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 12069,
+                  "id": 12127,
                   "nodeType": "ExpressionStatement",
                   "src": "3622:53:58"
                 },
                 {
                   "assignments": [
-                    12071,
+                    12129,
                     null
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 12071,
+                      "id": 12129,
                       "mutability": "mutable",
                       "name": "sent",
                       "nameLocation": "3687:4:58",
                       "nodeType": "VariableDeclaration",
-                      "scope": 12089,
+                      "scope": 12147,
                       "src": "3682:9:58",
                       "stateVariable": false,
                       "storageLocation": "default",
@@ -15639,7 +15639,7 @@
                         "typeString": "bool"
                       },
                       "typeName": {
-                        "id": 12070,
+                        "id": 12128,
                         "name": "bool",
                         "nodeType": "ElementaryTypeName",
                         "src": "3682:4:58",
@@ -15652,12 +15652,12 @@
                     },
                     null
                   ],
-                  "id": 12083,
+                  "id": 12141,
                   "initialValue": {
                     "arguments": [
                       {
                         "hexValue": "",
-                        "id": 12081,
+                        "id": 12139,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -15688,7 +15688,7 @@
                         ],
                         "expression": {
                           "expression": {
-                            "id": 12072,
+                            "id": 12130,
                             "name": "msg",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
@@ -15699,7 +15699,7 @@
                               "typeString": "msg"
                             }
                           },
-                          "id": 12073,
+                          "id": 12131,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -15713,7 +15713,7 @@
                             "typeString": "address"
                           }
                         },
-                        "id": 12074,
+                        "id": 12132,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -15727,7 +15727,7 @@
                           "typeString": "function (bytes memory) payable returns (bool,bytes memory)"
                         }
                       },
-                      "id": 12080,
+                      "id": 12138,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -15741,14 +15741,14 @@
                           "expression": {
                             "arguments": [
                               {
-                                "id": 12077,
+                                "id": 12135,
                                 "name": "this",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
                                 "referencedDeclaration": 4294967268,
                                 "src": "3729:4:58",
                                 "typeDescriptions": {
-                                  "typeIdentifier": "t_contract$_NftFractionsVendor_$12091",
+                                  "typeIdentifier": "t_contract$_NftFractionsVendor_$12149",
                                   "typeString": "contract NftFractionsVendor"
                                 }
                               }
@@ -15756,11 +15756,11 @@
                             "expression": {
                               "argumentTypes": [
                                 {
-                                  "typeIdentifier": "t_contract$_NftFractionsVendor_$12091",
+                                  "typeIdentifier": "t_contract$_NftFractionsVendor_$12149",
                                   "typeString": "contract NftFractionsVendor"
                                 }
                               ],
-                              "id": 12076,
+                              "id": 12134,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -15772,14 +15772,14 @@
                                 "typeString": "type(address)"
                               },
                               "typeName": {
-                                "id": 12075,
+                                "id": 12133,
                                 "name": "address",
                                 "nodeType": "ElementaryTypeName",
                                 "src": "3721:7:58",
                                 "typeDescriptions": {}
                               }
                             },
-                            "id": 12078,
+                            "id": 12136,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -15795,7 +15795,7 @@
                               "typeString": "address"
                             }
                           },
-                          "id": 12079,
+                          "id": 12137,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": false,
@@ -15816,7 +15816,7 @@
                         "typeString": "function (bytes memory) payable returns (bool,bytes memory)"
                       }
                     },
-                    "id": 12082,
+                    "id": 12140,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -15839,11 +15839,11 @@
                   "expression": {
                     "arguments": [
                       {
-                        "id": 12085,
+                        "id": 12143,
                         "name": "sent",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 12071,
+                        "referencedDeclaration": 12129,
                         "src": "3762:4:58",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bool",
@@ -15852,7 +15852,7 @@
                       },
                       {
                         "hexValue": "4661696c656420746f207769746864726177",
-                        "id": 12086,
+                        "id": 12144,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -15878,7 +15878,7 @@
                           "typeString": "literal_string \"Failed to withdraw\""
                         }
                       ],
-                      "id": 12084,
+                      "id": 12142,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
@@ -15892,7 +15892,7 @@
                         "typeString": "function (bool,string memory) pure"
                       }
                     },
-                    "id": 12087,
+                    "id": 12145,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -15908,22 +15908,22 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 12088,
+                  "id": 12146,
                   "nodeType": "ExpressionStatement",
                   "src": "3754:35:58"
                 }
               ]
             },
             "functionSelector": "3ccfd60b",
-            "id": 12090,
+            "id": 12148,
             "implemented": true,
             "kind": "function",
             "modifiers": [
               {
-                "id": 12053,
+                "id": 12111,
                 "kind": "modifierInvocation",
                 "modifierName": {
-                  "id": 12052,
+                  "id": 12110,
                   "name": "onlyOwner",
                   "nameLocations": [
                     "3556:9:58"
@@ -15940,25 +15940,25 @@
             "nameLocation": "3538:8:58",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 12051,
+              "id": 12109,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "3546:2:58"
             },
             "returnParameters": {
-              "id": 12054,
+              "id": 12112,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "3566:0:58"
             },
-            "scope": 12091,
+            "scope": 12149,
             "src": "3529:265:58",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "public"
           }
         ],
-        "scope": 12092,
+        "scope": 12150,
         "src": "445:3351:58",
         "usedErrors": []
       }
@@ -15970,15 +15970,15 @@
     "version": "0.8.17+commit.8df45f5f.Emscripten.clang"
   },
   "networks": {
-    "80001": {
+    "4447": {
       "events": {},
       "links": {},
-      "address": "0x49B6527F5A92db39C07ceeF331235bCCefa29F75",
-      "transactionHash": "0x26cd6307f4e18597b6719036e3194e6099bd739f54086d390b2d491c65495211"
+      "address": "0x2e70789F5a18eFAbAc36d1457E86c757734d0110",
+      "transactionHash": "0xc5606162438abf65ea5be534aca57b94d8d3591c52f70f447b16ab5422aace39"
     }
   },
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-05-03T17:19:00.709Z",
+  "updatedAt": "2023-05-04T14:14:32.952Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

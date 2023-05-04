@@ -1,3 +1,3 @@
 export interface GetNFTsUseCase {
-  execute(): Promise<any>
+  execute(page: number, pageSize: number): Promise<any>
 }

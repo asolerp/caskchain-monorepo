@@ -30,7 +30,7 @@ const FooterSection = () => {
         width={1000}
         height={500}
         alt="wave"
-        className="w-full"
+        className="scale-x-110 lg:scale-x-100 w-full"
       />
       <div className="grid grid-cols-2 bg-black-light px-6 lg:px-32 lg:pb-20 pt-10 lg:pt-0">
         <div className="flex col-span-2 lg:col-span-1  flex-col justify-center items-start">

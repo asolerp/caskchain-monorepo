@@ -60,20 +60,6 @@ export const initiWebSocket = (
         txHash: transaction.transactionHash,
         type: '',
       })
-
-      console.log(
-        `\n` +
-          `New ERC-712 transaction found in block ${event.blockNumber} with hash ${event.transactionHash}\n` +
-          `From: ${
-            transaction.from === '0x0000000000000000000000000000000000000000'
-              ? 'New mint!'
-              : transaction.from
-          }\n` +
-          `To: ${transaction.to}\n` +
-          `Token contract: ${event.address}\n` +
-          `Token ID: ${transaction.tokenId}\n` +
-          `Price: ${ethers.utils.formatEther(transaction.value)}`
-      )
     }
   })
 }

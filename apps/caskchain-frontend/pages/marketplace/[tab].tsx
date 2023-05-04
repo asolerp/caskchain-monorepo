@@ -4,11 +4,15 @@ import { BaseLayout } from '@ui'
 import BarrelNft from '@ui/ntf/item/BarrelNft'
 import { Nft } from '@_types/nft'
 import { NextPage } from 'next'
+import FlatList from 'flatlist-react'
 
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useGlobal } from '@providers/global'
+import Button from '@ui/common/Button'
+import Spacer from '@ui/common/Spacer'
+import BarrelsSkeleton from 'components/pages/marketplace/BarrelsSkeleton'
 
 const tabs = [
   { name: 'All barrels', href: '#', key: 'search' },
@@ -36,7 +40,7 @@ const NFTCaskWorld: NextPage = () => {
   }
 
   useEffect(() => {
-    const filtered = nfts?.data?.filter((nft: Nft) => {
+    const filtered = nfts?.data?.items?.filter((nft: Nft) => {
       if (_selectedTab === 'search') {
         return true
       }
@@ -48,7 +52,7 @@ const NFTCaskWorld: NextPage = () => {
       }
     })
     setFilteredNfts(filtered)
-  }, [_selectedTab, nfts?.data])
+  }, [_selectedTab, nfts?.data?.items])
 
   if (!router.isReady) {
     return null
@@ -93,46 +97,54 @@ const NFTCaskWorld: NextPage = () => {
           </nav>
         </div>
         <div className="mx-auto mt-20">
-          <div className="flex flex-row space-x-6 flex-wrap mx-auto lg:max-w-none">
-            {filteredNfts?.length ? (
-              <>
-                {filteredNfts?.map((nft: Nft) => (
-                  // <Link key={nft.tokenId} href={`/cask/${nft.tokenId}`}>
-                  <BarrelNft
-                    key={nft?.tokenId}
-                    isMarketPlace
-                    item={nft}
-                    onPressFavorite={(nftId: string) =>
-                      nfts.handleAddFavorite(nftId)
-                    }
-                    isFavorite={hasFavorite(nft?.tokenId)}
-                    blow
+          <div className="grid grid-cols-4 gap-x-4 gap-y-4 flex-wrap mx-auto lg:max-w-none">
+            <>
+              {nfts.isLoading ? (
+                <BarrelsSkeleton />
+              ) : (
+                <>
+                  <FlatList
+                    list={filteredNfts}
+                    renderItem={(nft: Nft) => (
+                      <>
+                        <div key={nft?.tokenId} className="felx">
+                          <BarrelNft
+                            isMarketPlace
+                            item={nft}
+                            onPressFavorite={(nftId: string) =>
+                              nfts.handleAddFavorite(nftId)
+                            }
+                            isFavorite={hasFavorite(nft?.tokenId)}
+                            blow
+                          />
+                        </div>
+                      </>
+                    )}
+                    renderWhenEmpty={() => {
+                      return (
+                        <>
+                          {!nfts.isLoading && (
+                            <div className="w-full flex flex-col border border-gray-700 p-6 rounded-lg justify-center items-center">
+                              <h3 className="font-poppins text-2xl text-gray-300">
+                                No se ha encontrado ningna barrica
+                              </h3>
+                            </div>
+                          )}
+                        </>
+                      )
+                    }}
                   />
-                  // </Link>
-                ))}
-              </>
-            ) : (
-              <div className="w-full flex flex-col border border-gray-700 p-6 rounded-lg justify-center items-center">
-                <h3 className="font-poppins text-2xl text-gray-300">
-                  No se ha encontrado ningna barrica
-                </h3>
-              </div>
-            )}
-
-            {/* {filteredNfts?.length === 0 ? (
-              <div>
-                <h3>There is not casks at the moment</h3>
-              </div>
-            ) : (
-              <>
-                {filteredNfts?.map((nft: Nft) => (
-                  <Link key={nft.tokenId} href={`/cask/${nft.tokenId}`}>
-                    <BarrelNft isMarketPlace item={nft} blow />
-                  </Link>
-                ))}
-              </>
-            )} */}
+                  {nfts.isValidating && <BarrelsSkeleton />}
+                </>
+              )}
+            </>
           </div>
+        </div>
+        <Spacer size="xl" />
+        <div className="flex justify-center">
+          <Button active={false} onClick={() => nfts.fetchMoreBarrels()}>
+            Load more
+          </Button>
         </div>
       </div>
     </BaseLayout>

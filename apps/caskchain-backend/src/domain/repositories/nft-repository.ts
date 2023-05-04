@@ -58,8 +58,8 @@ export class NFTRepositoryImpl implements NFTRepository {
     return await this.web3Transaction.getCaskInfo(caskId)
   }
 
-  async getAllNfts(): Promise<any> {
-    return await this.web3Transaction.getNfts()
+  async getAllNfts(page: number, pageSize: number): Promise<any> {
+    return await this.web3Transaction.getAllNfts(page, pageSize)
   }
 
   async getOwnedNfts(owner: string): Promise<any> {

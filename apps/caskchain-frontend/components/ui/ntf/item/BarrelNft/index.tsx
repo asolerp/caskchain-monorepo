@@ -36,7 +36,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
   const [isHover, setIsHover] = useState(active)
   const router = useRouter()
   const isMarketPlaceClass = isMarketPlace
-    ? 'h-full w-80'
+    ? 'h-full w-full'
     : 'h-[600px] w-[460px] m-0'
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
   }, [isHover])
 
   return (
-    <div className="relative cursor-pointer">
+    <div className="relative cursor-pointer min-h-[450px]">
       {showFavorite && (
         <div className="absolute right-5 top-5 z-50">
           <BookmarkIcon
@@ -65,10 +65,10 @@ const BarrelNft: React.FC<NftItemProps> = ({
       )}
       <div
         onClick={() => router.push(`/cask/${item.tokenId}`)}
-        className="relative flex flex-row justify-center items-center h-full"
+        className="relative flex flex-row justify-center items-center min-h-[450px] h-full"
       >
         <div
-          className={`bg-black-light rounded-[40px] bg-clip-padding backdrop-filter backdrop-blur-sm border border-gray-800 ${isMarketPlaceClass}`}
+          className={`bg-black-light rounded-[40px] bg-clip-padding backdrop-filter backdrop-blur-sm border min-h-[450px] border-gray-800 ${isMarketPlaceClass}`}
         >
           <div className="relative">
             <div className="relative w-full flex justify-center items-center rounded-md">
@@ -97,6 +97,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
                   alt="New NFT"
                   width={300}
                   height={300}
+                  priority
                 />
               )}
               {isHover && showAnimation && (
@@ -117,19 +118,22 @@ const BarrelNft: React.FC<NftItemProps> = ({
             <div
               className={`flex-1 px-4 py-6 mt-2 flex flex-col justify-between `}
             >
-              <div className="w-full ">
-                <p className="font-poppins text-cask-chain">
-                  Cask Number {`#${item.tokenId}`}
-                </p>
-                <div>
-                  <p className="text-cask-chain font-poppins text-sm">
-                    {`@${item.owner.nickname}` ||
-                      addressSimplifier(item.owner.address)}
+              <div className="w-full">
+                <div className="flex flex-row justify-between">
+                  <p className="font-poppins text-cask-chain">
+                    Cask Number {`#${item.tokenId}`}
                   </p>
+                  <div>
+                    <p className="text-cask-chain font-poppins text-sm">
+                      {item?.owner?.nickname
+                        ? `@${item?.owner?.nickname}`
+                        : addressSimplifier(item?.owner?.address)}
+                    </p>
+                  </div>
                 </div>
                 <Spacer size="xs" />
-                <h3 className="text-2xl font-rale text-white font-semibold w-3/4">
-                  {item.meta.name}
+                <h3 className="text-xl font-rale text-white font-semibold ">
+                  {item?.meta?.name}
                 </h3>
               </div>
               {/* <div className="flex-1">

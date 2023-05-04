@@ -19,7 +19,6 @@ export class MongoDBStatsDataSource
   }
 
   public async incrementTotalUsers() {
-    console.log('updating total users')
     const collection = await this.collection()
     await collection.updateOne(
       { _id: 'users' },
@@ -32,8 +31,6 @@ export class MongoDBStatsDataSource
   public async getTotalUsers(): Promise<void> {
     const collection = await this.collection()
     const document = await collection.find<any>({ _id: 'users' }).toArray()
-
-    console.log('STATS', document)
 
     return document[0] || null
   }

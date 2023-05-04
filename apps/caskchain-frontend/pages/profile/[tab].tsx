@@ -201,6 +201,14 @@ const Profile: NextPage = () => {
                 <div>
                   <div>
                     <div>
+                      <Button
+                        onClick={() =>
+                          nfts.addNFTToMetaMask(nfts.activeNft.tokenId)
+                        }
+                      >
+                        Add to metamask
+                      </Button>
+                      <Spacer size="md" />
                       <div className="block w-full aspect-w-10 aspect-h-7 rounded-lg overflow-hidden">
                         <Image
                           width={350}

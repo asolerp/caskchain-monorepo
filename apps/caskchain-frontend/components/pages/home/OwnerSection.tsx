@@ -36,7 +36,7 @@ const OwnerSection = () => {
           How To Be Owner
         </h2>
         <Spacer size="lg" />
-        <div className="flex flex-col space-y-5 lg:flex-row lg:space-x-5">
+        <div className="grid grid-cols-3 gap-6 lg:flex-row">
           <OwnerTip
             imgSrc="/images/owner_tip1.png"
             title="Set up your wallet"
@@ -56,7 +56,12 @@ const OwnerSection = () => {
         <Spacer size="2xl" />
         <Spacer size="2xl" />
         <div className="flex flex-col lg:hidden items-center bg-white w-full py-20">
-          <Image src="/images/cc.png" alt="" width={280} height={340} />
+          <Image
+            src="https://res.cloudinary.com/enalbis/image/upload/v1683179367/CaskChain/ddnaaleg8prhfuhiwal4.png"
+            alt=""
+            width={280}
+            height={340}
+          />
           <Button labelStyle="text-md">Set up Now</Button>
         </div>
         <div className="hidden lg:flex relative bg-bg_owner bg-cover bg-center bg-no-repeat h-[600px] w-full flex-col items-center justify-center">
@@ -105,7 +110,7 @@ const OwnerSection = () => {
         width={1000}
         height={500}
         alt="wave"
-        className="w-full"
+        className="scale-y-110 scale-x-110 lg:scale-x-100 w-full"
       />
     </div>
   )

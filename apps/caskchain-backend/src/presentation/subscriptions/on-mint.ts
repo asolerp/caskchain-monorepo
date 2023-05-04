@@ -3,9 +3,9 @@ import { CreateNFTUseCase } from '../../domain/interfaces/use-cases/create-nft-u
 
 export default function OnMint(createNFTUseCase: CreateNFTUseCase) {
   const handleOnTransfer = async (nft: any) => {
-    const metaResponse = await axios.get(
-      nft.tokenURI + `?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`
-    )
+    const ipfsHash = nft.tokenURI.split('/ipfs/')[1]
+    const pinataURL = `${process.env.PINATA_GATEWAY_URL}/${ipfsHash}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`
+    const metaResponse = await axios.get(pinataURL)
     const meta: any = await metaResponse.data
 
     await createNFTUseCase.execute(nft.tokenId, {

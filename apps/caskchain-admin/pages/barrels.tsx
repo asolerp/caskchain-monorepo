@@ -1,6 +1,7 @@
 import { useAllNfts } from '@hooks/web3'
 import { BaseLayout } from '@ui'
-import BarrelNft from '@ui/ntf/item/BarrelNft'
+
+import NftList from '@ui/tables/NftList'
 import { Button, Spacer } from 'caskchain-ui'
 import { useRouter } from 'next/router'
 import { auth } from 'utils/auth'
@@ -19,12 +20,13 @@ const Barrels = () => {
         </h1>
         <Spacer size="md" />
         <Button onClick={() => router.push('/create')}>New barrel</Button>
-        <div className="flex flex-row flex-wrap space-x-4 mt-20">
-          {nfts?.data &&
-            nfts?.data.map((nft: any) => (
-              <BarrelNft isMarketPlace item={nft} key={nft.id} />
-            ))}
-        </div>
+        <Spacer size="md" />
+
+        <NftList
+          barrels={nfts.data}
+          pageSize={nfts.pageSize}
+          onClickPage={(page: string) => nfts.setPage(page)}
+        />
       </div>
     </BaseLayout>
   )

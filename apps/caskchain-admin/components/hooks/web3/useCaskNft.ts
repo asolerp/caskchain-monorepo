@@ -68,7 +68,6 @@ export const hookFactory: CaskNftHookFactory =
         const { data: salesHistoryData }: any = await axios.get(
           `/api/transactions/sales-history/${caskId}`
         )
-        console.log('offers', salesHistoryData)
         return salesHistoryData
       },
       { revalidateOnFocus: true }
@@ -82,7 +81,6 @@ export const hookFactory: CaskNftHookFactory =
       'api/offers',
       async () => {
         const { data: offers }: any = await axios.get(`/api/offers/${caskId}`)
-        console.log('offers', offers)
         return offers
       },
       { revalidateOnFocus: true }

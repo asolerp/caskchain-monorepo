@@ -16,7 +16,7 @@ type OwnedNftsHookFactory = CryptoHookFactory<UseOwnedNftsResponse>
 export type UseOwnedNftsHook = ReturnType<OwnedNftsHookFactory>
 
 export const hookFactory: OwnedNftsHookFactory =
-  ({ ccNft, nftVendor, nftFractionToken, nftOffers, provider }) =>
+  ({ ccNft, ethereum, nftVendor, nftFractionToken, nftOffers, provider }) =>
   () => {
     const _ccNft = ccNft
     const _nftVendor = nftVendor
@@ -49,7 +49,6 @@ export const hookFactory: OwnedNftsHookFactory =
 
     const { data: favorites } = useSWR('/api/casks/favorites', async () => {
       const favoritesNfts: any = await axiosClient.get('/api/casks/favorites')
-      console.log('FAVORITES', favoritesNfts)
       return favoritesNfts.data
     })
 
@@ -174,6 +173,34 @@ export const hookFactory: OwnedNftsHookFactory =
       }
     }
 
+    const addNFTToMetaMask = async (tokenId: string) => {
+      try {
+        // Check if the MetaMask extension is installed
+
+        // Request the user to add the NFT to their MetaMask wallet
+        const added = await ethereum.request({
+          method: 'wallet_watchAsset',
+          params: {
+            type: 'ERC20', // ERC721 for NFTs
+            options: {
+              address: _ccNft!.address,
+              decimals: 0, // NFT contract address
+              symbol: 'CSKNFT', // NFT symbol or abbreviation
+              tokenId: tokenId, // NFT token ID
+            },
+          },
+        })
+
+        if (added) {
+          console.log('NFT added to MetaMask')
+        } else {
+          console.log('NFT not added to MetaMask')
+        }
+      } catch (error) {
+        console.error('Error adding NFT to MetaMask:', error)
+      }
+    }
+
     return {
       listNft,
       favorites,
@@ -190,6 +217,7 @@ export const hookFactory: OwnedNftsHookFactory =
       setIsApproved,
       handleActiveNft,
       redeemFractions,
+      addNFTToMetaMask,
       data: data || [],
     }
   }

@@ -330,7 +330,6 @@ const NftCreate: NextPage = () => {
                       </h2>
                       <Spacer size="lg" />
                       <div className="grid grid-cols-6 gap-6">
-                        {console.log(nftMeta.attributes)}
                         {nftMeta.attributes.map((attribute: any) => (
                           <div
                             key={attribute.trait_type}

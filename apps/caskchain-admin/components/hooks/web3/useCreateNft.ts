@@ -127,7 +127,7 @@ export const hookFactory: CreateNftHookFactory =
         const bytes = new Uint8Array(buffer)
 
         const imageResponse = await axiosClient.post(
-          '/api/verify-image',
+          '/api/pin-nft/pin-image',
           {
             bytes,
             contentType: file!.type,
@@ -139,7 +139,7 @@ export const hookFactory: CreateNftHookFactory =
         const imageData = imageResponse.data as PinataRes
 
         const res = await axiosClient.post(
-          '/api/verify',
+          '/api/pin-nft/pin-metadata',
           {
             nft: {
               ...nftMeta,
@@ -177,8 +177,7 @@ export const hookFactory: CreateNftHookFactory =
       const ipfsHash = nftURI.split('/ipfs/')[1]
       try {
         const nftRes = await axios.get(
-          `${process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL}/${ipfsHash}?pinataGatewayToken=${process.env.NEXT_PUBLIC_PINATA_GATEWAY_TOKEN}`,
-          {}
+          `${process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL}/${ipfsHash}?pinataGatewayToken=${process.env.NEXT_PUBLIC_PINATA_GATEWAY_TOKEN}`
         )
         const content = nftRes.data
 

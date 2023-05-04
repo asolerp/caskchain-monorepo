@@ -19,8 +19,7 @@ import { GetTransactionByTokenId } from './domain/use-cases/transaction/get-tran
 import CreateCheckoutSessionRouter from './presentation/routers/create-checkout-session'
 import OrderBottleRouter from './presentation/routers/order-bottle'
 import TransactionsHistoryRouter from './presentation/routers/transactions-history-router'
-import VerifyImageRouter from './presentation/routers/verify-image-router'
-import VerifyRouter from './presentation/routers/verify-router'
+
 import WebhookRouter from './presentation/routers/webhook'
 import server from './server'
 import CCNft from 'contracts/build/contracts/CCNft.json'
@@ -71,6 +70,7 @@ import { SaveRoyalty } from './domain/use-cases/payments/save-royalty'
 import { RoyaltyImpl } from './domain/repositories/royalty-repository'
 import { MongoDBRoyaltyDataSource } from './data/data-sources/mongodb/MongoDBRoyaltiesDataSource'
 import { GetRoyalties } from './domain/use-cases/transaction/get-royalties'
+import PinNftRouter from './presentation/routers/pin-nft-router'
 ;(async () => {
   const clientDB = MongoClientFactory.createClient(
     process.env.CONTEXT_NAME as string,
@@ -141,8 +141,7 @@ import { GetRoyalties } from './domain/use-cases/transaction/get-royalties'
 
   // ROUTES
 
-  const verifyMiddleWare = VerifyRouter()
-  const verifyImageMiddleWare = VerifyImageRouter()
+  const pinNftMiddleWare = PinNftRouter()
   const signature = SignatureRouter()
   const orderBottleMiddleWare = OrderBottleRouter()
   const transactionsHistory = TransactionsHistoryRouter(
@@ -269,9 +268,7 @@ import { GetRoyalties } from './domain/use-cases/transaction/get-royalties'
   )
 
   usersWatcher.watchCollection((event) => {
-    console.log('EVENT', event)
     if (event.operationType === 'insert') {
-      console.log('INSERTING')
       incrementTotalUsers()
     }
   })
@@ -283,8 +280,7 @@ import { GetRoyalties } from './domain/use-cases/transaction/get-royalties'
 
   server.use('/api/stats', stats)
   server.use('/api/signature', signature)
-  server.use('/api/verify', verifyMiddleWare)
-  server.use('/api/verify-image', verifyImageMiddleWare)
+  server.use('/api/pin-nft', pinNftMiddleWare)
   server.use('/api/order-bottle', orderBottleMiddleWare)
   server.use('/api/transactions', transactionsHistory)
   server.use('/api/create-checkout-session', createCheckoutSession)

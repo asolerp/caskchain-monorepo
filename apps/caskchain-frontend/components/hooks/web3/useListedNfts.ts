@@ -62,7 +62,6 @@ export const hookFactory: ListedNftsHookFactory =
 
     const buyNft = useCallback(
       async (tokenId: number, price: string) => {
-        console.log('PRICE', price)
         try {
           const result = await _nftVendor?.buyItem(tokenId, {
             value: price.toString(),
