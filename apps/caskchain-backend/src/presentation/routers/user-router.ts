@@ -162,15 +162,20 @@ export default function UserRouter(
           })
           return res.sendStatus(403)
         }
+        console.log(
+          'COMPARING',
+          process.env.PUBLIC_KEY &&
+            user.address.localeCompare(process.env.PUBLIC_KEY, undefined, {
+              sensitivity: 'accent',
+            })
+        )
         const accessToken = jwt.sign(
           {
             _id: user._id,
             address: user.address,
             role:
-              process.env.PUBLIC_KEY &&
-              user.address.localeCompare(process.env.PUBLIC_KEY, undefined, {
-                sensitivity: 'accent',
-              })
+              (process.env.PUBLIC_KEY && process.env.PUBLIC_KEY) ===
+              user.address
                 ? 'admin'
                 : 'user',
           },
@@ -227,12 +232,8 @@ export default function UserRouter(
                 _id: user._id,
                 address: user.address,
                 role:
-                  process.env.PUBLIC_KEY &&
-                  user.address.localeCompare(
-                    process.env.PUBLIC_KEY,
-                    undefined,
-                    { sensitivity: 'accent' }
-                  )
+                  (process.env.PUBLIC_KEY && process.env.PUBLIC_KEY) ===
+                  user.address
                     ? 'admin'
                     : 'user',
               },
