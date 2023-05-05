@@ -5,8 +5,6 @@ require('dotenv-mono').load(
     : { path: '.env' }
 )
 
-const API_URL = 'https://caskchain-backend.herokuapp.com/'
-
 const withTM = require('next-transpile-modules')([
   'caskchain-ui',
   'caskchain-lib',
@@ -40,25 +38,17 @@ const nextConfig = withTM({
 
     return config
   },
+  reactStrictMode: true,
   async rewrites() {
     return [
       {
         source: '/api/:path*',
-        destination: `${API_URL}/api/:path*`, // Proxy to Backend
+        destination: `${process.env.API_URL}/api/:path*`, // Proxy to Backend
       },
     ]
   },
-  reactStrictMode: true,
   images: {
     domains: ['res.cloudinary.com', 'gateway.pinata.cloud'],
-  },
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: `https://caskchain-backend.herokuapp.com/api/:path*`, // Proxy to Backend
-      },
-    ]
   },
   transpilePackages: ['caskchain-lib, caskchain-ui'],
   swcMinify: true,
