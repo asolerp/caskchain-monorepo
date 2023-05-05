@@ -222,8 +222,12 @@ export default function UserRouter(
               },
             })
 
-            logger.info(
-              `User address is${user.address} and public key ${process.env.PUBLIC_KEY}`
+            console.log(
+              'COMPARING',
+              (process.env.PUBLIC_KEY && process.env.PUBLIC_KEY) ===
+                user.address
+                ? 'admin'
+                : 'user'
             )
 
             // Set jwt token
