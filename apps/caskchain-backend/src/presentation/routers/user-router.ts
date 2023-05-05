@@ -166,7 +166,13 @@ export default function UserRouter(
           {
             _id: user._id,
             address: user.address,
-            role: user.address === process.env.PUBLIC_KEY ? 'admin' : 'user',
+            role:
+              process.env.PUBLIC_KEY &&
+              user.address.localeCompare(process.env.PUBLIC_KEY, undefined, {
+                sensitivity: 'accent',
+              })
+                ? 'admin'
+                : 'user',
           },
           process.env.TOKEN_SECRET as string,
           { expiresIn: '60m' }
@@ -211,13 +217,24 @@ export default function UserRouter(
               },
             })
 
+            logger.info(
+              `User address is${user.address} and public key ${process.env.PUBLIC_KEY}`
+            )
+
             // Set jwt token
             const token = jwt.sign(
               {
                 _id: user._id,
                 address: user.address,
                 role:
-                  user.address === process.env.PUBLIC_KEY ? 'admin' : 'user',
+                  process.env.PUBLIC_KEY &&
+                  user.address.localeCompare(
+                    process.env.PUBLIC_KEY,
+                    undefined,
+                    { sensitivity: 'accent' }
+                  )
+                    ? 'admin'
+                    : 'user',
               },
               process.env.TOKEN_SECRET as string,
               { expiresIn: '60m' }

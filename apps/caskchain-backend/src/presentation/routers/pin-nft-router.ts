@@ -14,8 +14,8 @@ export default function PinNftRouter() {
 
   router.post(
     '/pin-image',
-    async (req: Request, res: Response, next: NextFunction) =>
-      authenticateToken(req, res, next, 'admin'),
+    // async (req: Request, res: Response, next: NextFunction) =>
+    //   authenticateToken(req, res, next, 'admin'),
     async (req: Request, res: Response) => {
       try {
         const { bytes, fileName, contentType } = req.body as FileReq
@@ -58,8 +58,8 @@ export default function PinNftRouter() {
 
   router.post(
     '/pin-metadata',
-    async (req: Request, res: Response, next: NextFunction) =>
-      authenticateToken(req, res, next, 'admin'),
+    // async (req: Request, res: Response, next: NextFunction) =>
+    //   authenticateToken(req, res, next, 'admin'),
     async (req: Request, res: Response) => {
       try {
         const { body } = req
