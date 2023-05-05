@@ -26,17 +26,15 @@ export const authenticateToken = (
         if (decodedToken?.role === 'admin') {
           return next()
         }
-        if (decodedToken?.role !== (role || req.query.role)) {
-<<<<<<< HEAD
-          logger.error('Unauthorized', {
-            metadata: {
-              service: 'auth',
-            },
-          })
-=======
-          console.log("ROLE DON'T MATCH")
->>>>>>> main
+        if (decodedToken?.role.localCompare(role || req.query.role) !== 0) {
+          logger.info(
+            'The decodedToken role does not match the provided role or role from the query.'
+          )
           return res.sendStatus(401)
+        } else {
+          logger.info(
+            'The decodedToken role matches the provided role or role from the query.'
+          )
         }
       }
 
