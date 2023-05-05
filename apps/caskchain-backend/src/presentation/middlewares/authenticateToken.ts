@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
+import logger from '../utils/logger'
 
 export const authenticateToken = (
   req: Request,
@@ -10,6 +11,7 @@ export const authenticateToken = (
   const authHeader = req.headers['authorization']
 
   const token = authHeader && authHeader.split(' ')[1]
+
   if (token == null) {
     return res.sendStatus(401)
   }
@@ -24,6 +26,11 @@ export const authenticateToken = (
           return next()
         }
         if (decodedToken?.role !== (role || req.query.role)) {
+          logger.error('Unauthorized', {
+            metadata: {
+              service: 'auth',
+            },
+          })
           return res.sendStatus(401)
         }
       }
