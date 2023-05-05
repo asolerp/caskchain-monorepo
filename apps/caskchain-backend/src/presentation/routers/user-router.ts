@@ -211,6 +211,10 @@ export default function UserRouter(
               },
             })
 
+            logger.info(
+              `User address is${user.address} and public key ${process.env.PUBLIC_KEY}`
+            )
+
             // Set jwt token
             const token = jwt.sign(
               {
