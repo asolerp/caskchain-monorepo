@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv'
-dotenv.config({ path: `../../.env` })
+dotenv.config({ path: `../../../.env` })
 
 export const contractAddress = process.env.NFT_CONTRACT_ADDRESS as string
 export const nftVendorAddress = process.env.NFT_VENDOR_ADDRESS as string

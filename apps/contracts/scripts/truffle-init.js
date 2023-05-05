@@ -1,5 +1,5 @@
 const dotenv = require("dotenv");
-dotenv.config();
+dotenv.config({ path: `../../../.env.${process.env.NODE_ENV}` });
 
 const CCNft = artifacts.require("CCNft");
 const NftOffers = artifacts.require("NftOffers");
@@ -13,25 +13,42 @@ const NftVendorContract = require("../build/contracts/NftVendor.json");
 const CCNftStorageContract = require("../build/contracts/CCNftStorage.json");
 const NftOffersStorageContract = require("../build/contracts/NftOffersStorage.json");
 
+// type NETWORK_ID_TYPE = {
+//   80001: {
+//     events: {},
+//     links: {},
+//     address: string,
+//     transactionHash: string,
+//   },
+//   4447: {
+//     events: {},
+//     links: {},
+//     address: string,
+//     transactionHash: string,
+//   },
+// };
+
 module.exports = async function (callback) {
   try {
     // Fetch accounts from wallet - these are unlocked
     // const accounts = await web3.eth.getAccounts();
-
+    console.log(process.env);
     // Fetch the deployed exchange
-    const ccNft = await CCNft.at(CCNftContract.networks[80001].address);
+    const ccNft = await CCNft.at(
+      CCNftContract.networks[process.env.NETWORK_ID].address
+    );
 
     const ccNftStorage = await CCNftStorage.at(
-      CCNftStorageContract.networks[80001].address
+      CCNftStorageContract.networks[process.env.NETWORK_ID].address
     );
     const nftVendor = await NftVendor.at(
-      NftVendorContract.networks[80001].address
+      NftVendorContract.networks[process.env.NETWORK_ID].address
     );
     const nftOffers = await NftOffers.at(
-      NftOffersContract.networks[80001].address
+      NftOffersContract.networks[process.env.NETWORK_ID].address
     );
     const nftOffersStorage = await NftOffersStorage.at(
-      NftOffersStorageContract.networks[80001].address
+      NftOffersStorageContract.networks[process.env.NETWORK_ID].address
     );
 
     await ccNftStorage.addAllowedAddress(ccNft.address);

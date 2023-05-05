@@ -1,8 +1,6 @@
 import * as dotenv from 'dotenv'
 dotenv.config(
-  process.env.NODE_ENV === 'development'
-    ? { path: '../../.env' }
-    : { path: '.env' }
+  process.env.NODE_ENV === 'ganache' ? { path: '../../.env' } : { path: '.env' }
 )
 
 import express from 'express'

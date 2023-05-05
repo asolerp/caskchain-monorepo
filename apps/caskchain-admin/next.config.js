@@ -1,9 +1,5 @@
 // const path = require('path')
-require('dotenv-mono').load(
-  process.env.NODE_ENV === 'development'
-    ? { path: '../../.env' }
-    : { path: '.env' }
-)
+require('dotenv-mono').load({ path: '../../.env' })
 
 const withTM = require('next-transpile-modules')([
   'caskchain-ui',
