@@ -221,7 +221,10 @@ export default function UserRouter(
                 _id: user._id,
                 address: user.address,
                 role:
-                  user.address === process.env.PUBLIC_KEY ? 'admin' : 'user',
+                  user.address.toLowerCase() === process.env.PUBLIC_KEY &&
+                  process.env.PUBLIC_KEY.toLowerCase()
+                    ? 'admin'
+                    : 'user',
               },
               process.env.TOKEN_SECRET as string,
               { expiresIn: '60m' }
