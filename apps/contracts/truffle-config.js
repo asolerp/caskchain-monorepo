@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
-dotenv.config({ path: `../../../.env` });
+dotenv.config({ path: `../../.env` });
 
-const { MNEMONIC, PROJECT_ID, BLOCKCHAIN_URL } = process.env;
+const { MNEMONIC, PROJECT_ID, BLOCKCHAIN_URL, PUBLIC_KEY } = process.env;
 
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 /**
@@ -96,14 +96,14 @@ module.exports = {
           MNEMONIC,
           `https://goerli.infura.io/v3/${PROJECT_ID}`
         ),
-      from: "0xb2B78366b8a6aB48104222932E60002B01751174",
+      from: PUBLIC_KEY,
       gas: 4465030,
       gasPrice: "10000000000",
       network_id: 5, // Goerli's id
     },
     mumbai: {
       provider: () => new HDWalletProvider(MNEMONIC, BLOCKCHAIN_URL),
-      from: "0x54Ca6E36FE4C534D89A1bFbbc5567F1C3dA78988",
+      from: PUBLIC_KEY,
       network_id: 80001,
     },
     //
