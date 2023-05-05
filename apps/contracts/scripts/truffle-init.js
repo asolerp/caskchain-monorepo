@@ -19,19 +19,19 @@ module.exports = async function (callback) {
     // const accounts = await web3.eth.getAccounts();
 
     // Fetch the deployed exchange
-    const ccNft = await CCNft.at(CCNftContract.networks[4447].address);
+    const ccNft = await CCNft.at(CCNftContract.networks[80001].address);
 
     const ccNftStorage = await CCNftStorage.at(
-      CCNftStorageContract.networks[4447].address
+      CCNftStorageContract.networks[80001].address
     );
     const nftVendor = await NftVendor.at(
-      NftVendorContract.networks[4447].address
+      NftVendorContract.networks[80001].address
     );
     const nftOffers = await NftOffers.at(
-      NftOffersContract.networks[4447].address
+      NftOffersContract.networks[80001].address
     );
     const nftOffersStorage = await NftOffersStorage.at(
-      NftOffersStorageContract.networks[4447].address
+      NftOffersStorageContract.networks[80001].address
     );
 
     await ccNftStorage.addAllowedAddress(ccNft.address);
