@@ -10,8 +10,8 @@
   "type": "module",
   "scripts": {
     "build": "turbo run build",
-    "dev": "NODE_ENV=development turbo run dev --parallel",
-    "dev:emulator": "npx cross-env CHAIN_ENV=emulator node scripts/startup.js",
+    "dev": "NODE_ENV=ganache turbo run dev --parallel",
+    "dev:emulator": "npx cross-env node scripts/startup.js",
     "stop": "npx pm2 stop all",
     "build:caskchain-admin": "turbo run build --filter=caskchain-admin",
     "build:caskchain-frontend": "turbo run build --filter=caskchain-frontend",

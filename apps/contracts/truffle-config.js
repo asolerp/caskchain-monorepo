@@ -1,5 +1,5 @@
 const dotenv = require("dotenv");
-dotenv.config({ path: `../../.env.mumbai` });
+dotenv.config({ path: `../../../.env` });
 
 const { MNEMONIC, PROJECT_ID, BLOCKCHAIN_URL } = process.env;
 

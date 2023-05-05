@@ -9,7 +9,7 @@ const BarrelsSkeleton = () => {
         <Skeleton
           key={i}
           height={450}
-          width={330}
+          width={300}
           borderRadius="2rem"
           baseColor="#1C1C1C"
           highlightColor="#2C2C2C"

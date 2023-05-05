@@ -41,7 +41,7 @@ function convertToEnv(object) {
 const insertInEnvFile = ({ params }) => {
   let env = {};
 
-  const envFile = jetpack.read(".env");
+  const envFile = jetpack.read(".env.base");
   const buf = Buffer.from(envFile);
   const parsed = dotenv.parse(buf);
 
@@ -64,23 +64,6 @@ function runProcess(config, cb = () => {}) {
       resolve(result);
     });
   });
-}
-
-function requireEnv(chainEnv) {
-  switch (chainEnv) {
-    case "emulator":
-      return ".env";
-    case "testnet":
-      if (process.env.E2E_GITHUB_ACTIONS_JOB) {
-        verifySetupTestnetE2E();
-        return ".env.testnet.example";
-      } else {
-        verifySetupTestnet();
-        return ".env.testnet";
-      }
-    default:
-      envErr();
-  }
 }
 
 function stopProcess(name, port) {
@@ -178,25 +161,12 @@ pm2.connect(false, async function (err) {
         `View log output: ${chalk.cyanBright("npx pm2 logs emulator")}${"\n"}`
       );
     }
-    const accountsKeys = jetpack.read("./ganache-accounts.json");
-    const parsedAccountsKeys = JSON.parse(accountsKeys);
 
-    const [address, privateKey] = Object.entries(
-      parsedAccountsKeys.private_keys
-    )[0];
+    const envFileGanache = jetpack.read(".env.ganache");
+    const buf = Buffer.from(envFileGanache);
+    const parsed = dotenv.parse(buf);
 
-    insertInEnvFile({
-      params: {
-        PUBLIC_KEY: address,
-        PRIVATE_KEY: privateKey,
-        NETWORK_ID: 4447,
-        TARGET_CHAIN_ID: 1337,
-        MONGO_DB_URL: "mongodb://localhost:27017/CASKCHAIN_DB",
-        API_URL: "http://localhost:4000",
-        BLOCKCHAIN_URL: "http://127.0.0.1:8545",
-        BLOCKCHAIN_WS_URL: "ws://127.0.0.1:8545",
-      },
-    });
+    insertInEnvFile({ params: { ...parsed } });
   } else {
     const envFileMumbai = jetpack.read(".env.mumbai");
     const buf = Buffer.from(envFileMumbai);
@@ -241,10 +211,6 @@ pm2.connect(false, async function (err) {
       if (isExists) {
         clearInterval(timerId);
         spinner.succeed(chalk.greenBright("Contracts created"));
-
-        dotenv.config({
-          path: requireEnv(process.env.CHAIN_ENV),
-        });
 
         //   // ------------------------------------------------------------
         //   // --------------------- DONE -------------------------------
