@@ -2,8 +2,6 @@ const express = require('express')
 const next = require('next')
 const { createProxyMiddleware } = require('http-proxy-middleware')
 
-const logger = require('./src/presentation/utils/logger')
-
 const port = 3001
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
@@ -36,9 +34,9 @@ app
 
     server.listen(port, (err) => {
       if (err) throw err
-      logger.info(`> Ready on http://localhost:${port}`)
+      console.log(`> Ready on http://localhost:${port}`)
     })
   })
   .catch((err) => {
-    logger.error('An error occurred, unable to start the server', err)
+    console.log('Error:::::', err)
   })
