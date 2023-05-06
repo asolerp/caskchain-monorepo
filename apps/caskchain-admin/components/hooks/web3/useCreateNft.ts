@@ -176,7 +176,6 @@ export const hookFactory: CreateNftHookFactory =
       const id = toast.loading('Listing new barrel...')
       const ipfsHash = nftURI.split('/ipfs/')[1]
       try {
-        const gasPrice = await provider?.getGasPrice()
         const nftRes = await axios.get(
           `${process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL}/${ipfsHash}?pinataGatewayToken=${process.env.NEXT_PUBLIC_PINATA_GATEWAY_TOKEN}`
         )
@@ -188,10 +187,9 @@ export const hookFactory: CreateNftHookFactory =
           }
         })
 
-        const txMint = await ccNft?.mintNFT(nftURI, {
-          gasPrice,
-          gasLimit: 100000,
-        })
+        const gasPrice = await provider?.getGasPrice()
+
+        const txMint = await ccNft?.mintNFT(nftURI)
 
         const responseMint: any = await txMint!.wait()
 
@@ -214,11 +212,7 @@ export const hookFactory: CreateNftHookFactory =
 
         const txList = await nftVendor?.listItem(
           tokenId,
-          ethers.utils.parseUnits(price.toString(), 'ether'),
-          {
-            gasPrice,
-            gasLimit: 100000,
-          }
+          ethers.utils.parseUnits(price.toString(), 'ether')
         )
 
         const responseList: any = await txList!.wait()

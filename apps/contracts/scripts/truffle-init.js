@@ -1,5 +1,5 @@
 const dotenv = require("dotenv");
-dotenv.config({ path: `../../../.env.${process.env.NODE_ENV}` });
+dotenv.config({ path: `../../../.env` });
 
 const CCNft = artifacts.require("CCNft");
 const NftOffers = artifacts.require("NftOffers");
