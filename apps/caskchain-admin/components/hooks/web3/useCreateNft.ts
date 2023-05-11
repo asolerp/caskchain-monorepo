@@ -143,7 +143,7 @@ export const hookFactory: CreateNftHookFactory =
           {
             nft: {
               ...nftMeta,
-              image: `${process.env.NEXT_PUBLIC_PINATA_PUBLIC_URL}/${imageData.IpfsHash}`,
+              image: `${process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL}/${imageData.IpfsHash}`,
             },
           },
           { withCredentials: true }

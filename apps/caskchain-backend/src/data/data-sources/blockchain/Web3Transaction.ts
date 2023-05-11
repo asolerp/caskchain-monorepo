@@ -10,8 +10,6 @@ import { Web3Repository } from './Web3Repository'
 import getFractionData from './utils/getFractionData'
 import logger from '../../../presentation/utils/logger'
 
-const USDTAddress = '0x4289231D30cf6cD58aa63aBa44b44E321c43eE57'
-
 export class Web3Transaction extends Web3Repository {
   private async signTransaction(tx: any): Promise<any> {
     return await this.client().eth.accounts.signTransaction(
@@ -73,6 +71,10 @@ export class Web3Transaction extends Web3Repository {
 
       const owner = await CCNft.methods.ownerOf(caskId).call()
 
+      const isCaskChainOwner = await NftVendor.methods
+        .getIsOwnerSameAsCreator(caskId)
+        .call()
+
       const ownerName = await mongoUserDataSource.search(owner.toLowerCase())
 
       const ipfsHash = tokenURI.split('/ipfs/')[1]
@@ -91,8 +93,11 @@ export class Web3Transaction extends Web3Repository {
         })
 
       const listedPrice = await NftVendor.methods.getListing(nft.tokenId).call()
+
+      console.log('LISTED PRICE', listedPrice)
+
       const usdtPrice = await NftVendor.methods
-        .getPriceByToken(USDTAddress, nft.tokenId)
+        .getPriceByToken(process.env.USDT_CONTRACT_ADDRESS, nft.tokenId)
         .call()
 
       const offer = await NftOffers.methods.getNftOffer(nft.tokenId).call()
@@ -104,6 +109,7 @@ export class Web3Transaction extends Web3Repository {
       const cask = {
         tokenId: nft.tokenId,
         creator: nft.creator,
+        isCaskChainOwner,
         owner: {
           address: owner,
           nickname: ownerName?.nickname || '',

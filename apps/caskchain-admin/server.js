@@ -3,7 +3,7 @@ const next = require('next')
 const { createProxyMiddleware } = require('http-proxy-middleware')
 
 const port = process.env.PORT || 3000
-const dev = process.env.NODE_ENV !== 'production'
+const dev = process.env.APP_ENV !== 'mumbai'
 const app = next({ dev })
 const handle = app.getRequestHandler()
 
@@ -17,7 +17,7 @@ const apiPaths = {
   },
 }
 
-const isDevelopment = process.env.NODE_ENV !== 'production'
+const isDevelopment = process.env.APP_ENV !== 'mumbai'
 
 app
   .prepare()

@@ -28,6 +28,10 @@ interface INftOffersStorage {
     address _address
   ) external view returns (uint256);
 
+  function getAddressFromTokenId(
+    uint256 tokenId
+  ) external view returns (address[] memory);
+
   function getIndexOfOfferBidsFromAddress(
     uint256 _tokenId,
     address _address
@@ -64,7 +68,12 @@ interface INftOffersStorage {
 
   function setPendingWithdrawals(address _address, uint256 _amount) external;
 
-  function setOfferBidFromTokenId(uint256 _tokenId, uint256 _bid) external;
+  function setOfferBidFromTokenIdBySender(
+    uint256 _tokenId,
+    uint256 _bid
+  ) external;
+
+  function pushAddressToTokenId(uint256 tokenId, address bidder) external;
 
   function deleteOffersBidsFromTokenId(
     uint256 _tokenId,
@@ -74,6 +83,11 @@ interface INftOffersStorage {
   function deleteIndexOfOfferBidsFromAddress(
     uint256 _tokenId,
     address _address
+  ) external;
+
+  function deleteAddressFromBiddersByTokenIdAndIndex(
+    uint256 tokenId,
+    uint256 index
   ) external;
 
   function deleteTokenIdFromOffer(uint256 _tokenId) external;

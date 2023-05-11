@@ -9,7 +9,7 @@
     "build": "tsc",
     "postinstall": "tsc",
     "test": "jest --watchAll ",
-    "dev": "NODE_ENV='ganache' ts-node-dev --files --ignore-watch node_modules ./src/main.ts"
+    "dev": "APP_ENV='ganache' ts-node-dev --files --ignore-watch node_modules ./src/main.ts"
   },
   "dependencies": {
     "@truffle/hdwallet-provider": "^2.1.4",

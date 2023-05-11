@@ -85,6 +85,7 @@ export type NftVendorContractMethodNames =
   | 'upgradeTo'
   | 'upgradeToAndCall'
   | 'initialize'
+  | 'emitTxFee'
   | 'listItem'
   | 'cancelListing'
   | 'buyItem'
@@ -254,6 +255,19 @@ export interface NftVendorContract {
   initialize(
     _collection: string,
     _creator: string,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param tokenId Type: uint256, Indexed: false
+   * @param royaltyAmount Type: uint256, Indexed: false
+   */
+  emitTxFee(
+    tokenId: BigNumberish,
+    royaltyAmount: BigNumberish,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**
@@ -486,9 +500,11 @@ export interface NftVendorContract {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
+   * @param tokenId Type: uint256, Indexed: false
    * @param royalty Type: uint256, Indexed: false
    */
   _payTxFee(
+    tokenId: BigNumberish,
     royalty: BigNumberish,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;

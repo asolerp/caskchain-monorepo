@@ -1,4 +1,4 @@
-import '../scripts/wdyr'
+// import '../scripts/wdyr'
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { Web3Provider } from '@providers'
@@ -12,6 +12,7 @@ import { configureChains, createClient, WagmiConfig } from 'wagmi'
 import { localhost, polygonMumbai } from 'wagmi/chains'
 import { AnimatePresence } from 'framer-motion'
 import LoadingWrapper from 'components/pages/Loading'
+import useInitAnalytics from '@hooks/common/useInitAnalytics'
 
 const chains = [localhost, polygonMumbai]
 const projectId = '7ba8a5909e41332fb0abe840c1d4923e'
@@ -27,6 +28,7 @@ const wagmiClient = createClient({
 const ethereumClient = new EthereumClient(wagmiClient, chains)
 
 export default function App({ Component, pageProps }: AppProps) {
+  useInitAnalytics()
   return (
     <>
       <ToastContainer />

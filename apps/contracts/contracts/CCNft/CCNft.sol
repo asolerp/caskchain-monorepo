@@ -23,11 +23,6 @@ contract CCNft is
   using SafeMathUpgradeable for uint256;
   using CountersUpgradeable for CountersUpgradeable.Counter;
 
-  // struct NftItem {
-  //   uint256 tokenId;
-  //   address creator;
-  // }
-
   struct ERC20Token {
     address paytoken;
     uint256 costvalue;

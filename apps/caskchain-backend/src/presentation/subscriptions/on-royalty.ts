@@ -7,6 +7,7 @@ export default function OnRoyalty(saveNewRoyalty: SaveRoyaltyUseCase) {
       createdAt: new Date(),
       tokenId: royaltyInfo.tokenId,
       royalty: royaltyInfo.royalty,
+      isERC20: royaltyInfo.isERC20,
     })
   }
 

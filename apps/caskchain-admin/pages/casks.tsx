@@ -8,7 +8,7 @@ import { auth } from 'utils/auth'
 
 export const getServerSideProps = (context: any) => auth(context, 'admin')
 
-const Barrels = () => {
+const Casks = () => {
   const { nfts } = useAllNfts()
   const router = useRouter()
 
@@ -16,20 +16,26 @@ const Barrels = () => {
     <BaseLayout background="bg-gray-200">
       <div className="flex flex-col w-full  px-20 py-10">
         <h1 className="font-semibold text-4xl font-poppins text-black-light">
-          Barrels
+          Casks
         </h1>
         <Spacer size="md" />
         <Button onClick={() => router.push('/create')}>New barrel</Button>
         <Spacer size="md" />
-
-        <NftList
-          barrels={nfts.data}
-          pageSize={nfts.pageSize}
-          onClickPage={(page: string) => nfts.setPage(page)}
-        />
+        {nfts.isLoading || nfts.isValidating ? (
+          <p>Loading ...</p>
+        ) : (
+          <NftList
+            barrels={nfts.data}
+            pageSize={nfts.pageSize}
+            onClickBarrel={(barrelId: string) =>
+              router.push(`/casks/${barrelId}`)
+            }
+            onClickPage={(page: string) => nfts.setPage(page)}
+          />
+        )}
       </div>
     </BaseLayout>
   )
 }
 
-export default Barrels
+export default Casks

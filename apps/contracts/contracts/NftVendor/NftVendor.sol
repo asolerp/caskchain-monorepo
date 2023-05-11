@@ -4,13 +4,14 @@ pragma solidity ^0.8.7;
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 import "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/common/ERC2981Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
-import "./NftVendorStorage.sol";
+import "./INftVendorStorage.sol";
 
 // Check out https://github.com/Fantom-foundation/Artion-Contracts/blob/5c90d2bc0401af6fb5abf35b860b762b31dfee02/contracts/FantomMarketplace.sol
 // For a full decentralized nft marketplace
@@ -29,12 +30,16 @@ error PriceMustBeAboveZero();
 
 contract NftVendor is
   Initializable,
-  NftVendorStorage,
   ERC2981Upgradeable,
   ReentrancyGuardUpgradeable,
   OwnableUpgradeable,
   UUPSUpgradeable
 {
+  INftVendorStorage private _vendorStorage;
+
+  address public collection;
+  address public creator;
+
   event ItemListed(
     address indexed from,
     address indexed nftAddress,
@@ -55,10 +60,12 @@ contract NftVendor is
     uint256 price
   );
 
-  event TxFeePaid(uint256 indexed tokenId, uint256 royalty);
+  event TxFeePaid(uint256 indexed tokenId, uint256 royalty, bool isERC20);
 
   modifier notListed(uint256 tokenId) {
-    Listing memory listing = s_listings[tokenId];
+    INftVendorStorage.Listing memory listing = _vendorStorage.getListing(
+      tokenId
+    );
     if (listing.price > 0) {
       revert AlreadyListed(collection, tokenId);
     }
@@ -66,7 +73,9 @@ contract NftVendor is
   }
 
   modifier isListed(uint256 tokenId) {
-    Listing memory listing = s_listings[tokenId];
+    INftVendorStorage.Listing memory listing = _vendorStorage.getListing(
+      tokenId
+    );
     if (listing.price <= 0) {
       revert NotListed(collection, tokenId);
     }
@@ -96,13 +105,15 @@ contract NftVendor is
 
   function initialize(
     address _collection,
-    address _creator
+    address _creator,
+    address _storageAddress
   ) public initializer {
+    __Ownable_init();
+    __UUPSUpgradeable_init();
     collection = _collection;
     creator = _creator;
-    __Ownable_init();
+    _vendorStorage = INftVendorStorage(_storageAddress);
     _setDefaultRoyalty(msg.sender, 1000);
-    s_excludedList[msg.sender] = true;
   }
 
   function _authorizeUpgrade(address) internal override onlyOwner {}
@@ -117,23 +128,85 @@ contract NftVendor is
    * @param price sale price for each item
    */
 
-  function emitTxFee(uint256 tokenId, uint256 royaltyAmount) public {
-    emit TxFeePaid(tokenId, royaltyAmount);
+  /////////////////////
+  // Getter Functions //
+  /////////////////////
+
+  function getIsExcluded() public view returns (bool) {
+    return _vendorStorage.getIsExcluded();
+  }
+
+  function getIsOwnerSameAsCreator(
+    uint256 tokenId
+  ) external view returns (bool) {
+    address owner = IERC721Upgradeable(collection).ownerOf(tokenId);
+    return owner == creator;
+  }
+
+  function getPriceByToken(
+    address tokenAddress,
+    uint256 tokenId
+  ) public view returns (uint256) {
+    return _vendorStorage.getPriceByToken(tokenAddress, tokenId);
+  }
+
+  function getListing(
+    uint256 _tokenId
+  ) public view returns (INftVendorStorage.Listing memory) {
+    return _vendorStorage.getListing(_tokenId);
+  }
+
+  function getAllListedNFTs()
+    public
+    view
+    returns (INftVendorStorage.Listing[] memory)
+  {
+    uint allItemsCounts = _vendorStorage.getAllListedNftsLength();
+    uint listedItemsCounter = _vendorStorage.getCurrentListedItemsCounter();
+    uint currentIndex = 0;
+    INftVendorStorage.Listing[] memory items = new INftVendorStorage.Listing[](
+      listedItemsCounter
+    );
+
+    for (uint i = 0; i < allItemsCounts; i++) {
+      uint tokenId = tokenByIndex(i);
+      INftVendorStorage.Listing memory item = getListing(tokenId);
+      items[currentIndex] = item;
+      currentIndex += 1;
+    }
+
+    return items;
+  }
+
+  function getRoyalty(uint256 _tokenId) public view returns (uint256) {
+    INftVendorStorage.Listing memory listedItem = getListing(_tokenId);
+    (, uint256 royalty) = royaltyInfo(_tokenId, listedItem.price);
+    return royalty;
+  }
+
+  function emitTxFee(
+    uint256 tokenId,
+    uint256 royaltyAmount,
+    bool isERC20
+  ) external {
+    emit TxFeePaid(tokenId, royaltyAmount, isERC20);
   }
 
   function listItem(
     uint256 tokenId,
     uint256 price
   ) external notListed(tokenId) isOwner(tokenId, msg.sender) {
-    if (price <= 0) {
-      revert PriceMustBeAboveZero();
-    }
+    // Check the value of `price` and revert if it's zero (since it cannot be negative)
+    require(price > 0, "Price must be above zero");
+
     IERC721Upgradeable nft = IERC721Upgradeable(collection);
-    if (nft.getApproved(tokenId) != address(this)) {
-      revert NotApprovedForMarketplace();
-    }
-    s_listings[tokenId] = Listing(tokenId, price, msg.sender);
-    _addTokenToAllTokensEnumeration(tokenId);
+    require(
+      nft.getApproved(tokenId) == address(this),
+      "Not approved for marketplace"
+    );
+
+    _vendorStorage.setListing(tokenId, price, msg.sender);
+    _vendorStorage.addTokenToAllTokensEnumeration(tokenId);
     emit ItemListed(msg.sender, collection, tokenId, price);
   }
 
@@ -145,8 +218,8 @@ contract NftVendor is
   function cancelListing(
     uint256 tokenId
   ) external isOwner(tokenId, msg.sender) isListed(tokenId) {
-    delete (s_listings[tokenId]);
-    _removeTokenFromAllListedTokensEnumeration(tokenId);
+    _vendorStorage.deleteListing(tokenId);
+    _vendorStorage.removeTokenFromAllListedTokensEnumeration(tokenId);
     emit ItemCanceled(msg.sender, collection, tokenId);
   }
 
@@ -167,15 +240,18 @@ contract NftVendor is
     isNotOwner(tokenId, msg.sender)
     nonReentrant
   {
-    Listing memory listedItem = s_listings[tokenId];
+    INftVendorStorage.Listing memory listedItem = _vendorStorage.getListing(
+      tokenId
+    );
 
     require(msg.value >= listedItem.price, "PriceNotMet");
 
     address owner = IERC721Upgradeable(collection).ownerOf(tokenId);
-    uint256 royaltyAmount = getRoyalty(tokenId);
+    uint256 royaltyAmount;
     bool isExcluded = getIsExcluded();
 
     if (!isExcluded && owner != creator) {
+      royaltyAmount = getRoyalty(tokenId);
       _payTxFee(tokenId, royaltyAmount);
     }
 
@@ -184,61 +260,62 @@ contract NftVendor is
     }("");
     require(success, "Transfer failed");
 
-    _removeTokenFromAllListedTokensEnumeration(tokenId);
     IERC721Upgradeable(collection).safeTransferFrom(
       listedItem.seller,
       msg.sender,
       tokenId
     );
 
-    delete (s_listings[tokenId]);
+    _vendorStorage.deleteListing(tokenId);
+    _vendorStorage.removeTokenFromAllListedTokensEnumeration(tokenId);
 
     emit ItemBought(msg.sender, listedItem.seller, tokenId, listedItem.price);
-  }
-
-  function payERC20Royalties(
-    uint256 _tokenId,
-    uint256 _nftPrice,
-    address _erc20Token
-  ) private {
-    IERC20Upgradeable token = IERC20Upgradeable(_erc20Token);
-    address owner = IERC721Upgradeable(collection).ownerOf(_tokenId);
-    (, uint256 royalty) = royaltyInfo(_tokenId, _nftPrice);
-    bool isEscluded = getIsExcluded();
-    if (isEscluded) {
-      token.transferFrom(msg.sender, owner, _nftPrice);
-    } else {
-      token.transferFrom(msg.sender, creator, royalty);
-      token.transferFrom(msg.sender, owner, _nftPrice - royalty);
-    }
   }
 
   function buyNFTWithERC20(
     uint256 tokenId,
     address erc20Token
   ) external isListed(tokenId) isNotOwner(tokenId, msg.sender) nonReentrant {
-    Listing memory listedItem = s_listings[tokenId];
+    INftVendorStorage.Listing memory listedItem = getListing(tokenId);
+    uint256 nftPrice = getPriceByToken(erc20Token, tokenId);
     IERC20Upgradeable token = IERC20Upgradeable(erc20Token);
+    uint256 royaltyAmount;
 
-    uint256 nftPrice = s_priceTokens[erc20Token][tokenId];
     require(
       token.allowance(msg.sender, address(this)) >= nftPrice,
       "Insufficient allowance."
     );
 
-    require(token.balanceOf(msg.sender) >= nftPrice, "Insufficient balance.");
+    if (!getIsExcluded()) {
+      address owner = IERC721Upgradeable(collection).ownerOf(tokenId);
+      if (owner != creator) {
+        (, royaltyAmount) = royaltyInfo(tokenId, nftPrice);
+        payERC20Royalties(erc20Token, tokenId, royaltyAmount);
+      }
+    }
 
-    payERC20Royalties(tokenId, nftPrice, erc20Token);
-    //token.transferFrom(msg.sender, owner, nftPrice);
+    token.transferFrom(msg.sender, listedItem.seller, nftPrice - royaltyAmount);
 
-    delete (s_listings[tokenId]);
     IERC721Upgradeable(collection).safeTransferFrom(
       listedItem.seller,
       msg.sender,
       tokenId
     );
-    _removeTokenFromAllListedTokensEnumeration(tokenId);
+
+    _vendorStorage.deleteListing(tokenId);
+    _vendorStorage.removeTokenFromAllListedTokensEnumeration(tokenId);
+
     emit ItemBought(msg.sender, collection, tokenId, listedItem.price);
+  }
+
+  function payERC20Royalties(
+    address _erc20Token,
+    uint256 _tokenId,
+    uint256 _royalty
+  ) private {
+    IERC20Upgradeable token = IERC20Upgradeable(_erc20Token);
+    token.transferFrom(msg.sender, creator, _royalty);
+    emit TxFeePaid(_tokenId, _royalty, true);
   }
 
   /*
@@ -251,11 +328,16 @@ contract NftVendor is
     uint256 tokenId,
     uint256 newPrice
   ) external isListed(tokenId) nonReentrant isOwner(tokenId, msg.sender) {
-    //We should check the value of `newPrice` and revert if it's below zero (like we also check in `listItem()`)
-    if (newPrice <= 0) {
-      revert PriceMustBeAboveZero();
-    }
-    s_listings[tokenId].price = newPrice;
+    // Check the value of `newPrice` and revert if it's zero (since it cannot be negative)
+    require(newPrice > 0, "Price must be above zero");
+
+    IERC721Upgradeable nft = IERC721Upgradeable(collection);
+    require(
+      nft.getApproved(tokenId) == address(this),
+      "Not approved for marketplace"
+    );
+
+    _vendorStorage.setListing(tokenId, newPrice, msg.sender);
     emit ItemListed(msg.sender, collection, tokenId, newPrice);
   }
 
@@ -268,85 +350,41 @@ contract NftVendor is
    * @notice Method for withdrawing proceeds from sales
    */
   function withdrawProceeds() external {
-    uint256 proceeds = s_proceeds[msg.sender];
+    uint256 proceeds = _vendorStorage.getProcceds(msg.sender);
     if (proceeds <= 0) {
       revert NoProceeds();
     }
-    s_proceeds[msg.sender] = 0;
+    _vendorStorage.setProcceds(msg.sender, 0);
     (bool sent, ) = msg.sender.call{ value: proceeds }("");
     require(sent, "Failed to withdraw");
   }
 
   function totalSupply() public view returns (uint256) {
-    return _allListedNfts.length;
+    return _vendorStorage.getAllListedNftsLength();
   }
 
   function tokenByIndex(uint index) public view returns (uint) {
     require(index < totalSupply(), "Index out of bounds");
-    return _allListedNfts[index];
+    return _vendorStorage.getListedNftsByIndex(index);
   }
 
-  /////////////////////
-  // Getter Functions //
-  /////////////////////
-
-  function getPriceByToken(
-    address tokenAddress,
-    uint256 tokenId
-  ) external view returns (uint256) {
-    return s_priceTokens[tokenAddress][tokenId];
-  }
-
-  function getAcceptedERC20tokens() external view returns (address[] memory) {
-    return _allERC20Tokens;
-  }
-
-  function getListing(uint256 tokenId) external view returns (Listing memory) {
-    return s_listings[tokenId];
-  }
-
-  function getAllListedNftsId() external view returns (uint256[] memory) {
-    return _allListedNfts;
-  }
-
-  function getAllListedNFTs() external view returns (Listing[] memory) {
-    uint allItemsCounts = _allListedNfts.length;
-    uint listedItemsCounter = getCurrentListedItemsCounter();
-    uint currentIndex = 0;
-    Listing[] memory items = new Listing[](listedItemsCounter);
-
-    for (uint i = 0; i < allItemsCounts; i++) {
-      uint tokenId = tokenByIndex(i);
-      Listing storage item = s_listings[tokenId];
-      items[currentIndex] = item;
-      currentIndex += 1;
-    }
-
-    return items;
-  }
-
-  function getRoyalty(uint256 _tokenId) public view returns (uint256) {
-    Listing memory listedItem = s_listings[_tokenId];
-    (, uint256 royalty) = royaltyInfo(_tokenId, listedItem.price);
-    return royalty;
-  }
-
-  function getProceeds(address seller) external view returns (uint256) {
-    return s_proceeds[seller];
-  }
-
-  function getIsExcluded() public view returns (bool) {
-    bool isExcluded = s_excludedList[msg.sender] == true;
-    return isExcluded;
+  function setExcludedFromList(
+    address _address,
+    bool _excluded
+  ) external onlyOwner {
+    _vendorStorage.setExcludedFromList(_address, _excluded);
   }
 
   function addERC20Token(address erc20Token) external onlyOwner {
-    s_acceptedTokens[erc20Token] = true;
-    _allERC20Tokens.push(erc20Token);
+    // Check if the given address is a valid ERC20 token contract
+    // require(_isERC20(erc20Token), "Not a valid ERC20 token");
+
+    _vendorStorage.setAcceptedToken(erc20Token, true);
+    _vendorStorage.pushToAllERC20Tokens(erc20Token);
   }
 
   function removeERC20Token(address erc20Token) external onlyOwner {
-    s_acceptedTokens[erc20Token] = false;
+    _vendorStorage.setAcceptedToken(erc20Token, false);
   }
 
   function updateERC20TokenPrice(
@@ -354,7 +392,12 @@ contract NftVendor is
     address erc20Token,
     uint256 price
   ) external isOwner(tokenId, msg.sender) {
-    s_priceTokens[erc20Token][tokenId] = price;
+    IERC721Upgradeable nft = IERC721Upgradeable(collection);
+    require(
+      nft.getApproved(tokenId) == address(this),
+      "Not approved for marketplace"
+    );
+    _vendorStorage.setERC20PriceByTokenId(erc20Token, tokenId, price);
   }
 
   function calculateRoyaltyForAcceptedOffer(
@@ -365,28 +408,15 @@ contract NftVendor is
     return royalty;
   }
 
+  // function _isERC20(address erc20Token) private view returns (bool) {
+  //   bytes4 expectedInterfaceId = 0x36372b07; // ERC20 interface ID: bytes4(keccak256("totalSupply()")) ^ bytes4(keccak256("balanceOf(address)")) ^ bytes4(keccak256("transfer(address,uint256)")) ^ bytes4(keccak256("allowance(address,address)")) ^ bytes4(keccak256("approve(address,uint256)")) ^ bytes4(keccak256("transferFrom(address,address,uint256)"))
+  //   IERC165Upgradeable token = IERC165Upgradeable(erc20Token);
+  //   return token.supportsInterface(expectedInterfaceId);
+  // }
+
   function _payTxFee(uint256 tokenId, uint256 royalty) public {
     (bool success1, ) = payable(creator).call{ value: royalty }("");
     require(success1);
-    emit TxFeePaid(tokenId, royalty);
-  }
-
-  function _addTokenToAllTokensEnumeration(uint tokenId) private {
-    _idToNftIndex[tokenId] = _allListedNfts.length;
-    incrementListedItems();
-    _allListedNfts.push(tokenId);
-  }
-
-  function _removeTokenFromAllListedTokensEnumeration(uint tokenId) private {
-    uint lastTokenIndex = _allListedNfts.length - 1;
-    uint tokenIndex = _idToNftIndex[tokenId];
-    uint lastTokenId = _allListedNfts[lastTokenIndex];
-
-    _allListedNfts[tokenIndex] = lastTokenId;
-    _idToNftIndex[lastTokenId] = tokenIndex;
-    decrementListedItems();
-
-    delete _idToNftIndex[tokenId];
-    _allListedNfts.pop();
+    emit TxFeePaid(tokenId, royalty, false);
   }
 }

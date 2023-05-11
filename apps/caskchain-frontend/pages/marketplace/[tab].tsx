@@ -1,10 +1,11 @@
-import { useAllNfts } from '@hooks/web3'
+import { useAccount, useAllNfts } from '@hooks/web3'
 import { BaseLayout } from '@ui'
 
 import BarrelNft from '@ui/ntf/item/BarrelNft'
 import { Nft } from '@_types/nft'
 import { NextPage } from 'next'
 import FlatList from 'flatlist-react'
+import { getCookie } from 'cookies-next'
 
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -26,10 +27,13 @@ function classNames(...classes: string[]) {
 }
 
 const NFTCaskWorld: NextPage = () => {
+  const token = getCookie('token') as string
   const { nfts } = useAllNfts()
+  const { account } = useAccount()
   const {
     state: { user },
   } = useGlobal()
+
   const router = useRouter()
   const _selectedTab = (router.query.tab as string) ?? 'search'
   const selectedIndex = tabs.map((t) => t.key).indexOf(_selectedTab) ?? 0
@@ -97,7 +101,7 @@ const NFTCaskWorld: NextPage = () => {
           </nav>
         </div>
         <div className="mx-auto mt-20">
-          <div className="grid grid-cols-4 gap-x-4 gap-y-4 flex-wrap mx-auto lg:max-w-none">
+          <div className="grid grid-cols-4 gap-x-5 gap-y-4 flex-wrap mx-auto lg:max-w-none">
             <>
               {nfts.isLoading ? (
                 <BarrelsSkeleton />
@@ -114,6 +118,9 @@ const NFTCaskWorld: NextPage = () => {
                             onPressFavorite={(nftId: string) =>
                               nfts.handleAddFavorite(nftId)
                             }
+                            showFavorite={
+                              token && user?.email && account.isConnected
+                            }
                             isFavorite={hasFavorite(nft?.tokenId)}
                             blow
                           />
@@ -123,8 +130,8 @@ const NFTCaskWorld: NextPage = () => {
                     renderWhenEmpty={() => {
                       return (
                         <>
-                          {!nfts.isLoading && (
-                            <div className="w-full flex flex-col border border-gray-700 p-6 rounded-lg justify-center items-center">
+                          {!nfts.isLoading && !nfts.isValidating && (
+                            <div className="col-span-4 flex flex-col border border-gray-700 p-6 rounded-lg justify-center items-center">
                               <h3 className="font-poppins text-2xl text-gray-300">
                                 No se ha encontrado ningna barrica
                               </h3>

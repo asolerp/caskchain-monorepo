@@ -17,6 +17,7 @@ import { useGlobal } from '@providers/global'
 import { addressSimplifier } from 'utils/addressSimplifier'
 import Link from 'next/link'
 import BarrelNft from '@ui/ntf/item/BarrelNft'
+import { ipfsImageParser } from 'utils/ipfsImageParser'
 
 const tabs = [
   { name: 'Your Collection', href: '#', key: 'my-collection' },
@@ -127,7 +128,7 @@ const Profile: NextPage = () => {
                                 <Image
                                   width={300}
                                   height={100}
-                                  src={nft.meta.image}
+                                  src={ipfsImageParser(nft.meta.image)}
                                   alt=""
                                   className={classNames(
                                     nft.tokenId === nfts.activeNft?.tokenId
@@ -213,7 +214,7 @@ const Profile: NextPage = () => {
                         <Image
                           width={350}
                           height={50}
-                          src={nfts.activeNft.meta.image}
+                          src={ipfsImageParser(nfts.activeNft.meta.image)}
                           alt=""
                           className="object-cover w-full"
                         />

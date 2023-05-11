@@ -21,10 +21,9 @@ contract NftOffersStorage is Ownable {
   mapping(uint256 => mapping(address => uint256)) internal offerBidsFromTokenId;
   // NFT Id => Account Address => Index
   mapping(uint256 => mapping(address => uint256))
-    internal indexOfofferBidsFromAddress;
-  // NFT Id => Address => bool
-  mapping(uint256 => mapping(address => bool)) internal hasBidFromTokenId;
-  mapping(address => uint256) internal pendingWithdrawals;
+    internal indexOfOfferBidsFromAddress;
+  // NFT Id => Addresses
+  mapping(uint256 => address[]) public addressesWithBidsFromTokenId;
 
   /////////////////////
   // MODIFIERS //
@@ -64,12 +63,6 @@ contract NftOffersStorage is Ownable {
     return tokenIdToOffer[_tokenId];
   }
 
-  function getBidFromBidderByTokenId(
-    uint256 _tokenId
-  ) public view returns (bool) {
-    return hasBidFromTokenId[_tokenId][msg.sender];
-  }
-
   function getOffersBidsFromTokenId(
     uint256 _tokenId,
     address _address
@@ -77,23 +70,23 @@ contract NftOffersStorage is Ownable {
     return offerBidsFromTokenId[_tokenId][_address];
   }
 
+  function getAddressFromTokenId(
+    uint256 tokenId
+  ) public view returns (address[] memory) {
+    return addressesWithBidsFromTokenId[tokenId];
+  }
+
   function getIndexOfOfferBidsFromAddress(
     uint256 _tokenId,
     address _address
   ) public view returns (uint256) {
-    return indexOfofferBidsFromAddress[_tokenId][_address];
+    return indexOfOfferBidsFromAddress[_tokenId][_address];
   }
 
   function getHighestBidByTokenId(
     uint256 _tokenId
   ) public view returns (uint256) {
     return tokenIdToOffer[_tokenId].highestBid;
-  }
-
-  function getPendingWithdrawalsByAddress(
-    address _address
-  ) public view returns (uint256) {
-    return pendingWithdrawals[_address];
   }
 
   // SETTERS
@@ -103,15 +96,7 @@ contract NftOffersStorage is Ownable {
     address _address,
     uint256 _index
   ) public onlyAllowed {
-    indexOfofferBidsFromAddress[_tokenId][_address] = _index;
-  }
-
-  function setHasBidFromTokenId(
-    uint256 _tokenId,
-    address _address,
-    bool _hasBid
-  ) public onlyAllowed {
-    hasBidFromTokenId[_tokenId][_address] = _hasBid;
+    indexOfOfferBidsFromAddress[_tokenId][_address] = _index;
   }
 
   function setOfferByTokenId(
@@ -130,18 +115,18 @@ contract NftOffersStorage is Ownable {
     tokenIdToOffer[_tokenId].highestBid = _bid;
   }
 
-  function setPendingWithdrawals(
-    address _address,
-    uint256 _amount
-  ) public onlyAllowed {
-    pendingWithdrawals[_address] = _amount;
-  }
-
-  function setOfferBidFromTokenId(
+  function setOfferBidFromTokenIdBySender(
     uint256 _tokenId,
     uint256 _bid
   ) public onlyAllowed {
     offerBidsFromTokenId[_tokenId][msg.sender] = _bid;
+  }
+
+  function pushAddressToTokenId(
+    uint256 tokenId,
+    address bidder
+  ) public onlyAllowed {
+    addressesWithBidsFromTokenId[tokenId].push(bidder);
   }
 
   function deleteOffersBidsFromTokenId(
@@ -151,11 +136,21 @@ contract NftOffersStorage is Ownable {
     delete offerBidsFromTokenId[_tokenId][_address];
   }
 
+  function deleteAddressFromBiddersByTokenIdAndIndex(
+    uint256 tokenId,
+    uint256 index
+  ) public onlyAllowed {
+    addressesWithBidsFromTokenId[tokenId][index] = addressesWithBidsFromTokenId[
+      tokenId
+    ][addressesWithBidsFromTokenId[tokenId].length - 1];
+    addressesWithBidsFromTokenId[tokenId].pop();
+  }
+
   function deleteIndexOfOfferBidsFromAddress(
     uint256 _tokenId,
     address _address
   ) public onlyAllowed {
-    delete indexOfofferBidsFromAddress[_tokenId][_address];
+    delete indexOfOfferBidsFromAddress[_tokenId][_address];
   }
 
   function deleteTokenIdFromOffer(uint256 _tokenId) public onlyAllowed {

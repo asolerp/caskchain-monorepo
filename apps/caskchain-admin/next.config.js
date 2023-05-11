@@ -44,7 +44,11 @@ const nextConfig = withTM({
     ]
   },
   images: {
-    domains: ['res.cloudinary.com', 'gateway.pinata.cloud'],
+    domains: [
+      'res.cloudinary.com',
+      'gateway.pinata.cloud',
+      'ivory-worthy-sparrow-388.mypinata.cloud',
+    ],
   },
   transpilePackages: ['caskchain-lib, caskchain-ui'],
   swcMinify: true,
@@ -58,6 +62,7 @@ const nextConfig = withTM({
     ['NEXT_PUBLIC_PINATA_GATEWAY_TOKEN']: process.env.PINATA_GATEWAY_TOKEN,
     ['NEXT_PUBLIC_PINATA_PUBLIC_URL']: process.env.PINATA_PUBLIC_URL,
     ['NEXT_PUBLIC_PINATA_GATEWAY_URL']: process.env.PINATA_GATEWAY_URL,
+    ['NEXT_PUBILC_USDT_CONTRACT_ADDRESS']: process.env.USDT_CONTRACT_ADDRESS,
   },
 })
 

@@ -1,39 +1,30 @@
 import { useGlobal } from '@providers/global'
-import { GlobalTypes } from '@providers/global/utils'
-import { AcceptedChainIds } from '@providers/web3/utils'
 import { CryptoHookFactory } from '@_types/hooks'
 import { Nft } from '@_types/nft'
 import axios from 'axios'
-import { getCookie } from 'cookies-next'
 import { ethers } from 'ethers'
-import axiosClient from 'lib/fetcher/axiosInstance'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import useSWR from 'swr'
-import { useNetwork, useProvider } from 'wagmi'
+import { useProvider } from 'wagmi'
 import useLoading from '@hooks/common/useLoading'
-
-import useDebounce from '@hooks/common/useDebounce'
 
 type CaskNftHookFactory = CryptoHookFactory<Nft[]>
 
 export type UseCaskNftsHook = ReturnType<CaskNftHookFactory>
 
 export const hookFactory: CaskNftHookFactory =
-  ({ nftOffers, nftVendor, nftFractionsVendor, nftFractionToken }) =>
+  ({ ccNft, nftVendor }) =>
   ({ caskId }) => {
     const [tokenAmmount, setTokenAmmount] = useState<number | undefined>(0)
-    const [totalFavorites, setTotalFavorites] = useState<number | undefined>(0)
-    const { chain } = useNetwork()
+    const [listPrice, setListPrice] = useState<number>(0)
+    const [erc20ListPrice, setERC20ListPrice] = useState<number>(0)
     const provider = useProvider()
     const [isFavorite, setIsFavorite] = useState<boolean>(false)
 
     const {
       state: { user },
-      dispatch,
     } = useGlobal()
-
-    const token = getCookie('token')
 
     useEffect(() => {
       if (user?.favorites?.[caskId]) {
@@ -47,6 +38,7 @@ export const hookFactory: CaskNftHookFactory =
       data,
       isLoading: isLoadingNft,
       isValidating: isValidatingNft,
+      mutate: refetchNft,
     } = useSWR(
       'web3/useCaskNft',
       async () => {
@@ -104,203 +96,122 @@ export const hookFactory: CaskNftHookFactory =
       loading: isLoading || latestOffersIsLoading || salesHistoryIsLoading,
     })
 
-    const _nftOffers = nftOffers
     const _nftVendor = nftVendor
-    const _nftFractionsVendor = nftFractionsVendor
-
-    const isUserNeededDataFilled =
-      user?.email && token && AcceptedChainIds.some((id) => id === chain?.id)
-    const hasOffersFromUser = data?.offer?.bidders?.some(
-      (bidder: string) => bidder === user?.address
-    )
-
-    useEffect(() => {
-      setTotalFavorites(totalFavoritesData)
-    }, [totalFavoritesData])
-
-    const handleAddFavorite = async () => {
-      const response = await axiosClient
-        .post(`/api/casks/${caskId}/favorite`, {
-          userId: user?._id,
-        })
-        .catch((err: any) => {
-          toast.error(err?.response?.data?.message)
-        })
-      setTotalFavorites(response?.data?.totalFavorites)
-      setIsFavorite(!isFavorite)
-    }
-
-    const debounceAddFavorite = useDebounce(() => handleAddFavorite(), 300)
-
-    const handleShareCask = () => {
-      return
-    }
-
-    const handleUserState = useCallback(() => {
-      if (
-        provider.chains &&
-        provider.chains.some((c: any) =>
-          AcceptedChainIds.some((aChainId) => aChainId === c)
-        )
-      ) {
-        return dispatch({
-          type: GlobalTypes.SET_NETWORK_MODAL,
-          payload: { status: true },
-        })
-      }
-      if (!user?.email) {
-        return
-      }
-      if (!token) {
-        return
-      }
-    }, [dispatch, token, user?.email])
 
     const hasFractions = data?.fractions?.total
 
-    const buyNft = useCallback(
-      async (tokenId: number, price: string) => {
-        try {
-          if (isUserNeededDataFilled) {
-            const result = await _nftVendor?.buyItem(tokenId, {
-              value: price.toString(),
-            })
-            await toast.promise(result!.wait(), {
-              pending: 'Processing transaction',
-              success: 'Nft is yours! Go to Profile page',
-              error: 'Processing error',
-            })
-          } else {
-            handleUserState()
-          }
-        } catch (e: any) {
-          if (e.code === -32603) {
-            toast.error('🏦 Insufficient funds', {
-              position: 'top-right',
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: 'light',
-            })
-          }
-          console.error(e.message)
-        }
-      },
-      [_nftVendor, handleUserState, isUserNeededDataFilled]
-    )
-
-    const buyFractionizedNft = useCallback(async () => {
+    const updateERC20Price = async () => {
+      const id = toast.loading('Pricing barrel...')
       try {
-        if (isUserNeededDataFilled) {
-          const listingPrice = data?.fractions?.listingPrice.toString()
+        const gasPrice = await provider?.getGasPrice()
 
-          const _signedTokenContract = await nftFractionToken(
-            data?.fractions?.tokenAddress
-          )
-
-          await _signedTokenContract.purchase({
-            value: listingPrice,
-          })
-        } else {
-          handleUserState()
-        }
-      } catch (err) {
-        console.log(err)
-      }
-    }, [
-      isUserNeededDataFilled,
-      data?.fractions?.tokenAddress,
-      data?.fractions?.listingPrice,
-      handleUserState,
-    ])
-
-    const buyFractions = useCallback(
-      async (
-        tokenAddress: string,
-        unitPrice: number,
-        numberOfFractions: number
-      ) => {
-        try {
-          if (isUserNeededDataFilled) {
-            const value =
-              Number(
-                ethers.utils.parseUnits(
-                  numberOfFractions!.toString() as string,
-                  'ether'
-                )
-              ) / unitPrice
-
-            await _nftFractionsVendor?.buyTokens(tokenAddress, {
-              value: value.toString(),
-            })
-          } else {
-            handleUserState()
+        const txApprove = await ccNft?.approve(
+          nftVendor!.address as string,
+          caskId,
+          {
+            gasPrice,
+            gasLimit: 100000,
           }
-        } catch (err) {
-          console.error(err)
-        }
-      },
-      [isUserNeededDataFilled, _nftFractionsVendor, handleUserState]
-    )
+        )
 
-    const makeOffer = useCallback(
-      async (bid: string) => {
-        try {
-          if (isUserNeededDataFilled) {
-            const result = await _nftOffers?.makeOffer(caskId, {
-              value: ethers.utils.parseUnits(bid.toString(), 'ether'),
-            })
-            await toast.promise(result!.wait(), {
-              pending: 'Processing transaction',
-              success: 'You are the highest bidder!',
-              error: 'Processing error',
-            })
-          } else {
-            handleUserState()
-          }
-        } catch (e: any) {
-          console.error('ERROR', e)
-          toast.info('🏦 There is a higher offer. Bid harder!')
-        }
-      },
-      [caskId, _nftOffers, handleUserState, isUserNeededDataFilled]
-    )
+        const responseApprove: any = await txApprove!.wait()
 
-    const cancelOffer = useCallback(async () => {
-      try {
-        const result = await _nftOffers?.withdraw(caskId)
-        await toast.promise(result!.wait(), {
-          pending: 'Processing transaction',
-          success: 'Your offer is canceled',
-          error: 'Processing error',
+        if (responseApprove.status !== 1) throw new Error('Approve failed')
+
+        const txList = await _nftVendor?.updateERC20TokenPrice(
+          caskId,
+          process.env.NEXT_PUBILC_USDT_CONTRACT_ADDRESS,
+          ethers.utils.parseUnits(erc20ListPrice.toString(), 'ether')
+        )
+
+        const responseList: any = await txList!.wait()
+
+        if (responseList.status !== 1) throw new Error('Listing failed')
+
+        await refetchNft()
+
+        toast.update(id, {
+          render: 'Barrel price updated',
+          type: 'success',
+          isLoading: false,
+          closeOnClick: true,
+          autoClose: 2000,
         })
       } catch (e: any) {
+        toast.update(id, {
+          render: 'Something went wrong',
+          type: 'error',
+          isLoading: false,
+          closeOnClick: true,
+          autoClose: 2000,
+        })
         console.log(e)
       }
-    }, [_nftOffers, caskId])
+    }
+
+    const updateNftPrice = async () => {
+      const id = toast.loading('Pricing barrel...')
+      try {
+        const gasPrice = await provider?.getGasPrice()
+
+        const txApprove = await ccNft?.approve(
+          nftVendor!.address as string,
+          caskId,
+          {
+            gasPrice,
+            gasLimit: 100000,
+          }
+        )
+
+        const responseApprove: any = await txApprove!.wait()
+
+        if (responseApprove.status !== 1) throw new Error('Approve failed')
+
+        const txList = await _nftVendor?.updateListingPrice(
+          caskId,
+          ethers.utils.parseUnits(listPrice.toString(), 'ether')
+        )
+
+        const responseList: any = await txList!.wait()
+
+        if (responseList.status !== 1) throw new Error('Listing failed')
+
+        await refetchNft()
+
+        toast.update(id, {
+          render: 'Barrel price updated',
+          type: 'success',
+          isLoading: false,
+          closeOnClick: true,
+          autoClose: 2000,
+        })
+      } catch (e: any) {
+        toast.update(id, {
+          render: 'Something went wrong',
+          type: 'error',
+          isLoading: false,
+          closeOnClick: true,
+          autoClose: 2000,
+        })
+        console.log(e)
+      }
+    }
 
     return {
       data,
-      buyNft,
-      makeOffer,
+      updateNftPrice,
+      updateERC20Price,
+      setERC20ListPrice,
+      erc20ListPrice,
       isLoading,
       isFavorite,
-      cancelOffer,
-      buyFractions,
       latestOffers,
       isValidating,
+      setListPrice,
       tokenAmmount,
       hasFractions,
       salesHistory,
-      totalFavorites,
-      handleShareCask,
       setTokenAmmount,
-      hasOffersFromUser,
-      buyFractionizedNft,
-      debounceAddFavorite,
-      isUserNeededDataFilled,
+      totalFavorites: totalFavoritesData?.totalFavorites,
     }
   }

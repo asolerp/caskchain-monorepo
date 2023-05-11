@@ -1,15 +1,19 @@
 import { Nft, Trait } from '@_types/nft'
 import { ethers } from 'ethers'
 import PaginationBar from './PaginationBar'
+import { addressSimplifier, ipfsImageParser } from 'caskchain-lib'
+import Image from 'next/image'
 
 const NftList = ({
   barrels,
   pageSize,
   onClickPage,
+  onClickBarrel,
 }: {
   barrels: any
   pageSize: number
   onClickPage: (page: string) => void
+  onClickBarrel: (barrelId: string) => void
 }) => {
   const startIndex = (barrels.currentPage - 1) * pageSize
   const endIndex =
@@ -30,7 +34,13 @@ const NftList = ({
         <thead className="text-xs text-gray-700 uppercase bg-transparent dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" className="px-6 py-3">
+              <p className="font-poppins font-semibold text-lg">NFT</p>
+            </th>
+            <th scope="col" className="px-6 py-3">
               <p className="font-poppins font-semibold text-lg">Barrel ID</p>
+            </th>
+            <th scope="col" className="px-6 py-3">
+              <p className="font-poppins font-semibold text-lg">Owner</p>
             </th>
             <th scope="col" className="px-6 py-3">
               <p className="font-poppins font-semibold text-lg">Liquor</p>
@@ -50,10 +60,20 @@ const NftList = ({
           {barrels &&
             barrels?.items?.map((barrel: Nft, i: number) => (
               <tr
+                onClick={() => onClickBarrel(barrel.tokenId.toString())}
                 className={`group ${
                   i % 2 === 0 ? 'bg-gray-600' : 'bg-transparent'
                 } border-b rounded-lg dark:bg-gray-800 dark:border-gray-700 text-red-600 hover:bg-cask-chain dark:hover:bg-cask-chain`}
               >
+                <td className={`px-6 py-4 ${getClassByIndex(i)}`}>
+                  <Image
+                    className={`object-contain rounded-3xl border-4 border-white`}
+                    src={ipfsImageParser(barrel.meta.image)}
+                    alt="New NFT"
+                    width={100}
+                    height={100}
+                  />
+                </td>
                 <th
                   scope="row"
                   className={`px-6 py-4 font-medium ${getClassByIndex(
@@ -62,6 +82,11 @@ const NftList = ({
                 >
                   {barrel.tokenId}
                 </th>
+                <td className={`px-6 py-4 ${getClassByIndex(i)}`}>
+                  {barrel.owner.nickname
+                    ? `@${barrel.owner.nickname}`
+                    : addressSimplifier(barrel.owner.address)}
+                </td>
                 <td className={`px-6 py-4 ${getClassByIndex(i)}`}>
                   {getAttribute(barrel, 'liquor')
                     ? getAttribute(barrel, 'liquor')?.value

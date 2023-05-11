@@ -28,8 +28,6 @@ contract CCNftStorage is Ownable {
     public _tokensExtractionsByYear;
   // NFT id => Address[]
   mapping(uint256 => address) public _idToNftCreator;
-  // Address => Booelan
-  mapping(uint256 => address[]) public addressesFromTokenId;
 
   uint256[] public _allNfts;
 
@@ -61,13 +59,6 @@ contract CCNftStorage is Ownable {
   /////////////////////
   // SETTERS //
   /////////////////////
-
-  function pushAddressFromTokenId(
-    uint256 tokenId,
-    address creator
-  ) public onlyAllowed {
-    addressesFromTokenId[tokenId].push(creator);
-  }
 
   function pushAllNfts(uint256 tokenId) public onlyAllowed {
     _allNfts.push(tokenId);
@@ -127,12 +118,6 @@ contract CCNftStorage is Ownable {
   // GETTERS //
   /////////////////////
 
-  function getAddressFromTokenId(
-    uint256 tokenId
-  ) public view returns (address[] memory) {
-    return addressesFromTokenId[tokenId];
-  }
-
   function getTokenIdOfOwnerByIndex(
     address owner,
     uint index
@@ -187,18 +172,11 @@ contract CCNftStorage is Ownable {
     delete _idToNftIndex[tokenId];
   }
 
-  function deleteOwnedTokens(
-    address owner,
-    uint256 tokenId
-  ) public onlyAllowed {
-    delete _ownedTokens[owner][tokenId];
+  function deleteOwnedTokens(address owner, uint256 index) public onlyAllowed {
+    delete _ownedTokens[owner][index];
   }
 
   function popAllNfts() public onlyAllowed {
     _allNfts.pop();
-  }
-
-  function popAddressFromTokenId(uint256 tokenId) public onlyAllowed {
-    addressesFromTokenId[tokenId].pop();
   }
 }

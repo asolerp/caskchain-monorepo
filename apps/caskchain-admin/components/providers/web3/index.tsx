@@ -77,6 +77,7 @@ const Web3Provider: React.FC<Props> = ({ children }) => {
         const ccNft = await loadContract('CCNft')
         const nftVendor = await loadContract('NftVendor')
         const nftOffers = await loadContract('NftOffers')
+        const mockUSDT = await loadContract('MockUSDT')
 
         const nftFractionsFactory = await loadContract('NftFractionsFactory')
         const nftFractionsVendor = await loadContract('NftFractionsVendor')
@@ -87,6 +88,7 @@ const Web3Provider: React.FC<Props> = ({ children }) => {
         const signer = (await fetchSigner()) as unknown as Signer
 
         const sigendNftVendorContract = nftVendor.connect(signer)
+        const signedMockUSDTContract = mockUSDT.connect(signer)
         const signedCCNftContract = ccNft.connect(signer)
         const signedNftOffersContract = nftOffers.connect(signer)
         const signednftFractionsVendor = nftFractionsVendor.connect(signer)
@@ -115,7 +117,7 @@ const Web3Provider: React.FC<Props> = ({ children }) => {
           createWeb3State({
             ethereum: window.ethereum,
             provider,
-            // erc20Contracts: { [usdtERC20.address]: sigendNftVendorContract },
+            erc20Contracts: { USDT: signedMockUSDTContract },
             nftFractionToken: signedNftFractionToken,
             nftFractionsVendor: signednftFractionsVendor as unknown as any,
             nftFractionsFactory: signednftFractionsFactory as any,

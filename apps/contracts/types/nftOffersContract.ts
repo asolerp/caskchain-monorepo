@@ -76,6 +76,7 @@ export interface NftOffersContractEventsContext {
   Withdraw(...parameters: any): EventFilter;
 }
 export type NftOffersContractMethodNames =
+  | 'collection'
   | 'nftVendor'
   | 'owner'
   | 'proxiableUUID'
@@ -84,12 +85,14 @@ export type NftOffersContractMethodNames =
   | 'upgradeTo'
   | 'upgradeToAndCall'
   | 'initialize'
+  | 'getHighestBid'
   | 'makeOffer'
-  | 'getAddressesBids'
   | 'getNftOffer'
+  | 'getAddressesBids'
   | 'getCountNftOffers'
   | 'withdrawOldOffers'
   | 'withdraw'
+  | 'getCreatorNft'
   | 'acceptOffer';
 export interface AcceptOfferEventEmittedResponse {
   tokenId: BigNumberish;
@@ -141,6 +144,13 @@ export interface OfferResponse {
   3: string;
 }
 export interface NftOffersContract {
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   */
+  collection(overrides?: ContractCallOverrides): Promise<string>;
   /**
    * Payable: false
    * Constant: true
@@ -213,12 +223,27 @@ export interface NftOffersContract {
    * Type: function
    * @param _collection Type: address, Indexed: false
    * @param _nftVendor Type: address, Indexed: false
+   * @param ccNftStorageAddress Type: address, Indexed: false
+   * @param nftOffersStorageAddress Type: address, Indexed: false
    */
   initialize(
     _collection: string,
     _nftVendor: string,
+    ccNftStorageAddress: string,
+    nftOffersStorageAddress: string,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param _tokenId Type: uint256, Indexed: false
+   */
+  getHighestBid(
+    _tokenId: BigNumberish,
+    overrides?: ContractCallOverrides
+  ): Promise<BigNumber>;
   /**
    * Payable: true
    * Constant: false
@@ -237,10 +262,10 @@ export interface NftOffersContract {
    * Type: function
    * @param _tokenId Type: uint256, Indexed: false
    */
-  getAddressesBids(
+  getNftOffer(
     _tokenId: BigNumberish,
     overrides?: ContractCallOverrides
-  ): Promise<string[]>;
+  ): Promise<OfferResponse>;
   /**
    * Payable: false
    * Constant: true
@@ -248,10 +273,10 @@ export interface NftOffersContract {
    * Type: function
    * @param _tokenId Type: uint256, Indexed: false
    */
-  getNftOffer(
+  getAddressesBids(
     _tokenId: BigNumberish,
     overrides?: ContractCallOverrides
-  ): Promise<OfferResponse>;
+  ): Promise<string[]>;
   /**
    * Payable: false
    * Constant: true
@@ -283,6 +308,17 @@ export interface NftOffersContract {
     _tokenId: BigNumberish,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param tokenId Type: uint256, Indexed: false
+   */
+  getCreatorNft(
+    tokenId: BigNumberish,
+    overrides?: ContractCallOverrides
+  ): Promise<string>;
   /**
    * Payable: true
    * Constant: false

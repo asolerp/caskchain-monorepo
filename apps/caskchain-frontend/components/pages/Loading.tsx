@@ -1,5 +1,3 @@
-import { useGlobal } from '@providers/global'
-import { LoadingAnimation } from '@ui/common/Loading/LoadingAnimation'
 import React from 'react'
 
 type LoadingWrapperProps = {
@@ -7,15 +5,7 @@ type LoadingWrapperProps = {
 }
 
 const LoadingWrapper: React.FC<LoadingWrapperProps> = ({ children }) => {
-  const {
-    state: { loading },
-  } = useGlobal()
-  return (
-    <>
-      {loading && <LoadingAnimation />}
-      {children}
-    </>
-  )
+  return <>{children}</>
 }
 
 export default LoadingWrapper

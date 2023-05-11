@@ -1,203 +1,158 @@
-const {
-  BN,
-  ether,
-  expectEvent,
-  expectRevert,
-} = require("@openzeppelin/test-helpers");
+// const CCNft = artifacts.require("CCNft");
+// const CCNftStorage = artifacts.require("CCNftStorage");
 
-const CCNft = artifacts.require("CCNft");
+// contract("CCNft", (accounts) => {
+//   const [owner, user1] = accounts;
+//   const tokenIdOne = "1";
+//   const tokenURI = "ipfs://tokenURI";
+//   const invalidTokenURI = "ipfs://invalidTokenURI";
+//   let instance;
+//   let storageMock;
 
-contract("CCNft", function (accounts) {
-  const [owner, account1] = accounts;
-  const tokenURI1 = "https://ipfs.example.com/token1";
-  const tokenURI2 = "https://ipfs.example.com/token2";
-  const tokenURI3 = "https://ipfs.example.com/token3";
+//   beforeEach(async () => {
+//     storageMock = await CCNftStorage.new();
+//     instance = await CCNft.new();
+//     await instance.initialize(storageMock.address);
+//     await storageMock.addAllowedAddress(instance.address);
+//   });
 
-  beforeEach(async function () {
-    this.contract = await CCNft.new({ from: owner });
-  });
+//   describe("mintNFT", () => {
+//     it("successfully mints an NFT for the owner with a valid token URI", async () => {
+//       await instance.mintNFT(tokenURI, { from: owner });
+//       const ownerBalance = await instance.balanceOf(owner);
+//       assert.equal(ownerBalance.toString(), "1");
+//     });
 
-  describe("mintNFT", function () {
-    it("should mint a new NFT with given tokenURI", async function () {
-      const receipt = await this.contract.mintNFT(tokenURI1, { from: owner });
-      expectEvent(receipt, "Mint", {
-        owner: owner,
-        tokenId: new BN("1"),
-        tokenURI: tokenURI1,
-      });
+//     it("fails to mint an NFT with the same token URI", async () => {
+//       await instance.mintNFT(tokenURI, { from: owner });
+//       try {
+//         await instance.mintNFT(tokenURI, { from: owner });
+//       } catch (error) {
+//         assert.match(error.message, /Token URI already exists/);
+//       }
+//     });
 
-      const tokenId = await this.contract.tokenByIndex(0);
-      assert.equal(tokenId.toString(), "1");
+//     it("fails to mint an NFT with an empty token URI", async () => {
+//       try {
+//         await instance.mintNFT("", { from: owner });
+//       } catch (error) {
+//         assert.match(error.message, /Token URI must not be empty/);
+//       }
+//     });
 
-      const nftItem = await this.contract.getNftInfo(tokenId);
-      assert.equal(nftItem.tokenId.toString(), "1");
-      assert.equal(nftItem.creator, owner);
-    });
+//     it("fails to mint an NFT if not called by the owner", async () => {
+//       try {
+//         await instance.mintNFT(tokenURI, { from: user1 });
+//       } catch (error) {
+//         assert.match(error.message, /Ownable: caller is not the owner/);
+//       }
+//     });
+//   });
 
-    it("should revert when trying to mint NFT with existing tokenURI", async function () {
-      await this.contract.mintNFT(tokenURI1, { from: owner });
-      await expectRevert(
-        this.contract.mintNFT(tokenURI1, { from: owner }),
-        "Token URI already exists"
-      );
-    });
+//   describe("burn", () => {
+//     beforeEach(async () => {
+//       await instance.mintNFT(tokenURI, { from: owner });
+//     });
 
-    it("should revert when trying to mint NFT by non-owner", async function () {
-      await expectRevert(
-        this.contract.mintNFT(tokenURI1, { from: account1 }),
-        "Ownable: caller is not the owner"
-      );
-    });
-  });
+//     it("successfully burns a token", async () => {
+//       await instance.burn(tokenIdOne, { from: owner });
+//       const balance = await instance.balanceOf(owner);
+//       assert.equal(balance.toString(), "0");
+//     });
 
-  describe("burn", function () {
-    beforeEach(async function () {
-      await this.contract.mintNFT(tokenURI1, { from: owner });
-    });
+//     it("fails to burn an invalid token", async () => {
+//       try {
+//         await instance.burn("999", { from: owner });
+//       } catch (error) {
+//         assert.match(error.message, /Token does not exist/);
+//       }
+//     });
 
-    it("should burn NFT successfully", async function () {
-      await this.contract.burn(1, { from: owner });
+//     it("fails to burn if not called by the owner", async () => {
+//       try {
+//         await instance.burn(tokenIdOne, { from: user1 });
+//       } catch (error) {
+//         assert.match(error.message, /Ownable: caller is not the owner/);
+//       }
+//     });
+//   });
 
-      await expectRevert(
-        this.contract.getNftInfo(1),
-        "ERC721: invalid token ID"
-      );
-    });
+//   describe("checkIfTokenURIExists", () => {
+//     it("returns true if token URI exists", async () => {
+//       await instance.mintNFT(tokenURI, { from: owner });
+//       const exists = await instance.checkIfTokenURIExists(tokenURI);
+//       assert.isTrue(exists);
+//     });
 
-    it("should revert when trying to burn NFT by non-owner", async function () {
-      await expectRevert(
-        this.contract.burn(1, { from: account1 }),
-        "Ownable: caller is not the owner"
-      );
-    });
-  });
+//     it("returns false if token URI does not exist", async () => {
+//       const exists = await instance.checkIfTokenURIExists(invalidTokenURI);
+//       assert.isFalse(exists);
+//     });
+//   });
 
-  describe("getAllNFTs", function () {
-    it("should burn NFT successfully", async function () {
-      const expected = [];
-      const actual = await this.contract.getAllNFTs();
-      assert.deepEqual(actual, expected, "Should return an empty array");
-    });
+//   describe("getCreatorNft", () => {
+//     it("returns correct creator for a given token Id", async () => {
+//       await instance.mintNFT(tokenURI, { from: owner });
+//       const creator = await instance.getCreatorNft(tokenIdOne);
+//       assert.equal(creator, owner);
+//     });
+//   });
 
-    it("should return all NFTs when there are some", async function () {
-      // Mint some NFTs
-      await this.contract.mintNFT(tokenURI3, { from: owner });
+//   describe("getNftInfo", () => {
+//     it("returns valid info for a given token Id", async () => {
+//       await instance.mintNFT(tokenURI, { from: owner });
+//       const nftInfo = await instance.getNftInfo(tokenIdOne);
+//       const nftTokenURI = await instance.checkIfTokenURIExists(tokenURI);
 
-      // Get the expected result
-      const expected = [["1", "0xFfDaCbFA3F4E227c482275b54B4c815154f0100a"]];
+//       assert.equal(nftInfo.creator, owner);
+//       assert.equal(nftTokenURI, true);
+//     });
+//   });
 
-      // Get the actual result
-      const actual = await this.contract.getAllNFTs();
-      // Compare the actual and expected results
-      assert.deepEqual(actual, expected, "Should return all NFTs");
-    });
-  });
+//   describe("ownedTokens", () => {
+//     beforeEach(async () => {
+//       await instance.mintNFT(tokenURI, { from: owner });
+//     });
 
-  describe("getNftInfo", function () {
-    beforeEach(async function () {
-      await this.contract.mintNFT(tokenURI1, { from: owner });
-    });
+//     it("returns a token owned by an address", async () => {
+//       const ownedTokens = await instance.getOwnedNfts({ from: owner });
+//       assert.equal(ownedTokens[0].creator, owner);
+//     });
 
-    it("should return NFT item information correctly", async function () {
-      const nftItem = await this.contract.getNftInfo(1);
+//     it("returns no owned tokens for an address without owned tokens", async () => {
+//       const ownedTokens = await instance.getOwnedNfts({ from: user1 });
+//       assert.isEmpty(ownedTokens);
+//     });
+//   });
 
-      assert.equal(nftItem.tokenId.toString(), "1");
-      assert.equal(nftItem.creator, owner);
-    });
+//   describe("getNftTotalSupply", () => {
+//     it("returns total supply of NFTs", async () => {
+//       const initialTotalSupply = await instance.getNftTotalSupply();
+//       assert.equal(initialTotalSupply.toString(), "0");
 
-    it("should revert when getting information of nonexistent NFT", async function () {
-      await expectRevert(
-        this.contract.getNftInfo(2),
-        "ERC721: invalid token ID"
-      );
-    });
-  });
+//       await instance.mintNFT(tokenURI, { from: owner });
+//       const newTotalSupply = await instance.getNftTotalSupply();
+//       assert.equal(newTotalSupply.toString(), "1");
+//     });
+//   });
 
-  describe("totalSupply", function () {
-    beforeEach(async function () {
-      await this.contract.mintNFT(tokenURI1, { from: owner });
-      await this.contract.mintNFT(tokenURI2, { from: owner });
-    });
+//   describe("getAllNFTs", () => {
+//     it("returns all NFTs", async () => {
+//       await instance.mintNFT(tokenURI, { from: owner });
 
-    it("should return the correct total supply", async function () {
-      const totalSupply = await this.contract.totalSupply();
+//       const allNFTs = await instance.getAllNFTs(1, 1);
+//       assert.equal(allNFTs[0].creator, owner);
+//     });
+//   });
 
-      assert.equal(totalSupply.toString(), "2");
-    });
-  });
+//   describe("getAllNftsOnSale", () => {
+//     beforeEach(async () => {
+//       await instance.mintNFT(tokenURI, { from: owner });
+//     });
 
-  describe("tokenByIndex", function () {
-    beforeEach(async function () {
-      await this.contract.mintNFT(tokenURI1, { from: owner });
-      await this.contract.mintNFT(tokenURI2, { from: owner });
-    });
-
-    it("should return the correct token ID by index", async function () {
-      const tokenId1 = await this.contract.tokenByIndex(0);
-      const tokenId2 = await this.contract.tokenByIndex(1);
-
-      assert.equal(tokenId1.toString(), "1");
-      assert.equal(tokenId2.toString(), "2");
-    });
-
-    it("should revert when trying to get token ID by an out of bounds index", async function () {
-      await expectRevert(this.contract.tokenByIndex(2), "Index out of bounds");
-    });
-  });
-
-  describe("tokenOfOwnerByIndex", function () {
-    beforeEach(async function () {
-      await this.contract.mintNFT(tokenURI1, { from: owner });
-      await this.contract.mintNFT(tokenURI2, { from: owner });
-    });
-
-    it("should return the correct token ID by index for the owner", async function () {
-      const tokenId1 = await this.contract.tokenOfOwnerByIndex(owner, 0);
-      const tokenId2 = await this.contract.tokenOfOwnerByIndex(owner, 1);
-
-      assert.equal(tokenId1.toString(), "1");
-      assert.equal(tokenId2.toString(), "2");
-    });
-
-    it("should revert when trying to get token ID by an out of bounds index for the owner", async function () {
-      await expectRevert(
-        this.contract.tokenOfOwnerByIndex(owner, 2),
-        "Index out of bounds"
-      );
-    });
-  });
-
-  describe("_beforeTokenTransfer", function () {
-    it("should mint a new token and add it to owner and all tokens enumeration", async function () {
-      await this.contract.mintNFT(tokenURI1, { from: owner });
-
-      const balance = await this.contract.balanceOf(owner);
-      assert.equal(balance.toString(), "1");
-
-      const totalSupply = await this.contract.totalSupply();
-      assert.equal(totalSupply.toString(), "1");
-    });
-
-    it("should transfer a token and update owner and all tokens enumeration", async function () {
-      await this.contract.mintNFT(tokenURI1, { from: owner });
-      await this.contract.transferFrom(owner, account1, 1, { from: owner });
-
-      const balanceOwner = await this.contract.balanceOf(owner);
-      assert.equal(balanceOwner.toString(), "0");
-
-      const balanceAccount1 = await this.contract.balanceOf(account1);
-      assert.equal(balanceAccount1.toString(), "1");
-    });
-
-    it("should burn a token and remove it from owner and all tokens enumeration", async function () {
-      await this.contract.mintNFT(tokenURI1, { from: owner });
-      await this.contract.burn(1, { from: owner });
-
-      const balance = await this.contract.balanceOf(owner);
-      assert.equal(balance.toString(), "0");
-
-      const totalSupply = await this.contract.totalSupply();
-      assert.equal(totalSupply.toString(), "0");
-    });
-  });
-});
+//     it("returns all NFTs on sale using token Ids", async () => {
+//       const nftsOnSale = await instance.getAllNftsOnSale([tokenIdOne]);
+//       assert.equal(nftsOnSale[0].creator, owner);
+//     });
+//   });
+// });

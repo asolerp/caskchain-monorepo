@@ -86,7 +86,7 @@ export type TransactionHistory = {
 
 export type Nft = {
   meta: NftMeta
-  erc20Prices?: ERC20Price[]
+  erc20Prices?: any
   transactions?: TransactionHistory[]
   fractions?: any
   bidders?: string[]

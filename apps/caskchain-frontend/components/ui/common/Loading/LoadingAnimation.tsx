@@ -41,7 +41,7 @@ export const LoadingAnimation = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="flex justify-center items-center fixed top-0 left-0 w-full h-full z-50 bg-black-light bg-opacity-70"
+      className="flex justify-center items-center fixed top-0 left-0 w-full h-full z-50 bg-gradient-to-r from-[#0F0F0F] via-[#161616] to-[#000000]"
     >
       <div className="relative">
         <div className="absolute inset-0 flex items-center justify-center">

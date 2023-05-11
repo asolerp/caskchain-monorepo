@@ -106,6 +106,7 @@ export type CcNftContractMethodNames =
   | 'getNftInfo'
   | 'getAllNFTs'
   | 'getAllNftsOnSale'
+  | 'getCreatorNft'
   | 'getOwnedNfts'
   | 'supportsInterface';
 export interface AdminChangedEventEmittedResponse {
@@ -390,8 +391,10 @@ export interface CcNftContract {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
+   * @param storageAddress Type: address, Indexed: false
    */
   initialize(
+    storageAddress: string,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**
@@ -450,8 +453,14 @@ export interface CcNftContract {
    * Constant: true
    * StateMutability: view
    * Type: function
+   * @param page Type: uint256, Indexed: false
+   * @param pageSize Type: uint256, Indexed: false
    */
-  getAllNFTs(overrides?: ContractCallOverrides): Promise<NftitemResponse[]>;
+  getAllNFTs(
+    page: BigNumberish,
+    pageSize: BigNumberish,
+    overrides?: ContractCallOverrides
+  ): Promise<NftitemResponse[]>;
   /**
    * Payable: false
    * Constant: true
@@ -463,6 +472,17 @@ export interface CcNftContract {
     _tokensIds: BigNumberish[],
     overrides?: ContractCallOverrides
   ): Promise<NftitemResponse[]>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param tokenId Type: uint256, Indexed: false
+   */
+  getCreatorNft(
+    tokenId: BigNumberish,
+    overrides?: ContractCallOverrides
+  ): Promise<string>;
   /**
    * Payable: false
    * Constant: true

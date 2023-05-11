@@ -4,34 +4,15 @@ import { CryptoHookFactory } from '@_types/hooks'
 import axios from 'axios'
 import { deleteCookie, getCookie, setCookie } from 'cookies-next'
 import axiosClient from 'lib/fetcher/axiosInstance'
-
+import MocksUSDTContract from 'contracts/build/contracts/MockUSDT.json'
 import { useWeb3Modal } from '@web3modal/react'
 
 import { getSignedData } from 'pages/api/utils'
 
 import { useAccount, useProvider, useSigner } from 'wagmi'
-
-// type UseAccountResponse = {
-//   connect: () => void
-//   multiConnect: () => void
-//   logout: () => void
-//   signAddress: ({ callback }: { callback: () => void }) => void
-//   handelSaveUser: ({
-//     id,
-//     email,
-//     nickname,
-//     callback,
-//   }: {
-//     id: string
-//     email: string
-//     nickname: string
-//     callback: () => void
-//   }) => void
-//   isValidating: boolean
-//   isConnected: boolean
-//   isInstalled: boolean
-//   hasAllAuthData: boolean
-// }
+import { useCallback, useEffect, useState } from 'react'
+import { loadContractByABI } from '@providers/web3/utils'
+import { ethers } from 'ethers'
 
 type AccountHookFactory = CryptoHookFactory<string, any>
 
@@ -46,8 +27,28 @@ export const hookFactory: AccountHookFactory = () => () => {
   const { address, isConnected } = useAccount()
   const provider = useProvider()
   const { data: signer } = useSigner()
+  const [erc20Balances, setERC20Balances] = useState()
 
   const { open } = useWeb3Modal()
+
+  const erc20Balance = useCallback(async () => {
+    const Tether = await loadContractByABI(
+      MocksUSDTContract.networks[4447].address,
+      MocksUSDTContract.abi
+    )
+    return await Tether.balanceOf(address)
+  }, [address])
+
+  useEffect(() => {
+    const getBalance = async () => {
+      const balance = await erc20Balance()
+      setERC20Balances((prev: any) => ({
+        ...prev,
+        usdt: ethers.utils.formatEther(balance.toString()),
+      }))
+    }
+    getBalance()
+  }, [])
 
   const signAddress = async ({ callback }: { callback: () => void }) => {
     try {
@@ -136,6 +137,7 @@ export const hookFactory: AccountHookFactory = () => () => {
     signAddress,
     multiConnect,
     handelSaveUser,
+    erc20Balances,
     hasAllAuthData: token && user,
     isInstalled: provider !== null,
     isConnected,

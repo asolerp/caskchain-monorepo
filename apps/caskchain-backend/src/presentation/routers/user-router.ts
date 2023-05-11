@@ -162,18 +162,15 @@ export default function UserRouter(
           })
           return res.sendStatus(403)
         }
-        console.log(
-          'COMPARING',
-          process.env.PUBLIC_KEY &&
-            user.address.localeCompare(process.env.PUBLIC_KEY, undefined, {
-              sensitivity: 'accent',
-            })
-        )
         const accessToken = jwt.sign(
           {
             _id: user._id,
             address: user.address,
-            role: user.address === process.env.PUBLIC_KEY ? 'admin' : 'user',
+            role:
+              user.address.toLocaleLowerCase() ===
+              process.env.PUBLIC_KEY?.toLocaleLowerCase()
+                ? 'admin'
+                : 'user',
           },
           process.env.TOKEN_SECRET as string,
           { expiresIn: '60m' }
@@ -218,18 +215,16 @@ export default function UserRouter(
               },
             })
 
-            console.log(
-              'COMPARING',
-              user.address === process.env.PUBLIC_KEY ? 'admin' : 'user'
-            )
-
             // Set jwt token
             const token = jwt.sign(
               {
                 _id: user._id,
                 address: user.address,
                 role:
-                  user.address === process.env.PUBLIC_KEY ? 'admin' : 'user',
+                  user.address.toLocaleLowerCase() ===
+                  process.env.PUBLIC_KEY?.toLocaleLowerCase()
+                    ? 'admin'
+                    : 'user',
               },
               process.env.TOKEN_SECRET as string,
               { expiresIn: '60m' }
@@ -240,7 +235,10 @@ export default function UserRouter(
                 _id: user._id,
                 address: user.address,
                 role:
-                  user.address === process.env.PUBLIC_KEY ? 'admin' : 'user',
+                  user.address.toLocaleLowerCase() ===
+                  process.env.PUBLIC_KEY?.toLocaleLowerCase()
+                    ? 'admin'
+                    : 'user',
               },
               process.env.REFRESH_TOKEN_SECRET as string,
               { expiresIn: '24h' }

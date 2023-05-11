@@ -20,8 +20,15 @@ type CaskNftHookFactory = CryptoHookFactory<Nft[]>
 export type UseCaskNftsHook = ReturnType<CaskNftHookFactory>
 
 export const hookFactory: CaskNftHookFactory =
-  ({ nftOffers, nftVendor, nftFractionsVendor, nftFractionToken }) =>
+  ({
+    nftOffers,
+    nftVendor,
+    nftFractionsVendor,
+    nftFractionToken,
+    erc20Contracts,
+  }) =>
   ({ caskId }) => {
+    const [successModal, setSuccessModal] = useState<boolean>(false)
     const [tokenAmmount, setTokenAmmount] = useState<number | undefined>(0)
     const [totalFavorites, setTotalFavorites] = useState<number | undefined>(0)
     const { chain } = useNetwork()
@@ -83,7 +90,7 @@ export const hookFactory: CaskNftHookFactory =
         const { data: offers }: any = await axios.get(`/api/offers/${caskId}`)
         return offers
       },
-      { revalidateOnFocus: true }
+      { revalidateOnFocus: false }
     )
 
     const { data: totalFavoritesData } = useSWR(
@@ -101,7 +108,11 @@ export const hookFactory: CaskNftHookFactory =
     const isValidating = isValidatingNft
 
     useLoading({
-      loading: isLoading || latestOffersIsLoading || salesHistoryIsLoading,
+      loading:
+        isLoading ||
+        isValidating ||
+        latestOffersIsLoading ||
+        salesHistoryIsLoading,
     })
 
     const _nftOffers = nftOffers
@@ -188,6 +199,7 @@ export const hookFactory: CaskNftHookFactory =
           } else {
             handleUserState()
           }
+          setSuccessModal(true)
         } catch (e: any) {
           if (e.code === -32603) {
             toast.error('🏦 Insufficient funds', {
@@ -201,6 +213,57 @@ export const hookFactory: CaskNftHookFactory =
               theme: 'light',
             })
           }
+          console.error(e)
+        }
+      },
+      [_nftVendor, handleUserState, isUserNeededDataFilled]
+    )
+
+    const buyWithERC20 = useCallback(
+      async (tokenId: number, price: string) => {
+        const id = toast.loading('Buying barrel with USDT...', {
+          closeOnClick: true,
+        })
+        try {
+          if (isUserNeededDataFilled) {
+            const txApprove = await erc20Contracts.USDT?.approve(
+              _nftVendor?.address,
+              price.toString()
+            )
+
+            const responseApprove: any = await txApprove!.wait()
+
+            if (responseApprove.status !== 1) throw new Error('Approve failed')
+
+            const txBuyWithERC20 = await _nftVendor?.buyNFTWithERC20(
+              tokenId,
+              process.env.NEXT_PUBILC_USDT_CONTRACT_ADDRESS as string
+            )
+
+            const responseBuyWithERC20: any = await txBuyWithERC20!.wait()
+
+            if (responseBuyWithERC20.status !== 1)
+              throw new Error('Buy with ERC20 failed')
+
+            toast.update(id, {
+              render: 'Barrel bought with USDT!',
+              type: 'success',
+              isLoading: false,
+              closeOnClick: true,
+              autoClose: 2000,
+            })
+          } else {
+            handleUserState()
+          }
+          setSuccessModal(true)
+        } catch (e: any) {
+          toast.update(id, {
+            render: 'Something went wrong',
+            type: 'error',
+            isLoading: false,
+            closeOnClick: true,
+            autoClose: 2000,
+          })
           console.error(e.message)
         }
       },
@@ -286,7 +349,7 @@ export const hookFactory: CaskNftHookFactory =
 
     const cancelOffer = useCallback(async () => {
       try {
-        const result = await _nftOffers?.withdraw(caskId)
+        const result = await _nftOffers?.cancelOffer(caskId)
         await toast.promise(result!.wait(), {
           pending: 'Processing transaction',
           success: 'Your offer is canceled',
@@ -310,7 +373,10 @@ export const hookFactory: CaskNftHookFactory =
       tokenAmmount,
       hasFractions,
       salesHistory,
+      buyWithERC20,
+      successModal,
       totalFavorites,
+      setSuccessModal,
       handleShareCask,
       setTokenAmmount,
       hasOffersFromUser,

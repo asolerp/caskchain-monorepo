@@ -7,6 +7,8 @@ import BookmarkIcon from 'public/icons/bookmark.svg'
 import { useRouter } from 'next/router'
 import { ethers } from 'ethers'
 import Spacer from '@ui/common/Spacer'
+import { ipfsImageParser } from 'utils/ipfsImageParser'
+import { useGlobal } from '@providers/global'
 
 type NftItemProps = {
   item: any
@@ -27,7 +29,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
   active = false,
   showAnimation = true,
   isFavorite = false,
-  showFavorite = true,
+  showFavorite = false,
   defaultImage = false,
   isMarketPlace = false,
   onPressFavorite,
@@ -38,6 +40,8 @@ const BarrelNft: React.FC<NftItemProps> = ({
   const isMarketPlaceClass = isMarketPlace
     ? 'h-full w-full'
     : 'h-[600px] w-[460px] m-0'
+
+  const mainImage = item?.meta?.image && ipfsImageParser(item?.meta?.image)
 
   useEffect(() => {
     if (videoRef.current) {
@@ -50,9 +54,13 @@ const BarrelNft: React.FC<NftItemProps> = ({
   }, [isHover])
 
   return (
-    <div className="relative cursor-pointer min-h-[450px]">
+    <div
+      className={`relative cursor-pointer min-h-[480px] ${
+        isMarketPlace ? 'hover:scale-[1.02] transform-gpu transition-all' : ''
+      }`}
+    >
       {showFavorite && (
-        <div className="absolute right-5 top-5 z-50">
+        <div className="absolute right-5 top-5 z-30">
           <BookmarkIcon
             color={isFavorite ? '#CAFC01' : '#fff'}
             fill={isFavorite ? '#CAFC01' : 'transparent'}
@@ -65,10 +73,10 @@ const BarrelNft: React.FC<NftItemProps> = ({
       )}
       <div
         onClick={() => router.push(`/cask/${item.tokenId}`)}
-        className="relative flex flex-row justify-center items-center min-h-[450px] h-full"
+        className="relative flex flex-row justify-center items-center min-h-[480px] h-full"
       >
         <div
-          className={`bg-black-light rounded-[40px] bg-clip-padding backdrop-filter backdrop-blur-sm border min-h-[450px] border-gray-800 ${isMarketPlaceClass}`}
+          className={`bg-black-light rounded-[40px] bg-clip-padding backdrop-filter backdrop-blur-sm border min-h-[480px] border-gray-800 ${isMarketPlaceClass}`}
         >
           <div className="relative">
             <div className="relative w-full flex justify-center items-center rounded-md">
@@ -93,7 +101,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
                   className={`w-full rounded-tl-[40px] rounded-tr-[40px] ${
                     isMarketPlace ? 'h-[300px]' : 'h-[450px]'
                   } object-cover`}
-                  src={defaultImage ? DEFAULT_IMAGE : item?.meta?.image}
+                  src={defaultImage ? DEFAULT_IMAGE : mainImage}
                   alt="New NFT"
                   width={300}
                   height={300}

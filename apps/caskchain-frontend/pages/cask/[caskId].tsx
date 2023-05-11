@@ -17,6 +17,8 @@ import { NextPageContext } from 'next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import NFTLatestOffers from '@ui/tables/NFTLatestOffers'
+import { ipfsImageParser } from 'utils/ipfsImageParser'
+import SuccessPurchaseModal from '@ui/modals/SuccessPurchase'
 
 let CaskIllustration = ({
   src,
@@ -26,10 +28,10 @@ let CaskIllustration = ({
   activeAsset: number
 }) => {
   return (
-    <div className="flex flex-1 justify-center col-span-2">
+    <div className="flex  justify-center col-span-2 rounded-2xl">
       {activeAsset === 1 && (
         <Image
-          className={`object-contain  rounded-2xl`}
+          className={`object-contain rounded-2xl`}
           src={src}
           alt="New NFT"
           width={350}
@@ -56,6 +58,7 @@ CaskIllustration = React.memo(CaskIllustration)
 // import React from 'react'
 function CaskDetail() {
   const route = useRouter()
+
   const { cask } = useCaskNft({ caskId: route.query.caskId as string })
   const [activeAsset, setActiveAsset] = useState(1)
 
@@ -63,13 +66,24 @@ function CaskDetail() {
     cask?.cancelOffer()
   }, [cask])
 
+  const mainImage = !cask?.isValidating
+    ? ipfsImageParser(cask?.data?.meta?.image)
+    : ''
+
   return (
     <>
+      <SuccessPurchaseModal
+        cask={cask?.data}
+        modalIsOpen={cask?.successModal}
+        closeModal={() => {
+          cask?.setSuccessModal(false)
+        }}
+      />
       <BaseLayout background="bg-gradient-to-r from-[#0F0F0F] via-[#161616] to-[#000000]">
         <div className="lg:w-3/4 mx-auto pt-40 pb-8 rounded-lg">
           {cask?.data?.tokenId && !cask?.isLoading ? (
             <div>
-              <div className="grid grid-cols-5 gap-10 mx-auto mb-20 rounded-lg">
+              <div className="max-w-7xl mx-auto grid grid-cols-5 gap-10 mb-20 sm:px-6 lg:px-8 px-4 rounded-lg">
                 <div>
                   <div className="flex flex-col justify-end items-end">
                     <div
@@ -78,13 +92,16 @@ function CaskDetail() {
                         activeAsset === 1 ? 'border-2 border-cask-chain' : ''
                       } p-2 rounded-xl flex items-center justify-center`}
                     >
-                      <Image
-                        className={`object-contain rounded-3xl`}
-                        src={cask?.data?.meta?.image}
-                        alt="New NFT"
-                        width={100}
-                        height={150}
-                      />
+                      {!cask?.isValidating && (
+                        <Image
+                          className={`object-contain rounded-3xl`}
+                          src={mainImage}
+                          alt="New NFT"
+                          width={100}
+                          height={150}
+                          loading="lazy"
+                        />
+                      )}
                     </div>
                     <Spacer size="xs" />
                     <div
@@ -103,12 +120,9 @@ function CaskDetail() {
                     </div>
                   </div>
                 </div>
-                <CaskIllustration
-                  src={cask?.data?.meta?.image}
-                  activeAsset={activeAsset}
-                />
+                <CaskIllustration src={mainImage} activeAsset={activeAsset} />
                 <div className="flex flex-col col-span-2">
-                  <div className="flex flex-row space-x-2">
+                  <div className="flex flex-row space-x-2 w-full">
                     {cask?.isUserNeededDataFilled && (
                       <div
                         onClick={() => cask.debounceAddFavorite()}
@@ -140,7 +154,7 @@ function CaskDetail() {
                     </div>
                   </div>
                   <Spacer size="xs" />
-                  <div className="flex flex-1 justify-start">
+                  <div className="flex w-full justify-start">
                     {cask?.data?.fractions?.isForSale ? (
                       <FractionalizedBuyout
                         cask={cask?.data}
@@ -158,6 +172,12 @@ function CaskDetail() {
                         {cask?.data?.price > 0 ? (
                           <OnSale
                             cask={cask?.data}
+                            onBuyWithERC20={() =>
+                              cask?.buyWithERC20(
+                                cask?.data?.tokenId,
+                                cask?.data?.erc20Prices?.USDT
+                              )
+                            }
                             onBuy={() =>
                               cask?.buyNft(
                                 cask?.data?.tokenId,

@@ -3,7 +3,11 @@ import { deleteCookie, getCookie, setCookie } from 'cookies-next'
 
 import { toast } from 'react-toastify'
 
-export const auth = async (context: any, role: 'user' | 'admin') => {
+export const auth = async (
+  context: any,
+  role: 'user' | 'admin',
+  props?: any
+) => {
   const { req, res } = context
   const session = getCookie('token', { req, res })
   if (!session) {
@@ -27,7 +31,7 @@ export const auth = async (context: any, role: 'user' | 'admin') => {
       )
       // if token was verified we set the state.
       if (data) {
-        return { props: {} }
+        return { props: props || {} }
       } else {
         // If the token was fraud we first remove it from localStorage and then redirect to "/"
         deleteCookie('token', { req, res })
@@ -64,7 +68,7 @@ export const auth = async (context: any, role: 'user' | 'admin') => {
               )
               const { token } = rs.data
               setCookie('token', token, { req, res })
-              return { props: {} }
+              return { props: props || {} }
             } catch (_error) {
               toast.error('Session time out. Please login again.')
               // Logging out the user by removing all the tokens from local
@@ -92,5 +96,5 @@ export const auth = async (context: any, role: 'user' | 'admin') => {
       }
     }
   }
-  return { props: {} }
+  return { props: props || {} }
 }

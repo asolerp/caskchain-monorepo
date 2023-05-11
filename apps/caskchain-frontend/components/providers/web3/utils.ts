@@ -79,6 +79,25 @@ export const createWeb3State = ({
 
 const NETWORK_ID = process.env.NEXT_PUBLIC_NETWORK_ID
 
+export const loadContractByABI = async (
+  address: string,
+  abi: any
+): Promise<Contract> => {
+  if (!NETWORK_ID) {
+    return Promise.reject('Network ID is not defined!')
+  }
+
+  const provider = getProvider()
+
+  const contract = getContract({
+    address,
+    abi,
+    signerOrProvider: provider,
+  })
+
+  return contract
+}
+
 export const loadContractByAddress = async (
   name: string,
   provider: Provider,

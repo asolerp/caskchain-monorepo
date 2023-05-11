@@ -4,46 +4,38 @@ dotenv.config({ path: `../../../.env` });
 const CCNft = artifacts.require("CCNft");
 const NftOffers = artifacts.require("NftOffers");
 const NftVendor = artifacts.require("NftVendor");
+const NftVendorStorage = artifacts.require("NftVendorStorage");
 const CCNftStorage = artifacts.require("CCNftStorage");
 const NftOffersStorage = artifacts.require("NftOffersStorage");
+const MockUSDT = artifacts.require("MockUSDT");
 
 const CCNftContract = require("../build/contracts/CCNft.json");
 const NftOffersContract = require("../build/contracts/NftOffers.json");
 const NftVendorContract = require("../build/contracts/NftVendor.json");
+const NftVendorStorageContract = require("../build/contracts/NftVendorStorage.json");
 const CCNftStorageContract = require("../build/contracts/CCNftStorage.json");
 const NftOffersStorageContract = require("../build/contracts/NftOffersStorage.json");
-
-// type NETWORK_ID_TYPE = {
-//   80001: {
-//     events: {},
-//     links: {},
-//     address: string,
-//     transactionHash: string,
-//   },
-//   4447: {
-//     events: {},
-//     links: {},
-//     address: string,
-//     transactionHash: string,
-//   },
-// };
+const MockUSDTContract = require("../build/contracts/MockUSDT.json");
 
 module.exports = async function (callback) {
   try {
-    // Fetch accounts from wallet - these are unlocked
-    // const accounts = await web3.eth.getAccounts();
-    console.log(process.env);
-    // Fetch the deployed exchange
     const ccNft = await CCNft.at(
       CCNftContract.networks[process.env.NETWORK_ID].address
     );
-
+    const mockUSDT = await MockUSDT.at(
+      MockUSDTContract.networks[process.env.NETWORK_ID].address
+    );
     const ccNftStorage = await CCNftStorage.at(
       CCNftStorageContract.networks[process.env.NETWORK_ID].address
     );
     const nftVendor = await NftVendor.at(
       NftVendorContract.networks[process.env.NETWORK_ID].address
     );
+
+    const nftVendorStorage = await NftVendorStorage.at(
+      NftVendorStorageContract.networks[process.env.NETWORK_ID].address
+    );
+
     const nftOffers = await NftOffers.at(
       NftOffersContract.networks[process.env.NETWORK_ID].address
     );
@@ -57,14 +49,23 @@ module.exports = async function (callback) {
 
     await nftOffersStorage.addAllowedAddress(nftOffers.address);
 
-    // // Set up exchange users
-    // const user1 = "0x7fa312b2e1ba41b0258497612c7594021774711e";
+    await nftVendorStorage.addAllowedAddress(nftVendor.address);
 
-    // // User 1 Deposits Ether
-    // await ccNft.mintNFT(
-    //   "https://ivory-worthy-sparrow-388.mypinata.cloud/ipfs/QmdKPYuk7CoDoz6hSo8ZM6icG9sZYgCtPkxEeQeZKgr966?pinataGatewayToken=s_pCLBusA0GJxHX5F6DmiHij0U33q-GXZvLcNlkI35Sg6fiD1q4D9FbL1qJJ6aNa&_gl=1*1dak5lw*rs_ga*OWNhMWQ1ZmUtODBkMC00MDVmLTk0MGMtOWY4ZDZmNmE1NWY5*rs_ga_5RMPXG14TE*MTY4MzExMTAwMi42LjAuMTY4MzExMTAwMi42MC4wLjA.",
-    //   { from: user1 }
-    // );
+    console.log("MOCK USDT ADDRESS", mockUSDT.address);
+
+    await nftVendor.setExcludedFromList(process.env.PUBLIC_KEY, true);
+    await nftVendor.addERC20Token(mockUSDT.address);
+
+    mockUSDT.transfer(process.env.PUBLIC_KEY, "1000000");
+
+    await ccNft.mintNFT(
+      "https://gateway.pinata.cloud/ipfs/QmexW73eDDgJstGgJ47bibwYFLW3Y6EmWURTaoWoVQnvjN",
+      { from: process.env.PUBLIC_KEY }
+    );
+
+    // await nftVendor.listItem("1", web3.utils.toWei("2", "ether"), {
+    //   from: process.env.PUBLIC_KEY,
+    // });
 
     console.log(`Init complete!`);
   } catch (error) {
