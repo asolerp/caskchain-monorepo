@@ -22,8 +22,8 @@ contract NftOffersStorage is Ownable {
   // NFT Id => Account Address => Index
   mapping(uint256 => mapping(address => uint256))
     internal indexOfOfferBidsFromAddress;
-  // NFT Id => Addresses
-  mapping(uint256 => address[]) public addressesWithBidsFromTokenId;
+  // Address => Booelan
+  mapping(uint256 => address[]) public addressesFromTokenId;
 
   /////////////////////
   // MODIFIERS //
@@ -52,9 +52,10 @@ contract NftOffersStorage is Ownable {
 
   // GETTERES
   function getPreviousBidderBidByTokenId(
-    uint256 _tokenId
+    uint256 _tokenId,
+    address _address
   ) public view returns (uint256) {
-    return offerBidsFromTokenId[_tokenId][msg.sender];
+    return offerBidsFromTokenId[_tokenId][_address];
   }
 
   function getNftOfferByTokenId(
@@ -73,7 +74,7 @@ contract NftOffersStorage is Ownable {
   function getAddressFromTokenId(
     uint256 tokenId
   ) public view returns (address[] memory) {
-    return addressesWithBidsFromTokenId[tokenId];
+    return addressesFromTokenId[tokenId];
   }
 
   function getIndexOfOfferBidsFromAddress(
@@ -117,16 +118,25 @@ contract NftOffersStorage is Ownable {
 
   function setOfferBidFromTokenIdBySender(
     uint256 _tokenId,
+    address _address,
     uint256 _bid
   ) public onlyAllowed {
-    offerBidsFromTokenId[_tokenId][msg.sender] = _bid;
+    offerBidsFromTokenId[_tokenId][_address] = _bid;
   }
 
-  function pushAddressToTokenId(
+  function updateAddrressFromTokenId(
     uint256 tokenId,
+    uint256 index,
     address bidder
   ) public onlyAllowed {
-    addressesWithBidsFromTokenId[tokenId].push(bidder);
+    addressesFromTokenId[tokenId][index] = bidder;
+  }
+
+  function pushAddressFromTokenId(
+    uint256 tokenId,
+    address creator
+  ) public onlyAllowed {
+    addressesFromTokenId[tokenId].push(creator);
   }
 
   function deleteOffersBidsFromTokenId(
@@ -136,15 +146,19 @@ contract NftOffersStorage is Ownable {
     delete offerBidsFromTokenId[_tokenId][_address];
   }
 
-  function deleteAddressFromBiddersByTokenIdAndIndex(
-    uint256 tokenId,
-    uint256 index
-  ) public onlyAllowed {
-    addressesWithBidsFromTokenId[tokenId][index] = addressesWithBidsFromTokenId[
-      tokenId
-    ][addressesWithBidsFromTokenId[tokenId].length - 1];
-    addressesWithBidsFromTokenId[tokenId].pop();
+  function popAddressFromTokenId(uint256 tokenId) public onlyAllowed {
+    addressesFromTokenId[tokenId].pop();
   }
+
+  // function deleteAddressFromBiddersByTokenIdAndIndex(
+  //   uint256 tokenId,
+  //   uint256 index
+  // ) public onlyAllowed {
+  //   addressesWithBidsFromTokenId[tokenId][index] = addressesWithBidsFromTokenId[
+  //     tokenId
+  //   ][addressesWithBidsFromTokenId[tokenId].length - 1];
+  //   addressesWithBidsFromTokenId[tokenId].pop();
+  // }
 
   function deleteIndexOfOfferBidsFromAddress(
     uint256 _tokenId,

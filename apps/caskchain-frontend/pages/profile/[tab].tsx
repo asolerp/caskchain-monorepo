@@ -18,6 +18,7 @@ import { addressSimplifier } from 'utils/addressSimplifier'
 import Link from 'next/link'
 import BarrelNft from '@ui/ntf/item/BarrelNft'
 import { ipfsImageParser } from 'utils/ipfsImageParser'
+import Header from '@ui/layout/Header'
 
 const tabs = [
   { name: 'Your Collection', href: '#', key: 'my-collection' },
@@ -42,6 +43,11 @@ const Profile: NextPage = () => {
 
   return (
     <BaseLayout background="bg-gradient-to-r from-[#0F0F0F] via-[#161616] to-[#000000]">
+      <Header>
+        <h1 className="font-rale font-semibold text-6xl text-cask-chain mb-10">
+          My <span className="text-white">Profile</span>
+        </h1>
+      </Header>
       <div className="py-16 pt-40 px-2 sm:px-6 lg:w-3/4">
         <div className="flex-1 flex flex-col">
           <div className="flex-1 flex space-x-4 items-stretch">

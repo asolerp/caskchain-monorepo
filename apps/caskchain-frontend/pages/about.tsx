@@ -1,5 +1,6 @@
 import { BaseLayout } from '@ui'
 import Spacer from '@ui/common/Spacer'
+import Header from '@ui/layout/Header'
 import BarrelsSection from 'components/pages/home/BarrelsSection'
 import NewsletterSection from 'components/pages/home/NewsletterSection'
 
@@ -11,11 +12,7 @@ const About: NextPage = () => {
     <BaseLayout background="bg-white">
       <div>
         <div>
-          <div className="bg-header_1 w-screen h-[300px] bg-cover flex items-end justify-center">
-            <h1 className="font-rale font-semibold text-6xl text-cask-chain mb-10">
-              About Us
-            </h1>
-          </div>
+          <Header title="About Us" />
           <div className="grid grid-cols-3 bg-white py-20">
             <div
               className="flex w-full col-span-1 items-center justify-center

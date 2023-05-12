@@ -31,7 +31,6 @@ contract NftOffers is
   address public creator;
 
   NftVendor public nftVendor;
-  ICCNftStorage private _ccNftStorage;
   INftOffersStorage private _nftOffersStorage;
 
   modifier hasOffers(uint256 tokenId) {
@@ -99,7 +98,7 @@ contract NftOffers is
 
   function getAddressesBids(
     uint256 _tokenId
-  ) public view returns (address[] memory) {
+  ) external view returns (address[] memory) {
     address[] memory bidders = _nftOffersStorage.getAddressFromTokenId(
       _tokenId
     );
@@ -132,7 +131,8 @@ contract NftOffers is
   }
 
   function getPrevious(uint256 _tokenId) external view returns (uint256) {
-    return _nftOffersStorage.getPreviousBidderBidByTokenId(_tokenId);
+    return
+      _nftOffersStorage.getPreviousBidderBidByTokenId(_tokenId, msg.sender);
   }
 
   function makeOffer(uint256 _tokenId) public payable {
@@ -144,7 +144,8 @@ contract NftOffers is
     require(nft.ownerOf(_tokenId) != address(0), "Invalid token ID");
 
     uint256 previousBid = _nftOffersStorage.getPreviousBidderBidByTokenId(
-      _tokenId
+      _tokenId,
+      msg.sender
     );
 
     require(previousBid == 0, "You must withdraw your previous bid first");
@@ -157,6 +158,7 @@ contract NftOffers is
     } else {
       require(msg.value > highestBid, "Offer price is too low");
       _setOffer(_tokenId, msg.value);
+      _nftOffersStorage.setTokenIdToOffer(_tokenId, msg.value, msg.sender);
     }
 
     emit NewOffer(_tokenId, nft.ownerOf(_tokenId), msg.sender, msg.value);
@@ -189,45 +191,43 @@ contract NftOffers is
   }
 
   function cancelOffer(uint256 _tokenId) external {
-    uint256 lastOffer = _nftOffersStorage.getPreviousBidderBidByTokenId(
-      _tokenId
-    );
-
-    require(lastOffer > 0, "No active bid found");
-
-    // Get the offer
     INftOffersStorage.Offer memory offer = _nftOffersStorage
       .getNftOfferByTokenId(_tokenId);
 
-    // Get last bid from the user
-    uint256 amount = _nftOffersStorage.getPreviousBidderBidByTokenId(_tokenId);
-
     require(_tokenId > 0 && offer.seller != address(0), "Invalid token ID");
+
+    uint256 amount = _nftOffersStorage.getPreviousBidderBidByTokenId(
+      _tokenId,
+      msg.sender
+    );
+
     require(amount > 0, "No active bid found");
 
     (bool success, ) = msg.sender.call{ value: amount }("");
     require(success, "Transfer failed");
 
-    // _removeOffer(_tokenId, msg.sender);
+    _removeOffer(_tokenId, msg.sender);
 
     if (offer.highestBidder == msg.sender) {
+      _nftOffersStorage.setTokenIdToOffer(_tokenId, 0, offer.seller);
+      uint256 currentBid = 0;
       address[] memory addresses = _nftOffersStorage.getAddressFromTokenId(
         _tokenId
       );
 
       for (uint256 i = 0; i < addresses.length; i++) {
         address bidder = addresses[i];
-        uint256 bidderBid = _nftOffersStorage.getOffersBidsFromTokenId(
+
+        uint256 bidAmount = _nftOffersStorage.getPreviousBidderBidByTokenId(
           _tokenId,
           bidder
         );
-        if (bidderBid > offer.highestBid) {
-          _nftOffersStorage.setTokenIdToOffer(_tokenId, bidderBid, bidder);
+        if (bidAmount > currentBid) {
+          currentBid = bidAmount;
+          _nftOffersStorage.setTokenIdToOffer(_tokenId, bidAmount, bidder);
         }
       }
     }
-
-    // emit RemoveOffer(_tokenId, msg.sender, amount);
   }
 
   function _createNftOffer(
@@ -247,30 +247,65 @@ contract NftOffers is
     _nftOffersStorage.setOfferByTokenId(_tokenId, offer);
   }
 
-  function _setOffer(uint256 _tokenId, uint256 bid) private {
-    _nftOffersStorage.setOfferBidFromTokenIdBySender(_tokenId, bid);
-    address[] memory addresses = _nftOffersStorage.getAddressFromTokenId(
-      _tokenId
+  function _setOffer(uint256 _tokenId, uint256 _bid) private {
+    require(_bid > 0, "Bid must be greater than 0");
+    uint256 bidderBid = _nftOffersStorage.getPreviousBidderBidByTokenId(
+      _tokenId,
+      msg.sender
     );
-    _nftOffersStorage.setIndexOfOffersBidsFromAddress(
+    _nftOffersStorage.setOfferBidFromTokenIdBySender(
       _tokenId,
       msg.sender,
-      addresses.length
+      _bid
     );
-    _nftOffersStorage.pushAddressToTokenId(_tokenId, msg.sender);
+    if (bidderBid == 0 || bidderBid < _bid) {
+      _nftOffersStorage.setOfferBidFromTokenIdBySender(
+        _tokenId,
+        msg.sender,
+        _bid
+      );
+      address[] memory addresses = _nftOffersStorage.getAddressFromTokenId(
+        _tokenId
+      );
+      if (bidderBid == 0) {
+        _nftOffersStorage.setIndexOfOffersBidsFromAddress(
+          _tokenId,
+          msg.sender,
+          addresses.length
+        );
+        _nftOffersStorage.pushAddressFromTokenId(_tokenId, msg.sender);
+      }
+    }
   }
 
   function _removeOffer(uint256 _tokenId, address bidder) internal {
-    _nftOffersStorage.deleteOffersBidsFromTokenId(_tokenId, bidder);
+    require(_tokenId > 0, "Invalid token ID");
+    require(bidder != address(0), "Invalid bidder address");
 
-    uint256 index = _nftOffersStorage.getIndexOfOfferBidsFromAddress(
+    _nftOffersStorage.setOfferBidFromTokenIdBySender(_tokenId, bidder, 0);
+
+    address[] memory addresses = _nftOffersStorage.getAddressFromTokenId(
+      _tokenId
+    );
+
+    uint index = _nftOffersStorage.getIndexOfOfferBidsFromAddress(
       _tokenId,
       bidder
     );
-    _nftOffersStorage.deleteAddressFromBiddersByTokenIdAndIndex(
+
+    uint lastIndex = addresses.length - 1;
+    address lastBidder = addresses[lastIndex];
+
+    _nftOffersStorage.setIndexOfOffersBidsFromAddress(
       _tokenId,
+      lastBidder,
       index
     );
+
     _nftOffersStorage.deleteIndexOfOfferBidsFromAddress(_tokenId, bidder);
+    _nftOffersStorage.updateAddrressFromTokenId(_tokenId, index, lastBidder);
+    _nftOffersStorage.popAddressFromTokenId(_tokenId);
+
+    emit RemoveOffer(_tokenId, msg.sender, msg.value);
   }
 }

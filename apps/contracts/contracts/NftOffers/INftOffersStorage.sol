@@ -12,7 +12,8 @@ interface INftOffersStorage {
 
   // GETTERS
   function getPreviousBidderBidByTokenId(
-    uint256 _tokenId
+    uint256 _tokenId,
+    address _address
   ) external view returns (uint256);
 
   function getNftOfferByTokenId(
@@ -70,10 +71,19 @@ interface INftOffersStorage {
 
   function setOfferBidFromTokenIdBySender(
     uint256 _tokenId,
+    address _address,
     uint256 _bid
   ) external;
 
-  function pushAddressToTokenId(uint256 tokenId, address bidder) external;
+  function pushAddressFromTokenId(uint256 tokenId, address bidder) external;
+
+  function updateAddrressFromTokenId(
+    uint256 tokenId,
+    uint256 index,
+    address bidder
+  ) external;
+
+  function popAddressFromTokenId(uint256 tokenId) external;
 
   function deleteOffersBidsFromTokenId(
     uint256 _tokenId,

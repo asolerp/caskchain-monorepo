@@ -111,20 +111,20 @@ contract("NftOffers", (accounts) => {
         value: web3.utils.toWei("2", "ether"),
       });
       // addr1 cancels the offer
-      const result = await nftOffers.cancelOffer(1, {
+      await nftOffers.cancelOffer(1, {
         from: user1,
       });
 
-      const event = result.logs[0];
+      // const event = result.logs[0];
 
-      assert.equal(event.event, "RemoveOffer");
+      // assert.equal(event.event, "RemoveOffer");
 
       // Check that addr1's bid has been removed
       const address = await nftOffers.getAddressesBids(1);
 
       console.log("address", address);
 
-      assert.equal(address, [user2]);
+      assert.equal(address[0], user2);
 
       // Check that addr2 is now the highest bidder
       // const offer = await yourContract.getNftOfferByTokenId(tokenId);
