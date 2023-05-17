@@ -11,7 +11,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
-    "dev:emulator": "npx cross-env node scripts/startup.js",
+    "deploy": "npx cross-env node scripts/startup.js",
     "stop": "npx pm2 stop all",
     "build:caskchain-admin": "turbo run build --filter=caskchain-admin",
     "build:caskchain-frontend": "turbo run build --filter=caskchain-frontend",
