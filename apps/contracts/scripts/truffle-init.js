@@ -58,11 +58,6 @@ module.exports = async function (callback) {
 
     mockUSDT.transfer(process.env.PUBLIC_KEY, "1000000");
 
-    await ccNft.mintNFT(
-      "https://gateway.pinata.cloud/ipfs/QmexW73eDDgJstGgJ47bibwYFLW3Y6EmWURTaoWoVQnvjN",
-      { from: process.env.PUBLIC_KEY }
-    );
-
     // await nftVendor.listItem("1", web3.utils.toWei("2", "ether"), {
     //   from: process.env.PUBLIC_KEY,
     // });

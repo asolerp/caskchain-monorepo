@@ -4,7 +4,7 @@ import type { NextPage } from 'next'
 import { BaseLayout } from '@ui'
 
 import { Nft } from '@_types/nft'
-import { useOwnedNfts } from '@hooks/web3'
+import { useAccount, useOwnedNfts } from '@hooks/web3'
 
 import { useRouter } from 'next/router'
 
@@ -19,9 +19,15 @@ import Link from 'next/link'
 import BarrelNft from '@ui/ntf/item/BarrelNft'
 import { ipfsImageParser } from 'utils/ipfsImageParser'
 import Header from '@ui/layout/Header'
+import { useState } from 'react'
+import { Switch } from '@headlessui/react'
+import { useBalance } from 'wagmi'
+import ClientOnly from 'components/pages/ClientOnly'
+
+type addressType = `0x${string}`
 
 const tabs = [
-  { name: 'Your Collection', href: '#', key: 'my-collection' },
+  { name: 'My cellar', href: '#', key: 'my-collection' },
   { name: 'My selection', href: '#', key: 'my-selection' },
 ]
 
@@ -32,302 +38,299 @@ function classNames(...classes: string[]) {
 export const getServerSideProps = (context: any) => auth(context, 'user')
 
 const Profile: NextPage = () => {
+  const { nfts } = useOwnedNfts()
   const {
     state: { user },
   } = useGlobal()
-  const { nfts } = useOwnedNfts()
   const router = useRouter()
+  const { account } = useAccount()
+  const { data } = useBalance({
+    address: account?.data as addressType,
+  })
+  const [editMode, setEditMode] = useState(false)
 
   const _selectedTab = (router.query.tab as string) ?? 'my-collection'
   const selectedIndex = tabs.map((t) => t.key).indexOf(_selectedTab) ?? 0
 
   return (
-    <BaseLayout background="bg-gradient-to-r from-[#0F0F0F] via-[#161616] to-[#000000]">
+    <BaseLayout background="bg-white">
       <Header>
         <h1 className="font-rale font-semibold text-6xl text-cask-chain mb-10">
-          My <span className="text-white">Profile</span>
+          My <span className="text-white">Cellar</span>
         </h1>
       </Header>
-      <div className="py-16 pt-40 px-2 sm:px-6 lg:w-3/4">
-        <div className="flex-1 flex flex-col">
-          <div className="flex-1 flex space-x-4 items-stretch">
-            <main className="flex-1 overflow-y-auto">
-              <div className="mx-auto">
-                <div className="flex flex-col">
-                  <Image
-                    src="/images/nft.png"
-                    width={300}
-                    height={300}
-                    alt="profile"
-                    className="rounded-full object-cover w-60 h-60"
-                  />
-                  <Spacer size="md" />
-                  <h2 className="tracking-tight font-extrabold text-gray-100 font-rale sm:text-4xl">
-                    {user?.nickname}
-                  </h2>
-                  <p className="font-poppins text-xl text-gray-300">
-                    {addressSimplifier(user?.address)}
-                  </p>
-                </div>
-                <Spacer size="3xl" />
-                <div className="mt-3 sm:mt-2">
-                  <div className="hidden sm:block">
-                    <div className="flex items-center ">
-                      <nav
-                        className=" -mb-px flex space-x-6 xl:space-x-8 border-b border-gray-600 w-full"
-                        aria-label="Tabs"
-                      >
-                        {tabs.map((tab, index) => (
-                          <a
-                            onClick={() =>
-                              router.replace(`/profile/${tab.key}`, undefined, {
-                                shallow: true,
-                              })
-                            }
-                            key={tab.name}
-                            aria-current={
-                              selectedIndex === index ? 'page' : undefined
-                            }
-                            className={classNames(
-                              selectedIndex === index
-                                ? 'border-cask-chain text-cask-chain'
-                                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                              'whitespace-nowrap pb-2 px-1 border-b-2 font-medium text-2xl cursor-pointer'
-                            )}
-                          >
-                            {tab.name}
-                          </a>
-                        ))}
-                      </nav>
-                    </div>
+      <div className="w-full">
+        <main>
+          <div>
+            <ClientOnly>
+              <div className="grid grid-cols-2 gap-10 px-40 py-20 bg-black-light">
+                <div className="flex justify-center items-center">
+                  <div className="relative hover:opacity-40 cursor-pointer">
+                    <Image
+                      src="/images/avatar.png"
+                      width={430}
+                      height={430}
+                      alt="profile"
+                      className="rounded-full object-cover "
+                    />
+                    <Image
+                      src="/icons/image.png"
+                      width={150}
+                      height={150}
+                      alt="profile"
+                      className="absolute object-cover z-40 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                    />
+                  </div>
+                  <div className="px-10 -ml-20 flex flex-col items-center w-fit h-fit p-6 bg-gray-400 rounded-[30px] bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10">
+                    <h3 className="font-rale font-medium text-white text-3xl text-center">
+                      {user?.nickname ?? addressSimplifier(account?.data)}
+                    </h3>
+                    <Spacer size="md" />
+                    <p className="font-poppins text-white">
+                      My Cellar:{' '}
+                      <span className="text-cask-chain">
+                        {' '}
+                        {nfts?.data?.length}{' '}
+                        {`NFT${nfts?.data?.length > 1 ? 's' : ''}`}
+                      </span>
+                    </p>
+                    <Spacer size="lg" />
+                    <p className="font-poppins text-white">
+                      Balance:{' '}
+                      <span className="text-cask-chain">
+                        {' '}
+                        {Number(data?.formatted).toFixed(2)} {data?.symbol}
+                      </span>
+                    </p>
+                    <Spacer size="lg" />
+                    <Button
+                      containerStyle="absolute px-6 py-4 -bottom-6"
+                      labelStyle="text-md"
+                    >
+                      Add Funds
+                    </Button>
                   </div>
                 </div>
-
-                {_selectedTab === 'my-collection' && (
-                  <section
-                    className="mt-8 pb-16"
-                    aria-labelledby="gallery-heading"
+                <div className="flex justify-center items-center h-full">
+                  <div className="flex flex-col w-2/3 h-full">
+                    <div className="flex flex-row items-center space-x-3 self-end mr-8">
+                      <Switch
+                        checked={editMode}
+                        onChange={() => setEditMode(!editMode)}
+                        className={`${
+                          editMode ? 'bg-cask-chain' : 'bg-gray-300'
+                        }
+                    relative inline-flex flex-shrink-0 h-[28px] w-[54px] border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+                      >
+                        <span
+                          aria-hidden="true"
+                          className={`${
+                            editMode ? 'translate-x-6' : 'translate-x-0'
+                          }
+                    pointer-events-none inline-block h-[24px] w-[24px] rounded-full bg-white shadow-lg transform ring-0 transition ease-in-out duration-200`}
+                        />
+                      </Switch>
+                      <span className="text-gray-400">EDIT</span>
+                    </div>
+                    <textarea
+                      disabled={!editMode}
+                      className="bg-transparent border-0 text-gray-400 text-xl w-full h-full focus:outline-none focus:border-cask-chain"
+                      value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus malesuada massa vitae sapien vestibulum varius. Etiam tempus augue ac tellus congue molestie. Aliquam posuere facilisis aliquam. Maecenas a diam rhoncus mauris dapibus pellentesque eu nec lacus. Sed tempor ex a odio bibendum consectetur. Morbi nec aliquam neque, vitae feugiat eros. Fusce tristique at velit sed pulvinar. "
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+            </ClientOnly>
+            <Image
+              src="/images/wave1.svg"
+              width={1000}
+              height={500}
+              alt="wave"
+              className="w-full"
+            />
+            <Spacer size="3xl" />
+            <div className="mt-3 sm:mt-2">
+              <div className="hidden sm:block">
+                <div className="flex flex-row w-full">
+                  <nav
+                    className=" flex space-x-6 justify-center items-center xl:space-x-8 w-full"
+                    aria-label="Tabs"
                   >
-                    {nfts.data.length ? (
-                      <>
-                        <ul
-                          role="list"
-                          className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 px-4"
-                        >
-                          {(nfts?.data as Nft[])?.map((nft) => (
-                            <li
-                              key={nft.meta.name}
-                              onClick={() => {
-                                nfts.setIsApproved(false)
-                                nfts.handleActiveNft(nft)
-                              }}
-                              className="relative"
-                            >
-                              <div
-                                className={classNames(
-                                  nft.tokenId === nfts.activeNft?.tokenId
-                                    ? 'ring-2 ring-offset-2 ring-cask-chain'
-                                    : 'focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-cask-chain',
-                                  'group block w-full aspect-w-10 aspect-h-7 rounded-lg py-3 overflow-hidden'
-                                )}
-                              >
-                                <Image
-                                  width={300}
-                                  height={100}
-                                  src={ipfsImageParser(nft.meta.image)}
-                                  alt=""
-                                  className={classNames(
-                                    nft.tokenId === nfts.activeNft?.tokenId
-                                      ? ''
-                                      : 'group-hover:opacity-75',
-                                    'object-cover pointer-events-none h-40 w-full'
-                                  )}
-                                />
-                                <button
-                                  type="button"
-                                  className="absolute inset-0 focus:outline-none"
-                                >
-                                  <span className="sr-only">
-                                    View details for {nft.meta.name}
-                                  </span>
-                                </button>
-                              </div>
-                              <p className="mt-3 block text-lg font-medium text-gray-100 truncate pointer-events-none">
-                                {nft.meta.name}
-                              </p>
-                            </li>
-                          ))}
-                        </ul>
-                        <Spacer size="xl" />
-                        {/* <div className="w-full border-b border-gray-700" /> */}
-                        <Spacer size="xl" />
-                      </>
-                    ) : (
-                      <div className="flex flex-col border border-gray-700 p-6 rounded-lg justify-center items-center">
-                        <h3 className="font-poppins text-2xl text-gray-300">
-                          No se ha encontrado ningna barrica
-                        </h3>
-                        <Spacer size="md" />
-                        <Button onClick={() => router.push('/marketplace')}>
-                          Ir al marketplace
-                        </Button>
-                      </div>
-                    )}
-                  </section>
+                    {tabs.map((tab, index) => (
+                      <a
+                        onClick={() =>
+                          router.replace(`/profile/${tab.key}`, undefined, {
+                            shallow: true,
+                          })
+                        }
+                        key={tab.name}
+                        aria-current={
+                          selectedIndex === index ? 'page' : undefined
+                        }
+                        className={classNames(
+                          selectedIndex === index
+                            ? 'border border-cask-chain bg-cask-chain text-black '
+                            : 'border border-black text-black',
+                          'whitespace-nowrap border-b-2 font-medium text-2xl cursor-pointer rounded-full py-4 px-4'
+                        )}
+                      >
+                        {tab.name}
+                      </a>
+                    ))}
+                  </nav>
+                </div>
+              </div>
+            </div>
+            <Spacer size="xl" />
+            {_selectedTab === 'my-collection' && (
+              <section className="mt-8 pb-16" aria-labelledby="gallery-heading">
+                {nfts.data.length ? (
+                  <>
+                    <ul role="list" className="grid grid-cols-7 gap-10">
+                      <li className="relative col-span-1" />
+                      <li className="grid grid-cols-3 gap-5 col-span-5">
+                        {(nfts?.data as Nft[])?.map((nft) => (
+                          <BarrelNft
+                            key={nft.tokenId}
+                            isProfile
+                            isMarketPlace
+                            item={nft}
+                            blow
+                          />
+                        ))}
+                      </li>
+                      <li className="relative col-span-1" />
+                    </ul>
+                    <Spacer size="xl" />
+                  </>
+                ) : (
+                  <div className="flex flex-col  p-6 rounded-lg justify-center items-center">
+                    <h3 className="font-poppins text-2xl text-gray-500">
+                      No se ha encontrado ningna barrica
+                    </h3>
+                    <Spacer size="md" />
+                    <Button onClick={() => router.push('/marketplace')}>
+                      Ir al marketplace
+                    </Button>
+                  </div>
                 )}
-                {_selectedTab === 'my-selection' && (
-                  <section
-                    className="mt-8 pb-16 px-4 flex flex-row flex-wrap justify-start space-x-6"
-                    aria-labelledby="gallery-heading"
-                  >
-                    <>
-                      {nfts?.favorites?.map((nft: Nft) => (
+              </section>
+            )}
+            {_selectedTab === 'my-selection' && (
+              <section className="mt-8 pb-16" aria-labelledby="gallery-heading">
+                <ul role="list" className="grid grid-cols-7 gap-10">
+                  <li className="relative col-span-1" />
+                  <li className="grid grid-cols-3 gap-5 col-span-5">
+                    {nfts?.favorites &&
+                      nfts?.favorites?.map((nft: Nft) => (
                         <Link key={nft.tokenId} href={`/cask/${nft.tokenId}`}>
                           <BarrelNft isMarketPlace item={nft} blow />
                         </Link>
                       ))}
-                    </>
-                  </section>
-                )}
-                {_selectedTab === 'fractions' && (
-                  <section
-                    className="mt-8 pb-16 px-4"
-                    aria-labelledby="gallery-heading"
-                  >
-                    <FractionBalances
-                      balances={nfts.dataBalances}
-                      onRedeem={nfts.redeemFractions}
-                    />
-                  </section>
-                )}
-              </div>
-            </main>
-            {/* Details sidebar */}
-            {nfts.activeNft && (
-              <aside className="hidden w-96 bg-black-light rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-90 p-8 mt-10 mr-8 border border-slate-500 overflow-y-auto lg:block">
-                <div>
-                  <div>
-                    <div>
-                      <Button
-                        onClick={() =>
-                          nfts.addNFTToMetaMask(nfts.activeNft.tokenId)
-                        }
-                      >
-                        Add to metamask
-                      </Button>
-                      <Spacer size="md" />
-                      <div className="block w-full aspect-w-10 aspect-h-7 rounded-lg overflow-hidden">
-                        <Image
-                          width={350}
-                          height={50}
-                          src={ipfsImageParser(nfts.activeNft.meta.image)}
-                          alt=""
-                          className="object-cover w-full"
-                        />
-                      </div>
-                      <div className="mt-4 flex items-start justify-between">
-                        <div className="flex flex-col space-y-3">
-                          <h2 className="text-lg font-medium text-cask-chain">
-                            <span className="sr-only">Details for </span>
-                            {nfts.activeNft.meta.name}
-                          </h2>
-                          <p className="text-sm font-medium text-gray-200">
-                            {nfts.activeNft.meta.description}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <h3 className="font-medium text-gray-100">Stats</h3>
-                      <dl className="mt-2 border-t border-b border-gray-200 divide-y divide-gray-200">
-                        {nfts.activeNft.meta.attributes.map((attr: any) => (
-                          <div
-                            key={attr.trait_type}
-                            className="py-3 flex justify-between text-sm font-medium"
-                          >
-                            <dt className="text-gray-100">
-                              {attr.trait_type.toUpperCase()}:{' '}
-                            </dt>
-                            <dd className="text-cask-chain text-right">
-                              {attr.value}
-                            </dd>
-                          </div>
-                        ))}
-                      </dl>
-                    </div>
-                    <Spacer size="md" />
-                    <div className="flex flex-grow flex-col">
-                      <div className="flex justify-end">
-                        <Button
-                          onClick={() =>
-                            nfts.approveSell(nfts.activeNft.tokenId)
-                          }
-                        >
-                          Approve sell
-                        </Button>
-                      </div>
-                      <Spacer size="md" />
-                      <input
-                        min={0}
-                        value={nfts.listPrice || 0}
-                        disabled={!nfts.isApproved}
-                        onChange={(e) => nfts.setListPrice(e.target.value)}
-                        type="number"
-                        id="first_name"
-                        className="w-full bg-transparent border-b  text-5xl text-gray-100 focus:ring-0 rounded-lg "
-                        required
-                      />
-                      <Spacer size="md" />
-                      <Button
-                        fit={false}
-                        onClick={() => nfts.listNft(nfts.activeNft.tokenId)}
-                        disabled={!nfts.isApproved}
-                      >
-                        List Nft
-                      </Button>
-                      {/* <button
-                        disabled={activeNft.isListed}
-                        onClick={() => {
-                          nfts.listNft(activeNft.tokenId, activeNft.price)
-                        }}
-                        type="button"
-                        className="disabled:text-gray-400 disabled:cursor-not-allowed flex-1 ml-3 bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      >
-                        {activeNft.isListed ? 'Nft is listed' : 'List Nft'}
-                      </button> */}
-                    </div>
-                    {/* <button
-                      onClick={() =>
-                        orderBottle(2, activeNft.tokenId, activeNft.tokenURI)
-                      }
-                      type="button"
-                      className="disabled:text-gray-400 disabled:cursor-not-allowed flex-1 bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      Order two bottles
-                    </button> */}
-                  </div>
-                  {/* {activeOffer && activeNft && (
-                    <div>
-                      <p className="mb-1">You have an offer!</p>
-                      <p className="mb-2">
-                        Offer:{' '}
-                        {ethers.utils.formatEther(activeNft?.offer?.highestBid)}{' '}
-                        ETH
-                      </p>
-                      <button
-                        onClick={() => nfts.acceptOffer(activeNft.tokenId)}
-                        type="button"
-                        className="flex-1 bg-indigo-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                      >
-                        Accept offer
-                      </button>
-                    </div>
-                  )} */}
-                </div>
-              </aside>
+                  </li>
+                  <li className="relative col-span-1" />
+                </ul>
+              </section>
+            )}
+            {_selectedTab === 'fractions' && (
+              <section
+                className="mt-8 pb-16 px-4"
+                aria-labelledby="gallery-heading"
+              >
+                <FractionBalances
+                  balances={nfts.dataBalances}
+                  onRedeem={nfts.redeemFractions}
+                />
+              </section>
             )}
           </div>
-        </div>
+        </main>
+        {/* Details sidebar */}
+        {nfts.activeNft && (
+          <aside className="hidden w-96 bg-black-light rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-90 p-8 mt-10 mr-8 border border-slate-500 overflow-y-auto lg:block">
+            <div>
+              <div>
+                <div>
+                  <Button
+                    onClick={() =>
+                      nfts.addNFTToMetaMask(nfts.activeNft.tokenId)
+                    }
+                  >
+                    Add to metamask
+                  </Button>
+                  <Spacer size="md" />
+                  <div className="block w-full aspect-w-10 aspect-h-7 rounded-lg overflow-hidden">
+                    <Image
+                      width={350}
+                      height={50}
+                      src={ipfsImageParser(nfts.activeNft.meta.image)}
+                      alt=""
+                      className="object-cover w-full"
+                    />
+                  </div>
+                  <div className="mt-4 flex items-start justify-between">
+                    <div className="flex flex-col space-y-3">
+                      <h2 className="text-lg font-medium text-cask-chain">
+                        <span className="sr-only">Details for </span>
+                        {nfts.activeNft.meta.name}
+                      </h2>
+                      <p className="text-sm font-medium text-gray-200">
+                        {nfts.activeNft.meta.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-medium text-gray-100">Stats</h3>
+                  <dl className="mt-2 border-t border-b border-gray-200 divide-y divide-gray-200">
+                    {nfts.activeNft.meta.attributes.map((attr: any) => (
+                      <div
+                        key={attr.trait_type}
+                        className="py-3 flex justify-between text-sm font-medium"
+                      >
+                        <dt className="text-gray-100">
+                          {attr.trait_type.toUpperCase()}:{' '}
+                        </dt>
+                        <dd className="text-cask-chain text-right">
+                          {attr.value}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+                <Spacer size="md" />
+                <div className="flex flex-grow flex-col">
+                  <div className="flex justify-end">
+                    <Button
+                      onClick={() => nfts.approveSell(nfts.activeNft.tokenId)}
+                    >
+                      Approve sell
+                    </Button>
+                  </div>
+                  <Spacer size="md" />
+                  <input
+                    min={0}
+                    value={nfts.listPrice || 0}
+                    disabled={!nfts.isApproved}
+                    onChange={(e) => nfts.setListPrice(e.target.value)}
+                    type="number"
+                    id="first_name"
+                    className="w-full bg-transparent border-b  text-5xl text-gray-100 focus:ring-0 rounded-lg "
+                    required
+                  />
+                  <Spacer size="md" />
+                  <Button
+                    fit={false}
+                    onClick={() => nfts.listNft(nfts.activeNft.tokenId)}
+                    disabled={!nfts.isApproved}
+                  >
+                    List Nft
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </aside>
+        )}
       </div>
     </BaseLayout>
   )

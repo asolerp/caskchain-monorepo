@@ -30,6 +30,10 @@ export class NFTRepositoryImpl implements NFTRepository {
     await this.nftsDataSource.updateOwnerNft(id, owner)
   }
 
+  async updatePrice(id: string, price: string): Promise<void> {
+    await this.nftsDataSource.updatePrice(id, price)
+  }
+
   async getTotalNftsSupply(): Promise<number> {
     return await this.web3Transaction.getTotalNftSupply()
   }
@@ -58,8 +62,9 @@ export class NFTRepositoryImpl implements NFTRepository {
     return await this.web3Transaction.getCaskInfo(caskId)
   }
 
-  async getAllNfts(page: number, pageSize: number): Promise<any> {
-    return await this.web3Transaction.getAllNfts(page, pageSize)
+  async getAllNfts(page: number, pageSize: number, filter?: any): Promise<any> {
+    console.log('HOLA', filter)
+    return await this.nftsDataSource.getAllNfts(page, pageSize, filter)
   }
 
   async getOwnedNfts(owner: string): Promise<any> {

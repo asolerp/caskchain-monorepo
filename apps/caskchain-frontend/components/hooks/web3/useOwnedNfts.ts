@@ -1,11 +1,14 @@
 import { CryptoHookFactory } from '@_types/hooks'
 import { Nft } from '@_types/nft'
 import useLoading from '@hooks/common/useLoading'
+import { useGlobal } from '@providers/global'
+import { getCookie } from 'cookies-next'
 import { ethers } from 'ethers'
 import axiosClient from 'lib/fetcher/axiosInstance'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import useSWR from 'swr'
+import { useAccount } from 'wagmi'
 
 type UseOwnedNftsResponse = {
   // acceptOffer: (tokenId: number) => Promise<void>
@@ -18,6 +21,8 @@ export type UseOwnedNftsHook = ReturnType<OwnedNftsHookFactory>
 export const hookFactory: OwnedNftsHookFactory =
   ({ ccNft, ethereum, nftVendor, nftFractionToken, nftOffers, provider }) =>
   () => {
+    const token = getCookie('token')
+
     const _ccNft = ccNft
     const _nftVendor = nftVendor
 
@@ -25,63 +30,77 @@ export const hookFactory: OwnedNftsHookFactory =
     const [isApproved, setIsApproved] = useState(false)
     const [listPrice, setListPrice] = useState('')
 
+    console.log('token: ', token)
+
     const {
       data,
       isLoading: isLoadingMe,
       isValidating: isValidatingMe,
-    } = useSWR('/api/casks/me', async () => {
-      const ownedNfts: any = await axiosClient.get('/api/casks/me')
+    } = useSWR(
+      token ? '/api/casks/me' : null,
+      async () => {
+        const ownedNfts: any = await axiosClient.get('/api/casks/me')
 
-      const nfts = [] as any[]
+        const nfts = [] as any[]
 
-      for (let i = 0; i < ownedNfts.data.length; i++) {
-        const item = ownedNfts.data[i]
-        const transactions = await axiosClient.get(
-          `/api/transactions?tokenId=${item.tokenId}`
-        )
-        nfts.push({
-          ...item,
-          transactions: transactions.data,
-        })
+        for (let i = 0; i < ownedNfts.data.length; i++) {
+          const item = ownedNfts.data[i]
+          const transactions = await axiosClient.get(
+            `/api/transactions?tokenId=${item.tokenId}`
+          )
+          nfts.push({
+            ...item,
+            transactions: transactions.data,
+          })
+        }
+        return nfts
+      },
+      {
+        revalidateOnFocus: false,
       }
-      return nfts
-    })
+    )
 
-    const { data: favorites } = useSWR('/api/casks/favorites', async () => {
-      const favoritesNfts: any = await axiosClient.get('/api/casks/favorites')
-      return favoritesNfts.data
-    })
+    const { data: favorites } = useSWR(
+      token ? '/api/casks/favorites' : null,
+      async () => {
+        const favoritesNfts: any = await axiosClient.get('/api/casks/favorites')
+        return favoritesNfts.data
+      },
+      {
+        revalidateOnFocus: false,
+      }
+    )
 
-    const {
-      data: dataBalances,
-      isLoading: isLoadingBalances,
-      isValidating: isValidatingBalances,
-    } = useSWR(nftFractionToken ? '/api/user/balances' : null, async () => {
-      const balances: any = await axiosClient.get('/api/user/balances')
+    // const {
+    //   data: dataBalances,
+    //   isLoading: isLoadingBalances,
+    //   isValidating: isValidatingBalances,
+    // } = useSWR(nftFractionToken ? '/api/user/balances' : null, async () => {
+    //   const balances: any = await axiosClient.get('/api/user/balances')
 
-      const balancesWithRedem = await Promise.all(
-        balances.data.map(async (tokenAddress: any) => {
-          try {
-            const tokenContract = await nftFractionToken!(tokenAddress.address)
-            const canRedem = await tokenContract.canRedeem()
+    //   const balancesWithRedem = await Promise.all(
+    //     balances.data.map(async (tokenAddress: any) => {
+    //       try {
+    //         const tokenContract = await nftFractionToken!(tokenAddress.address)
+    //         const canRedem = await tokenContract.canRedeem()
 
-            return {
-              ...tokenAddress,
-              canRedem,
-            }
-          } catch (e: any) {
-            console.log(e)
-          }
-        })
-      )
+    //         return {
+    //           ...tokenAddress,
+    //           canRedem,
+    //         }
+    //       } catch (e: any) {
+    //         console.log(e)
+    //       }
+    //     })
+    //   )
 
-      return balancesWithRedem.filter(
-        (tokenAddress: any) => tokenAddress.balance > 0
-      )
-    })
+    //   return balancesWithRedem.filter(
+    //     (tokenAddress: any) => tokenAddress.balance > 0
+    //   )
+    // })
 
-    const isLoading = isLoadingBalances || isLoadingMe
-    const isValidating = isValidatingBalances || isValidatingMe
+    const isLoading = isLoadingMe
+    const isValidating = isValidatingMe
 
     useLoading({
       loading: isLoading || isValidating,
@@ -212,7 +231,7 @@ export const hookFactory: OwnedNftsHookFactory =
       acceptOffer,
       isValidating,
       setActiveNft,
-      dataBalances,
+      // dataBalances,
       setListPrice,
       setIsApproved,
       handleActiveNft,

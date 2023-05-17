@@ -18,6 +18,7 @@ contract("NftOffers", (accounts) => {
   let nftVendorStorage;
   const tokenURI1 = "ipfs://tokenURI";
   const tokenURI2 = "ipfs://tokenURI2";
+  const tokenURI3 = "ipfs://tokenURI3";
 
   beforeEach(async () => {
     ccNftStorage = await CCNftStorage.new();
@@ -50,105 +51,101 @@ contract("NftOffers", (accounts) => {
     });
   });
 
-  // describe("makeOffer()", () => {
-  //   let tokenId;
-  //   beforeEach(async () => {
-  //     await ccNft.mintNFT(tokenURI1, { from: owner });
-  //     tokenId = 1;
-  //   });
+  describe("makeOffer()", () => {
+    let tokenId;
+    beforeEach(async () => {
+      await ccNft.mintNFT(tokenURI1, { from: owner });
+      tokenId = 1;
+    });
 
-  //   it("Ensure that the buyer is making a valid offer", async function () {
-  //     const value = web3.utils.toWei("2", "ether");
-  //     await truffleAssert.reverts(
-  //       nftOffers.makeOffer(tokenId, {
-  //         from: user1,
-  //         value: 0,
-  //       }),
-  //       "Offer price must be greater than 0"
-  //     );
+    it("Ensure that the buyer is making a valid offer", async function () {
+      const value = web3.utils.toWei("2", "ether");
+      await truffleAssert.reverts(
+        nftOffers.makeOffer(tokenId, {
+          from: user1,
+          value: 0,
+        }),
+        "Offer price must be greater than 0"
+      );
 
-  //     const result = await nftOffers.makeOffer(tokenId, {
-  //       from: user1,
-  //       value,
-  //     });
+      const result = await nftOffers.makeOffer(tokenId, {
+        from: user1,
+        value,
+      });
 
-  //     const event = result.logs[0];
-  //     assert.equal(event.event, "NewOffer");
-  //   });
+      const event = result.logs[0];
+      assert.equal(event.event, "NewOffer");
+    });
 
-  //   it("Offer price too low comparison to the highest bid", async function () {
-  //     const offer1 = web3.utils.toWei("2", "ether");
-  //     const offer2 = web3.utils.toWei("1", "ether");
+    it("Offer price too low comparison to the highest bid", async function () {
+      const offer1 = web3.utils.toWei("2", "ether");
+      const offer2 = web3.utils.toWei("1", "ether");
 
-  //     await nftOffers.makeOffer(tokenId, {
-  //       from: user1,
-  //       value: offer1,
-  //     });
+      await nftOffers.makeOffer(tokenId, {
+        from: user1,
+        value: offer1,
+      });
 
-  //     await truffleAssert.reverts(
-  //       nftOffers.makeOffer(tokenId, {
-  //         from: user2,
-  //         value: offer2,
-  //       }),
-  //       "Offer price is too low"
-  //     );
-  //   });
-  // });
+      await truffleAssert.reverts(
+        nftOffers.makeOffer(tokenId, {
+          from: user2,
+          value: offer2,
+        }),
+        "Offer price is too low"
+      );
+    });
+  });
 
   describe("cancelOffer()", () => {
     it("should cancel an offer and refund the bidder", async function () {
       // mint a token
+      let tokenId = 1;
       await ccNft.mintNFT(tokenURI2, { from: owner });
       // addr1 makes an offer
-      await nftOffers.makeOffer(1, {
+      await nftOffers.makeOffer(tokenId, {
         from: user1,
         value: web3.utils.toWei("1", "ether"),
       });
 
       // addr2 makes an offer
-      await nftOffers.makeOffer(1, {
+      await nftOffers.makeOffer(tokenId, {
         from: user2,
         value: web3.utils.toWei("2", "ether"),
       });
       // addr1 cancels the offer
-      await nftOffers.cancelOffer(1, {
+      const result = await nftOffers.cancelOffer(tokenId, {
         from: user1,
       });
 
-      // const event = result.logs[0];
-
-      // assert.equal(event.event, "RemoveOffer");
+      const event = result.logs[0];
+      assert.equal(event.event, "RemoveOffer");
 
       // Check that addr1's bid has been removed
-      const address = await nftOffers.getAddressesBids(1);
-
-      console.log("address", address);
-
+      const address = await nftOffers.getAddressesBids(tokenId);
       assert.equal(address[0], user2);
 
       // Check that addr2 is now the highest bidder
-      // const offer = await yourContract.getNftOfferByTokenId(tokenId);
-      // expect(offer.highestBidder).to.equal(addr2.address);
-      // expect(offer.highestBid).to.equal(ethers.utils.parseEther("2"));
+      const offer = await nftOffers.getNftOffer(tokenId);
+
+      expect(offer.highestBidder).to.equal(user2);
+      expect(offer.highestBid).to.equal(web3.utils.toWei("2", "ether"));
     });
   });
 
-  // describe("getNftOffer()", () => {
-  //   let tokenId;
-  //   let value;
-  //   beforeEach(async () => {
-  //     tokenId = 1;
-  //     value = web3.utils.toWei("1", "ether");
+  describe("getNftOffer()", () => {
+    it("should return the right offer details", async () => {
+      let tokenId = 1;
+      await ccNft.mintNFT(tokenURI3, { from: owner });
+      await nftOffers.makeOffer(tokenId, {
+        from: user1,
+        value: web3.utils.toWei("1", "ether"),
+      });
 
-  //     await nftOffers.makeOffer(tokenId, { from: accounts[1], value });
-  //   });
+      const offer = await nftOffers.getNftOffer(tokenId);
 
-  //   it("should return the right offer details", async () => {
-  //     const offer = await nftOffers.getNftOffer(tokenId);
-
-  //     assert.equal(offer.tokenId, tokenId);
-  //     assert.equal(offer.highestBid, value);
-  //     assert.equal(offer.bidder, accounts[1]);
-  //   });
-  // });
+      assert.equal(offer.nftId, tokenId);
+      assert.equal(offer.highestBid, web3.utils.toWei("1", "ether"));
+      assert.equal(offer.highestBidder, user1);
+    });
+  });
 });

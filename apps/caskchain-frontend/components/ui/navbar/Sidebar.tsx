@@ -1,4 +1,5 @@
-import { BellIcon } from '@heroicons/react/24/outline'
+import { Switch } from '@headlessui/react'
+import { BellIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 import { useAccount, useOwnedNfts } from '@hooks/web3'
 import { useGlobal } from '@providers/global'
 import Button from '@ui/common/Button'
@@ -8,10 +9,10 @@ import Spacer from '@ui/common/Spacer'
 import ClientOnly from 'components/pages/ClientOnly'
 import { openTransak } from 'lib/crypto/transak'
 import Image from 'next/image'
-import Link from 'next/link'
+
 import { useRouter } from 'next/router'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { useBalance } from 'wagmi'
 
 type SidebarProps = {
@@ -29,6 +30,8 @@ const Sidebar: React.FC<SidebarProps> = ({ open }) => {
     state: { user },
   } = useGlobal()
 
+  const [activeNotification, setActiveNotification] = useState(false)
+
   const { data } = useBalance({
     address: account?.data as addressType,
   })
@@ -39,7 +42,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open }) => {
     >
       <ClientOnly>
         <div className="flex flex-col items-center p-4">
-          <section>
+          <section className="flex flex-col items-center">
             <h3 className="font-rale font-semibold text-white text-4xl">
               {user?.nickname}
             </h3>
@@ -114,6 +117,71 @@ const Sidebar: React.FC<SidebarProps> = ({ open }) => {
                     <BellIcon width={20} height={20} color="#B8B8B8" />
                     <span className="text-gray-200 font-poppins text-xl">
                       Notifications
+                    </span>
+                  </div>
+                }
+                rightSide={
+                  <Switch
+                    checked={activeNotification}
+                    onChange={() => setActiveNotification(!activeNotification)}
+                    className={`${
+                      activeNotification ? 'bg-cask-chain' : 'bg-gray-300'
+                    }
+                    relative inline-flex flex-shrink-0 h-[28px] w-[54px] border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={`${
+                        activeNotification ? 'translate-x-6' : 'translate-x-0'
+                      }
+                    pointer-events-none inline-block h-[24px] w-[24px] rounded-full bg-white shadow-lg transform ring-0 transition ease-in-out duration-200`}
+                    />
+                  </Switch>
+                }
+              />
+              <ItemMenu
+                leftSide={
+                  <div className="flex items-center space-x-2">
+                    <Image
+                      src="/icons/support.svg"
+                      width={20}
+                      height={20}
+                      color="#B8B8B8"
+                      alt="support"
+                    />
+                    <span className="text-gray-200 font-poppins text-xl">
+                      Support
+                    </span>
+                  </div>
+                }
+                rightSide={
+                  <div className="flex flex-row items-center space-x-2">
+                    <span className="text-purple-600 font-poppins">
+                      Discord
+                    </span>
+                    <ChevronRightIcon
+                      width={20}
+                      height={20}
+                      color="#B8B8B8"
+                    ></ChevronRightIcon>
+                  </div>
+                }
+              />
+            </div>
+            <Spacer size="md" />
+            <div className="flex flex-col divide-y-[1px] divide-gray-700 w-full bg-[#292929] rounded-xl">
+              <ItemMenu
+                onClick={account.logout}
+                leftSide={
+                  <div className="flex items-center space-x-2">
+                    <Image
+                      src="/icons/security.svg"
+                      width={20}
+                      height={20}
+                      alt="barrels"
+                    />
+                    <span className="text-gray-200 font-poppins text-xl">
+                      Security
                     </span>
                   </div>
                 }

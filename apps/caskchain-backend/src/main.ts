@@ -71,6 +71,8 @@ import { RoyaltyImpl } from './domain/repositories/royalty-repository'
 import { MongoDBRoyaltyDataSource } from './data/data-sources/mongodb/MongoDBRoyaltiesDataSource'
 import { GetRoyalties } from './domain/use-cases/transaction/get-royalties'
 import PinNftRouter from './presentation/routers/pin-nft-router'
+import OnListed from './presentation/subscriptions/on-listed'
+import { UpdatePriceNft } from './domain/use-cases/nft/update-price-nft'
 ;(async () => {
   const clientDB = MongoClientFactory.createClient(
     process.env.CONTEXT_NAME as string,
@@ -216,6 +218,16 @@ import PinNftRouter from './presentation/routers/pin-nft-router'
       )
     )
   )
+
+  const handleOnListed = OnListed(
+    new UpdatePriceNft(
+      new NFTRepositoryImpl(
+        new Web3Transaction(web3Client, web3WsClient, web3Contracts),
+        new MongoDBNFTDataSource(clientDB)
+      )
+    )
+  )
+
   const handleOnTransfer = OnTransfer(
     new UpdateOwnerNft(
       new NFTRepositoryImpl(
@@ -249,6 +261,8 @@ import PinNftRouter from './presentation/routers/pin-nft-router'
   eventsHandler.subscribeLogEvent('CCNft', 'Transfer', (transaction: any) =>
     handleOnTransfer(transaction, 'transfer')
   )
+
+  eventsHandler.subscribeLogEvent('NftVendor', 'ItemListed', handleOnListed)
 
   eventsHandler.subscribeLogEvent(
     'NftVendor',

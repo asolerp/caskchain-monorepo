@@ -14,6 +14,10 @@ import { useGlobal } from '@providers/global'
 import Button from '@ui/common/Button'
 import Spacer from '@ui/common/Spacer'
 import BarrelsSkeleton from 'components/pages/marketplace/BarrelsSkeleton'
+import Header from '@ui/layout/Header'
+import Image from 'next/image'
+import { LiquorsTypes } from 'caskchain-lib'
+import LiquorFilter from 'components/pages/marketplace/LiquorFilter'
 
 const tabs = [
   { name: 'All barrels', href: '#', key: 'search' },
@@ -37,6 +41,7 @@ const NFTCaskWorld: NextPage = () => {
   const router = useRouter()
   const _selectedTab = (router.query.tab as string) ?? 'search'
   const selectedIndex = tabs.map((t) => t.key).indexOf(_selectedTab) ?? 0
+
   const [filteredNfts, setFilteredNfts] = useState(nfts?.data)
 
   const hasFavorite = (nftId: number) => {
@@ -44,7 +49,7 @@ const NFTCaskWorld: NextPage = () => {
   }
 
   useEffect(() => {
-    const filtered = nfts?.data?.items?.filter((nft: Nft) => {
+    const filtered = nfts?.data?.documents?.filter((nft: Nft) => {
       if (_selectedTab === 'search') {
         return true
       }
@@ -56,7 +61,7 @@ const NFTCaskWorld: NextPage = () => {
       }
     })
     setFilteredNfts(filtered)
-  }, [_selectedTab, nfts?.data?.items])
+  }, [_selectedTab, nfts?.data?.documents])
 
   if (!router.isReady) {
     return null
@@ -64,11 +69,59 @@ const NFTCaskWorld: NextPage = () => {
 
   return (
     <BaseLayout background="bg-gradient-to-r from-[#0F0F0F] via-[#161616] to-[#000000]">
-      <div className="py-16 sm:px-6 pt-40 w-3/4  px-4">
-        <h2 className="tracking-tight font-extrabold text-gray-100 font-rale sm:text-6xl">
-          Marketplace
-        </h2>
-        <div className="flex flex-row space-x-6 mt-14">
+      <Header>
+        <h1 className="font-rale font-semibold text-6xl text-cask-chain mb-10">
+          Market <span className="text-white">Place</span>
+        </h1>
+      </Header>
+      <div className="pb-16 sm:px-6 pt-20 w-3/4 px-4">
+        <section className="flex flex-row justify-center space-x-5 ">
+          <LiquorFilter
+            liquor={LiquorsTypes.BRANDY}
+            active={nfts.activeFilter === LiquorsTypes.BRANDY}
+            onClick={() => nfts.handleActiveFilter(LiquorsTypes.BRANDY)}
+          />
+          <LiquorFilter
+            liquor={LiquorsTypes.RUM}
+            active={nfts.activeFilter === LiquorsTypes.RUM}
+            onClick={() => nfts.handleActiveFilter(LiquorsTypes.RUM)}
+          />
+          <LiquorFilter
+            liquor={LiquorsTypes.TEQUILA}
+            active={nfts.activeFilter === LiquorsTypes.TEQUILA}
+            onClick={() => nfts.handleActiveFilter(LiquorsTypes.TEQUILA)}
+          />
+          <LiquorFilter
+            liquor={LiquorsTypes.WHISKEY}
+            active={nfts.activeFilter === LiquorsTypes.WHISKEY}
+            onClick={() => nfts.handleActiveFilter(LiquorsTypes.WHISKEY)}
+          />
+        </section>
+        <Spacer size="xl" />
+        <Spacer size="xl" />
+        <section>
+          <div tabindex="0" className="relative">
+            <Image
+              onClick={() => nfts.handleSearch()}
+              src="/icons/search.svg"
+              width={40}
+              height={40}
+              alt="search"
+              className="absolute top-1/2 -translate-y-1/2 ml-8 cursor-pointer"
+            />
+            <input
+              type="text"
+              value={nfts.name}
+              onChange={nfts.handleSearchInputChange}
+              className="pl-20 bg-transparent border border-gray-600 rounded-2xl  focus:border-0 w-full h-20 font-poppins text-white text-xl ml-4"
+              placeholder="Search by Collection, NFT name, Cellar, etc"
+            ></input>
+          </div>
+        </section>
+        <Spacer size="xl" />
+        <Spacer size="xl" />
+        <Spacer size="xl" />
+        {/* <div className="flex flex-row space-x-6 mt-14">
           <nav
             className=" -mb-px flex space-x-6 xl:space-x-8  w-full"
             aria-label="Tabs"
@@ -99,11 +152,11 @@ const NFTCaskWorld: NextPage = () => {
               </a>
             ))}
           </nav>
-        </div>
-        <div className="mx-auto mt-20">
+        </div> */}
+        <section>
           <div className="grid grid-cols-4 gap-x-5 gap-y-4 flex-wrap mx-auto lg:max-w-none">
             <>
-              {nfts.isLoading ? (
+              {nfts.isCustomLoading ? (
                 <BarrelsSkeleton />
               ) : (
                 <>
@@ -130,13 +183,13 @@ const NFTCaskWorld: NextPage = () => {
                     renderWhenEmpty={() => {
                       return (
                         <>
-                          {!nfts.isLoading && !nfts.isValidating && (
-                            <div className="col-span-4 flex flex-col border border-gray-700 p-6 rounded-lg justify-center items-center">
-                              <h3 className="font-poppins text-2xl text-gray-300">
-                                No se ha encontrado ningna barrica
-                              </h3>
-                            </div>
-                          )}
+                          {/* {!nfts.isLoading && !nfts.isValidating && ( */}
+                          <div className="col-span-4 flex flex-col border border-gray-700 p-6 rounded-lg justify-center items-center">
+                            <h3 className="font-poppins text-2xl text-gray-300">
+                              No se ha encontrado ningna barrica
+                            </h3>
+                          </div>
+                          {/* )} */}
                         </>
                       )
                     }}
@@ -146,13 +199,13 @@ const NFTCaskWorld: NextPage = () => {
               )}
             </>
           </div>
-        </div>
+        </section>
         <Spacer size="xl" />
-        <div className="flex justify-center">
+        <section className="flex justify-center">
           <Button active={false} onClick={() => nfts.fetchMoreBarrels()}>
             Load more
           </Button>
-        </div>
+        </section>
       </div>
     </BaseLayout>
   )

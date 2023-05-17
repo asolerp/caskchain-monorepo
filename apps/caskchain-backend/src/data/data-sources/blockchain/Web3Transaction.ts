@@ -94,8 +94,6 @@ export class Web3Transaction extends Web3Repository {
 
       const listedPrice = await NftVendor.methods.getListing(nft.tokenId).call()
 
-      console.log('LISTED PRICE', listedPrice)
-
       const usdtPrice = await NftVendor.methods
         .getPriceByToken(process.env.USDT_CONTRACT_ADDRESS, nft.tokenId)
         .call()
@@ -496,6 +494,15 @@ export class Web3Transaction extends Web3Repository {
       const NftFractionsFactory = this.contracts()['NftFractionsFactory']
       const NftFractionsVendor = this.contracts()['NftFractionsVendor']
 
+      const clientDB = MongoClientFactory.createClient(
+        process.env.CONTEXT_NAME as string,
+        {
+          url: process.env.MONGO_DB_URL,
+        }
+      )
+
+      const mongoUserDataSource = new MongoDBUserDataSource(clientDB)
+
       const listNfts = await CCNft.methods
         .getOwnedNfts()
         .call({ from: account })
@@ -513,6 +520,10 @@ export class Web3Transaction extends Web3Repository {
 
           const tokenURI = await CCNft.methods!.tokenURI(nft.tokenId).call()
           const owner = await CCNft.methods.ownerOf(nft.tokenId).call()
+
+          const ownerName = await mongoUserDataSource.search(
+            owner.toLowerCase()
+          )
           const ipfsHash = tokenURI.split('/ipfs/')[1]
 
           const meta = await axios
@@ -554,7 +565,10 @@ export class Web3Transaction extends Web3Repository {
                   unitPrice,
                 }
               : null,
-            owner,
+            owner: {
+              address: owner,
+              nickname: ownerName?.nickname || '',
+            },
             price: listedPrice?.price?.toString(),
             offer:
               offer?.nftId != 0

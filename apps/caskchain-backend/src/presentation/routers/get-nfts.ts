@@ -27,13 +27,26 @@ export default function GetNftsRouter(
   const router = express.Router()
 
   router.get('/', async (req: Request, res: Response) => {
-    const { page = 1, pageSize = 10 } = req.query
+    const { page = 1, pageSize = 10, name = '', liquor = '' } = req.query
     try {
       // Parse page and limit values
+      const filter: any = {}
       const parsePage = parseInt(page.toString(), 10)
       const parsedPageSize = parseInt(pageSize.toString(), 10)
 
-      const nfts = await getNfts.execute(parsePage, parsedPageSize)
+      if (name) {
+        filter.name = { $regex: name, $options: 'i' }
+      }
+
+      if (liquor) {
+        filter.attributes = {
+          $elemMatch: { trait_type: 'liquor', value: liquor },
+        }
+      }
+
+      console.log('FILTERS ROUTER', filter)
+
+      const nfts = await getNfts.execute(parsePage, parsedPageSize, filter)
 
       logger.info('Successfully fetched all NFTs', null, {
         metadata: {

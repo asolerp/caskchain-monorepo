@@ -9,13 +9,13 @@ const Spacer = ({
   sm?: SizesProps
 }) => {
   const spacingClass = {
-    xs: 'mb-2',
-    sm: 'mb-4',
-    md: 'mb-6',
-    lg: 'mb-8',
-    xl: 'mb-10',
-    '2xl': 'mb-12',
-    '3xl': 'mb-16',
+    xs: 'h-2',
+    sm: 'h-4',
+    md: 'h-6',
+    lg: 'h-8',
+    xl: 'h-10',
+    '2xl': 'h-12',
+    '3xl': 'h-16',
   }
   return (
     <div

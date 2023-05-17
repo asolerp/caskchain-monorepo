@@ -16,6 +16,7 @@ type NftItemProps = {
   isFavorite?: boolean
   isMarketPlace?: boolean
   showAnimation?: boolean
+  isProfile?: boolean
   defaultImage?: boolean
   showFavorite?: boolean
   onPressFavorite?: (nftId: string) => void
@@ -29,6 +30,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
   active = false,
   showAnimation = true,
   isFavorite = false,
+  isProfile = false,
   showFavorite = false,
   defaultImage = false,
   isMarketPlace = false,
@@ -41,7 +43,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
     ? 'h-full w-full'
     : 'h-[600px] w-[460px] m-0'
 
-  const mainImage = item?.meta?.image && ipfsImageParser(item?.meta?.image)
+  const mainImage = item?.image && ipfsImageParser(item?.image)
 
   useEffect(() => {
     if (videoRef.current) {
@@ -55,7 +57,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
 
   return (
     <div
-      className={`relative cursor-pointer min-h-[480px] ${
+      className={`relative cursor-pointer min-h-[650px] ${
         isMarketPlace ? 'hover:scale-[1.02] transform-gpu transition-all' : ''
       }`}
     >
@@ -64,7 +66,9 @@ const BarrelNft: React.FC<NftItemProps> = ({
           <BookmarkIcon
             color={isFavorite ? '#CAFC01' : '#fff'}
             fill={isFavorite ? '#CAFC01' : 'transparent'}
-            onClick={() => onPressFavorite && onPressFavorite(item.tokenId)}
+            onClick={() =>
+              onPressFavorite && onPressFavorite(item._id || item.tokenId)
+            }
             className="cursor-pointer"
             width={20}
             height={20}
@@ -72,15 +76,15 @@ const BarrelNft: React.FC<NftItemProps> = ({
         </div>
       )}
       <div
-        onClick={() => router.push(`/cask/${item.tokenId}`)}
-        className="relative flex flex-row justify-center items-center min-h-[480px] h-full"
+        onClick={() => router.push(`/cask/${item._id || item.tokenId}`)}
+        className="relative flex flex-row justify-center items-center min-h-[650px] h-full"
       >
         <div
-          className={`bg-black-light rounded-[40px] bg-clip-padding backdrop-filter backdrop-blur-sm border min-h-[480px] border-gray-800 ${isMarketPlaceClass}`}
+          className={`bg-black-light rounded-[40px] bg-clip-padding backdrop-filter backdrop-blur-sm border min-h-[650px] border-gray-800 ${isMarketPlaceClass}`}
         >
           <div className="relative">
             <div className="relative w-full flex justify-center items-center rounded-md">
-              {isMarketPlace && (
+              {isMarketPlace && !isProfile && (
                 <div className={`absolute w-full -bottom-4 px-4 pb-6`}>
                   <Button
                     width="w-40"
@@ -99,12 +103,12 @@ const BarrelNft: React.FC<NftItemProps> = ({
                   onMouseEnter={() => setIsHover(true)}
                   onMouseLeave={() => setIsHover(false)}
                   className={`w-full rounded-tl-[40px] rounded-tr-[40px] ${
-                    isMarketPlace ? 'h-[300px]' : 'h-[450px]'
+                    isMarketPlace ? 'h-[450px]' : 'h-[450px]'
                   } object-cover`}
                   src={defaultImage ? DEFAULT_IMAGE : mainImage}
                   alt="New NFT"
                   width={300}
-                  height={300}
+                  height={450}
                   priority
                 />
               )}
@@ -115,7 +119,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
                   height="600"
                   onEnded={() => setIsHover(false)}
                   onMouseLeave={() => setIsHover(false)}
-                  className="h-[300px]"
+                  className="h-[450px]"
                   controls={false}
                   src="https://res.cloudinary.com/enalbis/video/upload/v1681586853/CaskChain/flofru3viqsirclxlapx.mp4"
                 />
@@ -129,7 +133,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
               <div className="w-full">
                 <div className="flex flex-row justify-between">
                   <p className="font-poppins text-cask-chain">
-                    Cask Number {`#${item.tokenId}`}
+                    Cask Number {`#${item._id || item.tokenId}`}
                   </p>
                   <div>
                     <p className="text-cask-chain font-poppins text-sm">
@@ -140,10 +144,16 @@ const BarrelNft: React.FC<NftItemProps> = ({
                   </div>
                 </div>
                 <Spacer size="xs" />
-                <h3 className="text-xl font-rale text-white font-semibold ">
-                  {item?.meta?.name}
+                <h3 className="text-xl font-rale text-white font-semibold h-20">
+                  {item?.name}
                 </h3>
               </div>
+              {isProfile && (
+                <div className="flex flex-col h-full justify-end">
+                  <Spacer size="md" />
+                  <Button fit={false}>Put it on sale!</Button>
+                </div>
+              )}
               {/* <div className="flex-1">
                 <div className="mt-4">
                   <div className="flex flex-row items-start justify-start flex-wrap space-x-1">

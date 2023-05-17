@@ -3,7 +3,7 @@ import { Nft } from '../../../types/nft'
 export interface NFTRepository {
   createNFT(id: string, nft: any): Promise<any>
   updateNFTFavoriteCounter(id: string, action: string): Promise<any>
-  getAllNfts(page: number, pageSize: number): Promise<Nft[]>
+  getAllNfts(page: number, pageSize: number, filter: any): Promise<Nft[]>
   getTotalNftsSupply(): Promise<number>
   getFavoriteNfts(address: string): Promise<Nft[]>
   getNFTFavoriteCounter(id: string): Promise<number>
@@ -16,4 +16,5 @@ export interface NFTRepository {
   fractionalizeNft(fractionalizeInfo: any): Promise<void>
   transferNFT(toAddress: string, tokenId: any, index: number): Promise<void>
   updateOwnerNft(id: string, owner: string): Promise<void>
+  updatePrice(id: string, price: string): Promise<void>
 }

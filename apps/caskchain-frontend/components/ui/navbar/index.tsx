@@ -118,8 +118,8 @@ const Navbar = () => {
                       )}
                     </Disclosure.Button>
                   </div>
-                  <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start px-2 lg:px-0">
-                    <div className="flex flex-1 items-center">
+                  <div className="grid grid-cols-12 w-full items-center justify-center sm:items-stretch sm:justify-start px-2 lg:px-0">
+                    <div className=" col-span-4 items-center">
                       <Link href={`/`}>
                         <div className="flex flex-row space-x-3 items-center">
                           <Image
@@ -132,7 +132,7 @@ const Navbar = () => {
                         </div>
                       </Link>
                     </div>
-                    <div className="hidden lg:flex flex-grow space-x-3 justify-center items-center">
+                    <div className="hidden lg:flex col-span-4 space-x-3 justify-center items-center">
                       {navigation.map((item) => (
                         <ActiveLink
                           activeclass="text-cask-chain border-b-2 border-b-cask-chain"
@@ -150,7 +150,7 @@ const Navbar = () => {
                         </ActiveLink>
                       ))}
                     </div>
-                    <div className="hidden lg:flex flex-1 justify-end items-center pr-2 sm:static sm:inset-auto sm:pr-0">
+                    <div className="hidden lg:flex col-span-4 justify-end items-center pr-2 sm:static sm:inset-auto sm:pr-0">
                       <WalletIcon
                         onClick={() => account.multiConnect()}
                         width={40}
@@ -186,26 +186,6 @@ const Navbar = () => {
                   </div>
                 </div>
               </div>
-              {/* <Disclosure.Panel className="sm:hidden">
-                <div className="space-y-1 px-2 pt-2 pb-3">
-                  {navigation.map((item: any) => (
-                    <Disclosure.Button
-                      key={item.name}
-                      as="a"
-                      href={item.href}
-                      className={classNames(
-                        item.current
-                          ? 'bg-gray-900 text-white'
-                          : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                        'block px-3 py-2 rounded-md text-base font-medium'
-                      )}
-                      aria-current={item.current ? 'page' : undefined}
-                    >
-                      {item.name}
-                    </Disclosure.Button>
-                  ))}
-                </div>
-              </Disclosure.Panel> */}
             </>
           )}
         </Disclosure>
@@ -214,5 +194,4 @@ const Navbar = () => {
   )
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default React.memo(Navbar)

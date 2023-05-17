@@ -8,7 +8,7 @@ const BarrelsSkeleton = () => {
       {elements.map((_, i) => (
         <Skeleton
           key={i}
-          height={450}
+          height={650}
           borderRadius="2rem"
           baseColor="#1C1C1C"
           highlightColor="#2C2C2C"
