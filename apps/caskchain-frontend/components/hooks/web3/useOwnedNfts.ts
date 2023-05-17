@@ -1,14 +1,14 @@
 import { CryptoHookFactory } from '@_types/hooks'
 import { Nft } from '@_types/nft'
 import useLoading from '@hooks/common/useLoading'
-import { useGlobal } from '@providers/global'
+// import { useGlobal } from '@providers/global'
 import { getCookie } from 'cookies-next'
 import { ethers } from 'ethers'
 import axiosClient from 'lib/fetcher/axiosInstance'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import useSWR from 'swr'
-import { useAccount } from 'wagmi'
+// import { useAccount } from 'wagmi'
 
 type UseOwnedNftsResponse = {
   // acceptOffer: (tokenId: number) => Promise<void>

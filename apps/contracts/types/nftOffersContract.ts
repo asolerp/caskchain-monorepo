@@ -2,10 +2,9 @@ import {
   ContractTransaction,
   ContractInterface,
   BytesLike as Arrayish,
-  BigNumber,
   BigNumberish,
-} from 'ethers';
-import { EthersContractContextV5 } from 'ethereum-abi-types-generator';
+} from "ethers";
+import { EthersContractContextV5 } from "ethereum-abi-types-generator";
 
 export type ContractContext = EthersContractContextV5<
   NftOffersContract,
@@ -29,7 +28,7 @@ export interface ContractTransactionOverrides {
   /**
    * The price (in wei) per unit of gas
    */
-  gasPrice?: BigNumber | string | number | Promise<any>;
+  gasPrice?: BigNumberish | string | number | Promise<any>;
   /**
    * The nonce to use in the transaction
    */
@@ -37,7 +36,7 @@ export interface ContractTransactionOverrides {
   /**
    * The amount to send with the transaction (i.e. msg.value)
    */
-  value?: BigNumber | string | number | Promise<any>;
+  value?: BigNumberish | string | number | Promise<any>;
   /**
    * The chain ID (or network ID) to use
    */
@@ -55,15 +54,15 @@ export interface ContractCallOverrides {
   gasLimit?: number;
 }
 export type NftOffersContractEvents =
-  | 'AcceptOffer'
-  | 'AdminChanged'
-  | 'BeaconUpgraded'
-  | 'Initialized'
-  | 'NewOffer'
-  | 'OwnershipTransferred'
-  | 'RemoveOffer'
-  | 'Upgraded'
-  | 'Withdraw';
+  | "AcceptOffer"
+  | "AdminChanged"
+  | "BeaconUpgraded"
+  | "Initialized"
+  | "NewOffer"
+  | "OwnershipTransferred"
+  | "RemoveOffer"
+  | "Upgraded"
+  | "Withdraw";
 export interface NftOffersContractEventsContext {
   AcceptOffer(...parameters: any): EventFilter;
   AdminChanged(...parameters: any): EventFilter;
@@ -76,24 +75,23 @@ export interface NftOffersContractEventsContext {
   Withdraw(...parameters: any): EventFilter;
 }
 export type NftOffersContractMethodNames =
-  | 'collection'
-  | 'nftVendor'
-  | 'owner'
-  | 'proxiableUUID'
-  | 'renounceOwnership'
-  | 'transferOwnership'
-  | 'upgradeTo'
-  | 'upgradeToAndCall'
-  | 'initialize'
-  | 'getHighestBid'
-  | 'makeOffer'
-  | 'getNftOffer'
-  | 'getAddressesBids'
-  | 'getCountNftOffers'
-  | 'withdrawOldOffers'
-  | 'withdraw'
-  | 'getCreatorNft'
-  | 'acceptOffer';
+  | "collection"
+  | "creator"
+  | "nftVendor"
+  | "owner"
+  | "proxiableUUID"
+  | "renounceOwnership"
+  | "transferOwnership"
+  | "upgradeTo"
+  | "upgradeToAndCall"
+  | "initialize"
+  | "getHighestBid"
+  | "getNftOffer"
+  | "getAddressesBids"
+  | "getPrevious"
+  | "makeOffer"
+  | "acceptOffer"
+  | "cancelOffer";
 export interface AcceptOfferEventEmittedResponse {
   tokenId: BigNumberish;
   owner: string;
@@ -134,12 +132,12 @@ export interface WithdrawEventEmittedResponse {
   bid: BigNumberish;
 }
 export interface OfferResponse {
-  nftId: BigNumber;
-  0: BigNumber;
+  nftId: BigNumberish;
+  0: BigNumberish;
   seller: string;
   1: string;
-  highestBid: BigNumber;
-  2: BigNumber;
+  highestBid: BigNumberish;
+  2: BigNumberish;
   highestBidder: string;
   3: string;
 }
@@ -151,6 +149,13 @@ export interface NftOffersContract {
    * Type: function
    */
   collection(overrides?: ContractCallOverrides): Promise<string>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   */
+  creator(overrides?: ContractCallOverrides): Promise<string>;
   /**
    * Payable: false
    * Constant: true
@@ -222,14 +227,14 @@ export interface NftOffersContract {
    * StateMutability: nonpayable
    * Type: function
    * @param _collection Type: address, Indexed: false
+   * @param _creator Type: address, Indexed: false
    * @param _nftVendor Type: address, Indexed: false
-   * @param ccNftStorageAddress Type: address, Indexed: false
    * @param nftOffersStorageAddress Type: address, Indexed: false
    */
   initialize(
     _collection: string,
+    _creator: string,
     _nftVendor: string,
-    ccNftStorageAddress: string,
     nftOffersStorageAddress: string,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
@@ -243,18 +248,7 @@ export interface NftOffersContract {
   getHighestBid(
     _tokenId: BigNumberish,
     overrides?: ContractCallOverrides
-  ): Promise<BigNumber>;
-  /**
-   * Payable: true
-   * Constant: false
-   * StateMutability: payable
-   * Type: function
-   * @param _tokenId Type: uint256, Indexed: false
-   */
-  makeOffer(
-    _tokenId: BigNumberish,
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<BigNumberish>;
   /**
    * Payable: false
    * Constant: true
@@ -284,41 +278,21 @@ export interface NftOffersContract {
    * Type: function
    * @param _tokenId Type: uint256, Indexed: false
    */
-  getCountNftOffers(
+  getPrevious(
     _tokenId: BigNumberish,
     overrides?: ContractCallOverrides
-  ): Promise<BigNumber>;
+  ): Promise<BigNumberish>;
   /**
-   * Payable: false
+   * Payable: true
    * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   */
-  withdrawOldOffers(
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
+   * StateMutability: payable
    * Type: function
    * @param _tokenId Type: uint256, Indexed: false
    */
-  withdraw(
+  makeOffer(
     _tokenId: BigNumberish,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   * @param tokenId Type: uint256, Indexed: false
-   */
-  getCreatorNft(
-    tokenId: BigNumberish,
-    overrides?: ContractCallOverrides
-  ): Promise<string>;
   /**
    * Payable: true
    * Constant: false
@@ -327,6 +301,17 @@ export interface NftOffersContract {
    * @param _tokenId Type: uint256, Indexed: false
    */
   acceptOffer(
+    _tokenId: BigNumberish,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param _tokenId Type: uint256, Indexed: false
+   */
+  cancelOffer(
     _tokenId: BigNumberish,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;

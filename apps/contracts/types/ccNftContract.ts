@@ -1,11 +1,9 @@
 import {
   ContractTransaction,
-  ContractInterface,
   BytesLike as Arrayish,
-  BigNumber,
   BigNumberish,
-} from 'ethers';
-import { EthersContractContextV5 } from 'ethereum-abi-types-generator';
+} from "ethers";
+import { EthersContractContextV5 } from "ethereum-abi-types-generator";
 
 export type ContractContext = EthersContractContextV5<
   CcNftContract,
@@ -29,7 +27,7 @@ export interface ContractTransactionOverrides {
   /**
    * The price (in wei) per unit of gas
    */
-  gasPrice?: BigNumber | string | number | Promise<any>;
+  gasPrice?: BigNumberish | string | number | Promise<any>;
   /**
    * The nonce to use in the transaction
    */
@@ -37,7 +35,7 @@ export interface ContractTransactionOverrides {
   /**
    * The amount to send with the transaction (i.e. msg.value)
    */
-  value?: BigNumber | string | number | Promise<any>;
+  value?: BigNumberish | string | number | Promise<any>;
   /**
    * The chain ID (or network ID) to use
    */
@@ -55,16 +53,16 @@ export interface ContractCallOverrides {
   gasLimit?: number;
 }
 export type CcNftContractEvents =
-  | 'AdminChanged'
-  | 'Approval'
-  | 'ApprovalForAll'
-  | 'BeaconUpgraded'
-  | 'Initialized'
-  | 'Mint'
-  | 'NftItemCreated'
-  | 'OwnershipTransferred'
-  | 'Transfer'
-  | 'Upgraded';
+  | "AdminChanged"
+  | "Approval"
+  | "ApprovalForAll"
+  | "BeaconUpgraded"
+  | "Initialized"
+  | "Mint"
+  | "NftItemCreated"
+  | "OwnershipTransferred"
+  | "Transfer"
+  | "Upgraded";
 export interface CcNftContractEventsContext {
   AdminChanged(...parameters: any): EventFilter;
   Approval(...parameters: any): EventFilter;
@@ -78,37 +76,37 @@ export interface CcNftContractEventsContext {
   Upgraded(...parameters: any): EventFilter;
 }
 export type CcNftContractMethodNames =
-  | 'approve'
-  | 'balanceOf'
-  | 'getApproved'
-  | 'isApprovedForAll'
-  | 'name'
-  | 'owner'
-  | 'ownerOf'
-  | 'proxiableUUID'
-  | 'renounceOwnership'
-  | 'royaltyInfo'
-  | 'safeTransferFrom'
-  | 'safeTransferFrom'
-  | 'setApprovalForAll'
-  | 'symbol'
-  | 'tokenURI'
-  | 'transferFrom'
-  | 'transferOwnership'
-  | 'txFeeToken'
-  | 'upgradeTo'
-  | 'upgradeToAndCall'
-  | 'initialize'
-  | 'checkIfTokenURIExists'
-  | 'mintNFT'
-  | 'burn'
-  | 'getNftTotalSupply'
-  | 'getNftInfo'
-  | 'getAllNFTs'
-  | 'getAllNftsOnSale'
-  | 'getCreatorNft'
-  | 'getOwnedNfts'
-  | 'supportsInterface';
+  | "approve"
+  | "balanceOf"
+  | "getApproved"
+  | "isApprovedForAll"
+  | "name"
+  | "owner"
+  | "ownerOf"
+  | "proxiableUUID"
+  | "renounceOwnership"
+  | "royaltyInfo"
+  | "safeTransferFrom"
+  | "safeTransferFrom"
+  | "setApprovalForAll"
+  | "symbol"
+  | "tokenURI"
+  | "transferFrom"
+  | "transferOwnership"
+  | "txFeeToken"
+  | "upgradeTo"
+  | "upgradeToAndCall"
+  | "initialize"
+  | "checkIfTokenURIExists"
+  | "mintNFT"
+  | "burn"
+  | "getNftTotalSupply"
+  | "getNftInfo"
+  | "getAllNFTs"
+  | "getAllNftsOnSale"
+  | "getCreatorNft"
+  | "getOwnedNfts"
+  | "supportsInterface";
 export interface AdminChangedEventEmittedResponse {
   previousAdmin: string;
   newAdmin: string;
@@ -153,17 +151,18 @@ export interface UpgradedEventEmittedResponse {
 export interface RoyaltyInfoResponse {
   result0: string;
   0: string;
-  result1: BigNumber;
-  1: BigNumber;
+  result1: BigNumberish;
+  1: BigNumberish;
   length: 2;
 }
 export interface NftitemResponse {
-  tokenId: BigNumber;
-  0: BigNumber;
+  tokenId: BigNumberish;
+  0: BigNumberish;
   creator: string;
   1: string;
 }
 export interface CcNftContract {
+  address: string;
   /**
    * Payable: false
    * Constant: false
@@ -187,7 +186,7 @@ export interface CcNftContract {
   balanceOf(
     owner: string,
     overrides?: ContractCallOverrides
-  ): Promise<BigNumber>;
+  ): Promise<BigNumberish>;
   /**
    * Payable: false
    * Constant: true
@@ -436,7 +435,7 @@ export interface CcNftContract {
    * StateMutability: view
    * Type: function
    */
-  getNftTotalSupply(overrides?: ContractCallOverrides): Promise<BigNumber>;
+  getNftTotalSupply(overrides?: ContractCallOverrides): Promise<BigNumberish>;
   /**
    * Payable: false
    * Constant: true

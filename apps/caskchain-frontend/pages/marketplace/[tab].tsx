@@ -9,7 +9,7 @@ import { getCookie } from 'cookies-next'
 
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+
 import { useGlobal } from '@providers/global'
 import Button from '@ui/common/Button'
 import Spacer from '@ui/common/Spacer'
@@ -19,16 +19,12 @@ import Image from 'next/image'
 import { LiquorsTypes } from 'caskchain-lib'
 import LiquorFilter from 'components/pages/marketplace/LiquorFilter'
 
-const tabs = [
-  { name: 'All barrels', href: '#', key: 'search' },
-  { name: 'On sale', href: '#', key: 'on-sale' },
-  { name: 'Fractionized', href: '#', key: 'fractionized' },
-  // { name: 'Your Fractions', href: '#', key: 'fractions' },
-]
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
-}
+// const tabs = [
+//   { name: 'All barrels', href: '#', key: 'search' },
+//   { name: 'On sale', href: '#', key: 'on-sale' },
+//   { name: 'Fractionized', href: '#', key: 'fractionized' },
+//   // { name: 'Your Fractions', href: '#', key: 'fractions' },
+// ]
 
 const NFTCaskWorld: NextPage = () => {
   const token = getCookie('token') as string
@@ -40,7 +36,7 @@ const NFTCaskWorld: NextPage = () => {
 
   const router = useRouter()
   const _selectedTab = (router.query.tab as string) ?? 'search'
-  const selectedIndex = tabs.map((t) => t.key).indexOf(_selectedTab) ?? 0
+  // const selectedIndex = tabs.map((t) => t.key).indexOf(_selectedTab) ?? 0
 
   const [filteredNfts, setFilteredNfts] = useState(nfts?.data)
 
@@ -100,7 +96,7 @@ const NFTCaskWorld: NextPage = () => {
         <Spacer size="xl" />
         <Spacer size="xl" />
         <section>
-          <div tabindex="0" className="relative">
+          <div tabIndex={0} className="relative">
             <Image
               onClick={() => nfts.handleSearch()}
               src="/icons/search.svg"

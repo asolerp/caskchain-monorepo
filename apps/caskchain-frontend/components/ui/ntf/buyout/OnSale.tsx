@@ -42,7 +42,7 @@ const OnSale: React.FC<Props> = ({ cask, onBuy, onBuyWithERC20 }) => {
   const [selectedCoin, setSelectedCoin] = useState<'ETH' | 'MATIC' | 'USDT'>()
 
   useEffect(() => {
-    if (cask?.price > 0) {
+    if (cask?.price && cask?.price > 0) {
       return setSelectedCoin('ETH')
     }
     return setSelectedCoin('USDT')
@@ -63,7 +63,7 @@ const OnSale: React.FC<Props> = ({ cask, onBuy, onBuyWithERC20 }) => {
       </div>
       <Spacer size="md" />
       <div className="flex flex-row space-x-3">
-        {cask?.price > 0 && (
+        {cask?.price && cask?.price > 0 && (
           <CoinSelector
             label="ETH"
             active={selectedCoin === 'ETH'}

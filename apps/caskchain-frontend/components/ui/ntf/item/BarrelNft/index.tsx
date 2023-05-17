@@ -8,7 +8,6 @@ import { useRouter } from 'next/router'
 import { ethers } from 'ethers'
 import Spacer from '@ui/common/Spacer'
 import { ipfsImageParser } from 'utils/ipfsImageParser'
-import { useGlobal } from '@providers/global'
 
 type NftItemProps = {
   item: any
