@@ -32,7 +32,10 @@ const Button: React.FC<ButtonProps> = ({
   const disabledClass = disabled ? 'opacity-50 cursor-not-allowed' : ''
   return (
     <div
-      onClick={onClick}
+      onClick={(e) => {
+        e.stopPropagation()
+        onClick && onClick()
+      }}
       className={`${
         width ? width : fit ? 'w-fit' : 'w-full'
       } cursor-pointer rounded-full hover:bg-opacity-80 ${activeClass} ${containerClass} ${disabledClass}`}

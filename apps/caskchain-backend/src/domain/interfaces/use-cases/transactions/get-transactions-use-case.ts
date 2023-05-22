@@ -1,3 +1,3 @@
 export interface GetTransactionsUseCase {
-  execute(): Promise<any | null>
+  execute(type?: 'item-bought' | 'transfer'): Promise<any | null>
 }

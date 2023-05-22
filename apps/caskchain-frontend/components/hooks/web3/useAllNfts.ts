@@ -6,9 +6,10 @@ import { useAuth } from '@hooks/auth'
 import useLoading from '@hooks/common/useLoading'
 import { useGlobal } from '@providers/global'
 import axios, { AxiosResponse } from 'axios'
+import { LoadingContext } from 'components/contexts/LoadingContext'
 
 import axiosClient from 'lib/fetcher/axiosInstance'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import useSWR from 'swr'
@@ -24,9 +25,11 @@ export const hookFactory: AllNftsHookFactory =
       state: { user },
     } = useGlobal()
 
+    const { setIsLoading } = useContext(LoadingContext)
+
     const [pageSize, setPageSize] = useState(10)
     const [name, setName] = useState('')
-    const [isCustomLoading, setIsCustomLoading] = useState(false)
+
     const [activeFilter, setActiveFilter] = useState('')
 
     const { auth } = useAuth()
@@ -50,8 +53,6 @@ export const hookFactory: AllNftsHookFactory =
       revalidateOnFocus: false,
     })
 
-    useLoading({ loading: isLoading })
-
     const fetchMoreBarrels = async () => {
       if (pageSize < parseInt(data?.paging?.totalCount as string)) {
         setPageSize((prev) => prev + 1)
@@ -60,11 +61,9 @@ export const hookFactory: AllNftsHookFactory =
 
     useEffect(() => {
       if (isValidating) {
-        setIsCustomLoading(true)
-        setTimeout(() => {
-          setIsCustomLoading(false)
-        }, 1000)
+        return setIsLoading(true)
       }
+      return setIsLoading(false)
     }, [isValidating])
 
     useEffect(() => {
@@ -123,7 +122,6 @@ export const hookFactory: AllNftsHookFactory =
       activeFilter,
       isValidating,
       handleSearch,
-      isCustomLoading,
       data: data || [],
       fetchMoreBarrels,
       handleAddFavorite,

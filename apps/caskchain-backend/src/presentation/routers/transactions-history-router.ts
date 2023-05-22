@@ -73,7 +73,9 @@ export default function TransactionsHistoryRouter(
     '/all',
     async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const salesHistory = await getTransactions.execute()
+        const type = req.query?.type as 'item-bought' | 'transfer'
+        console.log('TYPE ROUTER', type)
+        const salesHistory = await getTransactions.execute(type)
         return res.json(salesHistory)
       } catch (error: any) {
         next(error)

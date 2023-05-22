@@ -6,6 +6,7 @@ const useLoading = ({ loading }: { loading: boolean }) => {
   const { dispatch } = useGlobal()
 
   useEffect(() => {
+    console.log('loading', loading)
     if (loading) {
       dispatch({
         type: GlobalTypes.SET_LOADING,
@@ -17,7 +18,7 @@ const useLoading = ({ loading }: { loading: boolean }) => {
         payload: { state: false },
       })
     }
-  }, [loading, dispatch])
+  }, [loading])
 }
 
 export default useLoading

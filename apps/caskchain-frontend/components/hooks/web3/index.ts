@@ -61,6 +61,15 @@ export const useOwnedNfts = () => {
   }
 }
 
+export const useSideBar = () => {
+  const hooks = useHooks()
+  const swrRes = hooks.useSideBar()
+
+  return {
+    sidebar: swrRes,
+  }
+}
+
 export const useMyActivity = () => {
   const hooks = useHooks()
   const swrRes = hooks.useMyActivity()

@@ -1,11 +1,26 @@
-import React from 'react'
+import { LoadingAnimation } from '@ui/common/Loading/LoadingAnimation'
+import { LoadingContext } from 'components/contexts/LoadingContext'
+import React, { useContext, useEffect } from 'react'
 
-type LoadingWrapperProps = {
-  children: React.ReactNode
+const LoadingOverlay: React.FC = () => {
+  const { isLoading } = useContext(LoadingContext)
+  const [localLoading, setLocalLoading] = React.useState(true)
+
+  useEffect(() => {
+    if (isLoading) {
+      setLocalLoading(true)
+    } else {
+      setTimeout(() => {
+        setLocalLoading(false)
+      }, 2000)
+    }
+  }, [isLoading])
+
+  if (localLoading) {
+    return <LoadingAnimation />
+  }
+
+  return null
 }
 
-const LoadingWrapper: React.FC<LoadingWrapperProps> = ({ children }) => {
-  return <>{children}</>
-}
-
-export default LoadingWrapper
+export default LoadingOverlay

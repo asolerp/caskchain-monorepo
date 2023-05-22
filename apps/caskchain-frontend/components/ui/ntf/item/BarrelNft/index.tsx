@@ -18,6 +18,7 @@ type NftItemProps = {
   isProfile?: boolean
   defaultImage?: boolean
   showFavorite?: boolean
+  onPressProfileCTA?: () => void
   onPressFavorite?: (nftId: string) => void
   blow?: boolean
 }
@@ -33,6 +34,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
   showFavorite = false,
   defaultImage = false,
   isMarketPlace = false,
+  onPressProfileCTA,
   onPressFavorite,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -42,7 +44,8 @@ const BarrelNft: React.FC<NftItemProps> = ({
     ? 'h-full w-full'
     : 'h-[600px] w-[460px] m-0'
 
-  const mainImage = item?.image && ipfsImageParser(item?.image)
+  const isProfileMeta = isProfile ? item.meta : item
+  const mainImage = item && ipfsImageParser(isProfileMeta?.image)
 
   useEffect(() => {
     if (videoRef.current) {
@@ -144,13 +147,18 @@ const BarrelNft: React.FC<NftItemProps> = ({
                 </div>
                 <Spacer size="xs" />
                 <h3 className="text-xl font-rale text-white font-semibold h-20">
-                  {item?.name}
+                  {isProfileMeta?.name}
                 </h3>
               </div>
               {isProfile && (
                 <div className="flex flex-col h-full justify-end">
                   <Spacer size="md" />
-                  <Button fit={false}>Put it on sale!</Button>
+                  <Button
+                    onClick={() => onPressProfileCTA && onPressProfileCTA()}
+                    fit={false}
+                  >
+                    Put it on sale!
+                  </Button>
                 </div>
               )}
               {/* <div className="flex-1">

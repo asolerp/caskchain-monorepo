@@ -19,7 +19,7 @@ const MainAnimationSection = () => {
   useEffect(() => {
     setTimeout(() => {
       setStartMainAnimation(true)
-    }, 1500)
+    }, 2000)
   }, [])
 
   useEffect(() => {

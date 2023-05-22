@@ -7,7 +7,7 @@ export class GetTransactions implements GetTransactionsUseCase {
     this.transactionHistoryRepository = transactionHistoryRepository
   }
 
-  async execute() {
-    return await this.transactionHistoryRepository.getTransactions()
+  async execute(type?: 'item-bought' | 'transfer') {
+    return await this.transactionHistoryRepository.getTransactions(type)
   }
 }

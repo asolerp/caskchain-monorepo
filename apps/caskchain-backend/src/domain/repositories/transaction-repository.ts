@@ -18,8 +18,10 @@ export class TransactionRepositoryImpl implements TransactionRepository {
     await this.transactionDataSource.save(id, transaction)
   }
 
-  async getTransactions(): Promise<TransactionHistoryResponseModel[] | null> {
-    const result = await this.transactionDataSource.getTransactions()
+  async getTransactions(
+    type?: 'item-bought' | 'transfer'
+  ): Promise<TransactionHistoryResponseModel[] | null> {
+    const result = await this.transactionDataSource.getTransactions(type)
     return result
   }
 

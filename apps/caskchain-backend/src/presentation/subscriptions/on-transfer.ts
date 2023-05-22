@@ -16,6 +16,7 @@ export default function OnTransfer(
       tokenId: transaction.tokenId,
       value: transaction?.price ?? 0,
       txHash: transaction.transactionHash,
+      isERC20: transaction.isERC20 ?? false,
       type: type ?? 'transfer',
     })
   }

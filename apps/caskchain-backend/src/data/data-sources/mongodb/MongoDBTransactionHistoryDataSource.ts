@@ -16,9 +16,12 @@ export class MongoDBTransactionHistoryDataSource
     await this.persist(id, transaction)
   }
 
-  public async getTransactions(): Promise<any | null> {
+  public async getTransactions(
+    type?: 'item-bought' | 'transfer'
+  ): Promise<any | null> {
+    console.log('TYPE', type)
     const collection = await this.collection()
-    const document = await collection.find<any>({}).toArray()
+    const document = await collection.find<any>({ type }).toArray()
     return document || null
   }
 

@@ -38,9 +38,9 @@ const GlobalProvider: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     if (state.sideBar) {
-      document.body.style.overflow = 'hidden'
+      document.body.style.overflowY = 'hidden'
     } else {
-      document.body.style.overflow = 'unset'
+      document.body.style.overflowY = 'auto'
     }
   }, [state.sideBar])
 

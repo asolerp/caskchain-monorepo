@@ -1,11 +1,14 @@
 import { CryptoHookFactory } from '@_types/hooks'
 import { Nft } from '@_types/nft'
 import useLoading from '@hooks/common/useLoading'
+import { useGlobal } from '@providers/global'
+import { GlobalTypes } from '@providers/global/utils'
+import { LoadingContext } from 'components/contexts/LoadingContext'
 // import { useGlobal } from '@providers/global'
 import { getCookie } from 'cookies-next'
 import { ethers } from 'ethers'
 import axiosClient from 'lib/fetcher/axiosInstance'
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import useSWR from 'swr'
 // import { useAccount } from 'wagmi'
@@ -30,7 +33,7 @@ export const hookFactory: OwnedNftsHookFactory =
     const [isApproved, setIsApproved] = useState(false)
     const [listPrice, setListPrice] = useState('')
 
-    console.log('token: ', token)
+    const { setIsLoading } = useContext(LoadingContext)
 
     const {
       data,
@@ -71,40 +74,48 @@ export const hookFactory: OwnedNftsHookFactory =
       }
     )
 
-    // const {
-    //   data: dataBalances,
-    //   isLoading: isLoadingBalances,
-    //   isValidating: isValidatingBalances,
-    // } = useSWR(nftFractionToken ? '/api/user/balances' : null, async () => {
-    //   const balances: any = await axiosClient.get('/api/user/balances')
+    const {
+      data: dataBalances,
+      isLoading: isLoadingBalances,
+      isValidating: isValidatingBalances,
+    } = useSWR(nftFractionToken ? '/api/user/balances' : null, async () => {
+      const balances: any = await axiosClient.get('/api/user/balances')
 
-    //   const balancesWithRedem = await Promise.all(
-    //     balances.data.map(async (tokenAddress: any) => {
-    //       try {
-    //         const tokenContract = await nftFractionToken!(tokenAddress.address)
-    //         const canRedem = await tokenContract.canRedeem()
+      const balancesWithRedem = await Promise.all(
+        balances.data.map(async (tokenAddress: any) => {
+          try {
+            const tokenContract = await nftFractionToken!(tokenAddress.address)
+            const canRedem = await tokenContract.canRedeem()
 
-    //         return {
-    //           ...tokenAddress,
-    //           canRedem,
-    //         }
-    //       } catch (e: any) {
-    //         console.log(e)
-    //       }
-    //     })
-    //   )
+            return {
+              ...tokenAddress,
+              canRedem,
+            }
+          } catch (e: any) {
+            console.log(e)
+          }
+        })
+      )
 
-    //   return balancesWithRedem.filter(
-    //     (tokenAddress: any) => tokenAddress.balance > 0
-    //   )
-    // })
-
-    const isLoading = isLoadingMe
-    const isValidating = isValidatingMe
-
-    useLoading({
-      loading: isLoading || isValidating,
+      return balancesWithRedem.filter(
+        (tokenAddress: any) => tokenAddress.balance > 0
+      )
     })
+
+    useEffect(() => {
+      setIsLoading(
+        isLoadingMe ||
+          isValidatingMe ||
+          isLoadingBalances ||
+          isValidatingBalances
+      )
+    }, [isLoadingMe, isValidatingMe, isLoadingBalances, isValidatingBalances])
+
+    console.log('ISLOADINGME', isLoadingMe)
+
+    // useLoading({
+    //   loading: isLoadingMe,
+    // })
 
     const redeemFractions = async (tokenAddress: string, amount: number) => {
       try {
@@ -164,24 +175,67 @@ export const hookFactory: OwnedNftsHookFactory =
       }
     }
 
-    const listNft = async (tokenId: number) => {
+    const listNft = async (tokenId: number, price: string) => {
+      const id = toast.loading('Listing new barrel...')
       try {
-        const result = await _nftVendor?.listItem(
+        const gasPrice = await provider?.getGasPrice()
+
+        const txApprove = await ccNft?.approve(
+          nftVendor!.address as string,
           tokenId,
-          ethers.utils.parseUnits(listPrice.toString(), 'ether')
+          {
+            gasPrice,
+            gasLimit: 100000,
+          }
         )
-        await toast.promise(result!.wait(), {
-          pending: 'Processing transaction',
-          success: 'The NFT was listed',
-          error: 'Processing error',
+
+        const responseApprove: any = await txApprove!.wait()
+
+        if (responseApprove.status !== 1) throw new Error('Approve failed')
+
+        const txList = await nftVendor?.listItem(
+          tokenId,
+          ethers.utils.parseUnits(price.toString(), 'ether')
+        )
+
+        const responseList: any = await txList!.wait()
+
+        if (responseList.status !== 1) throw new Error('Listing failed')
+
+        toast.update(id, {
+          render: 'NFT listed',
+          type: 'success',
+          isLoading: false,
+          closeOnClick: true,
+          autoClose: 2000,
         })
-        const txStatus = await result?.wait()
-        if (txStatus?.status === 1) {
-          setListPrice('')
-        }
       } catch (e: any) {
-        console.log(e)
+        toast.update(id, {
+          render: 'Something went wrong',
+          type: 'error',
+          isLoading: false,
+          closeOnClick: true,
+          autoClose: 2000,
+        })
+        console.error(e.message)
       }
+      // try {
+      //   const result = await _nftVendor?.listItem(
+      //     tokenId,
+      //     ethers.utils.parseUnits(listPrice.toString(), 'ether')
+      //   )
+      //   await toast.promise(result!.wait(), {
+      //     pending: 'Processing transaction',
+      //     success: 'The NFT was listed',
+      //     error: 'Processing error',
+      //   })
+      //   const txStatus = await result?.wait()
+      //   if (txStatus?.status === 1) {
+      //     setListPrice('')
+      //   }
+      // } catch (e: any) {
+      //   console.log(e)
+      // }
     }
 
     const handleActiveNft = (nft: Nft) => {
@@ -225,11 +279,11 @@ export const hookFactory: OwnedNftsHookFactory =
       favorites,
       activeNft,
       listPrice,
-      isLoading,
+      // isLoading,
       isApproved,
       approveSell,
       acceptOffer,
-      isValidating,
+      // isValidating,
       setActiveNft,
       // dataBalances,
       setListPrice,

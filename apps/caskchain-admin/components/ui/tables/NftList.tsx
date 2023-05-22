@@ -15,14 +15,14 @@ const NftList = ({
   onClickPage: (page: string) => void
   onClickBarrel: (barrelId: string) => void
 }) => {
-  const startIndex = (barrels.currentPage - 1) * pageSize
+  const startIndex = (barrels?.paging?.currentPage - 1) * pageSize
   const endIndex =
-    startIndex + pageSize > barrels.totalItems
-      ? barrels.totalItems
+    startIndex + pageSize > barrels?.paging?.totalCount
+      ? barrels?.paging?.totalCount
       : startIndex + pageSize
 
-  const getAttribute = (barrel: Nft, traitType: Trait) => {
-    return barrel.meta.attributes.find((attr) => attr.trait_type === traitType)
+  const getAttribute = (barrel: any, traitType: Trait) => {
+    return barrel.attributes.find((attr: any) => attr.trait_type === traitType)
   }
 
   const getClassByIndex = (i: number) =>
@@ -58,9 +58,9 @@ const NftList = ({
         </thead>
         <tbody>
           {barrels &&
-            barrels?.items?.map((barrel: Nft, i: number) => (
+            barrels?.documents?.map((barrel: any, i: number) => (
               <tr
-                onClick={() => onClickBarrel(barrel.tokenId.toString())}
+                onClick={() => onClickBarrel(barrel._id.toString())}
                 className={`group ${
                   i % 2 === 0 ? 'bg-gray-600' : 'bg-transparent'
                 } border-b rounded-lg dark:bg-gray-800 dark:border-gray-700 text-red-600 hover:bg-cask-chain dark:hover:bg-cask-chain`}
@@ -68,7 +68,7 @@ const NftList = ({
                 <td className={`px-6 py-4 ${getClassByIndex(i)}`}>
                   <Image
                     className={`object-contain rounded-3xl border-4 border-white`}
-                    src={ipfsImageParser(barrel.meta.image)}
+                    src={ipfsImageParser(barrel.image)}
                     alt="New NFT"
                     width={100}
                     height={100}
@@ -80,7 +80,7 @@ const NftList = ({
                     i
                   )} whitespace-nowrap`}
                 >
-                  {barrel.tokenId}
+                  {barrel._id}
                 </th>
                 <td className={`px-6 py-4 ${getClassByIndex(i)}`}>
                   {barrel.owner.nickname
@@ -93,7 +93,7 @@ const NftList = ({
                     : ''}
                 </td>
                 <td className={`px-6 py-4 ${getClassByIndex(i)}`}>
-                  {barrel.meta.name}
+                  {barrel.name}
                 </td>
                 <td className={`px-6 py-4 ${getClassByIndex(i)}`}>
                   {' '}

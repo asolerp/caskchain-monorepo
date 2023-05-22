@@ -38,7 +38,9 @@ const Navbar = () => {
   useAuth()
   const { account } = useAccount()
   const { network } = useNetwork()
+
   const token = getCookie('token') as string
+
   const {
     state: {
       userInfoModal,
@@ -54,7 +56,7 @@ const Navbar = () => {
   const openClass = sideBar ? 'bg-black-light' : ''
 
   return (
-    <div className="w-screen">
+    <div className="w-screen z-50">
       <NetworkModal
         modalIsOpen={networkModal}
         closeModal={() =>
@@ -99,7 +101,7 @@ const Navbar = () => {
           {({ open }) => (
             <>
               <div
-                className={`absolute z-50 mx-auto w-full px-2 sm:px-6 lg:px-32 transition-all duration-500 ${openClass}`}
+                className={`absolute z-40 mx-auto w-full px-2 sm:px-6 lg:px-32 transition-all duration-500 ${openClass}`}
               >
                 <div className="relative bg-transparent flex h-24 items-center justify-between">
                   <div className="absolute inset-y-0 right-0 flex items-center sm:hidden">

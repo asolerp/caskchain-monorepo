@@ -8,7 +8,9 @@ import {
 export interface TransactionHistoryDataSource {
   save(id: string, transaction: TransactionHistoryRequestModel): Promise<void>
   search(tokenId: string): Promise<TransactionHistoryResponseModel[] | null>
-  getTransactions(): Promise<TransactionHistoryResponseModel[] | null>
+  getTransactions(
+    type?: 'item-bought' | 'transfer'
+  ): Promise<TransactionHistoryResponseModel[] | null>
   searchByTokenId(
     tokenId: string
   ): Promise<TransactionHistoryResponseModel[] | null>

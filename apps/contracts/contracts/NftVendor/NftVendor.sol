@@ -57,6 +57,7 @@ contract NftVendor is
     address indexed to,
     address indexed from,
     uint256 indexed tokenId,
+    bool isERC20,
     uint256 price
   );
 
@@ -269,7 +270,13 @@ contract NftVendor is
     _vendorStorage.deleteListing(tokenId);
     _vendorStorage.removeTokenFromAllListedTokensEnumeration(tokenId);
 
-    emit ItemBought(msg.sender, listedItem.seller, tokenId, listedItem.price);
+    emit ItemBought(
+      msg.sender,
+      listedItem.seller,
+      tokenId,
+      false,
+      listedItem.price
+    );
   }
 
   function buyNFTWithERC20(
@@ -303,9 +310,16 @@ contract NftVendor is
     );
 
     _vendorStorage.deleteListing(tokenId);
+    _vendorStorage.setERC20PriceByTokenId(erc20Token, tokenId, 0);
     _vendorStorage.removeTokenFromAllListedTokensEnumeration(tokenId);
 
-    emit ItemBought(msg.sender, collection, tokenId, listedItem.price);
+    emit ItemBought(
+      msg.sender,
+      listedItem.seller,
+      tokenId,
+      true,
+      nftPrice - royaltyAmount
+    );
   }
 
   function payERC20Royalties(

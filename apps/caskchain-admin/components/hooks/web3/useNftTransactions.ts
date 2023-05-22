@@ -1,5 +1,6 @@
 import { CryptoHookFactory } from '@_types/hooks'
 import axiosClient from 'lib/fetcher/axiosInstance'
+import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 
 type UseNftTransactionsResponse = {
@@ -13,25 +14,17 @@ export type UseNftTransactionsHook = ReturnType<NftTransactionsHookFactory>
 export const hookFactory: NftTransactionsHookFactory =
   ({}) =>
   () => {
-    const {
-      data: allTransactions,
-      // isLoading: totalUsersLoading,
-      // isValidating: totalUsersValidating,
-      // mutate: totalUsersRefetch,
-    } = useSWR(
-      '/api/transactions/all',
-      async () => {
+    const [transactions, setTransactions] = useState<any[]>([])
+
+    useEffect(() => {
+      const fetchTransactions = async () => {
         const allTransactionsData: any = await axiosClient.get(
           `/api/transactions/all`
         )
-
-        return allTransactionsData.data
-      },
-      {
-        revalidateOnFocus: false,
-        revalidateOnMount: true,
+        setTransactions(allTransactionsData.data)
       }
-    )
+      fetchTransactions()
+    }, [])
 
     const {
       data: allRoyalties,
@@ -55,6 +48,6 @@ export const hookFactory: NftTransactionsHookFactory =
 
     return {
       allRoyalties,
-      allTransactions,
+      allTransactions: transactions,
     }
   }

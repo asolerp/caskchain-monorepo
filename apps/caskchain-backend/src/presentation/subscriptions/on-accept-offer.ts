@@ -14,6 +14,7 @@ export default function OnAcceptOffer(
       tokenId: offer.tokenId,
       value: offer?.bid ?? 0,
       txHash: offer.transactionHash,
+      isERC20: false,
       type: 'accept-offer',
     })
     await acceptOfferUseCase.execute(

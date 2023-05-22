@@ -25,7 +25,7 @@ export class MongoDBNFTDataSource
     const collection = await this.collection()
     await collection.updateOne(
       { _id: id },
-      { $set: { owner: { address: owner } } }
+      { $set: { owner: { address: owner }, price: 0 } }
     )
   }
 
@@ -65,8 +65,6 @@ export class MongoDBNFTDataSource
     const count = await collection.countDocuments()
     const totalPages = Math.ceil(count / pagesize)
     const currentPage = Math.min(page, totalPages)
-
-    console.log('FILTER', filter)
 
     const documents = await collection
       .find<any>(filter)

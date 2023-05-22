@@ -2,27 +2,23 @@
 
 import type { NextPage } from 'next'
 import { BaseLayout } from '@ui'
-import { AnimatePresence } from 'framer-motion'
+
 import HeroSection from 'components/pages/home/HeroSection'
 import BarrelsSection from 'components/pages/home/BarrelsSection'
 import OwnerSection from 'components/pages/home/OwnerSection'
 import NewsletterSection from 'components/pages/home/NewsletterSection'
-import MainAnimationSection from 'components/pages/home/MainAnimationSection'
 
 const Home: NextPage = () => {
   return (
     <>
-      <AnimatePresence>
-        <BaseLayout>
-          <div className="w-full">
-            <MainAnimationSection />
-            <HeroSection />
-            <BarrelsSection />
-            <OwnerSection />
-            <NewsletterSection />
-          </div>
-        </BaseLayout>
-      </AnimatePresence>
+      <BaseLayout>
+        <div className="w-full">
+          <HeroSection />
+          <BarrelsSection />
+          <OwnerSection />
+          <NewsletterSection />
+        </div>
+      </BaseLayout>
     </>
   )
 }

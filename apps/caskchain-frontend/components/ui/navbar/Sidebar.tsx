@@ -1,6 +1,6 @@
 import { Switch } from '@headlessui/react'
 import { BellIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
-import { useAccount, useOwnedNfts } from '@hooks/web3'
+import { useAccount, useOwnedNfts, useSideBar } from '@hooks/web3'
 import { useGlobal } from '@providers/global'
 import Button from '@ui/common/Button'
 import ItemMenu from '@ui/common/ItemMenu'
@@ -24,7 +24,7 @@ type addressType = `0x${string}`
 const Sidebar: React.FC<SidebarProps> = ({ open }) => {
   const openClass = open ? 'translate-x-0' : 'translate-x-full'
   const { account } = useAccount()
-  const { nfts } = useOwnedNfts()
+  const { sidebar } = useSideBar()
   const router = useRouter()
   const {
     state: { user },
@@ -50,7 +50,8 @@ const Sidebar: React.FC<SidebarProps> = ({ open }) => {
             <p className="font-poppins text-white text-xl">
               My cellar:{' '}
               <span className="text-cask-chain">
-                {nfts?.data?.length} {`NFT${nfts?.data?.length > 1 ? 's' : ''}`}
+                {sidebar?.data?.length}{' '}
+                {`NFT${sidebar?.data?.length > 1 ? 's' : ''}`}
               </span>
             </p>
           </section>

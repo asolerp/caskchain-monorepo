@@ -1,6 +1,8 @@
 import { CryptoHookFactory } from '@_types/hooks'
+import { ethers } from 'ethers'
 import axiosClient from 'lib/fetcher/axiosInstance'
 import useSWR from 'swr'
+import { useAccount } from 'wagmi'
 
 type UseStatsResponse = {
   sentOffers: any[]
@@ -14,6 +16,8 @@ export type UseStatsHook = ReturnType<UseStatsHookFactory>
 export const hookFactory: UseStatsHookFactory =
   ({ ccNft }) =>
   () => {
+    const { address } = useAccount()
+
     const {
       data: totalUsers,
       // isLoading: totalUsersLoading,
@@ -25,8 +29,6 @@ export const hookFactory: UseStatsHookFactory =
         const totalStatsData: any = await axiosClient.get(
           `/api/stats/total-users`
         )
-
-        console.log('Stats', totalStatsData)
 
         return totalStatsData.data.total
       },
@@ -53,8 +55,56 @@ export const hookFactory: UseStatsHookFactory =
       }
     )
 
+    const {
+      data: allTransactions,
+      // isLoading: totalUsersLoading,
+      // isValidating: totalUsersValidating,
+      // mutate: totalUsersRefetch,
+    } = useSWR(
+      address ? 'incomeItemBought' : null,
+      async () => {
+        const allTransactionsData: any = await axiosClient.get(
+          `/api/transactions/all?type=item-bought`
+        )
+
+        return allTransactionsData.data
+      },
+      {
+        revalidateOnFocus: false,
+        revalidateOnMount: true,
+      }
+    )
+
+    const allOwnerTransactions = allTransactions?.filter(
+      (t: any) => t.from.toLowerCase() === address?.toLowerCase()
+    )
+
+    const incomeMatic = allOwnerTransactions?.reduce(
+      (acc: number, curr: any) => {
+        if (!curr.isERC20) {
+          return acc + Number(curr.value)
+        }
+        return acc
+      },
+      0
+    )
+
+    const incomeUSDT = allOwnerTransactions?.reduce(
+      (acc: number, curr: any) => {
+        if (curr.isERC20) {
+          return acc + Number(curr.value)
+        }
+        return acc
+      },
+      0
+    )
+
     return {
       totalNfts,
       totalUsers,
+      incomeMatic:
+        incomeMatic && ethers.utils.formatEther(BigInt(incomeMatic).toString()),
+      incomeUSDT:
+        incomeUSDT && ethers.utils.formatEther(BigInt(incomeUSDT).toString()),
     }
   }

@@ -5,6 +5,7 @@ export interface TransactionHistoryRequestModel {
   tokenId: string
   value: string
   txHash: string
+  isERC20: boolean
   type: string
 }
 

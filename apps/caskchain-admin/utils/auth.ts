@@ -20,6 +20,7 @@ export const auth = async (
     }
   } else {
     try {
+      console.log('ROLE', role)
       // we call the api that verifies the token.
       const data = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/api/user/verify?role=${role}`,

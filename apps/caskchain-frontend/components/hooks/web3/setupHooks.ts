@@ -21,6 +21,7 @@ import {
 } from './useOwnedNfts'
 
 import { hookFactory as createCaskHook, UseCaskNftsHook } from './useCaskNft'
+import { hookFactory as createSideBarHook, UseSideBarHook } from './useSideBar'
 
 import {
   hookFactory as createFractionalizedNftsHook,
@@ -35,6 +36,7 @@ export type Web3Hooks = {
   useNftOffers: UseNftOffersHook
   useListedNfts: UseListedNftsHook
   useAllNfts: UseAllNftsHook
+  useSideBar: UseSideBarHook
   useOwnedNfts: UseOwnedNftsHook
   useFractionalizedNfts: UseFractionalizedNftsHook
 }
@@ -48,6 +50,7 @@ export const setupHooks: SetupHooks = (deps) => {
     useAccount: createAccountHook(deps),
     useMyActivity: createMyActivityHook(deps),
     useCask: createCaskHook(deps),
+    useSideBar: createSideBarHook(deps),
     useNetwork: createNetworkHook(deps),
     useListedNfts: createListedNftsHook(deps),
     useOwnedNfts: createOwnedNftsHook(deps),

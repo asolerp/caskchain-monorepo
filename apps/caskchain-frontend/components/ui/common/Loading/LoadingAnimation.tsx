@@ -13,13 +13,6 @@ export const LoadingAnimation = () => {
   }, [])
 
   useEffect(() => {
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = 'auto'
-    }
-  }, [])
-
-  useEffect(() => {
     if (lottie && ref.current) {
       const animation = lottie.loadAnimation({
         container: ref.current,
@@ -39,9 +32,9 @@ export const LoadingAnimation = () => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      animate={{ opacity: 0.7 }}
       exit={{ opacity: 0 }}
-      className="flex justify-center items-center fixed top-0 left-0 w-full h-full z-50 bg-gradient-to-r from-[#0F0F0F] via-[#161616] to-[#000000]"
+      className="fixed flex justify-center items-center top-0 left-0 w-full h-screen z-20 bg-gradient-to-r from-[#0F0F0F] via-[#161616] to-[#000000]"
     >
       <div className="relative">
         <div className="absolute inset-0 flex items-center justify-center">

@@ -55,7 +55,7 @@ function Cask() {
               </p>
             </div>
           </div>
-          {cask?.data?.creator.toLowerCase() ===
+          {cask?.data?.creator?.toLowerCase() ===
             cask?.data?.owner?.address.toLowerCase() && (
             <>
               <Spacer size="xl" />

@@ -33,7 +33,7 @@ export const hookFactory: AccountHookFactory = () => () => {
 
   const erc20Balance = useCallback(async () => {
     const Tether = await loadContractByABI(
-      MocksUSDTContract.networks[80001].address,
+      MocksUSDTContract.networks[4447].address,
       MocksUSDTContract.abi
     )
     return await Tether.balanceOf(address)
@@ -48,7 +48,12 @@ export const hookFactory: AccountHookFactory = () => () => {
       }))
     }
     if (provider && address && isConnected) {
-      getBalance()
+      if (
+        String(provider._network.chainId) ===
+        (process.env.NEXT_PUBLIC_NETWORK_ID as string)
+      ) {
+        getBalance()
+      }
     }
   }, [provider, address, isConnected])
 

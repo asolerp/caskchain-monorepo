@@ -31,6 +31,7 @@ export const hookFactory: CaskNftHookFactory =
     const [successModal, setSuccessModal] = useState<boolean>(false)
     const [tokenAmmount, setTokenAmmount] = useState<number | undefined>(0)
     const [totalFavorites, setTotalFavorites] = useState<number | undefined>(0)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const { chain } = useNetwork()
     const provider = useProvider()
     const [isFavorite, setIsFavorite] = useState<boolean>(false)
@@ -83,7 +84,7 @@ export const hookFactory: CaskNftHookFactory =
     const {
       data: latestOffers,
       isLoading: latestOffersIsLoading,
-      // isValidating: latestOffersIsValidating,
+      isValidating: latestOffersIsValidating,
     } = useSWR(
       'api/offers',
       async () => {
@@ -104,16 +105,21 @@ export const hookFactory: CaskNftHookFactory =
       { revalidateOnFocus: true }
     )
 
-    const isLoading = isLoadingNft
-    const isValidating = isValidatingNft
-
-    useLoading({
-      loading:
-        isLoading ||
-        isValidating ||
-        latestOffersIsLoading ||
-        salesHistoryIsLoading,
-    })
+    useEffect(() => {
+      setIsLoading(
+        isLoadingNft ||
+          isValidatingNft ||
+          latestOffersIsLoading ||
+          latestOffersIsValidating ||
+          salesHistoryIsLoading
+      )
+    }, [
+      isLoadingNft,
+      latestOffersIsLoading,
+      latestOffersIsValidating,
+      salesHistoryIsLoading,
+      isValidatingNft,
+    ])
 
     const _nftOffers = nftOffers
     const _nftVendor = nftVendor
@@ -197,7 +203,7 @@ export const hookFactory: CaskNftHookFactory =
               error: 'Processing error',
             })
           } else {
-            handleUserState()
+            return handleUserState()
           }
           setSuccessModal(true)
         } catch (e: any) {
@@ -364,12 +370,11 @@ export const hookFactory: CaskNftHookFactory =
       data,
       buyNft,
       makeOffer,
-      isLoading,
+      isLoading: isLoadingNft,
       isFavorite,
       cancelOffer,
       buyFractions,
       latestOffers,
-      isValidating,
       tokenAmmount,
       hasFractions,
       salesHistory,

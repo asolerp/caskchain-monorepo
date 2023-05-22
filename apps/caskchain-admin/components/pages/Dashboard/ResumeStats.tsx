@@ -6,7 +6,7 @@ const ResumeStats = () => {
 
   return (
     <div className="flex w-full flex-col">
-      <div className="w-full grid grid-cols-3 gap-8 mt-12 ">
+      <div className="w-full grid grid-cols-4 gap-8 mt-12 ">
         <Card color="bg-cask-chain">
           <p className="font-poppins font-normal text-2xl text-black dark:text-gray-400 mb-3">
             Users
@@ -17,10 +17,18 @@ const ResumeStats = () => {
         </Card>
         <Card color="bg-cask-chain">
           <p className="font-poppins font-normal text-2xl text-black dark:text-gray-400 mb-3">
-            Income
+            Income Matic
           </p>
           <h5 className="font-rale text-4xl font-bold tracking-tight text-black dark:text-white">
-            45.392 $
+            {stats?.incomeMatic || 0} Matic
+          </h5>
+        </Card>
+        <Card color="bg-cask-chain">
+          <p className="font-poppins font-normal text-2xl text-black dark:text-gray-400 mb-3">
+            Income USDT
+          </p>
+          <h5 className="font-rale text-4xl font-bold tracking-tight text-black dark:text-white">
+            {stats?.incomeUSDT || 0} $
           </h5>
         </Card>
         <Card color="bg-cask-chain">

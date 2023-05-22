@@ -30,7 +30,7 @@ const MakeOffer: React.FC<Props> = ({
   )
 
   return (
-    <div className="p-6 w-2/3 h-fit bg-black-light rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-90 border border-gray-700 grid grid-cols-1 ">
+    <div className="p-6 w-full h-fit bg-black-light rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-90 border border-gray-700 grid grid-cols-1 ">
       {isLoading ? (
         <div className="flex items-center justify-center">
           <Spinner color="cask-chain" />

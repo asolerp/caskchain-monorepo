@@ -5,7 +5,7 @@ import {
 } from '../../model/TransactionHistory'
 
 export interface TransactionRepository {
-  getTransactions(): Promise<any | null>
+  getTransactions(type?: 'item-bought' | 'transfer'): Promise<any | null>
   createTransaction(
     id: string,
     transaction: TransactionHistoryRequestModel

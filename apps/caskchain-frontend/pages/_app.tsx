@@ -11,8 +11,10 @@ import { Web3Modal } from '@web3modal/react'
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
 import { localhost, polygonMumbai } from 'wagmi/chains'
 import { AnimatePresence } from 'framer-motion'
-import LoadingWrapper from 'components/pages/Loading'
+
 import useInitAnalytics from '@hooks/common/useInitAnalytics'
+import { LoadingProvider } from 'components/contexts/LoadingContext'
+import { useEffect } from 'react'
 
 const chains = [localhost, polygonMumbai]
 const projectId = '7ba8a5909e41332fb0abe840c1d4923e'
@@ -29,6 +31,11 @@ const ethereumClient = new EthereumClient(wagmiClient, chains)
 
 export default function App({ Component, pageProps }: AppProps) {
   useInitAnalytics()
+
+  useEffect(() => {
+    document.body.style.overflowX = 'hidden'
+  }, [])
+
   return (
     <>
       <ToastContainer />
@@ -37,9 +44,9 @@ export default function App({ Component, pageProps }: AppProps) {
           <Web3Provider>
             <ParallaxProvider>
               <AnimatePresence mode="wait" initial={false}>
-                <LoadingWrapper>
+                <LoadingProvider>
                   <Component {...pageProps} />
-                </LoadingWrapper>
+                </LoadingProvider>
               </AnimatePresence>
             </ParallaxProvider>
             <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />

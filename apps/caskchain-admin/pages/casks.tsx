@@ -12,6 +12,8 @@ const Casks = () => {
   const { nfts } = useAllNfts()
   const router = useRouter()
 
+  console.log('NFTS', nfts)
+
   return (
     <BaseLayout background="bg-gray-200">
       <div className="flex flex-col w-full  px-20 py-10">

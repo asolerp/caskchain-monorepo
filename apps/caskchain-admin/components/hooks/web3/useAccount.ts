@@ -12,28 +12,6 @@ import { getSignedData } from 'pages/api/utils'
 import { useAccount, useProvider, useSigner } from 'wagmi'
 import { useRouter } from 'next/router'
 
-// type UseAccountResponse = {
-//   connect: () => void
-//   multiConnect: () => void
-//   logout: () => void
-//   signAddress: ({ callback }: { callback: () => void }) => void
-//   handelSaveUser: ({
-//     id,
-//     email,
-//     nickname,
-//     callback,
-//   }: {
-//     id: string
-//     email: string
-//     nickname: string
-//     callback: () => void
-//   }) => void
-//   isValidating: boolean
-//   isConnected: boolean
-//   isInstalled: boolean
-//   hasAllAuthData: boolean
-// }
-
 type AccountHookFactory = CryptoHookFactory<string, any>
 
 export type UseAccountHook = ReturnType<AccountHookFactory>

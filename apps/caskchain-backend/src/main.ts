@@ -282,8 +282,10 @@ import { UpdatePriceNft } from './domain/use-cases/nft/update-price-nft'
   )
 
   usersWatcher.watchCollection((event) => {
-    if (event.operationType === 'insert') {
-      incrementTotalUsers()
+    if (event.operationType === 'update') {
+      if (event.updateDescription.updatedFields?.email !== undefined) {
+        incrementTotalUsers()
+      }
     }
   })
 
