@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import Navbar from '../navbar'
 import FooterSection from 'components/pages/home/FooterSection'
 import LoadingOverlay from 'components/pages/Loading'
-import useLocalLoading from '@hooks/common/useLocalLoading'
+
 import { AnimatePresence } from 'framer-motion'
 import MainAnimationSection from 'components/pages/home/MainAnimationSection'
 

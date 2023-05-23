@@ -3,7 +3,7 @@
 import { CryptoHookFactory } from '@_types/hooks'
 import { Nft, NftsPaginated } from '@_types/nft'
 import { useAuth } from '@hooks/auth'
-import useLoading from '@hooks/common/useLoading'
+
 import { useGlobal } from '@providers/global'
 import axios, { AxiosResponse } from 'axios'
 import { LoadingContext } from 'components/contexts/LoadingContext'
@@ -29,7 +29,7 @@ export const hookFactory: AllNftsHookFactory =
 
     const [pageSize, setPageSize] = useState(10)
     const [name, setName] = useState('')
-
+    const [searchLoading, setSearchLoading] = useState(false)
     const [activeFilter, setActiveFilter] = useState('')
 
     const { auth } = useAuth()
@@ -60,10 +60,19 @@ export const hookFactory: AllNftsHookFactory =
     }
 
     useEffect(() => {
-      if (isValidating) {
+      if (isLoading) {
         return setIsLoading(true)
       }
       return setIsLoading(false)
+    }, [isLoading])
+
+    useEffect(() => {
+      if (isValidating) {
+        setSearchLoading(true)
+        setTimeout(() => {
+          setSearchLoading(false)
+        }, 1000)
+      }
     }, [isValidating])
 
     useEffect(() => {
@@ -122,6 +131,7 @@ export const hookFactory: AllNftsHookFactory =
       activeFilter,
       isValidating,
       handleSearch,
+      searchLoading,
       data: data || [],
       fetchMoreBarrels,
       handleAddFavorite,

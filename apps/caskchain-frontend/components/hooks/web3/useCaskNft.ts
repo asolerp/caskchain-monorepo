@@ -11,7 +11,6 @@ import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import useSWR from 'swr'
 import { useNetwork, useProvider } from 'wagmi'
-import useLoading from '@hooks/common/useLoading'
 
 import useDebounce from '@hooks/common/useDebounce'
 
@@ -31,7 +30,7 @@ export const hookFactory: CaskNftHookFactory =
     const [successModal, setSuccessModal] = useState<boolean>(false)
     const [tokenAmmount, setTokenAmmount] = useState<number | undefined>(0)
     const [totalFavorites, setTotalFavorites] = useState<number | undefined>(0)
-    const [isLoading, setIsLoading] = useState<boolean>(false)
+
     const { chain } = useNetwork()
     const provider = useProvider()
     const [isFavorite, setIsFavorite] = useState<boolean>(false)
@@ -51,11 +50,7 @@ export const hookFactory: CaskNftHookFactory =
       }
     }, [user, caskId])
 
-    const {
-      data,
-      isLoading: isLoadingNft,
-      isValidating: isValidatingNft,
-    } = useSWR(
+    const { data, isLoading: isLoadingNft } = useSWR(
       'web3/useCaskNft',
       async () => {
         const { data: nfts }: any = await axios.get(`/api/casks/${caskId}`)
@@ -66,11 +61,7 @@ export const hookFactory: CaskNftHookFactory =
       { revalidateOnFocus: true }
     )
 
-    const {
-      data: salesHistory,
-      isLoading: salesHistoryIsLoading,
-      // isValidating: latestOffersIsValidating,
-    } = useSWR(
+    const { data: salesHistory } = useSWR(
       'api/transactions/sales-history',
       async () => {
         const { data: salesHistoryData }: any = await axios.get(
@@ -81,11 +72,7 @@ export const hookFactory: CaskNftHookFactory =
       { revalidateOnFocus: true }
     )
 
-    const {
-      data: latestOffers,
-      isLoading: latestOffersIsLoading,
-      isValidating: latestOffersIsValidating,
-    } = useSWR(
+    const { data: latestOffers } = useSWR(
       'api/offers',
       async () => {
         const { data: offers }: any = await axios.get(`/api/offers/${caskId}`)
@@ -105,22 +92,6 @@ export const hookFactory: CaskNftHookFactory =
       { revalidateOnFocus: true }
     )
 
-    useEffect(() => {
-      setIsLoading(
-        isLoadingNft ||
-          isValidatingNft ||
-          latestOffersIsLoading ||
-          latestOffersIsValidating ||
-          salesHistoryIsLoading
-      )
-    }, [
-      isLoadingNft,
-      latestOffersIsLoading,
-      latestOffersIsValidating,
-      salesHistoryIsLoading,
-      isValidatingNft,
-    ])
-
     const _nftOffers = nftOffers
     const _nftVendor = nftVendor
     const _nftFractionsVendor = nftFractionsVendor
@@ -137,15 +108,18 @@ export const hookFactory: CaskNftHookFactory =
 
     const handleAddFavorite = async () => {
       try {
-        const response = await axiosClient.post(
-          `/api/casks/${caskId}/favorite`,
-          {
-            userId: user?._id,
-          }
-        )
-
-        setTotalFavorites(response?.data?.totalFavorites)
-        setIsFavorite(!isFavorite)
+        if (isUserNeededDataFilled) {
+          const response = await axiosClient.post(
+            `/api/casks/${caskId}/favorite`,
+            {
+              userId: user?._id,
+            }
+          )
+          setTotalFavorites(response?.data?.totalFavorites)
+          setIsFavorite(!isFavorite)
+        } else {
+          return handleUserState()
+        }
       } catch (err) {
         toast.error("Couldn't add favorite", {
           theme: 'dark',

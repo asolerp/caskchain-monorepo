@@ -1,10 +1,7 @@
-import { useAccount } from '@hooks/web3'
-import { useGlobal } from '@providers/global'
-import { GlobalTypes } from '@providers/global/utils'
 import Button from '@ui/common/Button'
 import Input from '@ui/common/Input'
 import Spacer from '@ui/common/Spacer'
-import { ethers } from 'ethers'
+
 import React, { useState } from 'react'
 import Modal from 'react-modal'
 
@@ -19,12 +16,6 @@ const ListBarrelModal: React.FC<Props> = ({
   closeModal,
   onList,
 }) => {
-  const { account } = useAccount()
-
-  const {
-    dispatch,
-    state: { user },
-  } = useGlobal()
   const [price, setPice] = useState<string>('')
 
   return (

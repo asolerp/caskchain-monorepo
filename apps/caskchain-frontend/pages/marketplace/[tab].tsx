@@ -20,13 +20,6 @@ import { LiquorsTypes } from 'caskchain-lib'
 import LiquorFilter from 'components/pages/marketplace/LiquorFilter'
 import useLocalLoading from '@hooks/common/useLocalLoading'
 
-// const tabs = [
-//   { name: 'All barrels', href: '#', key: 'search' },
-//   { name: 'On sale', href: '#', key: 'on-sale' },
-//   { name: 'Fractionized', href: '#', key: 'fractionized' },
-//   // { name: 'Your Fractions', href: '#', key: 'fractions' },
-// ]
-
 const NFTCaskWorld: NextPage = () => {
   const token = getCookie('token') as string
   const { nfts } = useAllNfts()
@@ -38,7 +31,6 @@ const NFTCaskWorld: NextPage = () => {
 
   const router = useRouter()
   const _selectedTab = (router.query.tab as string) ?? 'search'
-  // const selectedIndex = tabs.map((t) => t.key).indexOf(_selectedTab) ?? 0
 
   const [filteredNfts, setFilteredNfts] = useState(nfts?.data)
 
@@ -99,7 +91,7 @@ const NFTCaskWorld: NextPage = () => {
       {loading ? (
         <div className="flex flex-col justify-center items-center w-full h-screen"></div>
       ) : (
-        <div className="pb-16 sm:px-6 pt-10 w-3/4 px-4">
+        <div className="sm:px-6 pt-10 w-3/4 px-4">
           <section>
             <div tabIndex={0} className="relative">
               <Image
@@ -108,13 +100,13 @@ const NFTCaskWorld: NextPage = () => {
                 width={40}
                 height={40}
                 alt="search"
-                className="absolute top-1/2 -translate-y-1/2 ml-8 cursor-pointer"
+                className="absolute top-1/2 -translate-y-1/2 ml-4 cursor-pointer"
               />
               <input
                 type="text"
                 value={nfts.name}
                 onChange={nfts.handleSearchInputChange}
-                className="pl-20 bg-transparent border border-gray-600 rounded-2xl  focus:border-0 w-full h-20 font-poppins text-white text-xl ml-4"
+                className="pl-16 bg-transparent border border-gray-600 rounded-2xl  focus:border-0 w-full h-20 font-poppins text-white text-xl"
                 placeholder="Search by Collection, NFT name, Cellar, etc"
               ></input>
             </div>
@@ -122,42 +114,10 @@ const NFTCaskWorld: NextPage = () => {
           <Spacer size="xl" />
           <Spacer size="xl" />
           <Spacer size="xl" />
-          {/* <div className="flex flex-row space-x-6 mt-14">
-              <nav
-                className=" -mb-px flex space-x-6 xl:space-x-8  w-full"
-                aria-label="Tabs"
-              >
-                {tabs.map((tab, index) => (
-                  <a
-                    onClick={() =>
-                      router.replace(`/marketplace/${tab.key}`, undefined, {
-                        shallow: true,
-                      })
-                    }
-                    key={tab.name}
-                    aria-current={selectedIndex === index ? 'page' : undefined}
-                    className={classNames(
-                      selectedIndex === index
-                        ? ' text-cask-chain'
-                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                      'whitespace-nowrap pb-2 px-1 font-medium text-2xl cursor-pointer'
-                    )}
-                  >
-                    {tab.name}
-                    {selectedIndex === index && (
-                      <motion.div
-                        layoutId="underline"
-                        className="border-b-2 border-cask-chain"
-                      />
-                    )}
-                  </a>
-                ))}
-              </nav>
-            </div> */}
           <section>
             <div className="grid grid-cols-4 gap-x-5 gap-y-4 flex-wrap mx-auto lg:max-w-none">
               <>
-                {loading ? (
+                {nfts.searchLoading ? (
                   <BarrelsSkeleton />
                 ) : (
                   <>
@@ -202,7 +162,7 @@ const NFTCaskWorld: NextPage = () => {
             </div>
           </section>
           <Spacer size="xl" />
-          <section className="flex justify-center">
+          <section className="flex justify-center py-16">
             <Button active={false} onClick={() => nfts.fetchMoreBarrels()}>
               Load more
             </Button>

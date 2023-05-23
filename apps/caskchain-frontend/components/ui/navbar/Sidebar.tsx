@@ -1,6 +1,6 @@
 import { Switch } from '@headlessui/react'
 import { BellIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
-import { useAccount, useOwnedNfts, useSideBar } from '@hooks/web3'
+import { useAccount, useSideBar } from '@hooks/web3'
 import { useGlobal } from '@providers/global'
 import Button from '@ui/common/Button'
 import ItemMenu from '@ui/common/ItemMenu'

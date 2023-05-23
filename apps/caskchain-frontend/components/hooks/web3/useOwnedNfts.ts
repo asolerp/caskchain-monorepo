@@ -1,8 +1,6 @@
 import { CryptoHookFactory } from '@_types/hooks'
 import { Nft } from '@_types/nft'
-import useLoading from '@hooks/common/useLoading'
-import { useGlobal } from '@providers/global'
-import { GlobalTypes } from '@providers/global/utils'
+
 import { LoadingContext } from 'components/contexts/LoadingContext'
 // import { useGlobal } from '@providers/global'
 import { getCookie } from 'cookies-next'
@@ -27,7 +25,6 @@ export const hookFactory: OwnedNftsHookFactory =
     const token = getCookie('token')
 
     const _ccNft = ccNft
-    const _nftVendor = nftVendor
 
     const [activeNft, setActiveNft] = useState<Nft>()
     const [isApproved, setIsApproved] = useState(false)
@@ -74,42 +71,37 @@ export const hookFactory: OwnedNftsHookFactory =
       }
     )
 
-    const {
-      data: dataBalances,
-      isLoading: isLoadingBalances,
-      isValidating: isValidatingBalances,
-    } = useSWR(nftFractionToken ? '/api/user/balances' : null, async () => {
-      const balances: any = await axiosClient.get('/api/user/balances')
+    // const {
+    //   data: dataBalances,
+    //   isLoading: isLoadingBalances,
+    //   isValidating: isValidatingBalances,
+    // } = useSWR(nftFractionToken ? '/api/user/balances' : null, async () => {
+    //   const balances: any = await axiosClient.get('/api/user/balances')
 
-      const balancesWithRedem = await Promise.all(
-        balances.data.map(async (tokenAddress: any) => {
-          try {
-            const tokenContract = await nftFractionToken!(tokenAddress.address)
-            const canRedem = await tokenContract.canRedeem()
+    //   const balancesWithRedem = await Promise.all(
+    //     balances.data.map(async (tokenAddress: any) => {
+    //       try {
+    //         const tokenContract = await nftFractionToken!(tokenAddress.address)
+    //         const canRedem = await tokenContract.canRedeem()
 
-            return {
-              ...tokenAddress,
-              canRedem,
-            }
-          } catch (e: any) {
-            console.log(e)
-          }
-        })
-      )
+    //         return {
+    //           ...tokenAddress,
+    //           canRedem,
+    //         }
+    //       } catch (e: any) {
+    //         console.log(e)
+    //       }
+    //     })
+    //   )
 
-      return balancesWithRedem.filter(
-        (tokenAddress: any) => tokenAddress.balance > 0
-      )
-    })
+    //   return balancesWithRedem.filter(
+    //     (tokenAddress: any) => tokenAddress.balance > 0
+    //   )
+    // })
 
     useEffect(() => {
-      setIsLoading(
-        isLoadingMe ||
-          isValidatingMe ||
-          isLoadingBalances ||
-          isValidatingBalances
-      )
-    }, [isLoadingMe, isValidatingMe, isLoadingBalances, isValidatingBalances])
+      setIsLoading(isLoadingMe || isValidatingMe)
+    }, [isLoadingMe, isValidatingMe])
 
     console.log('ISLOADINGME', isLoadingMe)
 

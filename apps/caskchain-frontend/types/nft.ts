@@ -82,6 +82,7 @@ export type TransactionHistory = {
   from: string
   to: Bidder
   date: Date
+  isERC20?: boolean
   tokenId?: string
   txHash: string
   value?: string

@@ -1,4 +1,4 @@
-import { Nft, Trait } from '@_types/nft'
+import { Trait } from '@_types/nft'
 import { ethers } from 'ethers'
 import PaginationBar from './PaginationBar'
 import { addressSimplifier, ipfsImageParser } from 'caskchain-lib'

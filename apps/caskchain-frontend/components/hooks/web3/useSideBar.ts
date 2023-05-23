@@ -20,11 +20,7 @@ export const hookFactory: SideBarHookFactory =
       state: { sideBar },
     } = useGlobal()
 
-    const {
-      data,
-      isLoading: isLoadingMe,
-      isValidating: isValidatingMe,
-    } = useSWR(
+    const { data } = useSWR(
       sideBar ? '/api/casks/me' : null,
       async () => {
         const ownedNfts: any = await axiosClient.get('/api/casks/me')

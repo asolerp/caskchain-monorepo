@@ -245,10 +245,11 @@ const Profile: NextPage = () => {
                         nfts?.favorites?.map((nft: Nft) => (
                           <Link key={nft.tokenId} href={`/cask/${nft.tokenId}`}>
                             <BarrelNft
+                              key={nft.tokenId}
+                              isProfile
                               isMarketPlace
                               item={nft}
                               blow
-                              onPressProfileCTA={() => console.log('pressed')}
                             />
                           </Link>
                         ))}

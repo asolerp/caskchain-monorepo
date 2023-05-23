@@ -1,4 +1,3 @@
-import { ethers } from 'ethers'
 import Web3 from 'web3'
 import { CreateTransactionUseCase } from '../../domain/interfaces/use-cases/create-transaction-use-case'
 
@@ -58,6 +57,7 @@ export const initiWebSocket = (
         tokenId: transaction.tokenId,
         value: transaction.value,
         txHash: transaction.transactionHash,
+        isERC20: false,
         type: '',
       })
     }
