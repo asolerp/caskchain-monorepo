@@ -26,7 +26,7 @@ type NftItemProps = {
 }
 
 const DEFAULT_IMAGE = '/images/nft.png'
-const BARREL_HEIGHT = 600
+const BARREL_HEIGHT = 650
 
 const getBarrelAttribute = (attrs: NftAttribute[], trait_type: string) => {
   const attribute = attrs.find((attr) => attr.trait_type === trait_type)
@@ -50,7 +50,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
   const router = useRouter()
   const isMarketPlaceClass = isMarketPlace
     ? 'h-full w-full'
-    : 'h-[600px] w-[460px] m-0'
+    : `h-[${BARREL_HEIGHT}px] w-[460px] m-0`
 
   const isProfileMeta = isProfile ? item.meta : item
   const mainImage = item && ipfsImageParser(isProfileMeta?.image)
@@ -136,7 +136,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
               )}
             </div>
           </div>
-          <div className="relative h-[270px] w-full">
+          <div className="relative h-[320px] w-full">
             <div className="absolute bottom-0 py-4 w-full h-full group-hover:-translate-y-20 transition-all duration-300">
               <div className={`flex-1 flex flex-col h-full justify-between`}>
                 <div className="flex flex-col justify-between w-full h-full px-4">
