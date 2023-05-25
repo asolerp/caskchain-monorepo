@@ -6,6 +6,7 @@ import React from 'react'
 import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
 import { barrels } from './barrels'
+import Image from 'next/image'
 
 type CustomArrowProps = {
   onClick?: () => void
@@ -95,14 +96,21 @@ const BarrelsSection = () => {
           >
             {barrels.map((barrel, i) => (
               <div key={i} className="mx-2 lg:mx-0">
-                <BarrelNft
-                  defaultImage
-                  showAnimation={false}
-                  showFavorite={false}
-                  active={true}
-                  isMarketPlace={false}
-                  item={barrel}
+                <Image
+                  src="/images/nft.png"
+                  width={550}
+                  height={350}
+                  alt="barrel"
+                  className="rounded-[40px] px-3"
                 />
+                {/* <BarrelNft
+                   defaultImage
+                   showAnimation={false}
+                   showFavorite={false}
+                   active={true}
+                   isMarketPlace={false}
+                   item={barrel}
+                 /> */}
               </div>
             ))}
           </Carousel>

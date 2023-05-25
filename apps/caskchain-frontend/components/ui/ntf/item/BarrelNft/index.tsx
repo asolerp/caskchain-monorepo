@@ -29,7 +29,7 @@ const DEFAULT_IMAGE = '/images/nft.png'
 const BARREL_HEIGHT = 650
 
 const getBarrelAttribute = (attrs: NftAttribute[], trait_type: string) => {
-  const attribute = attrs.find((attr) => attr.trait_type === trait_type)
+  const attribute = attrs?.find((attr) => attr?.trait_type === trait_type)
   return attribute?.value
 }
 
