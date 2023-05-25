@@ -105,6 +105,8 @@ module.exports = {
       provider: () => new HDWalletProvider(MNEMONIC, BLOCKCHAIN_URL),
       from: PUBLIC_KEY,
       network_id: 80001,
+      networkCheckTimeout: 10000,
+      timeoutBlocks: 200,
     },
     //
     // Useful for private networks
