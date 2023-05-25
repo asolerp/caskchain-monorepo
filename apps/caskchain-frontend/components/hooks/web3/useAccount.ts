@@ -33,7 +33,7 @@ export const hookFactory: AccountHookFactory = () => () => {
 
   const erc20Balance = useCallback(async () => {
     const Tether = await loadContractByABI(
-      MocksUSDTContract.networks[4447].address,
+      MocksUSDTContract.networks[80001].address,
       MocksUSDTContract.abi
     )
     return await Tether.balanceOf(address)
