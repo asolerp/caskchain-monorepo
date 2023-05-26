@@ -8,10 +8,15 @@ import MainAnimationSection from 'components/pages/home/MainAnimationSection'
 
 interface Props {
   background?: string
+  bottomBanner?: ReactNode
   children: ReactNode
 }
 
-const BaseLayout: React.FC<Props> = ({ background, children }) => {
+const BaseLayout: React.FC<Props> = ({
+  background,
+  bottomBanner,
+  children,
+}) => {
   const backgroundClass = background ? background : ''
 
   return (
@@ -24,9 +29,15 @@ const BaseLayout: React.FC<Props> = ({ background, children }) => {
           <div className="flex flex-col justify-center items-center w-full h-full">
             {children}
           </div>
-          <FooterSection />
+          {!bottomBanner && <FooterSection />}
         </div>
       </div>
+      {bottomBanner && (
+        <>
+          {bottomBanner}
+          <FooterSection />
+        </>
+      )}
     </AnimatePresence>
   )
 }

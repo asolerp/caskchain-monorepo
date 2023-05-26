@@ -19,6 +19,7 @@ import Image from 'next/image'
 import { LiquorsTypes } from 'caskchain-lib'
 import LiquorFilter from 'components/pages/marketplace/LiquorFilter'
 import useLocalLoading from '@hooks/common/useLocalLoading'
+import BarrelsSection from 'components/pages/home/BarrelsSection'
 
 const NFTCaskWorld: NextPage = () => {
   const token = getCookie('token') as string
@@ -57,8 +58,23 @@ const NFTCaskWorld: NextPage = () => {
     return null
   }
 
+  const RandomBarrels = () => {
+    return (
+      <section className="bg-white">
+        <Image
+          src="/images/wave1.svg"
+          width={1000}
+          height={500}
+          alt="wave"
+          className="scale-y-110 scale-x-110 lg:scale-x-100 w-full"
+        />
+        <BarrelsSection />
+      </section>
+    )
+  }
+
   return (
-    <BaseLayout background="bg-gradient-to-r from-[#0F0F0F] via-[#161616] to-[#000000]">
+    <BaseLayout background="bg-black-light" bottomBanner={<RandomBarrels />}>
       <Header>
         <h1 className="font-rale font-semibold text-6xl text-cask-chain mb-10">
           Market <span className="text-white">Place</span>

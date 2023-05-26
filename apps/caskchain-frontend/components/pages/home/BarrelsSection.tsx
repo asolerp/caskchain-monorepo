@@ -1,6 +1,6 @@
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
 import Spacer from '@ui/common/Spacer'
-import BarrelNft from '@ui/ntf/item/BarrelNft'
+// import BarrelNft from '@ui/ntf/item/BarrelNft'
 import React from 'react'
 
 import Carousel from 'react-multi-carousel'
