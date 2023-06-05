@@ -3,6 +3,7 @@
 import { CryptoHookFactory } from '@_types/hooks'
 import { Nft, NftsPaginated } from '@_types/nft'
 import { useAuth } from '@hooks/auth'
+import useMarketPlaceFilters from '@hooks/common/useMarketPlaceFilters'
 
 import { useGlobal } from '@providers/global'
 import axios, { AxiosResponse } from 'axios'
@@ -11,8 +12,9 @@ import { LoadingContext } from 'components/contexts/LoadingContext'
 import axiosClient from 'lib/fetcher/axiosInstance'
 import { useContext, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-
+import groupByAndSum from './utils/groupAndSum'
 import useSWR from 'swr'
+import buildQueryString from './utils/buildQuery'
 
 type AllNftsHookFactory = CryptoHookFactory<Nft[], any>
 
@@ -26,21 +28,43 @@ export const hookFactory: AllNftsHookFactory =
     } = useGlobal()
 
     const { setIsLoading } = useContext(LoadingContext)
+    const {
+      activeSort,
+      removeFilter,
+      setActiveSort,
+      sortDirection,
+      selectedFilters,
+      handleAddFilter,
+      setSortDirection,
+      mapSortDirection,
+    } = useMarketPlaceFilters()
 
     const [pageSize, setPageSize] = useState(10)
     const [name, setName] = useState('')
+
     const [searchLoading, setSearchLoading] = useState(false)
-    const [activeFilter, setActiveFilter] = useState('')
+    const [activeLiquor, setActiveLiquor] = useState<string[] | undefined>([])
+
+    const [filterList, setFilterList] = useState<string[]>([])
 
     const { auth } = useAuth()
 
     const fetchNFTs = async (): Promise<NftsPaginated> => {
       const response: AxiosResponse = await axios.get(
-        `/api/casks?page=1&pageSize=${pageSize}${
-          activeFilter ? `&liquor=${activeFilter}` : ''
-        }${name ? `&name=${name}` : ''}`
+        buildQueryString(
+          1,
+          pageSize,
+          name,
+          selectedFilters,
+          activeSort,
+          sortDirection
+        )
       )
+      return response.data
+    }
 
+    const fetchFilters = async (): Promise<any> => {
+      const response: AxiosResponse = await axios.get('/api/stats/filters')
       return response.data
     }
 
@@ -50,6 +74,10 @@ export const hookFactory: AllNftsHookFactory =
       isValidating,
       mutate: refetchData,
     } = useSWR('web3/useAllNfts', fetchNFTs, {
+      revalidateOnFocus: false,
+    })
+
+    const { data: filters } = useSWR('/api/stats/filters', fetchFilters, {
       revalidateOnFocus: false,
     })
 
@@ -77,18 +105,47 @@ export const hookFactory: AllNftsHookFactory =
 
     useEffect(() => {
       refetchData()
-    }, [pageSize, activeFilter])
+    }, [pageSize, activeLiquor, sortDirection, activeSort, selectedFilters])
+
+    const handleSelectFilterOption = (filterType: string, value: string) => {
+      handleAddFilter(filterType, value)
+    }
+
+    const handleSetFilterList = (filterType: string) => {
+      if (!activeLiquor || activeLiquor.length === 0) {
+        const selectedFilters = Object.entries(filters)
+          .map(([key, _]) => {
+            return filters[key][filterType]
+          })
+          .filter((filter: any) => filter !== undefined)
+
+        const groupedFilters = groupByAndSum(selectedFilters)
+
+        setFilterList(Object.keys(groupedFilters))
+      } else {
+        const selectedFilters = activeLiquor
+          .map((liquor: string) => {
+            return filters[liquor][filterType]
+          })
+          .filter((filter: any) => filter !== undefined)
+
+        const groupedFilters = groupByAndSum(selectedFilters)
+
+        setFilterList(Object.keys(groupedFilters))
+      }
+    }
 
     const handleSearch = async () => {
       refetchData()
     }
 
-    const handleActiveFilter = (liquor: string) => {
-      if (activeFilter === liquor) {
-        setActiveFilter('')
+    const handleActiveLiquor = (liquor: string) => {
+      if (activeLiquor?.includes(liquor)) {
+        setActiveLiquor(activeLiquor?.filter((l) => l !== liquor))
       } else {
-        setActiveFilter(liquor)
+        setActiveLiquor([...(activeLiquor || []), liquor])
       }
+      handleAddFilter('liquor', liquor)
     }
 
     const handleAddFavorite = async (nftId: string) => {
@@ -124,18 +181,31 @@ export const hookFactory: AllNftsHookFactory =
       debouncedFetchSearchResults(name)
     }
 
+    console.log('selected filters', selectedFilters)
+
     return {
       name,
       setName,
       isLoading,
-      activeFilter,
+      activeSort,
+      filterList,
       isValidating,
+      activeLiquor,
+      removeFilter,
       handleSearch,
+      setActiveSort,
       searchLoading,
+      sortDirection,
+      handleAddFilter,
+      selectedFilters,
       data: data || [],
       fetchMoreBarrels,
+      setSortDirection,
+      mapSortDirection,
       handleAddFavorite,
-      handleActiveFilter,
+      handleActiveLiquor,
+      handleSetFilterList,
       handleSearchInputChange,
+      handleSelectFilterOption,
     }
   }

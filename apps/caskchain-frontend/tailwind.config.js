@@ -2,10 +2,11 @@ module.exports = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
+    './node_modules/flowbite/**/*.js',
   ],
   theme: {
     fontFamily: {
-      sans: ['Gugi', 'sans-serif'],
+      sans: ['Poppins', 'sans-serif'],
     },
     backdropFilter: {
       none: 'none',
@@ -18,7 +19,6 @@ module.exports = {
         neutral: '#A8A8A8',
       },
       fontFamily: {
-        gugi: ['Gugi', 'sans-serif'],
         rale: ['Raleway', 'sans-serif'],
         poppins: ['Poppins', 'sans-serif'],
       },
@@ -31,5 +31,9 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/forms'), require('tailwindcss-filters')],
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('tailwindcss-filters'),
+    require('flowbite/plugin'),
+  ],
 }

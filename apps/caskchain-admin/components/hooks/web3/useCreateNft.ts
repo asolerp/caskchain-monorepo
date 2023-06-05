@@ -143,6 +143,10 @@ export const hookFactory: CreateNftHookFactory =
           {
             nft: {
               ...nftMeta,
+              attributes: nftMeta.attributes.map((attr: any) => ({
+                trait_type: attr.trait_type,
+                value: attr.value,
+              })),
               image: `${process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL}/${imageData.IpfsHash}`,
             },
           },

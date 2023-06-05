@@ -27,10 +27,18 @@ export default function GetNftsRouter(
   const router = express.Router()
 
   router.get('/', async (req: Request, res: Response) => {
-    const { page = 1, pageSize = 10, name = '', liquor = '' } = req.query
+    const {
+      page = 1,
+      pageSize = 10,
+      name = '',
+      filters = '',
+      sortBy = '',
+      sortOrder = '',
+    } = req.query
     try {
       // Parse page and limit values
       const filter: any = {}
+      const sort: any = {}
       const parsePage = parseInt(page.toString(), 10)
       const parsedPageSize = parseInt(pageSize.toString(), 10)
 
@@ -38,15 +46,31 @@ export default function GetNftsRouter(
         filter.name = { $regex: name, $options: 'i' }
       }
 
-      if (liquor) {
-        filter.attributes = {
-          $elemMatch: { trait_type: 'liquor', value: liquor },
-        }
+      if (filters) {
+        Object.entries(filters).forEach(
+          ([key, value]: [key: string, value: any]) => {
+            if (key === 'liquor') {
+              filter['attributes.liquor'] = {
+                $in: value.toString().replace(/\[|\]/g, '').split(','),
+              }
+            }
+            filter[`attributes.${key}`] = {
+              $in: value.toString().replace(/\[|\]/g, '').split(','),
+            }
+          }
+        )
       }
 
-      console.log('FILTERS ROUTER', filter)
+      if (sortBy) {
+        sort[sortBy.toString()] = sortOrder === 'asc' ? 1 : -1
+      }
 
-      const nfts = await getNfts.execute(parsePage, parsedPageSize, filter)
+      const nfts = await getNfts.execute(
+        parsePage,
+        parsedPageSize,
+        filter,
+        sort
+      )
 
       logger.info('Successfully fetched all NFTs', null, {
         metadata: {

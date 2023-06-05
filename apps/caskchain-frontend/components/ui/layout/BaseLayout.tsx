@@ -19,25 +19,29 @@ const BaseLayout: React.FC<Props> = ({
 }) => {
   const backgroundClass = background ? background : ''
 
+  const hasBottomBanner = bottomBanner ? true : false
+
   return (
     <AnimatePresence>
       <MainAnimationSection />
       <Navbar />
       <LoadingOverlay />
-      <div className={`overflow-hidden min-h-screen ${backgroundClass}`}>
-        <div className=" bg-opacity-80 backdrop-blur-xl w-screen  ">
-          <div className="flex flex-col justify-center items-center w-full h-full">
-            {children}
+      <>
+        <div className={`overflow-hidden min-h-screen ${backgroundClass}`}>
+          <div className=" bg-opacity-80 backdrop-blur-xl w-screen  ">
+            <div className="flex flex-col justify-center items-center w-full h-full">
+              {children}
+            </div>
+            {!hasBottomBanner && <FooterSection />}
           </div>
-          {!bottomBanner && <FooterSection />}
         </div>
-      </div>
-      {bottomBanner && (
-        <>
-          {bottomBanner}
-          <FooterSection />
-        </>
-      )}
+        {hasBottomBanner && (
+          <>
+            {bottomBanner}
+            <FooterSection />
+          </>
+        )}
+      </>
     </AnimatePresence>
   )
 }

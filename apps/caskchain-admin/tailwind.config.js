@@ -7,7 +7,7 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      sans: ['Gugi', 'sans-serif'],
+      sans: ['Poppins', 'sans-serif'],
     },
     backdropFilter: {
       none: 'none',
@@ -20,7 +20,6 @@ module.exports = {
         neutral: '#A8A8A8',
       },
       fontFamily: {
-        gugi: ['Gugi', 'sans-serif'],
         rale: ['Raleway', 'sans-serif'],
         poppins: ['Poppins', 'sans-serif'],
       },

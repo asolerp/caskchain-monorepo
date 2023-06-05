@@ -1,5 +1,6 @@
 import { NFTRequestModel } from '../../../domain/model/NFT'
 import { NFTsDataSource } from '../../interfaces/data-sources/NFTsDataSource'
+import { MongoDBStatsDataSource } from './MongoDBStatsDataSource'
 
 import { MongoRepository } from './MongoRepository'
 
@@ -12,7 +13,25 @@ export class MongoDBNFTDataSource
   }
 
   public async save(id: string, nft: NFTRequestModel) {
+    const clientDB = this.client()
+    const mongoStatsDataSource = new MongoDBStatsDataSource(clientDB)
+
     await this.persist(id, nft)
+
+    const liquor = nft.attributes.liquor
+
+    const traitValues = {
+      age: nft.attributes.age,
+      distillery: nft.attributes.distillery,
+      type: nft.attributes.type,
+      cask_wood: nft.attributes.cask_wood,
+      cask_size: nft.attributes.cask_size,
+      location: nft.attributes.location,
+      abv: nft.attributes.abv,
+      flavor: nft.attributes.flavor,
+    }
+
+    await mongoStatsDataSource.incrementBarrelsStats(liquor, traitValues)
   }
 
   public async getNFTFavoriteCounter(id: string): Promise<number> {
@@ -58,7 +77,8 @@ export class MongoDBNFTDataSource
   public async getAllNfts(
     page: number,
     pagesize: number,
-    filter: any
+    filter: any,
+    sort: any
   ): Promise<any> {
     const collection = await this.collection()
 
@@ -66,11 +86,18 @@ export class MongoDBNFTDataSource
     const totalPages = Math.ceil(count / pagesize)
     const currentPage = Math.min(page, totalPages)
 
-    const documents = await collection
-      .find<any>(filter)
-      .skip((currentPage - 1) * pagesize)
-      .limit(pagesize)
-      .toArray()
+    const query = await collection.aggregate([
+      { $match: filter },
+      {
+        $sort: {
+          [`attributes.${Object.keys(sort)[0]}`]: Object.values(sort)[0],
+        },
+      },
+      { $skip: (currentPage - 1) * pagesize },
+      { $limit: pagesize },
+    ])
+
+    const documents = await query.toArray()
 
     return {
       documents,
@@ -78,7 +105,7 @@ export class MongoDBNFTDataSource
         totalPages,
         currentPage,
         pageSize: pagesize,
-        totalCount: count,
+        totalCount: documents.length,
       },
     }
   }

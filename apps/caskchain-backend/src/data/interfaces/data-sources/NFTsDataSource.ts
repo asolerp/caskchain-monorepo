@@ -12,6 +12,10 @@ export interface NFTsDataSource {
   getAllNfts(
     page: number,
     pageSize: number,
-    filter: any
+    filter: any,
+    sort?: {
+      sortBy: string
+      sortOrder: string
+    }
   ): Promise<NFTResponseModel[]>
 }

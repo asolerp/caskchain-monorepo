@@ -2,14 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  @font-face {
-    font-family: Gugi;
-    font-weight: 400;
-    src: url(/Gugi-Regular.woff) format('woff');
-  }
-}
-
 .horizontal-slider {
   position: relative;
   width: 100%;

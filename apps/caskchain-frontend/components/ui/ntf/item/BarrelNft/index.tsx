@@ -160,55 +160,32 @@ const BarrelNft: React.FC<NftItemProps> = ({
                   </div>
                   <div className="flex flex-row flex-wrap space-x-1 justify-start items-center h-16">
                     <p className="text-cask-chain text-[12px]">
-                      {getBarrelAttribute(
-                        isProfileMeta.attributes,
-                        'liquor'
-                      )?.toUpperCase()}
+                      {isProfileMeta.attributes.liquor?.toUpperCase()}
                     </p>
                     <p className="text-cask-chain">{' · '}</p>
                     <p className="text-cask-chain text-[12px]">
-                      {getBarrelAttribute(
-                        isProfileMeta.attributes,
-                        'distillery'
-                      )?.toUpperCase()}
+                      {isProfileMeta.attributes.distillery?.toUpperCase()}
                     </p>
                     <p className="text-cask-chain">{' · '}</p>
                     <p className="text-cask-chain text-[12px]">
-                      {getBarrelAttribute(
-                        isProfileMeta.attributes,
-                        'location'
-                      )?.toUpperCase()}
+                      {isProfileMeta.attributes.location?.toUpperCase()}
                     </p>
                     <p className="text-cask-chain">{' · '}</p>
                     <p className="text-cask-chain text-[12px]">
-                      {getBarrelAttribute(
-                        isProfileMeta.attributes,
-                        'cask_wood'
-                      )?.toUpperCase()}{' '}
+                      {isProfileMeta.attributes.cask_wood?.toUpperCase()}
                     </p>
                     <p className="text-cask-chain">{' · '}</p>
                     <p className="text-cask-chain text-[12px]">
-                      {getBarrelAttribute(
-                        isProfileMeta.attributes,
-                        'age'
-                      )?.toUpperCase()}{' '}
+                      {isProfileMeta.attributes.age?.toUpperCase()}
                       years
                     </p>
                     <p className="text-cask-chain">{' · '}</p>
                     <p className="text-cask-chain text-[12px]">
-                      {getBarrelAttribute(
-                        isProfileMeta.attributes,
-                        'cask_size'
-                      )?.toUpperCase()}
-                      L
+                      {isProfileMeta.attributes.cask_size?.toUpperCase()}L
                     </p>
                     <p className="text-cask-chain">{' · '}</p>
                     <p className="text-cask-chain text-[12px]">
-                      {getBarrelAttribute(
-                        isProfileMeta.attributes,
-                        'abv'
-                      )?.toUpperCase()}
-                      %
+                      {isProfileMeta.attributes.abv?.toUpperCase()}%
                     </p>
                   </div>
                 </div>

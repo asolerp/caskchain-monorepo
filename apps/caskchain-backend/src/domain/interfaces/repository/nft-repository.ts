@@ -1,9 +1,15 @@
+import { SortType } from '../../../types/filters'
 import { Nft } from '../../../types/nft'
 
 export interface NFTRepository {
   createNFT(id: string, nft: any): Promise<any>
   updateNFTFavoriteCounter(id: string, action: string): Promise<any>
-  getAllNfts(page: number, pageSize: number, filter: any): Promise<Nft[]>
+  getAllNfts(
+    page: number,
+    pageSize: number,
+    filter: any,
+    sort: SortType
+  ): Promise<Nft[]>
   getTotalNftsSupply(): Promise<number>
   getFavoriteNfts(address: string): Promise<Nft[]>
   getNFTFavoriteCounter(id: string): Promise<number>

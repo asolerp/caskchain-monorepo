@@ -6,8 +6,12 @@ type HeaderProps = {
 }
 
 const Header: React.FC<HeaderProps> = ({ title, children }) => {
+  const height = children || title ? 'h-[300px]' : 'h-[120px]'
+
   return (
-    <div className="bg-header_1 w-screen h-[300px] bg-cover flex items-end justify-center">
+    <div
+      className={`bg-header_1 w-screen ${height} bg-cover flex items-end justify-center`}
+    >
       {children ? (
         children
       ) : (

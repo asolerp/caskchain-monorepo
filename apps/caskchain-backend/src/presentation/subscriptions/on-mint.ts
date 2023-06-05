@@ -17,7 +17,10 @@ export default function OnMint(createNFTUseCase: CreateNFTUseCase) {
       owner: {
         address: nft.owner,
       },
-      attributes: meta.attributes,
+      attributes: meta.attributes.reduce((acc: any, attribute: any) => {
+        acc[attribute.trait_type] = attribute.value
+        return acc
+      }, {}),
       favorites: 0,
     })
   }

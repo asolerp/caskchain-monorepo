@@ -11,6 +11,10 @@ export class StatsImpl implements StatsRepository {
     return await this.statsDataSource.getTotalUsers()
   }
 
+  async getFilters(): Promise<void> {
+    return await this.statsDataSource.getFilters()
+  }
+
   async incrementTotalUsers() {
     await this.statsDataSource.incrementTotalUsers()
   }

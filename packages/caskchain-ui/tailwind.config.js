@@ -1,28 +1,27 @@
 module.exports = {
   content: [
-    './pages/**/*.{js,ts,jsx,tsx}',
-    './public/**/*.html',
-    './components/**/*.{js,ts,jsx,tsx}',
-    './node_modules/flowbite/**/*.js',
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./public/**/*.html",
+    "./components/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/flowbite/**/*.js",
   ],
   theme: {
     fontFamily: {
-      sans: ['Gugi', 'sans-serif'],
+      sans: ["Poppins", "sans-serif"],
     },
     backdropFilter: {
-      none: 'none',
-      blur: 'blur(20px)',
+      none: "none",
+      blur: "blur(20px)",
     },
     extend: {
       colors: {
-        'black-light': '#1B1B1B',
-        'cask-chain': '#CAFC01',
-        neutral: '#A8A8A8',
+        "black-light": "#1B1B1B",
+        "cask-chain": "#CAFC01",
+        neutral: "#A8A8A8",
       },
       fontFamily: {
-        gugi: ['Gugi', 'sans-serif'],
-        rale: ['Raleway', 'sans-serif'],
-        poppins: ['Poppins', 'sans-serif'],
+        rale: ["Raleway", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"],
       },
       backgroundImage: {
         hero: "url('https://res.cloudinary.com/enalbis/image/upload/v1681538253/CaskChain/wtqf3wuruba9zqpezbah.png')",
@@ -32,8 +31,8 @@ module.exports = {
     },
   },
   plugins: [
-    require('@tailwindcss/forms'),
-    require('tailwindcss-filters'),
-    require('flowbite/plugin'),
+    require("@tailwindcss/forms"),
+    require("tailwindcss-filters"),
+    require("flowbite/plugin"),
   ],
-}
+};

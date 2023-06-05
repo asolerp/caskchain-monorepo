@@ -58,6 +58,7 @@ import { GetNftSalesHistory } from './domain/use-cases/sales/get-nft-sales-histo
 import { GetOffers } from './domain/use-cases/offer/get-offers'
 import StatsRouter from './presentation/routers/stats-router'
 import { GetTotalUsers } from './domain/use-cases/stats/get-total-users'
+import { GetFilters } from './domain/use-cases/stats/get-filters'
 import { StatsImpl } from './domain/repositories/stats-repository'
 import { MongoDBStatsDataSource } from './data/data-sources/mongodb/MongoDBStatsDataSource'
 import { GetTotalNfts } from './domain/use-cases/stats/get-total-nfts'
@@ -182,7 +183,8 @@ import { UpdatePriceNft } from './domain/use-cases/nft/update-price-nft'
         new Web3Transaction(web3Client, web3WsClient, web3Contracts),
         new MongoDBNFTDataSource(clientDB)
       )
-    )
+    ),
+    new GetFilters(new StatsImpl(new MongoDBStatsDataSource(clientDB)))
   )
   const offers = OffersRouter(
     new GetSentOffers(new OfferImpl(new MongoDBOfferDataSource(clientDB))),
@@ -281,10 +283,10 @@ import { UpdatePriceNft } from './domain/use-cases/nft/update-price-nft'
     new IncrementTotalUsers(new StatsImpl(new MongoDBStatsDataSource(clientDB)))
   )
 
-  usersWatcher.watchCollection((event) => {
+  usersWatcher.watchCollection(async (event) => {
     if (event.operationType === 'update') {
       if (event.updateDescription.updatedFields?.email !== undefined) {
-        incrementTotalUsers()
+        await incrementTotalUsers()
       }
     }
   })

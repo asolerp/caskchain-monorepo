@@ -19,12 +19,14 @@ const LiquorFilter = ({
       <Image
         src={`/images/liquors/liquor_${liquor}.png`}
         alt={`filter liquor ${liquor}`}
-        width={250}
-        height={250}
-        className={active ? 'ring-4 ring-cask-chain rounded-full' : ''}
+        width={150}
+        height={150}
+        className={
+          active ? 'ring-4 ring-cask-chain rounded-full w-52 h-52' : 'w-52 h-52'
+        }
       />
       <Button
-        containerStyle="px-6 py-3 -mt-2"
+        containerStyle="px-6 py-3 -mt-6 bg-black-light"
         active={active}
         onClick={onClick}
       >

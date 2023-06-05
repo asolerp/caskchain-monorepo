@@ -38,7 +38,7 @@ const Button: React.FC<ButtonProps> = ({
       }}
       className={`${
         width ? width : fit ? 'w-fit' : 'w-full'
-      } cursor-pointer rounded-xl hover:bg-opacity-80 ${activeClass} ${containerClass} ${disabledClass}`}
+      } cursor-pointer rounded-full hover:bg-opacity-80 ${activeClass} ${containerClass} ${disabledClass}`}
     >
       {loading ? (
         <Spinner color="black" />

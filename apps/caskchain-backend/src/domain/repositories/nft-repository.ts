@@ -1,6 +1,7 @@
 import { NFTRepository } from '../interfaces/repository/nft-repository'
 import { Web3Transaction } from '../../data/data-sources/blockchain/Web3Transaction'
 import { NFTsDataSource } from '../../data/interfaces/data-sources/NFTsDataSource'
+import { SortType } from '../../types/filters'
 
 export class NFTRepositoryImpl implements NFTRepository {
   web3Transaction: Web3Transaction
@@ -62,9 +63,13 @@ export class NFTRepositoryImpl implements NFTRepository {
     return await this.web3Transaction.getCaskInfo(caskId)
   }
 
-  async getAllNfts(page: number, pageSize: number, filter?: any): Promise<any> {
-    console.log('HOLA', filter)
-    return await this.nftsDataSource.getAllNfts(page, pageSize, filter)
+  async getAllNfts(
+    page: number,
+    pageSize: number,
+    filter?: any,
+    sort?: SortType
+  ): Promise<any> {
+    return await this.nftsDataSource.getAllNfts(page, pageSize, filter, sort)
   }
 
   async getOwnedNfts(owner: string): Promise<any> {

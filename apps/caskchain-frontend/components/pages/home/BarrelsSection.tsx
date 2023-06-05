@@ -94,8 +94,8 @@ const BarrelsSection = () => {
             slidesToSlide={1}
             swipeable
           >
-            {barrels.map((barrel, i) => (
-              <div key={i} className="mx-2 lg:mx-0">
+            {barrels.map((barrel) => (
+              <div key={barrel.tokenId} className="mx-2 lg:mx-0">
                 <Image
                   src="/images/nft.png"
                   width={550}
@@ -103,14 +103,6 @@ const BarrelsSection = () => {
                   alt="barrel"
                   className="rounded-[40px] px-3"
                 />
-                {/* <BarrelNft
-                   defaultImage
-                   showAnimation={false}
-                   showFavorite={false}
-                   active={true}
-                   isMarketPlace={false}
-                   item={barrel}
-                 /> */}
               </div>
             ))}
           </Carousel>
