@@ -28,7 +28,7 @@ const BaseLayout: React.FC<Props> = ({
       <LoadingOverlay />
       <>
         <div className={`overflow-hidden min-h-screen ${backgroundClass}`}>
-          <div className=" bg-opacity-80 backdrop-blur-xl w-screen  ">
+          <div className=" bg-opacity-80 w-screen  ">
             <div className="flex flex-col justify-center items-center w-full h-full">
               {children}
             </div>

@@ -5,21 +5,25 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "./NftFractionsVendor.sol";
-import "./NftFractionsStorage.sol";
+import "./NftFractionsFactoryStorage.sol";
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
+import "./INftFractionsVendorStorage.sol";
+
 contract NftFractionsVendor is
-  NftFractionsStorage,
   Initializable,
   OwnableUpgradeable,
   UUPSUpgradeable
 {
   event BuyTokens(address buyer, uint256 amountOfMATIC, uint256 amountOfTokens);
 
-  function initialize() public initializer {
+  INftFractionsVendorStorage private _storage;
+
+  function initialize(address storageAddress) public initializer {
     __Ownable_init();
     __UUPSUpgradeable_init();
+    _storage = INftFractionsVendorStorage(storageAddress);
   }
 
   function _authorizeUpgrade(address) internal override onlyOwner {}
@@ -32,35 +36,45 @@ contract NftFractionsVendor is
   ) public onlyOwner {
     require(totalSupply > 0, "Token per eth must be higher than 0");
     require(listingPrice > 0, "Token per eth must be higher than 0");
-    tokens[tokenAddress].tokenAddress = tokenAddress;
-    tokens[tokenAddress].totalSupply = totalSupply;
-    tokens[tokenAddress].listingPrice = listingPrice;
-    tokens[tokenAddress].enableSell = enableSell;
+
+    _storage.setToken(tokenAddress, totalSupply, listingPrice, enableSell);
   }
 
-  function updateTokenVendorSellState(address tokenAddress, bool state) public {
-    tokens[tokenAddress].enableSell = state;
+  function updateTokenVendorState(address tokenAddress, bool state) public {
+    _storage.updateTokenVendorSellState(tokenAddress, state);
   }
 
-  function updateStateAddressVendor(
+  function updateStateAddress(
     address tokenAddress,
     bool state
   ) public onlyOwner {
-    activeAddressVendor[tokenAddress] = state;
+    _storage.updateStateAddressVendor(tokenAddress, state);
+  }
+
+  function getTokenInfo(
+    address tokenAddress
+  ) external view returns (INftFractionsVendorStorage.TokenPaymentInfo memory) {
+    INftFractionsVendorStorage.TokenPaymentInfo memory token = _storage
+      .getTokenPaymentInfo(tokenAddress);
+    return token;
   }
 
   function getUnitPrice(address tokenAddress) external view returns (uint256) {
-    return tokens[tokenAddress].totalSupply / tokens[tokenAddress].listingPrice;
+    INftFractionsVendorStorage.TokenPaymentInfo memory token = _storage
+      .getTokenPaymentInfo(tokenAddress);
+    return token.totalSupply / token.listingPrice;
   }
 
   function buyTokens(
     address tokenAddress
   ) public payable returns (uint256 tokenAmount) {
-    require(msg.value > 0, "You need to send some MATIC to proceed");
-    require(tokens[tokenAddress].enableSell == true, "Sell is not enabled");
+    INftFractionsVendorStorage.TokenPaymentInfo memory token = _storage
+      .getTokenPaymentInfo(tokenAddress);
 
-    uint256 amountToBuy = (msg.value * tokens[tokenAddress].totalSupply) /
-      tokens[tokenAddress].listingPrice;
+    require(msg.value > 0, "You need to send some MATIC to proceed");
+    require(token.enableSell == true, "Sell is not enabled");
+
+    uint256 amountToBuy = (msg.value * token.totalSupply) / token.listingPrice;
 
     uint256 vendorBalance = ERC20Upgradeable(tokenAddress).balanceOf(
       address(this)
@@ -77,16 +91,19 @@ contract NftFractionsVendor is
   }
 
   function sellTokens(uint256 tokenAmountToSell, address tokenAddress) public {
+    INftFractionsVendorStorage.TokenPaymentInfo memory token = _storage
+      .getTokenPaymentInfo(tokenAddress);
+
     require(
       tokenAmountToSell > 0,
       "Specify an amount of token greater than zero"
     );
-    require(tokens[tokenAddress].enableSell == true, "Sell is not enabled");
+    require(token.enableSell == true, "Sell is not enabled");
     uint256 userBalance = ERC20Upgradeable(tokenAddress).balanceOf(msg.sender);
     require(userBalance >= tokenAmountToSell, "You have insufficient tokens");
 
-    uint256 amountOfETHToTransfer = (tokenAmountToSell *
-      tokens[tokenAddress].listingPrice) / tokens[tokenAddress].totalSupply;
+    uint256 amountOfETHToTransfer = (tokenAmountToSell * token.listingPrice) /
+      token.totalSupply;
     uint256 ownerETHBalance = address(this).balance;
     require(
       ownerETHBalance >= amountOfETHToTransfer,

@@ -4,9 +4,7 @@ import { MongoClientFactory } from './data/data-sources/mongodb/MongoClientFacto
 
 import { MongoDBRecordPaymentsDataSource } from './data/data-sources/mongodb/MongoDBRecordPaymentsDataSource'
 import { MongoDBTransactionHistoryDataSource } from './data/data-sources/mongodb/MongoDBTransactionHistoryDataSource'
-import { stripeConnection } from './data/payments/StripeConnection'
 
-import { PaymentsRepositoryImpl } from './domain/repositories/payments-repository'
 import { RecordPaymentsImpl } from './domain/repositories/record-payments-repository'
 import { NFTRepositoryImpl } from './domain/repositories/nft-repository'
 import { TransactionRepositoryImpl } from './domain/repositories/transaction-repository'
@@ -22,11 +20,7 @@ import TransactionsHistoryRouter from './presentation/routers/transactions-histo
 
 import WebhookRouter from './presentation/routers/webhook'
 import server from './server'
-import CCNft from 'contracts/build/contracts/CCNft.json'
-import NftVendor from 'contracts/build/contracts/NftVendor.json'
-import NftOffers from 'contracts/build/contracts/NftOffers.json'
-import NftFractionsFactory from 'contracts/build/contracts/NftFractionsFactory.json'
-import NftFractionsVendor from 'contracts/build/contracts/NftFractionsVendor.json'
+
 import { Web3Events } from './data/data-sources/blockchain/Web3Events'
 import OnTransfer from './presentation/subscriptions/on-transfer'
 import SignatureRouter from './presentation/routers/signature'
@@ -74,6 +68,13 @@ import { GetRoyalties } from './domain/use-cases/transaction/get-royalties'
 import PinNftRouter from './presentation/routers/pin-nft-router'
 import OnListed from './presentation/subscriptions/on-listed'
 import { UpdatePriceNft } from './domain/use-cases/nft/update-price-nft'
+import OnSaleStateChanged from './presentation/subscriptions/on-sale-state-changed'
+import { UpdateSaleStateNft } from './domain/use-cases/nft/update-sale-state-nft'
+import { contracts, getContractData } from './domain/contracts'
+import { stripeConnection } from './data/payments/StripeConnection'
+import { PaymentsRepositoryImpl } from './domain/repositories/payments-repository'
+import OnNewFraction from './presentation/subscriptions/on-new-fraction'
+import { NewFraction } from './domain/use-cases/nft/new-fraction'
 ;(async () => {
   const clientDB = MongoClientFactory.createClient(
     process.env.CONTEXT_NAME as string,
@@ -88,122 +89,78 @@ import { UpdatePriceNft } from './domain/use-cases/nft/update-price-nft'
       process.env.CONTEXT_NAME as string,
       process.env.BLOCKCHAIN_URL as string,
       process.env.BLOCKCHAIN_WS_URL as string,
-      [
-        {
-          contractName: 'CCNft',
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore: Unreachable code error
-          contractAddress: CCNft.networks?.[process.env.NETWORK_ID as string]
-            .address as string,
-          contractABI: CCNft.abi,
-        },
-        {
-          contractName: 'NftVendor',
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore: Unreachable code error
-          contractAddress: NftVendor.networks?.[
-            process.env.NETWORK_ID as string
-          ].address as string,
-          contractABI: NftVendor.abi,
-        },
-        {
-          contractName: 'NftOffers',
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore: Unreachable code error
-          contractAddress: NftOffers.networks?.[
-            process.env.NETWORK_ID as string
-          ].address as string,
-          contractABI: NftOffers.abi,
-        },
-        {
-          contractName: 'NftFractionsFactory',
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore: Unreachable code error
-          contractAddress: NftFractionsFactory.networks?.[
-            process.env.NETWORK_ID as string
-          ].address as string,
-          contractABI: NftFractionsFactory.abi,
-        },
-        {
-          contractName: 'NftFractionsVendor',
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore: Unreachable code error
-          contractAddress: NftFractionsVendor.networks?.[
-            process.env.NETWORK_ID as string
-          ].address as string,
-          contractABI: NftFractionsVendor.abi,
-        },
-      ]
+      contracts.map(({ contract, name }) => getContractData(contract, name))
     )
 
   const web3Contracts = Web3ClientFactory.getContracts()
-
   const eventsHandler = new Web3Events(web3Client, web3WsClient, web3Contracts)
-
   const payments = stripeConnection()
 
   // ROUTES
+
+  const web3Transaction = new Web3Transaction(
+    web3Client,
+    web3WsClient,
+    web3Contracts
+  )
+  const nftRepositoryImpl = new NFTRepositoryImpl(
+    web3Transaction,
+    new MongoDBNFTDataSource(clientDB)
+  )
+  const transactionRepositoryImpl = new TransactionRepositoryImpl(
+    new MongoDBTransactionHistoryDataSource(clientDB)
+  )
+
+  const paymentsRepositoryImpl = new PaymentsRepositoryImpl(payments)
+
+  const recordPaymentsImpl = new RecordPaymentsImpl(
+    new MongoDBRecordPaymentsDataSource(clientDB)
+  )
+  const offerImpl = new OfferImpl(new MongoDBOfferDataSource(clientDB))
+  const statsImpl = new StatsImpl(new MongoDBStatsDataSource(clientDB))
+
+  const recordOfferImpl = new RecordOfferImpl(
+    new MongoDBOfferDataSource(clientDB)
+  )
+  const acceptOfferImpl = new AcceptOfferImpl(
+    new MongoDBOfferDataSource(clientDB)
+  )
+  const removeOfferImpl = new RemoveOfferImpl(
+    new MongoDBOfferDataSource(clientDB)
+  )
 
   const pinNftMiddleWare = PinNftRouter()
   const signature = SignatureRouter()
   const orderBottleMiddleWare = OrderBottleRouter()
   const transactionsHistory = TransactionsHistoryRouter(
-    new GetNftSalesHistory(
-      new TransactionRepositoryImpl(
-        new MongoDBTransactionHistoryDataSource(clientDB)
-      )
-    ),
+    new GetNftSalesHistory(transactionRepositoryImpl),
     new GetRoyalties(new RoyaltyImpl(new MongoDBRoyaltyDataSource(clientDB))),
-    new GetTransactions(
-      new TransactionRepositoryImpl(
-        new MongoDBTransactionHistoryDataSource(clientDB)
-      )
-    ),
-    new GetTransactionByTokenId(
-      new TransactionRepositoryImpl(
-        new MongoDBTransactionHistoryDataSource(clientDB)
-      )
-    ),
-    new GetTransactionByWalletAddress(
-      new TransactionRepositoryImpl(
-        new MongoDBTransactionHistoryDataSource(clientDB)
-      )
-    )
+    new GetTransactions(transactionRepositoryImpl),
+    new GetTransactionByTokenId(transactionRepositoryImpl),
+    new GetTransactionByWalletAddress(transactionRepositoryImpl)
   )
+
   const createCheckoutSession = CreateCheckoutSessionRouter(
-    new CreateCheckoutSession(new PaymentsRepositoryImpl(payments)),
-    new RecordInitPayment(
-      new RecordPaymentsImpl(new MongoDBRecordPaymentsDataSource(clientDB))
-    )
+    new CreateCheckoutSession(paymentsRepositoryImpl),
+    new RecordInitPayment(recordPaymentsImpl)
   )
+
   const stats = StatsRouter(
-    new GetTotalUsers(new StatsImpl(new MongoDBStatsDataSource(clientDB))),
-    new GetTotalNfts(
-      new NFTRepositoryImpl(
-        new Web3Transaction(web3Client, web3WsClient, web3Contracts),
-        new MongoDBNFTDataSource(clientDB)
-      )
-    ),
-    new GetFilters(new StatsImpl(new MongoDBStatsDataSource(clientDB)))
+    new GetTotalUsers(statsImpl),
+    new GetTotalNfts(nftRepositoryImpl),
+    new GetFilters(statsImpl)
   )
+
   const offers = OffersRouter(
-    new GetSentOffers(new OfferImpl(new MongoDBOfferDataSource(clientDB))),
-    new GetReceivedOffers(new OfferImpl(new MongoDBOfferDataSource(clientDB))),
-    new GetOffers(new OfferImpl(new MongoDBOfferDataSource(clientDB)))
+    new GetSentOffers(offerImpl),
+    new GetReceivedOffers(offerImpl),
+    new GetOffers(offerImpl)
   )
+
   const webhook = WebhookRouter(
-    new GetPaymentByPaymentId(
-      new RecordPaymentsImpl(new MongoDBRecordPaymentsDataSource(clientDB))
-    ),
-    new SendBougthNFT(
-      new NFTRepositoryImpl(
-        new Web3Transaction(web3Client, web3WsClient, web3Contracts),
-        new MongoDBNFTDataSource(clientDB)
-      )
-    ),
-    new UpdatePaymentStatus(
-      new RecordPaymentsImpl(new MongoDBRecordPaymentsDataSource(clientDB))
-    )
+    new GetPaymentByPaymentId(recordPaymentsImpl),
+    new SendBougthNFT(nftRepositoryImpl),
+    new UpdatePaymentStatus(recordPaymentsImpl)
   )
 
   // EVENTS
@@ -212,51 +169,31 @@ import { UpdatePriceNft } from './domain/use-cases/nft/update-price-nft'
     new SaveRoyalty(new RoyaltyImpl(new MongoDBRoyaltyDataSource(clientDB)))
   )
 
-  const handelOnMint = OnMint(
-    new CreateNFT(
-      new NFTRepositoryImpl(
-        new Web3Transaction(web3Client, web3WsClient, web3Contracts),
-        new MongoDBNFTDataSource(clientDB)
-      )
-    )
-  )
+  const handleOnNewFraction = OnNewFraction(new NewFraction(nftRepositoryImpl))
 
-  const handleOnListed = OnListed(
-    new UpdatePriceNft(
-      new NFTRepositoryImpl(
-        new Web3Transaction(web3Client, web3WsClient, web3Contracts),
-        new MongoDBNFTDataSource(clientDB)
-      )
-    )
+  const handelOnMint = OnMint(new CreateNFT(nftRepositoryImpl))
+
+  const handleOnListed = OnListed(new UpdatePriceNft(nftRepositoryImpl))
+
+  const handleOnUpdatePrice = OnListed(new UpdatePriceNft(nftRepositoryImpl))
+
+  const handleOnSaleStateChanged = OnSaleStateChanged(
+    new UpdateSaleStateNft(nftRepositoryImpl)
   )
 
   const handleOnTransfer = OnTransfer(
-    new UpdateOwnerNft(
-      new NFTRepositoryImpl(
-        new Web3Transaction(web3Client, web3WsClient, web3Contracts),
-        new MongoDBNFTDataSource(clientDB)
-      )
-    ),
-    new CreateTransaction(
-      new TransactionRepositoryImpl(
-        new MongoDBTransactionHistoryDataSource(clientDB)
-      )
-    )
+    new UpdateOwnerNft(nftRepositoryImpl),
+    new CreateTransaction(transactionRepositoryImpl)
   )
-  const handleOnNewOffer = OnOffer(
-    new RecordOffer(new RecordOfferImpl(new MongoDBOfferDataSource(clientDB)))
-  )
+
+  const handleOnNewOffer = OnOffer(new RecordOffer(recordOfferImpl))
+
   const handleAcceptOffer = OnAcceptOffer(
-    new AcceptOffer(new AcceptOfferImpl(new MongoDBOfferDataSource(clientDB))),
-    new CreateTransaction(
-      new TransactionRepositoryImpl(
-        new MongoDBTransactionHistoryDataSource(clientDB)
-      )
-    )
+    new AcceptOffer(acceptOfferImpl),
+    new CreateTransaction(transactionRepositoryImpl)
   )
-  const handleRemoveOffer = OnRemoveOffer(
-    new RemoveOffer(new RemoveOfferImpl(new MongoDBOfferDataSource(clientDB)))
-  )
+
+  const handleRemoveOffer = OnRemoveOffer(new RemoveOffer(removeOfferImpl))
 
   eventsHandler.subscribeLogEvent('CCNft', 'Mint', handelOnMint)
   eventsHandler.subscribeLogEvent('CCNft', 'Approval')
@@ -265,6 +202,16 @@ import { UpdatePriceNft } from './domain/use-cases/nft/update-price-nft'
   )
 
   eventsHandler.subscribeLogEvent('NftVendor', 'ItemListed', handleOnListed)
+  eventsHandler.subscribeLogEvent(
+    'NftVendor',
+    'ItemPiceUpdated',
+    handleOnUpdatePrice
+  )
+  eventsHandler.subscribeLogEvent(
+    'NftVendor',
+    'ItemSaleStateUpdated',
+    handleOnSaleStateChanged
+  )
 
   eventsHandler.subscribeLogEvent(
     'NftVendor',
@@ -275,6 +222,16 @@ import { UpdatePriceNft } from './domain/use-cases/nft/update-price-nft'
   eventsHandler.subscribeLogEvent('NftOffers', 'RemoveOffer', handleRemoveOffer)
   eventsHandler.subscribeLogEvent('NftOffers', 'AcceptOffer', handleAcceptOffer)
   eventsHandler.subscribeLogEvent('NftVendor', 'TxFeePaid', handleOnRoyalty)
+  eventsHandler.subscribeLogEvent(
+    'NftFractionsFactory',
+    'Mint',
+    handleOnNewFraction
+  )
+  eventsHandler.subscribeLogEvent(
+    'NftFractionToken',
+    'StatusUpdate',
+    handleOnSaleStateChanged
+  )
 
   // WATCHERS
   const usersWatcher = new MongoDBUsersWatcher(clientDB)
@@ -291,23 +248,26 @@ import { UpdatePriceNft } from './domain/use-cases/nft/update-price-nft'
     }
   })
 
-  server.use(
-    '/api/user',
-    user(clientDB, web3Client, web3WsClient, web3Contracts)
-  )
+  const routes = [
+    {
+      path: '/api/user',
+      handler: user(clientDB, web3Client, web3WsClient, web3Contracts),
+    },
+    { path: '/api/stats', handler: stats },
+    { path: '/api/signature', handler: signature },
+    { path: '/api/pin-nft', handler: pinNftMiddleWare },
+    { path: '/api/order-bottle', handler: orderBottleMiddleWare },
+    { path: '/api/transactions', handler: transactionsHistory },
+    { path: '/api/create-checkout-session', handler: createCheckoutSession },
+    {
+      path: '/api/casks',
+      handler: getNfts(clientDB, web3Client, web3WsClient, web3Contracts),
+    },
+    { path: '/api/webhook', handler: webhook },
+    { path: '/api/offers', handler: offers },
+  ]
 
-  server.use('/api/stats', stats)
-  server.use('/api/signature', signature)
-  server.use('/api/pin-nft', pinNftMiddleWare)
-  server.use('/api/order-bottle', orderBottleMiddleWare)
-  server.use('/api/transactions', transactionsHistory)
-  server.use('/api/create-checkout-session', createCheckoutSession)
-  server.use(
-    '/api/casks',
-    getNfts(clientDB, web3Client, web3WsClient, web3Contracts)
-  )
-  server.use('/api/webhook', webhook)
-  server.use('/api/offers', offers)
+  routes.forEach((route) => server.use(route.path, route.handler))
 
   server.listen(process.env.PORT || 4000, () =>
     console.log(`Running on ${process.env.PORT}`)

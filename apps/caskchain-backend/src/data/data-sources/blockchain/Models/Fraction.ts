@@ -1,4 +1,5 @@
 import { ethers } from 'ethers'
+import NftFractionsVendor from 'contracts/build/contracts/NftFractionsVendor.json'
 
 export class Fraction {
   private _contract: any
@@ -29,7 +30,7 @@ export class Fraction {
 
   getAvailableFractions = async () => {
     return await this._contract.methods
-      .balanceOf(process.env.NFT_FRACTION_VENDOR)
+      .balanceOf(NftFractionsVendor.networks?.[4447]?.address)
       .call()
   }
 

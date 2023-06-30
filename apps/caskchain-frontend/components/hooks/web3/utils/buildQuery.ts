@@ -6,7 +6,7 @@ const buildQueryString = (
   activeSort?: string,
   sortDirection?: string
 ): string => {
-  let queryString = `/api/casks?page=${page}&pageSize=${pageSize}`
+  let queryString = `/api/casks?page=${page}&pageSize=${pageSize}&active=true`
 
   if (name) {
     queryString += `&name=${name}`

@@ -15,12 +15,20 @@ export class NFTRepositoryImpl implements NFTRepository {
     this.nftsDataSource = nftsDataSource
   }
 
+  async addFraction(id: string, fraction: any): Promise<void> {
+    await this.nftsDataSource.addFraction(id, fraction)
+  }
+
   async createNFT(id: string, nft: any): Promise<any> {
     this.nftsDataSource.save(id, nft)
   }
 
   async getNFTFavoriteCounter(id: string): Promise<number> {
     return await this.nftsDataSource.getNFTFavoriteCounter(id)
+  }
+
+  async getBestNfts(): Promise<any> {
+    return await this.nftsDataSource.getBestNfts()
   }
 
   async updateNFTFavoriteCounter(id: string, action: string): Promise<number> {
@@ -33,6 +41,10 @@ export class NFTRepositoryImpl implements NFTRepository {
 
   async updatePrice(id: string, price: string): Promise<void> {
     await this.nftsDataSource.updatePrice(id, price)
+  }
+
+  async updateSaleState(id: string, state: boolean): Promise<void> {
+    await this.nftsDataSource.updateSaleState(id, state)
   }
 
   async getTotalNftsSupply(): Promise<number> {

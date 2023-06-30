@@ -20,6 +20,7 @@ import NFTLatestOffers from '@ui/tables/NFTLatestOffers'
 import { ipfsImageParser } from 'utils/ipfsImageParser'
 import SuccessPurchaseModal from '@ui/modals/SuccessPurchase'
 import useLocalLoading from '@hooks/common/useLocalLoading'
+import Header from '@ui/layout/Header'
 
 let CaskIllustration = ({
   src,
@@ -67,6 +68,17 @@ function CaskDetail() {
     cask?.cancelOffer()
   }, [cask])
 
+  const liquor = cask?.data?.meta?.attributes[0].value
+
+  console.log('Liquor: ', liquor)
+
+  const mapLiquorHeader: any = {
+    whiskey: 'Smoky Elixir',
+    rum: `Corsair's Island`,
+    tequila: 'Aztec Spirit',
+    brandy: 'Enigma Symphony',
+  }
+
   const mainImage =
     !cask?.isLoading && cask?.data?.meta?.image
       ? ipfsImageParser(cask?.data?.meta?.image)
@@ -86,10 +98,18 @@ function CaskDetail() {
           <div className="w-screen h-screen"></div>
         ) : (
           <>
+            <Header background={liquor}>
+              <h1 className="font-rale font-semibold text-6xl text-cask-chain mb-10">
+                {mapLiquorHeader[liquor]?.split(' ')[0]}{' '}
+                <span className="text-white">
+                  {mapLiquorHeader[liquor]?.split(' ')[1]}
+                </span>
+              </h1>
+            </Header>
             {cask?.data?.meta ? (
               <div className="lg:w-3/4 mx-auto pt-40 pb-8 rounded-lg">
                 <div>
-                  <div className="max-w-7xl mx-auto grid grid-cols-5 gap-10 mb-20 sm:px-6 lg:px-8 px-4 rounded-lg">
+                  <div className="max-w-7xl mx-auto grid grid-cols-5 gap-10 sm:px-6 lg:px-8 px-4 rounded-lg">
                     <div>
                       <div className="flex flex-col justify-end items-end">
                         <div
@@ -209,17 +229,22 @@ function CaskDetail() {
                       </div>
                     </div>
                   </div>
-
+                  <Spacer size="xl" />
+                  <Spacer size="xl" />
                   <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 px-4">
-                    <div className="flex items-center p-2 bg-cask-chain mb-4 rounded-lg">
-                      <h1 className="text-7xl font-semibold font-rale text-black">
-                        Nft Details
-                      </h1>
-                    </div>
-                    <h2 className="text-xl text-gray-100">
-                      {cask?.data?.meta?.description}
-                    </h2>
-                    <div className="grid grid-cols-1 gap-0 mt-14">
+                    <section>
+                      <div className="flex items-center p-2 bg-cask-chain rounded-lg">
+                        <h1 className="text-7xl font-semibold font-rale text-black">
+                          Nft Details
+                        </h1>
+                      </div>
+                      <Spacer size="lg" />
+                      <h2 className="text-xl text-gray-100">
+                        {cask?.data?.meta?.description}
+                      </h2>
+                    </section>
+                    <Spacer size="xl" />
+                    <section>
                       <div className="flex flex-col justify-center">
                         <h2 className="text-white text-5xl font-semibold">
                           Cask Stats
@@ -243,43 +268,64 @@ function CaskDetail() {
                           )}
                         </div>
                       </div>
-                      {cask?.data?.fractions?.isForSale && (
-                        <>
-                          <div className="flex justify-center">
-                            <PieResponsive
-                              data={Object.entries(
-                                cask?.data?.fractions?.holders
-                              ).map(([address, balance]: any) => ({
-                                name: address,
-                                value: Number(
-                                  ethers.utils.formatEther(balance).toString()
-                                ),
-                              }))}
-                            />
+                    </section>
+                    <Spacer size="xl" />
+                    <Spacer size="xl" />
+                    <section>
+                      <div>
+                        <div className="flex items-center p-2 bg-cask-chain mb-4 rounded-lg">
+                          <h1 className="text-7xl font-semibold font-rale text-black">
+                            Fractions
+                          </h1>
+                        </div>
+                        <div className="flex flex-row">
+                          <div className="w-1/2 h-full">
+                            {cask?.data?.fractions?.isForSale && (
+                              <>
+                                <div className="flex justify-center">
+                                  <PieResponsive
+                                    data={Object.entries(
+                                      cask?.data?.fractions?.holders
+                                    ).map(([address, balance]: any) => ({
+                                      name: address,
+                                      value: Number(
+                                        ethers.utils
+                                          .formatEther(balance)
+                                          .toString()
+                                      ),
+                                    }))}
+                                  />
+                                </div>
+                              </>
+                            )}
                           </div>
-                        </>
-                      )}
-                    </div>
-                    {cask?.data?.fractions && (
-                      <div className="mt-14">
-                        <h2 className="text-white text-5xl font-semibold mb-4">
-                          HOLDERS
-                        </h2>
-                        <FractionHolders
-                          holders={Object.entries(
-                            cask?.data?.fractions?.holders
-                          )
-                            .map(([address, balance]: any) => ({
-                              address: address,
-                              balance: Number(
-                                ethers.utils.formatEther(balance).toString()
-                              ),
-                            }))
-                            .sort((a, b) => b.balance - a.balance)}
-                        />
+                          <div className="w-1/2 flex flex-grow justify-center items-center">
+                            {cask?.data?.fractions && (
+                              <div className="w-full">
+                                <h2 className="text-white text-5xl font-semibold mb-4">
+                                  HOLDERS
+                                </h2>
+                                <FractionHolders
+                                  holders={Object.entries(
+                                    cask?.data?.fractions?.holders
+                                  )
+                                    .map(([address, balance]: any) => ({
+                                      address: address,
+                                      balance: Number(
+                                        ethers.utils
+                                          .formatEther(balance)
+                                          .toString()
+                                      ),
+                                    }))
+                                    .sort((a, b) => b.balance - a.balance)}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        </div>
                       </div>
-                    )}
-                    <Spacer size="3xl" />
+                    </section>
+                    <Spacer size="xl" />
                     <div>
                       <h2 className="text-white pb-3 text-5xl font-semibold border-b border-cask-chain">
                         LAST OFFERS
@@ -293,7 +339,7 @@ function CaskDetail() {
                           />
                         </div>
                       ) : (
-                        <div className="mt-14">
+                        <div>
                           <h2 className="text-white font-poppins text-3xl">
                             No offers
                           </h2>
@@ -313,7 +359,7 @@ function CaskDetail() {
                           />
                         </div>
                       ) : (
-                        <div className="mt-14">
+                        <div>
                           <h2 className="text-white font-poppins text-3xl">
                             No transactions
                           </h2>

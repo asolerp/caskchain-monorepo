@@ -96,20 +96,6 @@ const BarrelNft: React.FC<NftItemProps> = ({
         >
           <div className="relative h-[330px] w-full overflow-hidden rounded-tl-[30px] rounded-tr-[30px]">
             <div className="overflow-hidden relative w-full flex justify-center items-center">
-              {/* {isMarketPlace && !isProfile && (
-                <div className={`absolute w-full -bottom-4 px-4 pb-6`}>
-                  <Button
-                    width="w-40"
-                    containerStyle="bg-gray-100 rounded-full px-4 py-2 "
-                    labelStyle="text-black text-center text-xs font-poppins font-semibold"
-                    fit={false}
-                  >
-                    {item.price > 0
-                      ? `Buy for ${ethers.utils.formatEther(item.price)} ETH`
-                      : 'Make an offer'}
-                  </Button>
-                </div>
-              )} */}
               {(!isHover || !showAnimation) && (
                 <Image
                   onMouseEnter={() => setIsHover(true)}
@@ -158,52 +144,87 @@ const BarrelNft: React.FC<NftItemProps> = ({
                       {isProfileMeta?.name}
                     </h3>
                   </div>
-                  <div className="flex flex-row flex-wrap space-x-1 justify-start items-center h-16">
-                    <p className="text-cask-chain text-[12px]">
-                      {isProfileMeta.attributes.liquor?.toUpperCase()}
-                    </p>
-                    <p className="text-cask-chain">{' · '}</p>
-                    <p className="text-cask-chain text-[12px]">
-                      {isProfileMeta.attributes.distillery?.toUpperCase()}
-                    </p>
-                    <p className="text-cask-chain">{' · '}</p>
-                    <p className="text-cask-chain text-[12px]">
-                      {isProfileMeta.attributes.location?.toUpperCase()}
-                    </p>
-                    <p className="text-cask-chain">{' · '}</p>
-                    <p className="text-cask-chain text-[12px]">
-                      {isProfileMeta.attributes.cask_wood?.toUpperCase()}
-                    </p>
-                    <p className="text-cask-chain">{' · '}</p>
-                    <p className="text-cask-chain text-[12px]">
-                      {isProfileMeta.attributes.age?.toUpperCase()}
-                      years
-                    </p>
-                    <p className="text-cask-chain">{' · '}</p>
-                    <p className="text-cask-chain text-[12px]">
-                      {isProfileMeta.attributes.cask_size?.toUpperCase()}L
-                    </p>
-                    <p className="text-cask-chain">{' · '}</p>
+                  <div className="flex flex-row flex-wrap  justify-start items-center">
+                    <div className="flex items-center">
+                      <p className="text-cask-chain text-[12px]">
+                        {isProfileMeta.attributes.liquor?.toUpperCase()}
+                      </p>
+                      <p className="text-cask-chain px-1">{' · '}</p>
+                    </div>
+                    <div className="flex items-center">
+                      <p className="text-cask-chain text-[12px]">
+                        {isProfileMeta.attributes.distillery?.toUpperCase()}
+                      </p>
+                      <p className="text-cask-chain px-1">{' · '}</p>
+                    </div>
+                    <div className="flex items-center">
+                      <p className="text-cask-chain text-[12px]">
+                        {isProfileMeta.attributes?.country?.toUpperCase()}
+                      </p>
+                      <p className="text-cask-chain px-1">{' · '}</p>
+                    </div>
+                    <div className="flex items-center">
+                      <p className="text-cask-chain text-[12px]">
+                        {isProfileMeta.attributes.region?.toUpperCase()}
+                      </p>
+                      <p className="text-cask-chain px-1">{' · '}</p>
+                    </div>
+                    <div className="flex items-center">
+                      <p className="text-cask-chain text-[12px]">
+                        {isProfileMeta.attributes.cask_wood?.toUpperCase()}
+                      </p>
+                      <p className="text-cask-chain px-1">{' · '}</p>
+                    </div>
+                    <div className="flex items-center">
+                      <p className="text-cask-chain text-[12px]">
+                        {isProfileMeta.attributes.age?.toUpperCase()}
+                        years
+                      </p>
+                      <p className="text-cask-chain px-1">{' · '}</p>
+                    </div>
+                    <div className="flex items-center">
+                      <p className="text-cask-chain text-[12px]">
+                        {isProfileMeta.attributes.cask_size?.toUpperCase()}L
+                      </p>
+                      <p className="text-cask-chain px-1">{' · '}</p>
+                    </div>
                     <p className="text-cask-chain text-[12px]">
                       {isProfileMeta.attributes.abv?.toUpperCase()}%
                     </p>
                   </div>
                 </div>
                 <div className="border-t border-gray-500 my-5"></div>
-                <div className="px-4">
-                  {item?.price ? (
-                    <div className="flex flex-row items-center justify-between">
-                      <p className="text-gray-400">Barrel price</p>
-                      <p className="text-white">
-                        {ethers.utils.formatEther(item?.price)} MATIC
+                {item?.fraction ? (
+                  <div className="px-4">
+                    {item?.price ? (
+                      <div className="flex flex-row items-center justify-between">
+                        <p className="text-gray-400">Barrel price</p>
+                        <p className="text-white">
+                          {ethers.utils.formatEther(item?.price)} MATIC
+                        </p>
+                      </div>
+                    ) : (
+                      <p className="text-gray-400">
+                        Buy a fraction of this barrel!
                       </p>
-                    </div>
-                  ) : (
-                    <p className="text-gray-400">
-                      Is not in sale. Make an offer!
-                    </p>
-                  )}
-                </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="px-4">
+                    {item?.price ? (
+                      <div className="flex flex-row items-center justify-between">
+                        <p className="text-gray-400">Barrel price</p>
+                        <p className="text-white">
+                          {ethers.utils.formatEther(item?.price)} MATIC
+                        </p>
+                      </div>
+                    ) : (
+                      <p className="text-gray-400">
+                        Is not in sale. Make an offer!
+                      </p>
+                    )}
+                  </div>
+                )}
                 {isProfile && onPressProfileCTA && (
                   <div className="flex flex-col h-full justify-end">
                     <Spacer size="md" />
@@ -227,7 +248,11 @@ const BarrelNft: React.FC<NftItemProps> = ({
                     }
                     fit={false}
                   >
-                    {item?.price ? 'BUY NOW' : 'MAKE OFFER'}
+                    {item?.fraction
+                      ? 'BUY FRACTION'
+                      : item?.price
+                      ? 'BUY NOW'
+                      : 'MAKE OFFER'}
                   </Button>
                 </div>
               </div>

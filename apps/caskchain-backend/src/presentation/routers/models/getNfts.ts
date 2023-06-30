@@ -13,57 +13,38 @@ import { GetOwnedNFTs } from '../../../domain/use-cases/nft/get-owned-nfts'
 import { NftFavoriteCounter } from '../../../domain/use-cases/nft/nft-favorite-counter'
 import GetNftsRouter from '../get-nfts'
 import { GetFavoriteNfts } from '../../../domain/use-cases/nft/get-favorite-nfts'
+import { GetBestNfts } from '../../../domain/use-cases/nft/get-best-nfts'
 
 export const getNfts = (
   clientDB: Promise<MongoClient>,
   web3Client: any,
   web3WsClient: any,
   web3Contracts: any
-) =>
-  GetNftsRouter(
-    new GetNFTs(
-      new NFTRepositoryImpl(
-        new Web3Transaction(web3Client, web3WsClient, web3Contracts),
-        new MongoDBNFTDataSource(clientDB)
-      )
-    ),
-    new GetCaskInfo(
-      new NFTRepositoryImpl(
-        new Web3Transaction(web3Client, web3WsClient, web3Contracts),
-        new MongoDBNFTDataSource(clientDB)
-      )
-    ),
-    new GetFavoriteNfts(
-      new NFTRepositoryImpl(
-        new Web3Transaction(web3Client, web3WsClient, web3Contracts),
-        new MongoDBNFTDataSource(clientDB)
-      )
-    ),
-    new FavoriteNFT(
-      new UserRepositoryImpl(new MongoDBUserDataSource(clientDB))
-    ),
-    new GetNFTFavoritesCounter(
-      new NFTRepositoryImpl(
-        new Web3Transaction(web3Client, web3WsClient, web3Contracts),
-        new MongoDBNFTDataSource(clientDB)
-      )
-    ),
-    new NftFavoriteCounter(
-      new NFTRepositoryImpl(
-        new Web3Transaction(web3Client, web3WsClient, web3Contracts),
-        new MongoDBNFTDataSource(clientDB)
-      )
-    ),
-    new GetOwnedNFTs(
-      new NFTRepositoryImpl(
-        new Web3Transaction(web3Client, web3WsClient, web3Contracts),
-        new MongoDBNFTDataSource(clientDB)
-      )
-    ),
-    new FractionalizeNft(
-      new NFTRepositoryImpl(
-        new Web3Transaction(web3Client, web3WsClient, web3Contracts),
-        new MongoDBNFTDataSource(clientDB)
-      )
-    )
+) => {
+  const web3Transaction = new Web3Transaction(
+    web3Client,
+    web3WsClient,
+    web3Contracts
   )
+  const mongoDBNFTDataSource = new MongoDBNFTDataSource(clientDB)
+  const nftRepositoryImpl = new NFTRepositoryImpl(
+    web3Transaction,
+    mongoDBNFTDataSource
+  )
+
+  const userRepositoryImpl = new UserRepositoryImpl(
+    new MongoDBUserDataSource(clientDB)
+  )
+
+  return GetNftsRouter(
+    new GetNFTs(nftRepositoryImpl),
+    new GetCaskInfo(nftRepositoryImpl),
+    new GetFavoriteNfts(nftRepositoryImpl),
+    new FavoriteNFT(userRepositoryImpl),
+    new GetNFTFavoritesCounter(nftRepositoryImpl),
+    new GetBestNfts(nftRepositoryImpl),
+    new NftFavoriteCounter(nftRepositoryImpl),
+    new GetOwnedNFTs(nftRepositoryImpl),
+    new FractionalizeNft(nftRepositoryImpl)
+  )
+}

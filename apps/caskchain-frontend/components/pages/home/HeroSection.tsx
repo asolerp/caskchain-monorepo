@@ -16,7 +16,7 @@ const HeroSection = () => {
     if (mainAnimationFinished) {
       controls.start('visible')
     }
-  }, [mainAnimationFinished])
+  }, [mainAnimationFinished, controls])
 
   const titleVariants = {
     visible: { x: 0, opacity: 1 },
@@ -40,8 +40,8 @@ const HeroSection = () => {
               transition={{ duration: 1 }}
               className="font-rale lg:text-[95px] leading-[110px] font-semibold text-white"
             >
-              <span className="text-cask-chain">NFT Cask</span> Marketplace for
-              brandy connoisseurs
+              The first Cask and
+              <span className="text-cask-chain"> NFT</span> Marketplace
             </motion.h1>
             <Spacer size="lg" />
             <motion.h4
@@ -51,11 +51,10 @@ const HeroSection = () => {
               transition={{ duration: 1 }}
               className="text-neutral font-light leading-9 text-2xl font-poppins w-3/5"
             >
-              Secure, blockchain-based marketplace that brings together the best
-              casks from around the world, making it easier tha ever for you to{' '}
-              <span className="text-cask-chain">
-                own a piece of liquid story
-              </span>
+              It doesn’t matter if you are a spirits lover, a financial
+              investor. CaskChain combines both pleasure and profits by being
+              able to purchase real casks kept in real cellars that are
+              digitally connected to an NFT.
             </motion.h4>
           </div>
           <div className="flex flex-col w-full items-center lg:hidden">

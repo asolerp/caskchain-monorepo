@@ -2,6 +2,7 @@ import { Menu, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import Image from 'next/image'
 import Spacer from '@ui/common/Spacer'
+import { upperCaseFirstLetter } from 'caskchain-lib'
 
 type FilterMarketplaceProps = {
   filter: string
@@ -86,7 +87,7 @@ const FilterMarketplace: React.FC<FilterMarketplaceProps> = ({
                             : 'text-gray-300'
                         } group flex w-full items-center rounded-md px-2 py-2 text-md font-poppins font-medium`}
                       >
-                        {item} {sufix}
+                        {upperCaseFirstLetter(item)} {sufix}
                       </button>
                     )}
                   </Menu.Item>

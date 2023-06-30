@@ -1,3 +1,4 @@
+import { normalizeString } from 'caskchain-lib'
 import { useCallback, useState } from 'react'
 
 function removeElement(array: any, element: any) {
@@ -22,14 +23,14 @@ const useMarketPlaceFilters = () => {
 
       if (filter) {
         if (filter.value.includes(value)) {
-          return removeFilter(filterType, value)
+          return removeFilter(filterType, normalizeString(value))
         }
         return setSelectedFilters((prev: any) =>
           prev.map((filter: any) => {
             if (filter.type === filterType) {
               return {
                 type: filter.type,
-                value: [...filter.value, value],
+                value: [...filter.value, normalizeString(value)],
               }
             }
             return filter
@@ -38,7 +39,7 @@ const useMarketPlaceFilters = () => {
       }
       setSelectedFilters((prev: any) => [
         ...prev,
-        { type: filterType, value: [value] },
+        { type: filterType, value: [normalizeString(value)] },
       ])
     },
     [selectedFilters]
@@ -61,7 +62,7 @@ const useMarketPlaceFilters = () => {
           if (filter.type === filterType) {
             return {
               type: filter.type,
-              value: removeElement(filter.value, value),
+              value: removeElement(filter.value, normalizeString(value)),
             }
           }
           return filter

@@ -187,7 +187,8 @@ export const hookFactory: OwnedNftsHookFactory =
 
         const txList = await nftVendor?.listItem(
           tokenId,
-          ethers.utils.parseUnits(price.toString(), 'ether')
+          ethers.utils.parseUnits(price.toString(), 'ether'),
+          true
         )
 
         const responseList: any = await txList!.wait()

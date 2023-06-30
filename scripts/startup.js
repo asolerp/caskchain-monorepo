@@ -253,66 +253,6 @@ pm2.connect(false, async function (err) {
           pm2.disconnect();
           spinner.stop();
         }, 3000);
-
-        // spinner.start("Starting API server");
-
-        // await runProcess({
-        //   name: `api`,
-        //   cwd: "./api",
-        //   script: "npm",
-        //   args: "run dev:serve",
-        //   watch: false,
-        //   wait_ready: true,
-        // });
-
-        // spinner.succeed(chalk.greenBright("API server started"));
-
-        // spinner.info(
-        //   `CaskChain API is running at: ${chalk.yellow("http://localhost:4000")}`
-        // );
-        // spinner.info(
-        //   `View log output: ${chalk.cyanBright(`npx pm2 logs api`)}${"\n"}`
-        // );
-
-        // spinner.start("Starting storefront web app");
-
-        // await runProcess({
-        //   name: `web`,
-        //   cwd: "./web",
-        //   script: "npm",
-        //   args: "run start:dev",
-        //   watch: false,
-        //   wait_ready: true,
-        //   autorestart: false,
-        // });
-
-        // spinner.succeed(chalk.greenBright("Storefront web app started"));
-
-        // spinner.info(
-        //   `ChaskChain Web App is running at: ${chalk.yellow(
-        //     "http://localhost:3000"
-        //   )}`
-        // );
-        // spinner.info(
-        //   `View log output: ${chalk.cyanBright(`npx pm2 logs web`)}${"\n"}`
-        // );
-
-        // spinner.start("Runing init Truffle Script");
-
-        // await runProcess({
-        //   name: `truffle-script`,
-        //   cwd: "./ethereum",
-        //   script: "truffle",
-        //   args:
-        //     environment.selected === "local"
-        //       ? "exec scripts/truffle-init.js"
-        //       : "exec scripts/truffle-init.js --network mumbai",
-        //   watch: false,
-        //   wait_ready: true,
-        //   autorestart: false,
-        // });
-
-        // spinner.succeed(chalk.greenBright("Truffle initializated"));
       }
     }, checkTime);
   } else {

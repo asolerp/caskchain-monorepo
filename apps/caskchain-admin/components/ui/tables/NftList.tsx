@@ -15,14 +15,20 @@ const NftList = ({
   onClickPage: (page: string) => void
   onClickBarrel: (barrelId: string) => void
 }) => {
-  const startIndex = (barrels?.paging?.currentPage - 1) * pageSize
+  const currentPage = barrels?.currentPage || 0
+  const totalCount = barrels?.totalItems || 0
+
+  const startIndex = currentPage > 0 ? (currentPage - 1) * pageSize : 0
   const endIndex =
-    startIndex + pageSize > barrels?.paging?.totalCount
-      ? barrels?.paging?.totalCount
-      : startIndex + pageSize
+    totalCount > 0
+      ? startIndex + pageSize > totalCount
+        ? totalCount
+        : startIndex + pageSize
+      : 0
 
   const getAttribute = (barrel: any, traitType: Trait) => {
-    return barrel.attributes.find((attr: any) => attr.trait_type === traitType)
+    const attr = barrel.attributes?.[traitType]
+    return attr
   }
 
   const getClassByIndex = (i: number) =>
@@ -88,18 +94,13 @@ const NftList = ({
                     : addressSimplifier(barrel.owner.address)}
                 </td>
                 <td className={`px-6 py-4 ${getClassByIndex(i)}`}>
-                  {getAttribute(barrel, 'liquor')
-                    ? getAttribute(barrel, 'liquor')?.value
-                    : ''}
+                  {getAttribute(barrel, 'liquor')}
                 </td>
                 <td className={`px-6 py-4 ${getClassByIndex(i)}`}>
                   {barrel.name}
                 </td>
                 <td className={`px-6 py-4 ${getClassByIndex(i)}`}>
-                  {' '}
-                  {getAttribute(barrel, 'liquor')
-                    ? getAttribute(barrel, 'age')?.value
-                    : ''}
+                  {getAttribute(barrel, 'age')}
                 </td>
                 <td className={`px-6 py-4 ${getClassByIndex(i)}`}>
                   {barrel.price &&

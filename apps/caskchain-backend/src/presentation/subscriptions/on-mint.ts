@@ -14,6 +14,7 @@ export default function OnMint(createNFTUseCase: CreateNFTUseCase) {
       pinata: nft.tokenURI,
       description: meta.description,
       image: meta.image,
+      active: false,
       owner: {
         address: nft.owner,
       },

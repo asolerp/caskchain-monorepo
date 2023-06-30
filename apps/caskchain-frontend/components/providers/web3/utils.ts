@@ -107,7 +107,7 @@ export const loadContractByAddress = async (
     return Promise.reject('Network ID is not defined!')
   }
 
-  const res = await await import(`contracts/build/contracts/${name}.json`)
+  const res = await import(`contracts/build/contracts/${name}.json`)
   const Artifact = await res.json()
 
   if (address) {

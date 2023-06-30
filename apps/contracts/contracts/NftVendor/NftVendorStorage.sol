@@ -11,9 +11,8 @@ contract NftVendorStorage is Ownable {
     uint256 tokenId;
     uint256 price;
     address seller;
+    bool active;
   }
-
-  Listing internal _listing;
 
   uint256[] internal _allListedNfts;
   address[] internal _allERC20Tokens;
@@ -119,9 +118,14 @@ contract NftVendorStorage is Ownable {
   function setListing(
     uint256 _tokenId,
     uint256 _price,
-    address _seller
+    address _seller,
+    bool _activeSell
   ) public onlyAllowed {
-    s_listings[_tokenId] = Listing(_tokenId, _price, _seller);
+    s_listings[_tokenId] = Listing(_tokenId, _price, _seller, _activeSell);
+  }
+
+  function updateSellState(uint256 _tokenId, bool state) public onlyAllowed {
+    s_listings[_tokenId].active = state;
   }
 
   function setProcceds(address _address, uint256 _amount) public onlyAllowed {
@@ -168,19 +172,12 @@ contract NftVendorStorage is Ownable {
     _listedItems.decrement();
   }
 
-  function deletePriceByTokenId(
-    address _tokenAddress,
-    uint256 _tokenId
-  ) public onlyAllowed {
-    delete s_priceTokens[_tokenAddress][_tokenId];
-  }
-
   function deleteListing(uint256 _tokenId) public onlyAllowed {
     delete s_listings[_tokenId];
   }
 
   function getCurrentListedItemsCounter()
-    public
+    internal
     view
     onlyAllowed
     returns (uint256)

@@ -175,50 +175,57 @@ const NFTCaskWorld: NextPage = () => {
               ))}
             </div>
           </section>
-          <Spacer size="xl" />
+          <Spacer size="lg" />
           <section>
-            <div className="flex flex-row items-center">
-              <h2 className="font-poppins text-cask-chain mr-4">
-                Active Filters:
-              </h2>
-              {nfts.selectedFilters.map((filter: any) => (
-                <div key={filter.type} className="flex flex-row">
-                  {filter.value && (
-                    <div className="flex flex-row">
-                      {filter.value.map((item: any) => (
-                        <Chip
-                          key={item}
-                          label={
-                            upperCaseFirstLetter(item) +
-                            `${
-                              sufixesByType?.[filter.type]
-                                ? sufixesByType?.[filter.type]
-                                : ''
-                            }`
-                          }
-                          color="caskChain"
-                          onClick={() =>
-                            nfts.removeFilter(filter.type, item, () => {
-                              if (
-                                item === LiquorsTypes.TEQUILA ||
-                                item === LiquorsTypes.WHISKEY ||
-                                item === LiquorsTypes.RUM ||
-                                item === LiquorsTypes.BRANDY
-                              ) {
-                                nfts.handleActiveLiquor(item)
-                              }
-                            })
-                          }
-                        />
-                      ))}
-                    </div>
+            {nfts.selectedFilters.length > 0 && (
+              <>
+                <div className="flex flex-row items-center">
+                  {nfts.selectedFilters.length > 0 && (
+                    <h2 className="font-poppins text-cask-chain mr-4">
+                      Active Filters:
+                    </h2>
                   )}
+                  {nfts.selectedFilters.map((filter: any) => (
+                    <div key={filter.type} className="flex flex-row">
+                      {filter.value && (
+                        <div className="flex flex-row">
+                          {filter.value.map((item: any) => (
+                            <Chip
+                              key={item}
+                              label={
+                                upperCaseFirstLetter(item) +
+                                `${
+                                  sufixesByType?.[filter.type]
+                                    ? sufixesByType?.[filter.type]
+                                    : ''
+                                }`
+                              }
+                              color="caskChain"
+                              onClick={() =>
+                                nfts.removeFilter(filter.type, item, () => {
+                                  if (
+                                    item === LiquorsTypes.TEQUILA ||
+                                    item === LiquorsTypes.WHISKEY ||
+                                    item === LiquorsTypes.RUM ||
+                                    item === LiquorsTypes.BRANDY
+                                  ) {
+                                    nfts.handleActiveLiquor(item)
+                                  }
+                                })
+                              }
+                            />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  <Spacer size="xl" />
                 </div>
-              ))}
-              <Spacer size="xl" />
-            </div>
+                <Spacer size="lg" />
+              </>
+            )}
           </section>
-          <Spacer size="xl" />
+
           <section>
             <div className="grid grid-cols-4 gap-x-5 gap-y-4 flex-wrap mx-auto lg:max-w-none">
               <>

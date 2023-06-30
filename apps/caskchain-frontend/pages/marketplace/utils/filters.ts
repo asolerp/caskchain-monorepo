@@ -7,7 +7,7 @@ export const filters = [
   // { icon: 'agave', label: 'Agave', size: 'md' },
   // { icon: 'fruit', label: 'Crop/Fruit', size: 'md' },
   // { icon: 'grape', label: 'Grape Variety', size: 'md' },
-  { icon: 'region', label: 'Region', size: 'md', name: 'location' },
+  { icon: 'region', label: 'Region', size: 'md', name: 'region' },
   { icon: 'rarity', label: 'Rarity', size: 'sm', name: 'rarity' },
   // { icon: 'sugar', label: 'Sugar Cane', size: 'md' },
   // { icon: 'grain', label: 'Grain', size: 'xs' },

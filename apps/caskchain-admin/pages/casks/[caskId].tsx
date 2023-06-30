@@ -9,6 +9,8 @@ import { useBalance } from 'wagmi'
 import ClientOnly from 'components/pages/ClientOnly'
 import { auth } from 'utils/auth'
 import { addressSimplifier, ipfsImageParser } from 'caskchain-lib'
+import { Switch } from '@headlessui/react'
+import { useEffect, useState } from 'react'
 
 function Cask() {
   const route = useRouter()
@@ -18,8 +20,24 @@ function Cask() {
     address: account?.data,
   })
 
+  const [isInSale, setIsInSale] = useState(false)
+
+  useEffect(() => {
+    if (cask?.data) {
+      setIsInSale(cask?.data?.active)
+    }
+  }, [cask?.data])
+
   const mainImage =
     cask?.data?.meta?.image && ipfsImageParser(cask?.data?.meta?.image)
+
+  if (cask?.isLoading || cask?.isValidating) {
+    return (
+      <BaseLayout background="bg-gray-200">
+        <></>
+      </BaseLayout>
+    )
+  }
 
   return (
     <ClientOnly>
@@ -55,14 +73,33 @@ function Cask() {
               </p>
             </div>
           </div>
-          {cask?.data?.creator?.toLowerCase() ===
-            cask?.data?.owner?.address.toLowerCase() && (
+          {true && (
             <>
               <Spacer size="xl" />
               <div>
-                <h1 className="font-semibold text-4xl font-poppins text-black-light">
-                  Sale options
-                </h1>
+                <div className="flex flex-row items-center w-100">
+                  <h1 className="font-semibold text-4xl font-poppins text-black-light mr-20">
+                    Sale options
+                  </h1>
+                  <span className="mr-2">In Sale</span>
+                  <Switch
+                    checked={isInSale}
+                    onChange={() => {
+                      setIsInSale(!isInSale)
+                      cask?.updateNftSaleState(!isInSale)
+                    }}
+                    className={`${isInSale ? 'bg-cask-chain' : 'bg-gray-300'}
+                      relative inline-flex flex-shrink-0 h-[28px] w-[64px] border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={`${
+                        isInSale ? 'translate-x-9' : 'translate-x-0'
+                      }
+                      pointer-events-none inline-block h-[24px] w-[24px] rounded-full bg-white shadow-lg transform ring-0 transition ease-in-out duration-200`}
+                    />
+                  </Switch>
+                </div>
                 <Spacer size="md" />
                 <div className="flex flex-col">
                   <div className="flex flex-row space-x-5">
@@ -158,15 +195,122 @@ function Cask() {
                   key={attribute.trait_type}
                   className="flex flex-col bg-cask-chain rounded-xl p-4 shadow"
                 >
-                  <dt className="text-xl font-medium text-gray-400">
+                  <dt className="text-md font-medium text-gray-400">
                     {attribute.trait_type.toUpperCase()}
                   </dt>
                   <Spacer size="xs" />
-                  <dd className=" text-2xl font-extrabold text-black">
+                  <dd className=" text-lg font-extrabold text-black">
                     {attribute.value}
                   </dd>
                 </div>
               ))}
+            </div>
+          </div>
+          <Spacer size="xl" />
+          <div>
+            <h1 className="font-semibold text-4xl font-poppins text-black-light">
+              Fractions
+            </h1>
+            <Spacer size="md" />
+            <div className="grid grid-cols-4 gap-4">
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-xl font-medium text-gray-700"
+                >
+                  Fraction name
+                </label>
+                <div className="mt-1 flex rounded-md shadow-sm">
+                  <input
+                    value={cask.formState.tokenName}
+                    onChange={cask.handleFormFractionsChange}
+                    type="text"
+                    name="tokenName"
+                    id="name"
+                    className="w-full bg-transparent mt-2 text-xl text-black focus:ring-0 focus:ring-indigo-500 focus:border-indigo-500 rounded-lg"
+                    placeholder="My Nice NFT"
+                  />
+                </div>
+              </div>
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-xl font-medium text-gray-700"
+                >
+                  Fraction symbol
+                </label>
+                <div className="mt-1 flex rounded-md shadow-sm">
+                  <input
+                    value={cask.formState.tokenSymbol}
+                    onChange={cask.handleFormFractionsChange}
+                    type="text"
+                    name="tokenSymbol"
+                    id="name"
+                    className="w-full bg-transparent mt-2 text-xl text-black focus:ring-0 focus:ring-indigo-500 focus:border-indigo-500 rounded-lg"
+                    placeholder="My Nice NFT"
+                  />
+                </div>
+              </div>
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-xl font-medium text-gray-700"
+                >
+                  Supply
+                </label>
+                <div className="mt-1 flex rounded-md shadow-sm">
+                  <input
+                    value={cask.formState.tokenSupply}
+                    onChange={cask.handleFormFractionsChange}
+                    type="number"
+                    name="tokenSupply"
+                    id="name"
+                    className="w-full bg-transparent mt-2 text-xl text-black focus:ring-0 focus:ring-indigo-500 focus:border-indigo-500 rounded-lg"
+                    placeholder="My Nice NFT"
+                  />
+                </div>
+              </div>
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-xl font-medium text-gray-700"
+                >
+                  Fee
+                </label>
+                <div className="mt-1 flex rounded-md shadow-sm">
+                  <input
+                    value={cask.formState.tokenFee}
+                    onChange={cask.handleFormFractionsChange}
+                    type="number"
+                    name="tokenFee"
+                    id="name"
+                    className="w-full bg-transparent mt-2 text-xl text-black focus:ring-0 focus:ring-indigo-500 focus:border-indigo-500 rounded-lg"
+                    placeholder="My Nice NFT"
+                  />
+                </div>
+              </div>
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-xl font-medium text-gray-700"
+                >
+                  Listing price
+                </label>
+                <div className="mt-1 flex rounded-md shadow-sm">
+                  <input
+                    value={cask.formState.tokenListingPrice}
+                    onChange={cask.handleFormFractionsChange}
+                    type="number"
+                    name="tokenListingPrice"
+                    id="name"
+                    className="w-full bg-transparent mt-2 text-xl text-black focus:ring-0 focus:ring-indigo-500 focus:border-indigo-500 rounded-lg"
+                    placeholder="My Nice NFT"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="grid grid-cols-4 gap-4 mt-6">
+              <Button onClick={cask.createFraction}>Create fractions</Button>
             </div>
           </div>
         </div>

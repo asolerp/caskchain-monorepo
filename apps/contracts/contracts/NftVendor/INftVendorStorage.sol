@@ -6,6 +6,7 @@ interface INftVendorStorage {
     uint256 tokenId;
     uint256 price;
     address seller;
+    bool active;
   }
 
   function addAllowedAddress(address _address) external;
@@ -46,8 +47,11 @@ interface INftVendorStorage {
   function setListing(
     uint256 _tokenId,
     uint256 _price,
-    address _seller
+    address _seller,
+    bool _activeSell
   ) external;
+
+  function updateSellState(uint256 _tokenId, bool state) external;
 
   function setProcceds(address _address, uint256 _amount) external;
 
@@ -72,11 +76,6 @@ interface INftVendorStorage {
   function decrementListedItems() external;
 
   function deleteListing(uint256 _tokenId) external;
-
-  function deletePriceByTokenId(
-    address _tokenAddress,
-    uint256 _tokenId
-  ) external;
 
   function getCurrentListedItemsCounter() external view returns (uint256);
 }

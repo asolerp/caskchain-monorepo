@@ -4,7 +4,7 @@ import { CryptoHookFactory } from '@_types/hooks'
 import { Nft, NftsPaginated } from '@_types/nft'
 import { useAuth } from '@hooks/auth'
 import useMarketPlaceFilters from '@hooks/common/useMarketPlaceFilters'
-
+import { normalizeString } from 'caskchain-lib'
 import { useGlobal } from '@providers/global'
 import axios, { AxiosResponse } from 'axios'
 import { LoadingContext } from 'components/contexts/LoadingContext'
@@ -131,7 +131,9 @@ export const hookFactory: AllNftsHookFactory =
 
         const groupedFilters = groupByAndSum(selectedFilters)
 
-        setFilterList(Object.keys(groupedFilters))
+        setFilterList(
+          Object.keys(groupedFilters).map((key) => normalizeString(key))
+        )
       }
     }
 

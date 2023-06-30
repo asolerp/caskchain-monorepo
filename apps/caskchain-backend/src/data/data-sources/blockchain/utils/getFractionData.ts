@@ -1,12 +1,19 @@
 import { Fraction } from '../Models/Fraction'
 import CCNftContract from 'contracts/build/contracts/CCNft.json'
 
-type getFractionDataProps = {
-  tokenId: any
+interface GetFractionDataProps {
+  tokenId: string
   NftFractionsFactory: any
   client: any
   NftFractionToken: any
   NftFractionsVendor: any
+}
+
+interface FractionDataResult {
+  vaultExists: boolean
+  fractionData: any | null
+  fractionTokenAddress: string | null
+  unitPrice: number | null
 }
 
 const getFractionData = async ({
@@ -15,48 +22,50 @@ const getFractionData = async ({
   client,
   NftFractionToken,
   NftFractionsVendor,
-}: getFractionDataProps) => {
-  let fractionData = null
-  let fractionTokenContract = null
-  let fractionTokenAddress = null
-  let unitPrice = null
-
+}: GetFractionDataProps): Promise<FractionDataResult> => {
   // @ts-ignore
-  const CCNftAddress = CCNftContract.networks[process.env.NETWORK_ID]
+  const CCNftAddress = CCNftContract.networks[process.env.NETWORK_ID!]
     .address as string
 
   const vaultExists = await NftFractionsFactory.methods
-    .vaultExists(CCNftAddress, tokenId)
+    .checkIfVaultExists(CCNftAddress, tokenId)
     .call()
 
-  if (vaultExists) {
-    fractionTokenAddress = await NftFractionsFactory.methods
-      .getVaultContractByTokenId(tokenId)
-      .call()
-
-    const contract = new client.eth.Contract(
-      NftFractionToken.abi as any,
-      fractionTokenAddress
-    )
-    fractionTokenContract = new Fraction(
-      contract,
-      fractionTokenAddress,
-      tokenId
-    )
-
-    const tokenInfoPrice = await NftFractionsVendor.methods
-      ?.tokens(fractionTokenAddress)
-      .call()
-
-    unitPrice = tokenInfoPrice?.totalSupply / tokenInfoPrice?.listingPrice
-
-    fractionData = await fractionTokenContract?.getFractionData()
+  if (!vaultExists) {
+    return {
+      vaultExists: false,
+      fractionData: null,
+      fractionTokenAddress: null,
+      unitPrice: null,
+    }
   }
 
+  const fractionTokenAddress = await NftFractionsFactory.methods
+    .getVaultContractByTokenId(tokenId)
+    .call()
+
+  const contract = new client.eth.Contract(
+    NftFractionToken.abi,
+    fractionTokenAddress.vaultAddress
+  )
+
+  const fractionTokenContract = new Fraction(
+    contract,
+    fractionTokenAddress.vaultAddress,
+    tokenId
+  )
+
+  const tokenInfoPrice = await NftFractionsVendor.methods
+    .getTokenInfo(fractionTokenAddress.vaultAddress)
+    .call()
+
+  const unitPrice = tokenInfoPrice.totalSupply / tokenInfoPrice.listingPrice
+  const fractionData = await fractionTokenContract.getFractionData()
+
   return {
-    vaultExists,
+    vaultExists: true,
     fractionData,
-    fractionTokenAddress,
+    fractionTokenAddress: fractionTokenAddress.vaultAddress,
     unitPrice,
   }
 }
