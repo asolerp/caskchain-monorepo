@@ -107,7 +107,6 @@ export const hookFactory: CaskNftHookFactory =
     })
 
     const _nftVendor = nftVendor
-    const _nftFractionFactory = nftFractionsFactory
 
     const hasFractions = data?.fractions?.total
 
@@ -184,6 +183,34 @@ export const hookFactory: CaskNftHookFactory =
 
         if (responseSaleStateUpdate.status !== 1)
           throw new Error('Listing failed')
+
+        await refetchNft()
+
+        toast.update(id, {
+          render: 'Sale state updated',
+          type: 'success',
+          isLoading: false,
+          closeOnClick: true,
+          autoClose: 2000,
+        })
+      } catch (e: any) {
+        toast.update(id, {
+          render: 'Something went wrong',
+          type: 'error',
+          isLoading: false,
+          closeOnClick: true,
+          autoClose: 2000,
+        })
+        console.log(e)
+      }
+    }
+
+    const updateNftBestBarel = async (state: boolean) => {
+      const id = toast.loading('Updating barrel state...')
+      try {
+        await axios.post(`/api/casks/${caskId}/best-barrel`, {
+          bestBarrel: state,
+        })
 
         await refetchNft()
 
@@ -334,6 +361,7 @@ export const hookFactory: CaskNftHookFactory =
       updateERC20Price,
       setERC20ListPrice,
       updateNftSaleState,
+      updateNftBestBarel,
       handleFormFractionsChange: handleChange,
       totalFavorites: totalFavoritesData?.totalFavorites,
     }

@@ -102,22 +102,6 @@ const Web3Provider: React.FC<Props> = ({ children }) => {
         const signedNftFractionToken = async (address: string) =>
           await nftFactionToken(address)
 
-        // const signedNftFractionToken = async (tokenAddress: string) => {
-        //   console.log('HOLA FROM SIGNED NFT FRACTION TOKEN')
-        //   const res = await fetch(`/contracts/NftFractionToken.json`)
-        //   const Contract = await res.json()
-
-        //   const TokenContract = new ethers.Contract(
-        //     tokenAddress,
-        //     Contract.abi,
-        //     provider
-        //   )
-
-        //   const _signedTokenContract = TokenContract.connect(signer)
-        //   console.log(_signedTokenContract, 'signedTokenContract')
-        //   return _signedTokenContract
-        // }
-
         setGlobalListeners(window.ethereum, logout)
         setWeb3Api(
           createWeb3State({

@@ -71,34 +71,6 @@ export const hookFactory: OwnedNftsHookFactory =
       }
     )
 
-    // const {
-    //   data: dataBalances,
-    //   isLoading: isLoadingBalances,
-    //   isValidating: isValidatingBalances,
-    // } = useSWR(nftFractionToken ? '/api/user/balances' : null, async () => {
-    //   const balances: any = await axiosClient.get('/api/user/balances')
-
-    //   const balancesWithRedem = await Promise.all(
-    //     balances.data.map(async (tokenAddress: any) => {
-    //       try {
-    //         const tokenContract = await nftFractionToken!(tokenAddress.address)
-    //         const canRedem = await tokenContract.canRedeem()
-
-    //         return {
-    //           ...tokenAddress,
-    //           canRedem,
-    //         }
-    //       } catch (e: any) {
-    //         console.log(e)
-    //       }
-    //     })
-    //   )
-
-    //   return balancesWithRedem.filter(
-    //     (tokenAddress: any) => tokenAddress.balance > 0
-    //   )
-    // })
-
     useEffect(() => {
       setIsLoading(isLoadingMe || isValidatingMe)
     }, [isLoadingMe, isValidatingMe])
@@ -212,23 +184,6 @@ export const hookFactory: OwnedNftsHookFactory =
         })
         console.error(e.message)
       }
-      // try {
-      //   const result = await _nftVendor?.listItem(
-      //     tokenId,
-      //     ethers.utils.parseUnits(listPrice.toString(), 'ether')
-      //   )
-      //   await toast.promise(result!.wait(), {
-      //     pending: 'Processing transaction',
-      //     success: 'The NFT was listed',
-      //     error: 'Processing error',
-      //   })
-      //   const txStatus = await result?.wait()
-      //   if (txStatus?.status === 1) {
-      //     setListPrice('')
-      //   }
-      // } catch (e: any) {
-      //   console.log(e)
-      // }
     }
 
     const handleActiveNft = (nft: Nft) => {

@@ -1,9 +1,9 @@
 export const filters = [
+  { icon: 'spirit', label: 'Spirit', size: 'md', name: 'liquor' },
   { icon: 'country', label: 'Country', size: 'md', name: 'country' },
   // { icon: 'ageing', label: 'Ageing Method', size: 'md' },
   { icon: 'year', label: 'Year', size: 'sm', name: 'age', sufix: ' years' },
   // { icon: 'solera', label: '% Solera Mother', size: 'md' },
-  // { icon: 'spirit', label: 'Spirit', size: 'md' },
   // { icon: 'agave', label: 'Agave', size: 'md' },
   // { icon: 'fruit', label: 'Crop/Fruit', size: 'md' },
   // { icon: 'grape', label: 'Grape Variety', size: 'md' },

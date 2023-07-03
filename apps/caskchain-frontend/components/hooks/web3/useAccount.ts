@@ -14,6 +14,17 @@ import { useCallback, useEffect, useState } from 'react'
 import { loadContractByABI } from '@providers/web3/utils'
 import { ethers } from 'ethers'
 
+import { Magic } from 'magic-sdk'
+
+const customNodeOptions = {
+  rpcUrl: 'http://127.0.0.1:8545', // Custom RPC URL
+  chainId: 4447, // Custom chain id
+}
+
+const magic = new Magic('pk_live_D736918766116B24', {
+  network: customNodeOptions,
+})
+
 type AccountHookFactory = CryptoHookFactory<string, any>
 
 export type UseAccountHook = ReturnType<AccountHookFactory>
@@ -109,21 +120,22 @@ export const hookFactory: AccountHookFactory = () => () => {
   }
 
   const connect = async () => {
-    if (!isConnected) {
-      return open()
-    }
-    if (!user?.email) {
-      return dispatch({
-        type: GlobalTypes.SET_USER_INFO_MODAL,
-        payload: { status: true },
-      })
-    }
-    if (!token) {
-      return dispatch({
-        type: GlobalTypes.SET_SIGN_IN_MODAL,
-        payload: { status: true },
-      })
-    }
+    await magic.auth.loginWithEmailOTP({ email: 'albertosolpal@gmail.com' })
+    // if (!isConnected) {
+    //   return open()
+    // }
+    // if (!user?.email) {
+    //   return dispatch({
+    //     type: GlobalTypes.SET_USER_INFO_MODAL,
+    //     payload: { status: true },
+    //   })
+    // }
+    // if (!token) {
+    //   return dispatch({
+    //     type: GlobalTypes.SET_SIGN_IN_MODAL,
+    //     payload: { status: true },
+    //   })
+    // }
   }
 
   const logout = async () => {

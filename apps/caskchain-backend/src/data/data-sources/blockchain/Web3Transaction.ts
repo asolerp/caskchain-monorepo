@@ -13,6 +13,7 @@ import { MongoDBUserDataSource } from '../mongodb/MongoDBUserDataSource'
 import { Web3Repository } from './Web3Repository'
 import getFractionData from './utils/getFractionData'
 import logger from '../../../presentation/utils/logger'
+import { MongoDBNFTDataSource } from '../mongodb/MongoDBNFTDataSource'
 
 const NETWORK_ID = 4447
 
@@ -52,6 +53,7 @@ export class Web3Transaction extends Web3Repository {
       )
 
       const mongoUserDataSource = new MongoDBUserDataSource(clientDB)
+      const mongoNftDataSource = new MongoDBNFTDataSource(clientDB)
 
       const CCNft = this.contracts()['CCNft']
       const NftVendor = this.contracts()['NftVendor']
@@ -83,6 +85,7 @@ export class Web3Transaction extends Web3Repository {
         .call()
 
       const ownerName = await mongoUserDataSource.search(owner.toLowerCase())
+      const nftData = await mongoNftDataSource.search(caskId)
 
       const ipfsHash = tokenURI.split('/ipfs/')[1]
 
@@ -115,7 +118,7 @@ export class Web3Transaction extends Web3Repository {
         tokenId: nft.tokenId,
         creator: nft.creator,
         isCaskChainOwner,
-        active: listedPrice.activeSell,
+        active: listedPrice.active,
         owner: {
           address: owner,
           nickname: ownerName?.nickname || '',
@@ -131,6 +134,7 @@ export class Web3Transaction extends Web3Repository {
         erc20Prices: {
           USDT: usdtPrice?.toString(),
         },
+        bestBarrel: nftData?.bestBarrel || false,
         offer:
           offer?.nftId != 0
             ? {

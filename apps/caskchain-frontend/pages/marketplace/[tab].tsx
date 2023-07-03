@@ -79,7 +79,7 @@ const NFTCaskWorld: NextPage = () => {
     <BaseLayout background="bg-black-light" bottomBanner={<RandomBarrels />}>
       <Header></Header>
       <Spacer size="xl" />
-      <div className="sm:px-6 w-3/4 px-4">
+      {/* <div className="sm:px-6 w-3/4 px-4">
         <section className="flex flex-row justify-center space-x-5 ">
           <LiquorFilter
             liquor={LiquorsTypes.BRANDY}
@@ -102,7 +102,7 @@ const NFTCaskWorld: NextPage = () => {
             onClick={() => nfts.handleActiveLiquor(LiquorsTypes.WHISKEY)}
           />
         </section>
-      </div>
+      </div> */}
       {loading ? (
         <div className="flex flex-col justify-center items-center w-full h-screen"></div>
       ) : (

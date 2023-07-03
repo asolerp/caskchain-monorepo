@@ -93,7 +93,7 @@ function CaskDetail() {
           cask?.setSuccessModal(false)
         }}
       />
-      <BaseLayout background="bg-gradient-to-r from-[#0F0F0F] via-[#161616] to-[#000000]">
+      <BaseLayout background="bg-black-light">
         {loading ? (
           <div className="w-screen h-screen"></div>
         ) : (

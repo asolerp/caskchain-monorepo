@@ -15,8 +15,8 @@ const NftList = ({
   onClickPage: (page: string) => void
   onClickBarrel: (barrelId: string) => void
 }) => {
-  const currentPage = barrels?.currentPage || 0
-  const totalCount = barrels?.totalItems || 0
+  const currentPage = barrels?.paging?.currentPage || 0
+  const totalCount = barrels?.paging?.totalCount || 0
 
   const startIndex = currentPage > 0 ? (currentPage - 1) * pageSize : 0
   const endIndex =
@@ -122,13 +122,13 @@ const NftList = ({
           </span>{' '}
           of{' '}
           <span className="font-semibold text-gray-900 dark:text-white">
-            {barrels?.totalItems || 0}
+            {barrels?.paging?.totalCount || 0}
           </span>
         </span>
-        {barrels.items && (
+        {barrels.documents && (
           <PaginationBar
-            totalPages={barrels.totalPages}
-            currentPage={barrels.currentPage}
+            totalPages={barrels?.paging?.totalPages}
+            currentPage={currentPage}
             onClickPage={(page: string) => onClickPage(page)}
           />
         )}

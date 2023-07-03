@@ -250,12 +250,37 @@
       "address": "0x6D937104D16EC76752b58E6636cA78FC72aCAB23",
       "txHash": "0x27ea3a19a816d6a354247fc05bf461fec536332519f66ce46b73f9eddf079b69",
       "kind": "uups"
+    },
+    {
+      "address": "0xe0Bb06Fb3F0Fb66Ce282093A0AD0b6643987271c",
+      "txHash": "0x3aa7ff200ec3169c1e66c9daa69905db2f3e6f58f1d65365f81e4ed0921f7812",
+      "kind": "uups"
+    },
+    {
+      "address": "0x25b89F2Cc6f10B8434848Be155439B1aBe24ac01",
+      "txHash": "0x95e25392a2b55705eae578e3ca604ac6bf30e36db0742f1e54edee1008d1bd2f",
+      "kind": "uups"
+    },
+    {
+      "address": "0xe19d589d9ae4a70A920214571d87904bDeAb569d",
+      "txHash": "0x9e245151d6609bffb9c4b2601ee491cf8e3e1402ebf2e42a2ac021b2ab5f121e",
+      "kind": "uups"
+    },
+    {
+      "address": "0x03196c0097E2cbFf9721D849AebD9bd55f7fd1CC",
+      "txHash": "0xed73f1bce89c717e1e0cae147b47c4efc07436c606bf141e5e06f501172dfcca",
+      "kind": "uups"
+    },
+    {
+      "address": "0xAA5BbfaAef125657B1E20EF14A94123bD7f184c8",
+      "txHash": "0xa7e517dd8950032cec04e4df583883bccc2d261f4e4955bfe0ca4210244d68e6",
+      "kind": "uups"
     }
   ],
   "impls": {
     "8da4a904bfb18624f53c3c1a11a7214946dc5c38bb9758a554e8c5b1afb769b7": {
-      "address": "0x2756fED4a0E4F924a0eb471544719BBc9bb9Db54",
-      "txHash": "0x9757fce9b18c58ba9bbcc67ff43d917cf169e015b9a4cb6a55aa2ca0d4c92901",
+      "address": "0xB86CB812287276D798c5cBE9b3D2e39C718B5E9E",
+      "txHash": "0xb7c300cdc23cc014925fedb77e99aa4075a04188df3ce48fbcbd250e8b881a41",
       "layout": {
         "solcVersion": "0.8.17",
         "storage": [
@@ -628,8 +653,8 @@
       }
     },
     "3e301857d5ec7267cf435e2e033ea5907b6f382e7026f42f36acf151e303964c": {
-      "address": "0x6f15097d184C0c0f1Fb9Cf50781c04C97bea6130",
-      "txHash": "0x7d8259edb86d15379214416fc535dfa5a507bfc19e649d535d1e4e275b695b77",
+      "address": "0xc03e1150c7288A76b73C1E13585d98C6a5cDA8a8",
+      "txHash": "0x40f192046808e7c5b9f134a9cdba91fb0c3c57d92e066087a7b28cd397221d46",
       "layout": {
         "solcVersion": "0.8.17",
         "storage": [
@@ -703,7 +728,7 @@
           {
             "contract": "NftOffers",
             "label": "nftVendor",
-            "type": "t_contract(NftVendor)15416",
+            "type": "t_contract(NftVendor)15403",
             "src": "../project:/contracts/NftOffers/NftOffers.sol:33"
           },
           {
@@ -717,7 +742,7 @@
           "t_address": {
             "label": "address"
           },
-          "t_contract(NftVendor)15416": {
+          "t_contract(NftVendor)15403": {
             "label": "contract NftVendor"
           },
           "t_contract(INftOffersStorage)12760": {
@@ -742,8 +767,8 @@
       }
     },
     "7bd06565bb76b14d154c6d9d85624a75a0d4b7f42d18a9a2911b7b8506df56ea": {
-      "address": "0x5B613Df58dB3AE921c8bFFDEB0aB5DE5a4919cEd",
-      "txHash": "0xa0086fc1b449a5f1623aacc93b28eac4462ad9c5d6d6f2bafa285e2b3f560e45",
+      "address": "0x2aD59a37f5Ee4De739Bcf662B8a03505c2f406fb",
+      "txHash": "0x58db55668a4221f1d991ca294fa48440706f49182ad54802cb7f20a9af0afd76",
       "layout": {
         "solcVersion": "0.8.17",
         "storage": [
@@ -841,8 +866,8 @@
       }
     },
     "b9691e73a50001d241823f52db0788d858d9113a37d8b9bef1be4471f1364f79": {
-      "address": "0xB7eEe51EBE50E4C51f880aE5daB002B2295652da",
-      "txHash": "0xafd7be4cceff2078da46a812e73f90a6f52b3cfd043dba1c0a55c669c3168e3d",
+      "address": "0x3BD490a53A47f011F8d48840dA65Aee762708C39",
+      "txHash": "0x9e22675ae38d5a3b86b4b088fea199da4766e66d756e76b2a0ec4e06f8cff874",
       "layout": {
         "solcVersion": "0.8.17",
         "storage": [
@@ -922,8 +947,8 @@
       }
     },
     "2b56a9fa3d34a1401ed36f85b44d4ddd6553d0409fcc9d5802b48624960a40a4": {
-      "address": "0x40896F6c9B73818A49495DC8787C4382e50CBF9c",
-      "txHash": "0xec51a5260a4531ecb6f3b09dd674b6d86fb057e2cf756c2bf8256286cfeb36d1",
+      "address": "0xCF6299603DbAD51E791a83f0FF4c371fe3092A1E",
+      "txHash": "0x8b2a38eec830e85944569aac99b512ae3e0901ada65a0b835667625a7630ef8a",
       "layout": {
         "solcVersion": "0.8.17",
         "storage": [

@@ -52,6 +52,7 @@ export class MongoDBNFTDataSource
       abv: nft.attributes.abv,
       rarity: normalizeString(nft.attributes.rarity),
       flavor: normalizeString(nft.attributes.flavor),
+      liquor,
     }
 
     await mongoStatsDataSource.incrementBarrelsStats(liquor, traitValues)

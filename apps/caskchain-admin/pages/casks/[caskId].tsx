@@ -21,10 +21,12 @@ function Cask() {
   })
 
   const [isInSale, setIsInSale] = useState(false)
+  const [bestBarrel, setBestBarrel] = useState(false)
 
   useEffect(() => {
     if (cask?.data) {
       setIsInSale(cask?.data?.active)
+      setBestBarrel(cask?.data?.bestBarrel)
     }
   }, [cask?.data])
 
@@ -77,30 +79,56 @@ function Cask() {
             <>
               <Spacer size="xl" />
               <div>
-                <div className="flex flex-row items-center w-100">
+                <div className="flex flex-col w-100">
                   <h1 className="font-semibold text-4xl font-poppins text-black-light mr-20">
                     Sale options
                   </h1>
-                  <span className="mr-2">In Sale</span>
-                  <Switch
-                    checked={isInSale}
-                    onChange={() => {
-                      setIsInSale(!isInSale)
-                      cask?.updateNftSaleState(!isInSale)
-                    }}
-                    className={`${isInSale ? 'bg-cask-chain' : 'bg-gray-300'}
+                  <Spacer size="md" />
+                  <div className="flex flex-row items-center">
+                    <span className="mr-2 w-[150px]">Active for sale?</span>
+                    <Switch
+                      checked={isInSale}
+                      onChange={() => {
+                        setIsInSale(!isInSale)
+                        cask?.updateNftSaleState(!isInSale)
+                      }}
+                      className={`${isInSale ? 'bg-cask-chain' : 'bg-gray-300'}
                       relative inline-flex flex-shrink-0 h-[28px] w-[64px] border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
-                  >
-                    <span
-                      aria-hidden="true"
-                      className={`${
-                        isInSale ? 'translate-x-9' : 'translate-x-0'
-                      }
+                    >
+                      <span
+                        aria-hidden="true"
+                        className={`${
+                          isInSale ? 'translate-x-9' : 'translate-x-0'
+                        }
                       pointer-events-none inline-block h-[24px] w-[24px] rounded-full bg-white shadow-lg transform ring-0 transition ease-in-out duration-200`}
-                    />
-                  </Switch>
+                      />
+                    </Switch>
+                  </div>
+                  <Spacer size="sm" />
+                  <div className="flex flex-row items-center">
+                    <span className="mr-2 w-[150px]">Is in best barrles?</span>
+                    <Switch
+                      checked={bestBarrel}
+                      onChange={() => {
+                        setBestBarrel(!bestBarrel)
+                        cask?.updateNftBestBarel(!bestBarrel)
+                      }}
+                      className={`${
+                        bestBarrel ? 'bg-cask-chain' : 'bg-gray-300'
+                      }
+                      relative inline-flex flex-shrink-0 h-[28px] w-[64px] border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+                    >
+                      <span
+                        aria-hidden="true"
+                        className={`${
+                          bestBarrel ? 'translate-x-9' : 'translate-x-0'
+                        }
+                      pointer-events-none inline-block h-[24px] w-[24px] rounded-full bg-white shadow-lg transform ring-0 transition ease-in-out duration-200`}
+                      />
+                    </Switch>
+                  </div>
                 </div>
-                <Spacer size="md" />
+                <Spacer size="lg" />
                 <div className="flex flex-col">
                   <div className="flex flex-row space-x-5">
                     <div className="flex flex-col">

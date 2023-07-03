@@ -48,7 +48,6 @@ export class MongoDBStatsDataSource
 
     update.$inc = increments
 
-    console.log('increments: ', increments)
     await collection.updateOne(filter, update, { upsert: true })
   }
 
