@@ -28,9 +28,39 @@ export class MongoDBStatsDataSource
     return
   }
 
+  public async incrementBarrelsStats(liquor: any, traitValues: any) {
+    const collection = await this.collection()
+
+    const filter = { _id: 'barrels' }
+    const update = { $inc: {} } as any
+
+    const increments = Object.keys(traitValues).reduce(
+      (acc: any, traitValue: any) => {
+        const trait = traitValues?.[traitValue]
+
+        return {
+          ...acc,
+          [`${liquor}.${traitValue}.${trait.toString().replace(/ /g, '_')}`]: 1,
+        }
+      },
+      {}
+    )
+
+    update.$inc = increments
+
+    await collection.updateOne(filter, update, { upsert: true })
+  }
+
   public async getTotalUsers(): Promise<void> {
     const collection = await this.collection()
     const document = await collection.find<any>({ _id: 'users' }).toArray()
+
+    return document[0] || null
+  }
+
+  public async getFilters(): Promise<any> {
+    const collection = await this.collection()
+    const document = await collection.find<any>({ _id: 'barrels' }).toArray()
 
     return document[0] || null
   }

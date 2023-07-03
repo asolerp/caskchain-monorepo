@@ -1,18 +1,21 @@
 import { useGlobal } from '@providers/global'
 import { GlobalTypes } from '@providers/global/utils'
-import { AcceptedChainIds } from '@providers/web3/utils'
+import { AcceptedChainIds, loadContractByABI } from '@providers/web3/utils'
 import { CryptoHookFactory } from '@_types/hooks'
 import { Nft } from '@_types/nft'
 import axios from 'axios'
 import { getCookie } from 'cookies-next'
-import { ethers } from 'ethers'
+import { Contract, Signer, ethers } from 'ethers'
 import axiosClient from 'lib/fetcher/axiosInstance'
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import useSWR from 'swr'
 import { useNetwork, useProvider } from 'wagmi'
-
+import NftFractionToken from 'contracts/build/contracts/NftFractionToken.json'
+import { fetchSigner } from '@wagmi/core'
 import useDebounce from '@hooks/common/useDebounce'
+
+const NETWORK_ID = process.env.NEXT_PUBLIC_NETWORK_ID
 
 type CaskNftHookFactory = CryptoHookFactory<Nft[]>
 
@@ -252,14 +255,20 @@ export const hookFactory: CaskNftHookFactory =
 
     const buyFractionizedNft = useCallback(async () => {
       try {
+        console.log('Data', data)
         if (isUserNeededDataFilled) {
           const listingPrice = data?.fractions?.listingPrice.toString()
 
-          const _signedTokenContract = await nftFractionToken(
-            data?.fractions?.tokenAddress
+          const tokenContract = await loadContractByABI(
+            NftFractionToken.networks[4447].address as string,
+            NftFractionToken.abi
           )
 
-          await _signedTokenContract.purchase({
+          const signer = (await fetchSigner()) as unknown as Signer
+
+          const signedTokenContract = tokenContract.connect(signer)
+
+          await signedTokenContract.purchase({
             value: listingPrice,
           })
         } else {
@@ -268,12 +277,7 @@ export const hookFactory: CaskNftHookFactory =
       } catch (err) {
         console.log(err)
       }
-    }, [
-      isUserNeededDataFilled,
-      data?.fractions?.tokenAddress,
-      data?.fractions?.listingPrice,
-      handleUserState,
-    ])
+    }, [data, isUserNeededDataFilled, handleUserState])
 
     const buyFractions = useCallback(
       async (
@@ -290,6 +294,9 @@ export const hookFactory: CaskNftHookFactory =
                   'ether'
                 )
               ) / unitPrice
+
+            console.log('value', value)
+            console.log('tokenAddress', tokenAddress)
 
             await _nftFractionsVendor?.buyTokens(tokenAddress, {
               value: value.toString(),

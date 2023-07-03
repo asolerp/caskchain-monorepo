@@ -9,6 +9,7 @@
   "description": "",
   "type": "module",
   "scripts": {
+    "start:mongodb": "sudo run-rs --mongod",
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "deploy": "npx cross-env node scripts/startup.js",

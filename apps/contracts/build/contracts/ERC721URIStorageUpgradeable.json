@@ -358,42 +358,18 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721URIStorageUpgradeable.sol",
     "exportedSymbols": {
-      "AddressUpgradeable": [
-        3890
-      ],
-      "ContextUpgradeable": [
-        3932
-      ],
-      "ERC165Upgradeable": [
-        4285
-      ],
-      "ERC721URIStorageUpgradeable": [
-        3314
-      ],
-      "ERC721Upgradeable": [
-        3035
-      ],
-      "IERC165Upgradeable": [
-        4297
-      ],
-      "IERC721MetadataUpgradeable": [
-        3341
-      ],
-      "IERC721ReceiverUpgradeable": [
-        3053
-      ],
-      "IERC721Upgradeable": [
-        3169
-      ],
-      "Initializable": [
-        715
-      ],
-      "MathUpgradeable": [
-        5162
-      ],
-      "StringsUpgradeable": [
-        4241
-      ]
+      "AddressUpgradeable": [3890],
+      "ContextUpgradeable": [3932],
+      "ERC165Upgradeable": [4285],
+      "ERC721URIStorageUpgradeable": [3314],
+      "ERC721Upgradeable": [3035],
+      "IERC165Upgradeable": [4297],
+      "IERC721MetadataUpgradeable": [3341],
+      "IERC721ReceiverUpgradeable": [3053],
+      "IERC721Upgradeable": [3169],
+      "Initializable": [715],
+      "MathUpgradeable": [5162],
+      "StringsUpgradeable": [4241]
     },
     "id": 3315,
     "license": "MIT",
@@ -401,12 +377,7 @@
     "nodes": [
       {
         "id": 3171,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "128:23:18"
       },
@@ -441,9 +412,7 @@
             "baseName": {
               "id": 3175,
               "name": "Initializable",
-              "nameLocations": [
-                "357:13:18"
-              ],
+              "nameLocations": ["357:13:18"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 715,
               "src": "357:13:18"
@@ -456,9 +425,7 @@
             "baseName": {
               "id": 3177,
               "name": "ERC721Upgradeable",
-              "nameLocations": [
-                "372:17:18"
-              ],
+              "nameLocations": ["372:17:18"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 3035,
               "src": "372:17:18"
@@ -480,14 +447,7 @@
         "fullyImplemented": true,
         "id": 3314,
         "linearizedBaseContracts": [
-          3314,
-          3035,
-          3341,
-          3169,
-          4285,
-          4297,
-          3932,
-          715
+          3314, 3035, 3341, 3169, 4285, 4297, 3932, 715
         ],
         "name": "ERC721URIStorageUpgradeable",
         "nameLocation": "326:27:18",
@@ -510,9 +470,7 @@
                 "modifierName": {
                   "id": 3180,
                   "name": "onlyInitializing",
-                  "nameLocations": [
-                    "440:16:18"
-                  ],
+                  "nameLocations": ["440:16:18"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 660,
                   "src": "440:16:18"
@@ -559,9 +517,7 @@
                 "modifierName": {
                   "id": 3186,
                   "name": "onlyInitializing",
-                  "nameLocations": [
-                    "524:16:18"
-                  ],
+                  "nameLocations": ["524:16:18"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 660,
                   "src": "524:16:18"
@@ -597,9 +553,7 @@
             "libraryName": {
               "id": 3191,
               "name": "StringsUpgradeable",
-              "nameLocations": [
-                "559:18:18"
-              ],
+              "nameLocations": ["559:18:18"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 4241,
               "src": "559:18:18"
@@ -664,9 +618,7 @@
             "visibility": "private"
           },
           {
-            "baseFunctions": [
-              2308
-            ],
+            "baseFunctions": [2308],
             "body": {
               "id": 3255,
               "nodeType": "Block",
@@ -727,9 +679,7 @@
                   "src": "845:23:18"
                 },
                 {
-                  "assignments": [
-                    3211
-                  ],
+                  "assignments": [3211],
                   "declarations": [
                     {
                       "constant": false,
@@ -801,9 +751,7 @@
                   "src": "879:45:18"
                 },
                 {
-                  "assignments": [
-                    3217
-                  ],
+                  "assignments": [3217],
                   "declarations": [
                     {
                       "constant": false,
@@ -1509,10 +1457,7 @@
                       "id": 3264,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "1593:7:18",
                       "typeDescriptions": {
@@ -1697,9 +1642,7 @@
             "visibility": "internal"
           },
           {
-            "baseFunctions": [
-              2771
-            ],
+            "baseFunctions": [2771],
             "body": {
               "id": 3307,
               "nodeType": "Block",
@@ -2114,7 +2057,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-05-25T14:11:59.915Z",
+  "updatedAt": "2023-07-03T07:18:52.690Z",
   "devdoc": {
     "details": "ERC721 token with storage based token URI management.",
     "kind": "dev",

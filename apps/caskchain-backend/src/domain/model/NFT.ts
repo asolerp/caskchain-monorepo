@@ -5,6 +5,7 @@ export interface NFTRequestModel {
   attributes: any
   value: string
   pinata: string
+  active: boolean
   owner: any
   favorites: number
 }

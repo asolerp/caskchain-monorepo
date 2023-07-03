@@ -20,16 +20,18 @@ import NetworkModal from '@ui/modals/NetworkModal'
 import ShareModal from '@ui/modals/ShareModal'
 
 const navigation = [
-  { name: 'Home', href: '/', url: '/' },
+  { name: 'Home', href: '/', url: '/', key: 'home' },
   {
     name: 'Marketplace',
     href: '/marketplace/search',
     url: '/marketplace/[tab]',
+    key: 'marketplace',
   },
   {
     name: 'About us',
     href: '/about',
     url: '/about',
+    key: 'about',
   },
   // { name: 'About us', href: '/about' },
 ]
@@ -136,20 +138,21 @@ const Navbar = () => {
                     </div>
                     <div className="hidden lg:flex col-span-4 space-x-3 justify-center items-center">
                       {navigation.map((item) => (
-                        <ActiveLink
-                          activeclass="text-cask-chain border-b-2 border-b-cask-chain"
-                          key={item.name}
-                          href={item.href}
-                          url={item.url}
-                        >
-                          <span
-                            className={
-                              'text-white font-poppins hover:border-b-2 hover:border-b-cask-chain px-4 py-5 text-sm'
-                            }
+                        <div key={item.keuy}>
+                          <ActiveLink
+                            activeclass="text-cask-chain border-b-2 border-b-cask-chain"
+                            href={item.href}
+                            url={item.url}
                           >
-                            {item.name}
-                          </span>
-                        </ActiveLink>
+                            <span
+                              className={
+                                'text-white font-poppins hover:border-b-2 hover:border-b-cask-chain px-4 py-5 text-sm'
+                              }
+                            >
+                              {item.name}
+                            </span>
+                          </ActiveLink>
+                        </div>
                       ))}
                     </div>
                     <div className="hidden lg:flex col-span-4 justify-end items-center pr-2 sm:static sm:inset-auto sm:pr-0">

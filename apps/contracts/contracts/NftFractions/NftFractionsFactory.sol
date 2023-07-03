@@ -14,23 +14,25 @@ import "@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
-import "./NftFractionsStorage.sol";
-import "../InitializedProxy.sol";
+import "./INftFractionsFactoryStorage.sol";
 import "./NftFractionToken.sol";
+import "../InitializedProxy.sol";
 
 contract NftFractionsFactory is
-  NftFractionsStorage,
   Initializable,
   OwnableUpgradeable,
   PausableUpgradeable,
   UUPSUpgradeable
 {
   /// @notice the TokenVault logic contract
+
+  INftFractionsFactoryStorage private _storage;
   address public logic;
 
   event Mint(
     address indexed token,
     uint256 id,
+    uint256 supply,
     uint256 price,
     address vault,
     uint256 vaultId
@@ -40,10 +42,11 @@ contract NftFractionsFactory is
   //   logic = address(new NftFractionToken());
   // }
 
-  function initialize() public initializer {
+  function initialize(address storageAddress) public initializer {
     __Ownable_init();
     __UUPSUpgradeable_init();
     logic = address(new NftFractionToken());
+    _storage = INftFractionsFactoryStorage(storageAddress);
   }
 
   function _authorizeUpgrade(address) internal override onlyOwner {}
@@ -66,7 +69,10 @@ contract NftFractionsFactory is
     uint256 _fee,
     uint256 _listPrice
   ) external whenNotPaused returns (uint256) {
-    require(!nftToVault[_token][_id], "NFT already locked in a vault");
+    require(
+      !_storage.vaultExists(_token, _id),
+      "NFT already locked in a vault"
+    );
     // Check if the caller owns the token or is approved for transfer
     require(
       IERC721(_token).getApproved(_id) == address(this) ||
@@ -74,7 +80,7 @@ contract NftFractionsFactory is
       "Caller must be approved or owner of token"
     );
 
-    nftToVault[_token][_id] = true;
+    _storage.setVaultExists(_token, _id);
 
     bytes memory _initializationCalldata = abi.encodeWithSignature(
       "initialize(address,address,uint256,uint256,uint256,uint256,string,string)",
@@ -92,51 +98,38 @@ contract NftFractionsFactory is
       new InitializedProxy(logic, _initializationCalldata)
     );
 
-    vaults[vaultCount] = Vault(vault, vaultCount);
-    tokenAddressCreated.push(vault);
-    vaultCount++;
+    _storage.setVault(vault, _id);
+    _storage.pushTokenAddressCreated(vault);
 
     // Interact with external contracts after updating state
     IERC721(_token).safeTransferFrom(msg.sender, vault, _id);
-
-    emit Mint(_token, _id, _listPrice, vault, vaultCount);
-
-    return vaultCount - 1;
+    uint256 vaultCount = _storage.getVaultCount();
+    emit Mint(_token, _id, _supply, _listPrice, vault, vaultCount);
+    return vaultCount;
   }
 
-  function vaultExists(
-    address _token,
-    uint256 nftId
-  ) public view returns (bool) {
-    return nftToVault[_token][nftId];
+  function checkIfVaultExists(
+    address _vaultAddress,
+    uint256 _tokenId
+  ) external view returns (bool) {
+    return _storage.vaultExists(_vaultAddress, _tokenId);
   }
 
-  function getVaultIndexByAddress(
-    address _vaultAddress
-  ) internal view returns (uint256) {
+  function getVaultContractByTokenId(
+    uint256 _tokenId
+  ) external view returns (INftFractionsFactoryStorage.Vault memory) {
+    uint256 vaultCount = _storage.getVaultCount();
     for (uint256 i = 0; i < vaultCount; i++) {
-      if (vaults[i].vaultAddress == _vaultAddress) {
-        return i;
+      INftFractionsFactoryStorage.Vault memory vault = _storage.getVault(i);
+      if (vault.tokenId == _tokenId) {
+        return vault;
       }
     }
     revert("Vault not found");
   }
 
-  function getVaultContractByTokenId(
-    uint256 _tokenId
-  ) external view returns (Vault memory) {
-    address vaultAddress = vaults[_tokenId].vaultAddress;
-    require(vaultAddress != address(0), "Invalid Token ID");
-    return vaults[getVaultIndexByAddress(vaultAddress)];
-  }
-
-  function getAllCreatedVaults() external view returns (address[] memory) {
-    return tokenAddressCreated;
-  }
-
-  function getVaultContract(uint256 _id) external view returns (Vault memory) {
-    Vault memory vault = vaults[_id];
-    return vault;
+  function getAllVaultsAddresses() external view returns (address[] memory) {
+    return _storage.getAllCreatedVaults();
   }
 
   function pause() external onlyOwner whenNotPaused {

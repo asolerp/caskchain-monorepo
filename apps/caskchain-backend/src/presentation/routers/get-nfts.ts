@@ -13,6 +13,7 @@ import { GetNFTFavoriteCounterUseCase } from '../../domain/interfaces/use-cases/
 import logger from '../utils/logger'
 import { extractAddressFromToken } from '../utils/extractTokenFromRequest'
 import { GetFavoriteNftsUseCase } from '../../domain/interfaces/use-cases/casks/get-favorite-nfts'
+import { GetBestNftsUseCase } from '../../domain/interfaces/use-cases/casks/get-best-nfts'
 
 export default function GetNftsRouter(
   getNfts: GetNFTsUseCase,
@@ -20,6 +21,7 @@ export default function GetNftsRouter(
   getFavoriteNfts: GetFavoriteNftsUseCase,
   favoriteNft: FavoriteNftUseCase,
   getNftFavoriteCounter: GetNFTFavoriteCounterUseCase,
+  getBestNfts: GetBestNftsUseCase,
   nftFavoriteCounter: NftFavoriteCounterUseCase,
   getOwnedNfts: GetOwnedNftsUseCase,
   fracionalizeNft: FractionalizeNftUseCase
@@ -27,26 +29,55 @@ export default function GetNftsRouter(
   const router = express.Router()
 
   router.get('/', async (req: Request, res: Response) => {
-    const { page = 1, pageSize = 10, name = '', liquor = '' } = req.query
+    const {
+      active = '',
+      page = 1,
+      pageSize = 10,
+      name = '',
+      filters = '',
+      sortBy = '',
+      sortOrder = '',
+    } = req.query
     try {
       // Parse page and limit values
       const filter: any = {}
+      const sort: any = {}
       const parsePage = parseInt(page.toString(), 10)
       const parsedPageSize = parseInt(pageSize.toString(), 10)
+
+      if (active) {
+        filter.active = { $eq: active === 'true' }
+      }
 
       if (name) {
         filter.name = { $regex: name, $options: 'i' }
       }
 
-      if (liquor) {
-        filter.attributes = {
-          $elemMatch: { trait_type: 'liquor', value: liquor },
-        }
+      if (filters) {
+        Object.entries(filters).forEach(
+          ([key, value]: [key: string, value: any]) => {
+            if (key === 'liquor') {
+              filter['attributes.liquor'] = {
+                $in: value.toString().replace(/\[|\]/g, '').split(','),
+              }
+            }
+            filter[`attributes.${key}`] = {
+              $in: value.toString().replace(/\[|\]/g, '').split(','),
+            }
+          }
+        )
       }
 
-      console.log('FILTERS ROUTER', filter)
+      if (sortBy) {
+        sort[sortBy.toString()] = sortOrder === 'asc' ? 1 : -1
+      }
 
-      const nfts = await getNfts.execute(parsePage, parsedPageSize, filter)
+      const nfts = await getNfts.execute(
+        parsePage,
+        parsedPageSize,
+        filter,
+        sort
+      )
 
       logger.info('Successfully fetched all NFTs', null, {
         metadata: {
@@ -61,6 +92,26 @@ export default function GetNftsRouter(
         },
       })
       return res.status(500).send({ message: 'Error fetching NFTs' })
+    }
+  })
+
+  router.get('/bestBarrels', async (req: Request, res: Response) => {
+    console.log('best barrels')
+    try {
+      const bestNfts = await getBestNfts.execute()
+      logger.info('Successfully retrieve best Nfts', {
+        metadata: {
+          service: 'nfts-router',
+        },
+      })
+      res.json(bestNfts)
+    } catch (error: any) {
+      logger.error('Error getting best Nfts', error.message, {
+        metadata: {
+          service: 'nfts-router',
+        },
+      })
+      res.status(500).send({ message: 'Error getting best Nfts' })
     }
   })
 
@@ -149,6 +200,35 @@ export default function GetNftsRouter(
     }
   })
 
+  router.get('/:caskId/totalFavorites', async (req: Request, res: Response) => {
+    const { caskId } = req.params
+    try {
+      const totalFavorites = await getNftFavoriteCounter.execute(caskId)
+      logger.info(
+        'Successfully fetched total favorites for NFT with cask ID %s',
+        caskId,
+        {
+          metadata: {
+            service: 'nfts-router',
+          },
+        }
+      )
+      return res.json({ totalFavorites })
+    } catch (error: any) {
+      logger.error(
+        'Error fetching total favorites for NFT with cask ID %s: %s',
+        caskId,
+        error.message,
+        {
+          metadata: {
+            service: 'nfts-router',
+          },
+        }
+      )
+      return res.status(500).send({ message: 'Error fetching total favorites' })
+    }
+  })
+
   router.post(
     '/:caskId/favorite',
     async (req: Request, res: Response, next: NextFunction) =>
@@ -189,37 +269,9 @@ export default function GetNftsRouter(
     }
   )
 
-  router.get('/:caskId/totalFavorites', async (req: Request, res: Response) => {
-    const { caskId } = req.params
-    try {
-      const totalFavorites = await getNftFavoriteCounter.execute(caskId)
-      logger.info(
-        'Successfully fetched total favorites for NFT with cask ID %s',
-        caskId,
-        {
-          metadata: {
-            service: 'nfts-router',
-          },
-        }
-      )
-      return res.json({ totalFavorites })
-    } catch (error: any) {
-      logger.error(
-        'Error fetching total favorites for NFT with cask ID %s: %s',
-        caskId,
-        error.message,
-        {
-          metadata: {
-            service: 'nfts-router',
-          },
-        }
-      )
-      return res.status(500).send({ message: 'Error fetching total favorites' })
-    }
-  })
-
   router.post('/fractionalizeToken', async (req: Request, res: Response) => {
-    const { name, symbol, collection, tokenId, supply, listPrice } = req.body
+    const { name, symbol, collection, tokenId, supply, fee, listingPrice } =
+      req.body
     try {
       await fracionalizeNft.execute({
         name,
@@ -227,7 +279,8 @@ export default function GetNftsRouter(
         collection,
         tokenId,
         supply,
-        listPrice,
+        fee,
+        listingPrice,
       })
       logger.info('Successfully fractionalized token with ID %s', tokenId, {
         metadata: {

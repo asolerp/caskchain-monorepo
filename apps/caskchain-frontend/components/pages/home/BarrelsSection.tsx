@@ -1,12 +1,14 @@
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
 import Spacer from '@ui/common/Spacer'
-// import BarrelNft from '@ui/ntf/item/BarrelNft'
 import React from 'react'
 
 import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
-import { barrels } from './barrels'
-import Image from 'next/image'
+
+import useBestBarrels from '@hooks/common/useBestBarrels'
+
+import { Nft } from '@_types/nft'
+import BarrelOffer from '@ui/ntf/item/BarrelOffer'
 
 type CustomArrowProps = {
   onClick?: () => void
@@ -34,6 +36,8 @@ const CustomArrow: React.FC<CustomArrowProps> = ({
 }
 
 const BarrelsSection = () => {
+  const { bestBarrels } = useBestBarrels()
+
   return (
     <div className="h-full lg:h-screen flex flex-col items-center justify-center bg-white py-10 lg:py-20">
       <div className="flex flex-col w-full items-center">
@@ -41,80 +45,68 @@ const BarrelsSection = () => {
           The Best Barrels
         </h2>
         <Spacer sm="md" size="3xl" />
-        <div className="w-full flex flex-row items-center justify-center px-2 lg:px-0 ">
-          <Carousel
-            additionalTransfrom={0}
-            arrows
-            autoPlaySpeed={3000}
-            className=""
-            containerClass="container"
-            dotListClass=""
-            draggable
-            infinite
-            focusOnSelect={false}
-            customLeftArrow={<CustomArrow positon="left" />}
-            customRightArrow={<CustomArrow positon="right" />}
-            itemClass=""
-            keyBoardControl
-            minimumTouchDrag={80}
-            pauseOnHover
-            renderArrowsWhenDisabled={false}
-            renderButtonGroupOutside={false}
-            responsive={{
-              desktop: {
-                breakpoint: {
-                  max: 3000,
-                  min: 1024,
+        {bestBarrels?.length > 0 && (
+          <div className="w-full flex flex-row items-center justify-center px-2 lg:px-0 ">
+            <Carousel
+              additionalTransfrom={0}
+              arrows
+              autoPlaySpeed={3000}
+              className=""
+              containerClass="container"
+              dotListClass=""
+              draggable
+              infinite
+              focusOnSelect={false}
+              customLeftArrow={<CustomArrow positon="left" />}
+              customRightArrow={<CustomArrow positon="right" />}
+              itemClass=""
+              keyBoardControl
+              minimumTouchDrag={80}
+              pauseOnHover
+              renderArrowsWhenDisabled={false}
+              renderButtonGroupOutside={false}
+              responsive={{
+                desktop: {
+                  breakpoint: {
+                    max: 3000,
+                    min: 1024,
+                  },
+                  items: 3,
+                  partialVisibilityGutter: 40,
                 },
-                items: 3,
-                partialVisibilityGutter: 40,
-              },
-              mobile: {
-                breakpoint: {
-                  max: 464,
-                  min: 0,
+                mobile: {
+                  breakpoint: {
+                    max: 464,
+                    min: 0,
+                  },
+                  items: 1,
+                  partialVisibilityGutter: 30,
                 },
-                items: 1,
-                partialVisibilityGutter: 30,
-              },
-              tablet: {
-                breakpoint: {
-                  max: 1024,
-                  min: 464,
+                tablet: {
+                  breakpoint: {
+                    max: 1024,
+                    min: 464,
+                  },
+                  items: 2,
+                  partialVisibilityGutter: 30,
                 },
-                items: 2,
-                partialVisibilityGutter: 30,
-              },
-            }}
-            rewind={false}
-            rewindWithAnimation={false}
-            rtl={false}
-            shouldResetAutoplay
-            sliderClass=""
-            slidesToSlide={1}
-            swipeable
-          >
-            {barrels.map((barrel, i) => (
-              <div key={i} className="mx-2 lg:mx-0">
-                <Image
-                  src="/images/nft.png"
-                  width={550}
-                  height={350}
-                  alt="barrel"
-                  className="rounded-[40px] px-3"
-                />
-                {/* <BarrelNft
-                   defaultImage
-                   showAnimation={false}
-                   showFavorite={false}
-                   active={true}
-                   isMarketPlace={false}
-                   item={barrel}
-                 /> */}
-              </div>
-            ))}
-          </Carousel>
-        </div>
+              }}
+              rewind={false}
+              rewindWithAnimation={false}
+              rtl={false}
+              shouldResetAutoplay
+              sliderClass=""
+              slidesToSlide={1}
+              swipeable
+            >
+              {bestBarrels?.map((barrel: Nft) => (
+                <div key={barrel.tokenId} className="mx-2 lg:mx-0">
+                  <BarrelOffer item={barrel} />
+                </div>
+              ))}
+            </Carousel>
+          </div>
+        )}
       </div>
     </div>
   )

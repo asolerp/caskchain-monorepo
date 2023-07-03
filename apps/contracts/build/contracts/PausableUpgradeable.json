@@ -67,18 +67,10 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol",
     "exportedSymbols": {
-      "AddressUpgradeable": [
-        3890
-      ],
-      "ContextUpgradeable": [
-        3932
-      ],
-      "Initializable": [
-        715
-      ],
-      "PausableUpgradeable": [
-        978
-      ]
+      "AddressUpgradeable": [3890],
+      "ContextUpgradeable": [3932],
+      "Initializable": [715],
+      "PausableUpgradeable": [978]
     },
     "id": 979,
     "license": "MIT",
@@ -86,12 +78,7 @@
     "nodes": [
       {
         "id": 853,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "105:23:8"
       },
@@ -126,9 +113,7 @@
             "baseName": {
               "id": 857,
               "name": "Initializable",
-              "nameLocations": [
-                "697:13:8"
-              ],
+              "nameLocations": ["697:13:8"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 715,
               "src": "697:13:8"
@@ -141,9 +126,7 @@
             "baseName": {
               "id": 859,
               "name": "ContextUpgradeable",
-              "nameLocations": [
-                "712:18:8"
-              ],
+              "nameLocations": ["712:18:8"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 3932,
               "src": "712:18:8"
@@ -164,11 +147,7 @@
         },
         "fullyImplemented": true,
         "id": 978,
-        "linearizedBaseContracts": [
-          978,
-          3932,
-          715
-        ],
+        "linearizedBaseContracts": [978, 3932, 715],
         "name": "PausableUpgradeable",
         "nameLocation": "674:19:8",
         "nodeType": "ContractDefinition",
@@ -362,9 +341,7 @@
                 "modifierName": {
                   "id": 875,
                   "name": "onlyInitializing",
-                  "nameLocations": [
-                    "1099:16:8"
-                  ],
+                  "nameLocations": ["1099:16:8"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 660,
                   "src": "1099:16:8"
@@ -459,9 +436,7 @@
                 "modifierName": {
                   "id": 884,
                   "name": "onlyInitializing",
-                  "nameLocations": [
-                    "1212:16:8"
-                  ],
+                  "nameLocations": ["1212:16:8"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 660,
                   "src": "1212:16:8"
@@ -801,10 +776,7 @@
                       "id": 921,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "2071:7:8",
                       "typeDescriptions": {
@@ -936,10 +908,7 @@
                       "id": 933,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "2246:7:8",
                       "typeDescriptions": {
@@ -1144,9 +1113,7 @@
                 "modifierName": {
                   "id": 943,
                   "name": "whenNotPaused",
-                  "nameLocations": [
-                    "2464:13:8"
-                  ],
+                  "nameLocations": ["2464:13:8"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 900,
                   "src": "2464:13:8"
@@ -1320,9 +1287,7 @@
                 "modifierName": {
                   "id": 959,
                   "name": "whenPaused",
-                  "nameLocations": [
-                    "2713:10:8"
-                  ],
+                  "nameLocations": ["2713:10:8"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 908,
                   "src": "2713:10:8"
@@ -1424,7 +1389,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-05-25T14:11:59.894Z",
+  "updatedAt": "2023-07-03T07:18:52.670Z",
   "devdoc": {
     "details": "Contract module which allows children to implement an emergency stop mechanism that can be triggered by an authorized account. This module is used through inheritance. It will make available the modifiers `whenNotPaused` and `whenPaused`, which can be applied to the functions of your contract. Note that they will not be pausable by simply including this module, only once the modifiers are put in place.",
     "events": {

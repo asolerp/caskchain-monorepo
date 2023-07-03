@@ -5,10 +5,12 @@ import logger from '../utils/logger'
 import { authenticateToken } from '../middlewares/authenticateToken'
 import { GetTotalUsersUseCase } from '../../domain/interfaces/use-cases/stats/get-total-users-use-case'
 import { GetTotalNftsUseCase } from '../../domain/interfaces/use-cases/stats/get-total-nfts-use-case'
+import { GetFiltersUseCase } from '../../domain/interfaces/use-cases/stats/get-filters-use-case'
 
 export default function StatsRouter(
   getTotalUsers: GetTotalUsersUseCase,
-  getTotalNfts: GetTotalNftsUseCase
+  getTotalNfts: GetTotalNftsUseCase,
+  getFilters: GetFiltersUseCase
 ) {
   const router = express.Router()
 
@@ -63,6 +65,22 @@ export default function StatsRouter(
       }
     }
   )
+
+  router.get('/filters', async (req: Request, res: Response) => {
+    try {
+      const filters = await getFilters.execute()
+      return res.json(filters)
+    } catch (error: any) {
+      logger.error('Error fetching total user nfts: %s', error.message, {
+        metadata: {
+          service: 'nfts-router',
+        },
+      })
+      return res
+        .status(500)
+        .send({ message: 'Error fetching total users stats' })
+    }
+  })
 
   return router
 }

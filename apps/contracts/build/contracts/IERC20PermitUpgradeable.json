@@ -90,9 +90,7 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-IERC20PermitUpgradeable.sol",
     "exportedSymbols": {
-      "IERC20PermitUpgradeable": [
-        1802
-      ]
+      "IERC20PermitUpgradeable": [1802]
     },
     "id": 1803,
     "license": "MIT",
@@ -100,12 +98,7 @@
     "nodes": [
       {
         "id": 1768,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "114:23:13"
       },
@@ -123,9 +116,7 @@
         },
         "fullyImplemented": false,
         "id": 1802,
-        "linearizedBaseContracts": [
-          1802
-        ],
+        "linearizedBaseContracts": [1802],
         "name": "IERC20PermitUpgradeable",
         "nameLocation": "630:23:13",
         "nodeType": "ContractDefinition",
@@ -520,7 +511,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-05-25T14:11:59.903Z",
+  "updatedAt": "2023-07-03T07:18:52.678Z",
   "devdoc": {
     "details": "Interface of the ERC20 Permit extension allowing approvals to be made via signatures, as defined in https://eips.ethereum.org/EIPS/eip-2612[EIP-2612]. Adds the {permit} method, which can be used to change an account's ERC20 allowance (see {IERC20-allowance}) by presenting a message signed by the account. By not relying on {IERC20-approve}, the token holder account doesn't need to send a transaction, and thus is not required to hold Ether at all.",
     "kind": "dev",

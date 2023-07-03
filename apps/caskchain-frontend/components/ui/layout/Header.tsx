@@ -3,11 +3,30 @@ import React from 'react'
 type HeaderProps = {
   title?: string
   children?: React.ReactNode
+  background?: string
 }
 
-const Header: React.FC<HeaderProps> = ({ title, children }) => {
+const Header: React.FC<HeaderProps> = ({
+  title,
+  children,
+  background = 'default',
+}) => {
+  const mapBackground: any = {
+    default: 'bg-header_1',
+    rum: 'bg-ron',
+    whiskey: 'bg-whiskey',
+    tequila: 'bg-tequila',
+    brandy: 'bg-brandy',
+  }
+
+  const height = children || title ? 'h-[250px]' : 'h-[120px]'
+
   return (
-    <div className="bg-header_1 w-screen h-[300px] bg-cover flex items-end justify-center">
+    <div
+      className={`${
+        background ? mapBackground[background] : background
+      } w-screen ${height} bg-[length:w_screen_300px] bg-center flex items-end justify-center`}
+    >
       {children ? (
         children
       ) : (

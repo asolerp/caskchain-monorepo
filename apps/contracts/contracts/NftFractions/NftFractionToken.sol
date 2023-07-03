@@ -1,13 +1,13 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import '@openzeppelin/contracts/utils/math/Math.sol';
-import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
-import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
-import '@openzeppelin/contracts/utils/math/SafeMath.sol';
-import '@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol';
-import '@openzeppelin/contracts-upgradeable/token/ERC721/utils/ERC721HolderUpgradeable.sol';
-import '@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol';
+import "@openzeppelin/contracts/utils/math/Math.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC721/utils/ERC721HolderUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 
 contract NftFractionToken is ERC20Upgradeable, ERC721HolderUpgradeable {
   using Address for address;
@@ -62,6 +62,9 @@ contract NftFractionToken is ERC20Upgradeable, ERC721HolderUpgradeable {
   /// @notice An event emitted when a curator updates de fee
   event FeeUpdate(address indexed user, uint price);
 
+  /// @notice An event emitted when a curator updates de fee
+  event StatusUpdate(address indexed user, bool status, uint256 tokenId);
+
   /// @notice An event emitted when an auction starts
   event Start(address indexed buyer, uint price);
 
@@ -108,32 +111,33 @@ contract NftFractionToken is ERC20Upgradeable, ERC721HolderUpgradeable {
   }
 
   function updateSaleState(bool state) external {
-    require(curator == msg.sender, 'You are not the curator');
+    require(curator == msg.sender, "You are not the curator");
     forSale = state;
+    emit StatusUpdate(msg.sender, state, id);
   }
 
   function updateUserPrice(uint256 _new) external {
-    require(curator == msg.sender, 'You are not the curator');
+    require(curator == msg.sender, "You are not the curator");
     price = _new;
     emit PriceUpdate(msg.sender, _new);
   }
 
   function updateFee(uint256 _newFee) external {
-    require(curator == msg.sender, 'You are not the curator');
+    require(curator == msg.sender, "You are not the curator");
     fee = _newFee;
     emit FeeUpdate(msg.sender, _newFee);
   }
 
   function purchase() external payable {
-    require(forSale, 'Not for sale');
-    require(msg.value >= reservePrice(), 'Not enough ether sent');
+    require(forSale, "Not for sale");
+    require(msg.value >= reservePrice(), "Not enough ether sent");
     IERC721(token).transferFrom(address(this), msg.sender, id);
     forSale = false;
     canRedeem = true;
   }
 
   function redeem(uint256 _amount) external {
-    require(canRedeem, 'Redemption not available');
+    require(canRedeem, "Redemption not available");
     uint256 totalEther = address(this).balance;
 
     uint256 toRedeem = (_amount * totalEther) / totalSupply();
@@ -147,10 +151,10 @@ contract NftFractionToken is ERC20Upgradeable, ERC721HolderUpgradeable {
   }
 
   function withdraw() public {
-    require(curator == msg.sender, 'You are not the curator');
+    require(curator == msg.sender, "You are not the curator");
     uint256 ownerBalance = address(this).balance;
-    require(ownerBalance > 0, 'No ETH present in Vendor');
-    (bool sent, ) = msg.sender.call{value: address(this).balance}('');
-    require(sent, 'Failed to withdraw');
+    require(ownerBalance > 0, "No ETH present in Vendor");
+    (bool sent, ) = msg.sender.call{ value: address(this).balance }("");
+    require(sent, "Failed to withdraw");
   }
 }

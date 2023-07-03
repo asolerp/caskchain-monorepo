@@ -14,18 +14,10 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol",
     "exportedSymbols": {
-      "AddressUpgradeable": [
-        3890
-      ],
-      "IERC20PermitUpgradeable": [
-        1802
-      ],
-      "IERC20Upgradeable": [
-        1741
-      ],
-      "SafeERC20Upgradeable": [
-        2083
-      ]
+      "AddressUpgradeable": [3890],
+      "IERC20PermitUpgradeable": [1802],
+      "IERC20Upgradeable": [1741],
+      "SafeERC20Upgradeable": [2083]
     },
     "id": 2084,
     "license": "MIT",
@@ -33,12 +25,7 @@
     "nodes": [
       {
         "id": 1804,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "115:23:14"
       },
@@ -92,9 +79,7 @@
         },
         "fullyImplemented": true,
         "id": 2083,
-        "linearizedBaseContracts": [
-          2083
-        ],
+        "linearizedBaseContracts": [2083],
         "name": "SafeERC20Upgradeable",
         "nameLocation": "748:20:14",
         "nodeType": "ContractDefinition",
@@ -105,9 +90,7 @@
             "libraryName": {
               "id": 1809,
               "name": "AddressUpgradeable",
-              "nameLocations": [
-                "781:18:14"
-              ],
+              "nameLocations": ["781:18:14"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 3890,
               "src": "781:18:14"
@@ -351,9 +334,7 @@
                     "pathNode": {
                       "id": 1812,
                       "name": "IERC20Upgradeable",
-                      "nameLocations": [
-                        "849:17:14"
-                      ],
+                      "nameLocations": ["849:17:14"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 1741,
                       "src": "849:17:14"
@@ -678,9 +659,7 @@
                     "pathNode": {
                       "id": 1835,
                       "name": "IERC20Upgradeable",
-                      "nameLocations": [
-                        "1075:17:14"
-                      ],
+                      "nameLocations": ["1075:17:14"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 1741,
                       "src": "1075:17:14"
@@ -1088,10 +1067,7 @@
                       "id": 1871,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "1896:7:14",
                       "typeDescriptions": {
@@ -1344,9 +1320,7 @@
                     "pathNode": {
                       "id": 1862,
                       "name": "IERC20Upgradeable",
-                      "nameLocations": [
-                        "1582:17:14"
-                      ],
+                      "nameLocations": ["1582:17:14"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 1741,
                       "src": "1582:17:14"
@@ -1437,9 +1411,7 @@
               "src": "2299:194:14",
               "statements": [
                 {
-                  "assignments": [
-                    1915
-                  ],
+                  "assignments": [1915],
                   "declarations": [
                     {
                       "constant": false,
@@ -1848,9 +1820,7 @@
                     "pathNode": {
                       "id": 1905,
                       "name": "IERC20Upgradeable",
-                      "nameLocations": [
-                        "2212:17:14"
-                      ],
+                      "nameLocations": ["2212:17:14"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 1741,
                       "src": "2212:17:14"
@@ -1946,9 +1916,7 @@
                   "src": "2636:354:14",
                   "statements": [
                     {
-                      "assignments": [
-                        1951
-                      ],
+                      "assignments": [1951],
                       "declarations": [
                         {
                           "constant": false,
@@ -2184,10 +2152,7 @@
                           "id": 1961,
                           "name": "require",
                           "nodeType": "Identifier",
-                          "overloadedDeclarations": [
-                            4294967278,
-                            4294967278
-                          ],
+                          "overloadedDeclarations": [4294967278, 4294967278],
                           "referencedDeclaration": 4294967278,
                           "src": "2736:7:14",
                           "typeDescriptions": {
@@ -2216,9 +2181,7 @@
                       "src": "2736:75:14"
                     },
                     {
-                      "assignments": [
-                        1969
-                      ],
+                      "assignments": [1969],
                       "declarations": [
                         {
                           "constant": false,
@@ -2515,9 +2478,7 @@
                     "pathNode": {
                       "id": 1941,
                       "name": "IERC20Upgradeable",
-                      "nameLocations": [
-                        "2539:17:14"
-                      ],
+                      "nameLocations": ["2539:17:14"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 1741,
                       "src": "2539:17:14"
@@ -2608,9 +2569,7 @@
               "src": "3228:257:14",
               "statements": [
                 {
-                  "assignments": [
-                    2009
-                  ],
+                  "assignments": [2009],
                   "declarations": [
                     {
                       "constant": false,
@@ -2876,9 +2835,7 @@
                   "src": "3289:54:14"
                 },
                 {
-                  "assignments": [
-                    2028
-                  ],
+                  "assignments": [2028],
                   "declarations": [
                     {
                       "constant": false,
@@ -3087,10 +3044,7 @@
                       "id": 2034,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "3403:7:14",
                       "typeDescriptions": {
@@ -3152,9 +3106,7 @@
                     "pathNode": {
                       "id": 1989,
                       "name": "IERC20PermitUpgradeable",
-                      "nameLocations": [
-                        "3031:23:14"
-                      ],
+                      "nameLocations": ["3031:23:14"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 1802,
                       "src": "3031:23:14"
@@ -3381,9 +3333,7 @@
               "src": "3949:636:14",
               "statements": [
                 {
-                  "assignments": [
-                    2054
-                  ],
+                  "assignments": [2054],
                   "declarations": [
                     {
                       "constant": false,
@@ -3755,10 +3705,7 @@
                             "id": 2068,
                             "name": "require",
                             "nodeType": "Identifier",
-                            "overloadedDeclarations": [
-                              4294967278,
-                              4294967278
-                            ],
+                            "overloadedDeclarations": [4294967278, 4294967278],
                             "referencedDeclaration": 4294967278,
                             "src": "4483:7:14",
                             "typeDescriptions": {
@@ -3829,9 +3776,7 @@
                     "pathNode": {
                       "id": 2046,
                       "name": "IERC20Upgradeable",
-                      "nameLocations": [
-                        "3897:17:14"
-                      ],
+                      "nameLocations": ["3897:17:14"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 1741,
                       "src": "3897:17:14"
@@ -3901,7 +3846,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-05-25T14:11:59.903Z",
+  "updatedAt": "2023-07-03T07:18:52.679Z",
   "devdoc": {
     "details": "Wrappers around ERC20 operations that throw on failure (when the token contract returns false). Tokens that return no value (and instead revert or throw on failure) are also supported, non-reverting calls are assumed to be successful. To use this library you can add a `using SafeERC20 for IERC20;` statement to your contract, which allows you to call the safe operations as `token.safeTransfer(...)`, etc.",
     "kind": "dev",

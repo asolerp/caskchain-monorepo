@@ -8,14 +8,24 @@ import { toast } from 'react-toastify'
 import useSWR from 'swr'
 import { useProvider } from 'wagmi'
 import useLoading from '@hooks/common/useLoading'
+import useFractionFactoryForm from '@hooks/common/useFractionFactoryForm'
+import axiosClient from 'lib/fetcher/axiosInstance'
 
 type CaskNftHookFactory = CryptoHookFactory<Nft[]>
 
 export type UseCaskNftsHook = ReturnType<CaskNftHookFactory>
 
 export const hookFactory: CaskNftHookFactory =
-  ({ ccNft, nftVendor }) =>
+  ({ ccNft, nftVendor, nftFractionsFactory }) =>
   ({ caskId }) => {
+    const [formState, handleChange] = useFractionFactoryForm({
+      tokenName: '',
+      tokenSymbol: '',
+      tokenSupply: '',
+      tokenFee: '',
+      tokenListingPrice: '',
+    })
+
     const [tokenAmmount, setTokenAmmount] = useState<number | undefined>(0)
     const [listPrice, setListPrice] = useState<number>(0)
     const [erc20ListPrice, setERC20ListPrice] = useState<number>(0)
@@ -149,6 +159,80 @@ export const hookFactory: CaskNftHookFactory =
       }
     }
 
+    const updateNftSaleState = async (state: boolean) => {
+      const id = toast.loading('Updating barrel state...')
+      try {
+        const gasPrice = await provider?.getGasPrice()
+
+        const txApprove = await ccNft?.approve(
+          nftVendor!.address as string,
+          caskId,
+          {
+            gasPrice,
+            gasLimit: 100000,
+          }
+        )
+
+        const responseApprove: any = await txApprove!.wait()
+
+        if (responseApprove.status !== 1) throw new Error('Approve failed')
+
+        const txSale = await _nftVendor?.updateStateForSale(caskId, state)
+
+        const responseSaleStateUpdate: any = await txSale!.wait()
+
+        if (responseSaleStateUpdate.status !== 1)
+          throw new Error('Listing failed')
+
+        await refetchNft()
+
+        toast.update(id, {
+          render: 'Sale state updated',
+          type: 'success',
+          isLoading: false,
+          closeOnClick: true,
+          autoClose: 2000,
+        })
+      } catch (e: any) {
+        toast.update(id, {
+          render: 'Something went wrong',
+          type: 'error',
+          isLoading: false,
+          closeOnClick: true,
+          autoClose: 2000,
+        })
+        console.log(e)
+      }
+    }
+
+    const updateNftBestBarel = async (state: boolean) => {
+      const id = toast.loading('Updating barrel state...')
+      try {
+        await axios.post(`/api/casks/${caskId}/best-barrel`, {
+          bestBarrel: state,
+        })
+
+        await refetchNft()
+
+        toast.update(id, {
+          render: 'Sale state updated',
+          type: 'success',
+          isLoading: false,
+          closeOnClick: true,
+          autoClose: 2000,
+        })
+      } catch (e: any) {
+        toast.update(id, {
+          render: 'Something went wrong',
+          type: 'error',
+          isLoading: false,
+          closeOnClick: true,
+          autoClose: 2000,
+        })
+        console.log(e)
+      }
+    }
+
     const updateNftPrice = async () => {
       const id = toast.loading('Pricing barrel...')
       try {
@@ -197,21 +281,88 @@ export const hookFactory: CaskNftHookFactory =
       }
     }
 
+    const createFraction = async () => {
+      const id = toast.loading('Creating fractions...')
+      try {
+        // const gasPrice = await provider?.getGasPrice()
+
+        // const txApprove = await ccNft?.approve(
+        //   _nftFractionFactory!.address as string,
+        //   caskId,
+        //   {
+        //     gasPrice,
+        //     gasLimit: 100000,
+        //   }
+        // )
+
+        // const responseApprove: any = await txApprove!.wait()
+
+        // if (responseApprove.status !== 1) throw new Error('Approve failed')
+
+        // const txList = await _nftFractionFactory?.mint(
+        //   formState.tokenName,
+        //   formState.tokenSymbol,
+        //   ccNft!.address,
+        //   caskId,
+        //   (formState.tokenSupply * 10 ** 18).toString(),
+        //   formState.tokenFee * 100,
+        //   (formState.tokenListingPrice * 10 ** 18).toString()
+        // )
+
+        // const responseList: any = await txList!.wait()
+
+        // if (responseList.status !== 1) throw new Error('Listing failed')
+        await axiosClient.post('/api/casks/fractionalizeToken', {
+          name: formState.tokenName,
+          symbol: formState.tokenSymbol,
+          collection: ccNft!.address,
+          tokenId: caskId,
+          supply: (formState.tokenSupply * 10 ** 18).toString(),
+          fee: (formState.tokenFee * 100).toString(),
+          listingPrice: (formState.tokenListingPrice * 10 ** 18).toString(),
+        })
+
+        await refetchNft()
+        toast.update(id, {
+          render: 'Fractions created',
+          type: 'success',
+          isLoading: false,
+          closeOnClick: true,
+          autoClose: 2000,
+        })
+      } catch (e: any) {
+        toast.update(id, {
+          render: 'Something went wrong',
+          type: 'error',
+          isLoading: false,
+
+          closeOnClick: true,
+          autoClose: 2000,
+        })
+        console.log(e)
+      }
+    }
+
     return {
       data,
-      updateNftPrice,
-      updateERC20Price,
-      setERC20ListPrice,
-      erc20ListPrice,
       isLoading,
+      formState,
       isFavorite,
+      salesHistory,
+      hasFractions,
+      tokenAmmount,
+      setListPrice,
       latestOffers,
       isValidating,
-      setListPrice,
-      tokenAmmount,
-      hasFractions,
-      salesHistory,
+      erc20ListPrice,
+      updateNftPrice,
+      createFraction,
       setTokenAmmount,
+      updateERC20Price,
+      setERC20ListPrice,
+      updateNftSaleState,
+      updateNftBestBarel,
+      handleFormFractionsChange: handleChange,
       totalFavorites: totalFavoritesData?.totalFavorites,
     }
   }

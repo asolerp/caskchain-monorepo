@@ -300,12 +300,8 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721Upgradeable.sol",
     "exportedSymbols": {
-      "IERC165Upgradeable": [
-        4297
-      ],
-      "IERC721Upgradeable": [
-        3169
-      ]
+      "IERC165Upgradeable": [4297],
+      "IERC721Upgradeable": [3169]
     },
     "id": 3170,
     "license": "MIT",
@@ -313,12 +309,7 @@
     "nodes": [
       {
         "id": 3055,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "108:23:17"
       },
@@ -341,9 +332,7 @@
             "baseName": {
               "id": 3058,
               "name": "IERC165Upgradeable",
-              "nameLocations": [
-                "293:18:17"
-              ],
+              "nameLocations": ["293:18:17"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 4297,
               "src": "293:18:17"
@@ -364,10 +353,7 @@
         },
         "fullyImplemented": false,
         "id": 3169,
-        "linearizedBaseContracts": [
-          3169,
-          4297
-        ],
+        "linearizedBaseContracts": [3169, 4297],
         "name": "IERC721Upgradeable",
         "nameLocation": "271:18:17",
         "nodeType": "ContractDefinition",
@@ -1654,7 +1640,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-05-25T14:11:59.914Z",
+  "updatedAt": "2023-07-03T07:18:52.689Z",
   "devdoc": {
     "details": "Required interface of an ERC721 compliant contract.",
     "events": {

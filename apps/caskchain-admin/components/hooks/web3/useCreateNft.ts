@@ -57,7 +57,8 @@ export const hookFactory: CreateNftHookFactory =
         { trait_type: 'type', value: '', type: 'text', editable: true },
         { trait_type: 'cask_wood', value: '', type: 'text', editable: true },
         { trait_type: 'cask_size', value: '', type: 'number', editable: true },
-        { trait_type: 'location', value: '', type: 'text', editable: true },
+        { trait_type: 'country', value: '', type: 'text', editable: true },
+        { trait_type: 'region', value: '', type: 'text', editable: true },
         { trait_type: 'abv', value: '', type: 'number', editable: true },
         { trait_type: 'flavor', value: '', type: 'text', editable: true },
         { trait_type: 'rarity', value: '', type: 'text', editable: true },
@@ -143,6 +144,10 @@ export const hookFactory: CreateNftHookFactory =
           {
             nft: {
               ...nftMeta,
+              attributes: nftMeta.attributes.map((attr: any) => ({
+                trait_type: attr.trait_type,
+                value: attr.value,
+              })),
               image: `${process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL}/${imageData.IpfsHash}`,
             },
           },
@@ -212,7 +217,8 @@ export const hookFactory: CreateNftHookFactory =
 
         const txList = await nftVendor?.listItem(
           tokenId,
-          ethers.utils.parseUnits(price.toString(), 'ether')
+          ethers.utils.parseUnits(price.toString(), 'ether'),
+          false
         )
 
         const responseList: any = await txList!.wait()

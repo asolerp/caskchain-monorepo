@@ -70,7 +70,7 @@ const renderActiveShape = (props: any) => {
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
         textAnchor={textAnchor}
-        fill="#46D399"
+        fill="#CAFC01"
       >{`F ${value.toFixed(2)}`}</text>
     </g>
   )
@@ -93,11 +93,9 @@ const PieResponsive: React.FC<Props> = ({ data = dataDefault }) => {
             activeIndex={activeIndex}
             activeShape={renderActiveShape}
             data={data}
-            cx={350}
-            cy={200}
             innerRadius={100}
             outerRadius={120}
-            fill="#46D399"
+            fill="#CAFC01"
             dataKey="value"
             onMouseEnter={onPieEnter}
           />

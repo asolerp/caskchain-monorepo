@@ -21,22 +21,22 @@ const FractionalizedBuyout: React.FC<Props> = ({
     (Number(ethers.utils.parseEther('1')) / cask.fractions.unitPrice).toString()
 
   return (
-    <div className="p-6 w-2/3 bg-slate-800 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-90 border border-slate-500 grid grid-cols-1 divide-y">
+    <div className="p-6 w-full h-fit bg-black-light rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-90 border border-gray-700 grid grid-cols-1 ">
       <div className="w-2/3">
         <h1 className="text-2xl font-semibold text-gray-100 mb-4">
           {cask?.meta?.name.toUpperCase()}
         </h1>
         <div className="flex flex-col space-y-2 mb-4">
           <div>
-            <p className="text-emerald-300">SOLD BY</p>
+            <p className="text-cask-chain">SOLD BY</p>
             <p className="text-gray-300">CASK CHAIN</p>
           </div>
           <div>
-            <p className="text-emerald-300">TOTAL FRACTIONS</p>
+            <p className="text-cask-chain">TOTAL FRACTIONS</p>
             <p className="text-gray-300">{cask?.fractions?.total}</p>
           </div>
           <div>
-            <p className="text-emerald-300">AVAILABLE FRACTIONS</p>
+            <p className="text-cask-chain">AVAILABLE FRACTIONS</p>
             <p className="text-gray-300">
               {cask?.fractions?.available?.toFixed(2)}
             </p>
@@ -47,7 +47,7 @@ const FractionalizedBuyout: React.FC<Props> = ({
         <>
           <div className="flex items-center py-3">
             <div className="w-full">
-              <p className="text-emerald-300">NUMBER OF FRACTIONS</p>
+              <p className="text-cask-chain">NUMBER OF FRACTIONS</p>
               <input
                 min={1}
                 max={cask?.fractions?.available}
@@ -69,7 +69,7 @@ const FractionalizedBuyout: React.FC<Props> = ({
             </button>
             <button
               onClick={() => onBuyFraction(fractions)}
-              className="bg-emerald-400 hover:bg-emerald-700 text-gray-100 text-xl font-bold py-4 px-4 rounded w-full"
+              className="bg-cask-chain hover:bg-emerald-700 text-gray-900 text-xl font-bold py-4 px-4 rounded w-full"
             >
               BUY FRACTIONS BY ~{' '}
               {(

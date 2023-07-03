@@ -47,6 +47,20 @@ contract NftVendor is
     uint256 price
   );
 
+  event ItemPiceUpdated(
+    address indexed from,
+    address indexed nftAddress,
+    uint256 indexed tokenId,
+    uint256 price
+  );
+
+  event ItemSaleStateUpdated(
+    address indexed from,
+    address indexed nftAddress,
+    uint256 indexed tokenId,
+    bool state
+  );
+
   event ItemCanceled(
     address indexed from,
     address indexed nftAddress,
@@ -195,7 +209,8 @@ contract NftVendor is
 
   function listItem(
     uint256 tokenId,
-    uint256 price
+    uint256 price,
+    bool activeSell
   ) external notListed(tokenId) isOwner(tokenId, msg.sender) {
     // Check the value of `price` and revert if it's zero (since it cannot be negative)
     require(price > 0, "Price must be above zero");
@@ -206,9 +221,17 @@ contract NftVendor is
       "Not approved for marketplace"
     );
 
-    _vendorStorage.setListing(tokenId, price, msg.sender);
+    _vendorStorage.setListing(tokenId, price, msg.sender, activeSell);
     _vendorStorage.addTokenToAllTokensEnumeration(tokenId);
     emit ItemListed(msg.sender, collection, tokenId, price);
+  }
+
+  function updateStateForSale(
+    uint256 _tokenId,
+    bool state
+  ) external isOwner(_tokenId, msg.sender) isListed(_tokenId) {
+    _vendorStorage.updateSellState(_tokenId, state);
+    emit ItemSaleStateUpdated(msg.sender, collection, _tokenId, state);
   }
 
   /*
@@ -247,17 +270,15 @@ contract NftVendor is
 
     require(msg.value >= listedItem.price, "PriceNotMet");
 
-    address owner = IERC721Upgradeable(collection).ownerOf(tokenId);
-    uint256 royaltyAmount;
-    bool isExcluded = getIsExcluded();
-
-    if (!isExcluded && owner != creator) {
-      royaltyAmount = getRoyalty(tokenId);
-      _payTxFee(tokenId, royaltyAmount);
+    if (
+      !getIsExcluded() &&
+      IERC721Upgradeable(collection).ownerOf(tokenId) != creator
+    ) {
+      _payTxFee(tokenId, getRoyalty(tokenId));
     }
 
     (bool success, ) = payable(listedItem.seller).call{
-      value: msg.value - royaltyAmount
+      value: msg.value - getRoyalty(tokenId)
     }("");
     require(success, "Transfer failed");
 
@@ -351,8 +372,8 @@ contract NftVendor is
       "Not approved for marketplace"
     );
 
-    _vendorStorage.setListing(tokenId, newPrice, msg.sender);
-    emit ItemListed(msg.sender, collection, tokenId, newPrice);
+    _vendorStorage.setListing(tokenId, newPrice, msg.sender, false);
+    emit ItemPiceUpdated(msg.sender, collection, tokenId, newPrice);
   }
 
   function withdrawERC20(address erc20Token) external onlyOwner {

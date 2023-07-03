@@ -237,12 +237,8 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
     "exportedSymbols": {
-      "IERC20": [
-        6252
-      ],
-      "IERC20Metadata": [
-        6277
-      ]
+      "IERC20": [6252],
+      "IERC20Metadata": [6277]
     },
     "id": 6278,
     "license": "MIT",
@@ -250,12 +246,7 @@
     "nodes": [
       {
         "id": 6254,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "110:23:34"
       },
@@ -278,9 +269,7 @@
             "baseName": {
               "id": 6257,
               "name": "IERC20",
-              "nameLocations": [
-                "305:6:34"
-              ],
+              "nameLocations": ["305:6:34"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 6252,
               "src": "305:6:34"
@@ -301,10 +290,7 @@
         },
         "fullyImplemented": false,
         "id": 6277,
-        "linearizedBaseContracts": [
-          6277,
-          6252
-        ],
+        "linearizedBaseContracts": [6277, 6252],
         "name": "IERC20Metadata",
         "nameLocation": "287:14:34",
         "nodeType": "ContractDefinition",
@@ -506,7 +492,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-05-25T14:11:59.943Z",
+  "updatedAt": "2023-07-03T07:18:52.716Z",
   "devdoc": {
     "details": "Interface for the optional metadata functions from the ERC20 standard. _Available since v4.1._",
     "kind": "dev",

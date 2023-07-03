@@ -3,12 +3,19 @@ import { isValidAddress } from 'ethereumjs-util'
 
 import NftFractionToken from 'contracts/build/contracts/NftFractionToken.json'
 
+import CCNft from 'contracts/build/contracts/CCNft.json'
+import NftFractionsVendor from 'contracts/build/contracts/NftFractionsVendor.json'
+import NftFractionsFactory from 'contracts/build/contracts/NftFractionsFactory.json'
+
 import { MongoClientFactory } from '../mongodb/MongoClientFactory'
 import { MongoDBUserDataSource } from '../mongodb/MongoDBUserDataSource'
 
 import { Web3Repository } from './Web3Repository'
 import getFractionData from './utils/getFractionData'
 import logger from '../../../presentation/utils/logger'
+import { MongoDBNFTDataSource } from '../mongodb/MongoDBNFTDataSource'
+
+const NETWORK_ID = 4447
 
 export class Web3Transaction extends Web3Repository {
   private async signTransaction(tx: any): Promise<any> {
@@ -30,6 +37,7 @@ export class Web3Transaction extends Web3Repository {
         signedTx.rawTransaction
       )
     } catch (e: any) {
+      console.log('Error', e)
       throw new Error('Sign Transaction fails')
     }
   }
@@ -45,6 +53,7 @@ export class Web3Transaction extends Web3Repository {
       )
 
       const mongoUserDataSource = new MongoDBUserDataSource(clientDB)
+      const mongoNftDataSource = new MongoDBNFTDataSource(clientDB)
 
       const CCNft = this.contracts()['CCNft']
       const NftVendor = this.contracts()['NftVendor']
@@ -76,6 +85,7 @@ export class Web3Transaction extends Web3Repository {
         .call()
 
       const ownerName = await mongoUserDataSource.search(owner.toLowerCase())
+      const nftData = await mongoNftDataSource.search(caskId)
 
       const ipfsHash = tokenURI.split('/ipfs/')[1]
 
@@ -108,6 +118,7 @@ export class Web3Transaction extends Web3Repository {
         tokenId: nft.tokenId,
         creator: nft.creator,
         isCaskChainOwner,
+        active: listedPrice.active,
         owner: {
           address: owner,
           nickname: ownerName?.nickname || '',
@@ -123,6 +134,7 @@ export class Web3Transaction extends Web3Repository {
         erc20Prices: {
           USDT: usdtPrice?.toString(),
         },
+        bestBarrel: nftData?.bestBarrel || false,
         offer:
           offer?.nftId != 0
             ? {
@@ -393,8 +405,9 @@ export class Web3Transaction extends Web3Repository {
       const CCNft = this.contracts()['CCNft']
       const NftVendor = this.contracts()['NftVendor']
       const NftOffers = this.contracts()['NftOffers']
-      const NftFractionsFactory = this.contracts()['NftFractionsFactory']
-      const NftFractionsVendor = this.contracts()['NftFractionsVendor']
+      const NftFractionsFactoryContract =
+        this.contracts()['NftFractionsFactory']
+      const NftFractionsVendorContract = this.contracts()['NftFractionsVendor']
 
       const listNfts = await mongoUserDataSource.getFavorites(account)
 
@@ -405,10 +418,10 @@ export class Web3Transaction extends Web3Repository {
           const { fractionData, unitPrice, fractionTokenAddress, vaultExists } =
             await getFractionData({
               tokenId: nftId,
-              NftFractionsFactory,
+              NftFractionsFactory: NftFractionsFactoryContract,
               client,
               NftFractionToken,
-              NftFractionsVendor,
+              NftFractionsVendor: NftFractionsVendorContract,
             })
 
           const tokenURI = await CCNft.methods!.tokenURI(nftId).call()
@@ -591,39 +604,105 @@ export class Web3Transaction extends Web3Repository {
 
   public async fractionalizeNft({ fractionInfo }: { fractionInfo: any }) {
     try {
-      let initialNonce: number | null = null
-
-      const { name, symbol, collection, tokenId, supply, listPrice } =
+      const { name, symbol, collection, tokenId, supply, fee, listingPrice } =
         fractionInfo
 
+      const client = this.client()
+      const ccNftContract = this.contracts()['CCNft']
+      const nftFractionsVendorContract = this.contracts()['NftFractionsVendor']
       const nftFractionsFactoryContract =
         this.contracts()['NftFractionsFactory']
 
-      if (!initialNonce) {
-        initialNonce = await this.client().eth.getTransactionCount(
-          process.env.PUBLIC_KEY as string,
-          'latest'
+      let initialNonce: number | null = await client.eth.getTransactionCount(
+        process.env.PUBLIC_KEY as string,
+        'latest'
+      )
+
+      const createTransaction = async (transactionData: any) => {
+        const signedTransaction = await this.signTransaction(transactionData)
+        const transactionHash = await this.sendSignedTransaction(
+          signedTransaction
         )
+
+        if (!transactionHash.status) {
+          throw new Error('Error processing transaction')
+        }
+
+        return transactionHash
       }
 
-      const nonce = initialNonce
-
-      const tx = {
+      // Aprove NFT Fractions Factory
+      await createTransaction({
         from: process.env.PUBLIC_KEY,
-        to: process.env.NFT_FRACTION_FACTORY_ADDRES,
+        to: CCNft.networks[4447].address,
         gas: 30000000,
-        nonce,
+        nonce: initialNonce++,
+        maxPriorityFeePerGas: 2999999987,
+        value: 0,
+        data: ccNftContract.methods
+          .approve(NftFractionsFactory.networks[NETWORK_ID].address, tokenId)
+          .encodeABI(),
+      })
+
+      // Create NFT Fraction Token
+      await createTransaction({
+        from: process.env.PUBLIC_KEY,
+        to: NftFractionsFactory.networks[NETWORK_ID].address,
+        gas: 30000000,
+        nonce: initialNonce++,
         maxPriorityFeePerGas: 2999999987,
         value: 0,
         data: nftFractionsFactoryContract.methods
-          .mint(name, symbol, collection, tokenId, supply, listPrice)
+          .mint(name, symbol, collection, tokenId, supply, fee, listingPrice)
           .encodeABI(),
-      }
+      })
 
-      const signedTx = await this.signTransaction(tx)
-      const hash = await this.sendSignedTransaction(signedTx)
+      // Get created vault address
+      const vault = await nftFractionsFactoryContract.methods
+        .getVaultContractByTokenId(tokenId)
+        .call()
 
-      return hash
+      // Transfer all tokens to vault vendor
+      const tokenContract = new client.eth.Contract(
+        NftFractionToken.abi as any,
+        vault.vaultAddress
+      )
+
+      await createTransaction({
+        from: process.env.PUBLIC_KEY,
+        to: vault.vaultAddress,
+        gas: 30000000,
+        nonce: initialNonce++,
+        maxPriorityFeePerGas: 2999999987,
+        value: 0,
+        data: tokenContract.methods
+          .transfer(NftFractionsVendor.networks?.[NETWORK_ID].address, supply)
+          .encodeABI(),
+      })
+
+      // Update Token Price in Vendor
+      await createTransaction({
+        from: process.env.PUBLIC_KEY,
+        to: NftFractionsVendor.networks?.[NETWORK_ID].address,
+        gas: 30000000,
+        nonce: initialNonce++,
+        maxPriorityFeePerGas: 2999999987,
+        value: 0,
+        data: nftFractionsVendorContract.methods
+          .updateTokenVendor(vault.vaultAddress, supply, listingPrice, true)
+          .encodeABI(),
+      })
+
+      // Update Sale Status Token
+      await createTransaction({
+        from: process.env.PUBLIC_KEY,
+        to: vault.vaultAddress,
+        gas: 30000000,
+        nonce: initialNonce++,
+        maxPriorityFeePerGas: 2999999987,
+        value: 0,
+        data: tokenContract.methods.updateSaleState(true).encodeABI(),
+      })
     } catch (e: any) {
       console.log('Error', e)
     }

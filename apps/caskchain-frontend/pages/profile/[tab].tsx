@@ -24,6 +24,7 @@ import { Switch } from '@headlessui/react'
 import { useBalance } from 'wagmi'
 import ClientOnly from 'components/pages/ClientOnly'
 import ListBarrelModal from '@ui/modals/ListBarrelModal'
+import BarrelProfile from '@ui/ntf/item/BarrelProfile'
 
 type addressType = `0x${string}`
 
@@ -203,16 +204,13 @@ const Profile: NextPage = () => {
                         <li className="relative col-span-1" />
                         <li className="grid grid-cols-3 gap-5 col-span-5">
                           {(nfts?.data as Nft[])?.map((nft) => (
-                            <BarrelNft
+                            <BarrelProfile
                               key={nft.tokenId}
                               onPressProfileCTA={() => {
                                 setSelectedBarrelId(nft.tokenId)
                                 setIsListModalOpen(true)
                               }}
-                              isProfile
-                              isMarketPlace
                               item={nft}
-                              blow
                             />
                           ))}
                         </li>
@@ -244,13 +242,7 @@ const Profile: NextPage = () => {
                       {nfts?.favorites &&
                         nfts?.favorites?.map((nft: Nft) => (
                           <Link key={nft.tokenId} href={`/cask/${nft.tokenId}`}>
-                            <BarrelNft
-                              key={nft.tokenId}
-                              isProfile
-                              isMarketPlace
-                              item={nft}
-                              blow
-                            />
+                            <BarrelProfile key={nft.tokenId} item={nft} />
                           </Link>
                         ))}
                     </li>

@@ -14,10 +14,14 @@ export default function OnMint(createNFTUseCase: CreateNFTUseCase) {
       pinata: nft.tokenURI,
       description: meta.description,
       image: meta.image,
+      active: false,
       owner: {
         address: nft.owner,
       },
-      attributes: meta.attributes,
+      attributes: meta.attributes.reduce((acc: any, attribute: any) => {
+        acc[attribute.trait_type] = attribute.value
+        return acc
+      }, {}),
       favorites: 0,
     })
   }
