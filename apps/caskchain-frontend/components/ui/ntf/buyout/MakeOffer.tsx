@@ -7,7 +7,7 @@ import { Nft } from '@_types/nft'
 
 import { useState } from 'react'
 import { addressSimplifier } from 'utils/addressSimplifier'
-import { useAccount } from 'wagmi'
+import { useGlobal } from '@providers/global'
 
 type Props = {
   cask: Nft
@@ -23,7 +23,9 @@ const MakeOffer: React.FC<Props> = ({
   onOffer,
 }) => {
   const [offer, setOffer] = useState<number>()
-  const { address } = useAccount()
+  const {
+    state: { address },
+  } = useGlobal()
 
   const hasOffer = cask?.offer?.bidders?.some(
     (bidder: string) => bidder === address

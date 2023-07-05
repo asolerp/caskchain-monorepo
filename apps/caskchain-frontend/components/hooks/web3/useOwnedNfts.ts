@@ -9,7 +9,6 @@ import axiosClient from 'lib/fetcher/axiosInstance'
 import { useContext, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import useSWR from 'swr'
-// import { useAccount } from 'wagmi'
 
 type UseOwnedNftsResponse = {
   // acceptOffer: (tokenId: number) => Promise<void>

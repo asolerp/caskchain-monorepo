@@ -1,11 +1,11 @@
 import { CryptoHookFactory } from '@_types/hooks'
 import useLoading from '@hooks/common/useLoading'
+import { useGlobal } from '@providers/global'
 
 import axiosClient from 'lib/fetcher/axiosInstance'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import useSWR from 'swr'
-import { useAccount } from 'wagmi'
 
 type UseMyActivityResponse = {
   sentOffers: any[]
@@ -20,7 +20,9 @@ export const hookFactory: MyActivityHookFactory =
   ({ ccNft, nftOffers }) =>
   () => {
     const [loadingTransactions, setLoadingTransactions] = useState(false)
-    const { address } = useAccount()
+    const {
+      state: { address },
+    } = useGlobal()
 
     const {
       data: transactions,
