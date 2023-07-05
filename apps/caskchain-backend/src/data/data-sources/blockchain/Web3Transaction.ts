@@ -15,7 +15,7 @@ import getFractionData from './utils/getFractionData'
 import logger from '../../../presentation/utils/logger'
 import { MongoDBNFTDataSource } from '../mongodb/MongoDBNFTDataSource'
 
-const NETWORK_ID = 4447
+const NETWORK_ID = process.env.NETWORK_ID as string
 
 export class Web3Transaction extends Web3Repository {
   private async signTransaction(tx: any): Promise<any> {
@@ -634,20 +634,23 @@ export class Web3Transaction extends Web3Repository {
       // Aprove NFT Fractions Factory
       await createTransaction({
         from: process.env.PUBLIC_KEY,
-        to: CCNft.networks[4447].address,
+        to: (CCNft.networks as any)[NETWORK_ID].address,
         gas: 30000000,
         nonce: initialNonce++,
         maxPriorityFeePerGas: 2999999987,
         value: 0,
         data: ccNftContract.methods
-          .approve(NftFractionsFactory.networks[NETWORK_ID].address, tokenId)
+          .approve(
+            (NftFractionsFactory.networks as any)[NETWORK_ID].address,
+            tokenId
+          )
           .encodeABI(),
       })
 
       // Create NFT Fraction Token
       await createTransaction({
         from: process.env.PUBLIC_KEY,
-        to: NftFractionsFactory.networks[NETWORK_ID].address,
+        to: (NftFractionsFactory.networks as any)[NETWORK_ID].address,
         gas: 30000000,
         nonce: initialNonce++,
         maxPriorityFeePerGas: 2999999987,
@@ -676,14 +679,17 @@ export class Web3Transaction extends Web3Repository {
         maxPriorityFeePerGas: 2999999987,
         value: 0,
         data: tokenContract.methods
-          .transfer(NftFractionsVendor.networks?.[NETWORK_ID].address, supply)
+          .transfer(
+            (NftFractionsVendor.networks as any)[NETWORK_ID].address,
+            supply
+          )
           .encodeABI(),
       })
 
       // Update Token Price in Vendor
       await createTransaction({
         from: process.env.PUBLIC_KEY,
-        to: NftFractionsVendor.networks?.[NETWORK_ID].address,
+        to: (NftFractionsVendor.networks as any)[NETWORK_ID].address,
         gas: 30000000,
         nonce: initialNonce++,
         maxPriorityFeePerGas: 2999999987,

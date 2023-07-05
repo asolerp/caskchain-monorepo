@@ -30,7 +30,10 @@ export class Fraction {
 
   getAvailableFractions = async () => {
     return await this._contract.methods
-      .balanceOf(NftFractionsVendor.networks?.[4447]?.address)
+      .balanceOf(
+        (NftFractionsVendor.networks as any)[process.env.NETWORK_ID as string]
+          ?.address
+      )
       .call()
   }
 
