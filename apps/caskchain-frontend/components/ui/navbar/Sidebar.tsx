@@ -223,32 +223,6 @@ const Sidebar: React.FC<SidebarProps> = ({ open }) => {
               />
             </div>
           </section>
-          {/* <h3 className="font-poppins font-semibold text-xl text-gray-600">
-            Saldo total
-          </h3>
-          <Spacer size="xs" />
-          {account && data && (
-            <p className="font-poppins font-semibold text-2xl text-white">
-              {Number(data?.formatted).toFixed(2)} {data?.symbol}
-            </p>
-          )}
-          <Spacer size="xl" />
-          <h3 className="font-poppins font-semibold text-xl text-gray-600">
-            Accepted alter coins
-          </h3>
-          <Spacer size="md" />
-          <div className="w-full px-10">
-            <div className="flex flex-row justify-between border-t border-b border-white">
-              <p className="font-poppins text-gray-200 text-lg">Tether</p>
-              <p className="font-poppins text-gray-200 text-lg">
-                {parseInt(account?.erc20Balances?.usdt).toFixed(2)} USDT
-              </p>
-            </div>
-          </div>
-          <Spacer size="lg" />
-          <Button onClick={openTransak} fit={false}>
-            Add funds
-          </Button> */}
         </div>
       </ClientOnly>
       {/* <Spacer size="md" />
