@@ -3,3 +3,4 @@ export { formatNumber } from "./formatNumber";
 export { ipfsImageParser } from "./ipfsImageParser";
 export { upperCaseFirstLetter } from "./upperCaseFirstLetter";
 export { normalizeString } from "./normalizeString";
+export { logout } from "./logout";

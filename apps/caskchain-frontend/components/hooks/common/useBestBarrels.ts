@@ -8,13 +8,11 @@ const useBestBarrels = () => {
       const { data: bestBarrels }: any = await axios.get(
         `/api/casks/bestBarrels`
       )
-      console.log('bestBarrels', bestBarrels)
+
       return bestBarrels
     },
     { revalidateOnFocus: true }
   )
-
-  console.log('useBestBarrels', data)
 
   return {
     bestBarrels: data,

@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CryptoHookFactory } from '@_types/hooks'
 import { Nft, NftsPaginated } from '@_types/nft'
-import { useAuth } from '@hooks/auth'
+
 import useMarketPlaceFilters from '@hooks/common/useMarketPlaceFilters'
 import { normalizeString } from 'caskchain-lib'
 import { useGlobal } from '@providers/global'
@@ -15,6 +15,7 @@ import { toast } from 'react-toastify'
 import groupByAndSum from './utils/groupAndSum'
 import useSWR from 'swr'
 import buildQueryString from './utils/buildQuery'
+import { useAuth } from '@hooks/web3'
 
 type AllNftsHookFactory = CryptoHookFactory<Nft[], any>
 
@@ -114,7 +115,7 @@ export const hookFactory: AllNftsHookFactory =
     const handleSetFilterList = (filterType: string) => {
       if (!activeLiquor || activeLiquor.length === 0) {
         const selectedFilters = Object.entries(filters)
-          .map(([key, _]) => {
+          .map(([key]) => {
             return filters[key][filterType]
           })
           .filter((filter: any) => filter !== undefined)
@@ -182,8 +183,6 @@ export const hookFactory: AllNftsHookFactory =
       setName(name)
       debouncedFetchSearchResults(name)
     }
-
-    console.log('selected filters', selectedFilters)
 
     return {
       name,

@@ -93,10 +93,9 @@ export default function UserRouter(
       if (userAddress) {
         user = await getUser.execute(userAddress.toLowerCase())
         if (!user) {
-          await saveUser.execute(uuidv4(), {
+          await saveUser.execute(userAddress.toLowerCase(), {
             email: undefined,
             nickname: undefined,
-            address: userAddress.toLowerCase(),
             nonce: JSON.stringify(generateNonce()),
           })
           user = await getUser.execute(userAddress.toLowerCase())
@@ -165,9 +164,8 @@ export default function UserRouter(
         const accessToken = jwt.sign(
           {
             _id: user._id,
-            address: user.address,
             role:
-              user.address.toLocaleLowerCase() ===
+              user._id.toLocaleLowerCase() ===
               process.env.PUBLIC_KEY?.toLocaleLowerCase()
                 ? 'admin'
                 : 'user',
@@ -198,10 +196,11 @@ export default function UserRouter(
         const user = await getUser.execute(userAddress.toLowerCase())
         if (user) {
           // SIGNER
-          const signerAddr = await ethers.utils.verifyMessage(
+          const signerAddr = ethers.utils.verifyMessage(
             JSON.parse(message),
             signature
           )
+
           // Check if address matches
           if (address.toLowerCase() === signerAddr.toLowerCase()) {
             // Change user nonce
@@ -219,9 +218,8 @@ export default function UserRouter(
             const token = jwt.sign(
               {
                 _id: user._id,
-                address: user.address,
                 role:
-                  user.address.toLocaleLowerCase() ===
+                  user._id.toLocaleLowerCase() ===
                   process.env.PUBLIC_KEY?.toLocaleLowerCase()
                     ? 'admin'
                     : 'user',
@@ -233,9 +231,8 @@ export default function UserRouter(
             const refreshToken = jwt.sign(
               {
                 _id: user._id,
-                address: user.address,
                 role:
-                  user.address.toLocaleLowerCase() ===
+                  user._id.toLocaleLowerCase() ===
                   process.env.PUBLIC_KEY?.toLocaleLowerCase()
                     ? 'admin'
                     : 'user',

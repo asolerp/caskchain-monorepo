@@ -60,7 +60,9 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts-upgradeable/interfaces/IERC1967Upgradeable.sol",
     "exportedSymbols": {
-      "IERC1967Upgradeable": [152]
+      "IERC1967Upgradeable": [
+        152
+      ]
     },
     "id": 153,
     "license": "MIT",
@@ -68,7 +70,12 @@
     "nodes": [
       {
         "id": 133,
-        "literals": ["solidity", "^", "0.8", ".0"],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
         "nodeType": "PragmaDirective",
         "src": "107:23:1"
       },
@@ -86,7 +93,9 @@
         },
         "fullyImplemented": true,
         "id": 152,
-        "linearizedBaseContracts": [152],
+        "linearizedBaseContracts": [
+          152
+        ],
         "name": "IERC1967Upgradeable",
         "nameLocation": "274:19:1",
         "nodeType": "ContractDefinition",
@@ -287,7 +296,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-07-03T07:18:52.664Z",
+  "updatedAt": "2023-07-04T12:07:14.082Z",
   "devdoc": {
     "details": "ERC-1967: Proxy Storage Slots. This interface contains the events defined in the ERC. _Available since v4.9._",
     "events": {

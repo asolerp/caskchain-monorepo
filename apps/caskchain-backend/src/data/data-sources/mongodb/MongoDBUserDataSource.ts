@@ -50,7 +50,7 @@ export class MongoDBUserDataSource
 
   public async search(address: string): Promise<any | null> {
     const collection = await this.collection()
-    const document = await collection.findOne<any>({ address: address })
+    const document = await collection.findOne<any>({ _id: address })
 
     return document || null
   }

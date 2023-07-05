@@ -1,8 +1,7 @@
 import { setupHooks, Web3Hooks } from '@hooks/web3/setupHooks'
-import { getProvider, Provider } from '@wagmi/core'
+
 import { Web3Dependencies } from '@_types/hooks'
-import { Contract, ethers } from 'ethers'
-import { getContract } from '@wagmi/core'
+import { Contract } from 'ethers'
 
 export const AcceptedChainIds = [1337, 80001]
 
@@ -37,8 +36,8 @@ export const createDefaultState = () => {
 }
 
 export const createWeb3State = ({
-  web3Modal,
-  ethereum,
+  web3,
+  setWeb3,
   nftFractionsFactory,
   nftFractionsVendor,
   nftFractionToken,
@@ -50,8 +49,8 @@ export const createWeb3State = ({
   isLoading,
 }: Web3Dependencies) => {
   return {
-    web3Modal,
-    ethereum,
+    web3,
+    setWeb3,
     provider,
     ccNft,
     nftVendor,
@@ -62,8 +61,8 @@ export const createWeb3State = ({
     nftFractionsFactory,
     erc20Contracts,
     hooks: setupHooks({
-      web3Modal,
-      ethereum,
+      web3,
+      setWeb3,
       provider,
       nftFractionToken,
       nftFractionsFactory,
@@ -79,42 +78,61 @@ export const createWeb3State = ({
 
 const NETWORK_ID = process.env.NEXT_PUBLIC_NETWORK_ID
 
+export const loadContractByABI = async (
+  web3: any,
+  address: string,
+  abi: any
+): Promise<Contract> => {
+  if (!NETWORK_ID) {
+    return Promise.reject('Network ID is not defined!')
+  }
+
+  const contract = web3.eth.Contract(abi, address)
+
+  return contract
+}
+
 export const loadContractByAddress = async (
   name: string,
-  provider: Provider,
+  web3: any,
   address: string
 ): Promise<Contract> => {
   if (!NETWORK_ID) {
     return Promise.reject('Network ID is not defined!')
   }
 
-  const res = await await import(`contracts/build/contracts/${name}.json`)
+  const res = await import(`contracts/build/contracts/${name}.json`)
   const Artifact = await res.json()
 
   if (address) {
-    const contract = new ethers.Contract(address, Artifact.abi, provider)
+    const contract = new web3.eth.Contract(Artifact.abi, address)
     return contract
   } else {
     return Promise.reject(`Contract ${name} cannot be loaded`)
   }
 }
 
-export const loadContract = async (name: string): Promise<Contract> => {
+export const loadContract = async (
+  name: string,
+  web3: any
+): Promise<Contract> => {
   if (!NETWORK_ID) {
     return Promise.reject('Network ID is not defined!')
   }
 
-  const provider = getProvider()
-
   const res = await import(`contracts/build/contracts/${name}.json`)
   const Artifact = res
 
+  // if (!web3) {
+  //   return Promise.reject('Web3 is not defined!')
+  // }
+
   if (Artifact.networks[NETWORK_ID].address) {
-    const contract = getContract({
-      address: Artifact.networks[NETWORK_ID].address as string,
-      abi: Artifact.abi,
-      signerOrProvider: provider,
-    })
+    const contract = new web3.eth.Contract(
+      Artifact.abi,
+      Artifact.networks[NETWORK_ID].address as string
+    )
+
     return contract
   } else {
     return Promise.reject(`Contract ${name} cannot be loaded`)

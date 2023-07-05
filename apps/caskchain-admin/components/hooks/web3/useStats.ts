@@ -1,8 +1,8 @@
 import { CryptoHookFactory } from '@_types/hooks'
+import { useGlobal } from '@providers/global'
 import { ethers } from 'ethers'
 import axiosClient from 'lib/fetcher/axiosInstance'
 import useSWR from 'swr'
-import { useAccount } from 'wagmi'
 
 type UseStatsResponse = {
   sentOffers: any[]
@@ -16,7 +16,9 @@ export type UseStatsHook = ReturnType<UseStatsHookFactory>
 export const hookFactory: UseStatsHookFactory =
   ({ ccNft }) =>
   () => {
-    const { address } = useAccount()
+    const {
+      state: { address },
+    } = useGlobal()
 
     const {
       data: totalUsers,

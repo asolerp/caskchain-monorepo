@@ -1583,8 +1583,12 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol",
     "exportedSymbols": {
-      "ERC721Holder": [7392],
-      "IERC721Receiver": [7338]
+      "ERC721Holder": [
+        7392
+      ],
+      "IERC721Receiver": [
+        7338
+      ]
     },
     "id": 7393,
     "license": "MIT",
@@ -1592,7 +1596,12 @@
     "nodes": [
       {
         "id": 7367,
-        "literals": ["solidity", "^", "0.8", ".0"],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
         "nodeType": "PragmaDirective",
         "src": "104:23:39"
       },
@@ -1615,7 +1624,9 @@
             "baseName": {
               "id": 7370,
               "name": "IERC721Receiver",
-              "nameLocations": ["424:15:39"],
+              "nameLocations": [
+                "424:15:39"
+              ],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 7338,
               "src": "424:15:39"
@@ -1636,13 +1647,18 @@
         },
         "fullyImplemented": true,
         "id": 7392,
-        "linearizedBaseContracts": [7392, 7338],
+        "linearizedBaseContracts": [
+          7392,
+          7338
+        ],
         "name": "ERC721Holder",
         "nameLocation": "408:12:39",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "baseFunctions": [7337],
+            "baseFunctions": [
+              7337
+            ],
             "body": {
               "id": 7390,
               "nodeType": "Block",
@@ -1890,7 +1906,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-07-03T07:18:52.727Z",
+  "updatedAt": "2023-07-04T12:07:14.174Z",
   "devdoc": {
     "details": "Implementation of the {IERC721Receiver} interface. Accepts all token transfers. Make sure the contract is able to use its token with {IERC721-safeTransferFrom}, {IERC721-approve} or {IERC721-setApprovalForAll}.",
     "kind": "dev",

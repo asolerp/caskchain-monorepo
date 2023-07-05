@@ -3,7 +3,6 @@ import Navbar from '../navbar'
 import FooterSection from 'components/pages/home/FooterSection'
 import LoadingOverlay from 'components/pages/Loading'
 
-import { AnimatePresence } from 'framer-motion'
 import MainAnimationSection from 'components/pages/home/MainAnimationSection'
 
 interface Props {
@@ -22,7 +21,7 @@ const BaseLayout: React.FC<Props> = ({
   const hasBottomBanner = bottomBanner ? true : false
 
   return (
-    <AnimatePresence>
+    <>
       <MainAnimationSection />
       <Navbar />
       <LoadingOverlay />
@@ -42,7 +41,7 @@ const BaseLayout: React.FC<Props> = ({
           </>
         )}
       </>
-    </AnimatePresence>
+    </>
   )
 }
 

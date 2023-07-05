@@ -13,6 +13,12 @@ export const globalReducer = (
         loading: action.payload.state,
       }
 
+    case GlobalTypes.SET_ADDRESS:
+      return {
+        ...state,
+        address: action.payload.address,
+      }
+
     case GlobalTypes.SET_NETWORK_MODAL:
       return {
         ...state,

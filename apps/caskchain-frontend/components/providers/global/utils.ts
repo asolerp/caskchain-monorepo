@@ -1,7 +1,6 @@
-import { GlobalHooks, setupHooks } from '@hooks/auth/setupHooks'
-
 export type GlobalState = {
   user: any
+  address: string | null
   token: string | null
   shareModal: boolean
   signInModal: boolean
@@ -14,10 +13,10 @@ export type GlobalState = {
     main: boolean
     nav: boolean
   }
-  hooks: GlobalHooks
 }
 
 export enum GlobalTypes {
+  SET_ADDRESS = 'SET_ADDRESS',
   SET_LOADING = 'SET_LOADING',
   SET_SHARE_MODAL = 'SET_SHARE_MODAL',
   SET_NETWORK_MODAL = 'SET_NETWORK_MODAL',
@@ -33,6 +32,13 @@ export enum GlobalTypes {
 type SetLoading = {
   type: typeof GlobalTypes.SET_LOADING
   payload: any
+}
+
+type SetAddress = {
+  type: typeof GlobalTypes.SET_ADDRESS
+  payload: {
+    address: string | null
+  }
 }
 
 type SetShareModal = {
@@ -91,6 +97,7 @@ type SetUser = {
 }
 
 export type GlobalActionTypes =
+  | SetAddress
   | SetToken
   | SetUser
   | SetSignInModal
@@ -104,6 +111,7 @@ export type GlobalActionTypes =
 
 export const initialState: GlobalState = {
   user: null,
+  address: null,
   token: null,
   loading: false,
   sideBar: false,
@@ -116,5 +124,4 @@ export const initialState: GlobalState = {
     main: false,
     nav: false,
   },
-  hooks: setupHooks(),
 }

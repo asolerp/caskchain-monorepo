@@ -4,7 +4,7 @@ import type { NextPage } from 'next'
 import { BaseLayout } from '@ui'
 
 import { Nft } from '@_types/nft'
-import { useAccount, useOwnedNfts } from '@hooks/web3'
+import { useOwnedNfts } from '@hooks/web3'
 
 import { useRouter } from 'next/router'
 
@@ -16,17 +16,20 @@ import Image from 'next/image'
 import { useGlobal } from '@providers/global'
 import { addressSimplifier } from 'utils/addressSimplifier'
 import Link from 'next/link'
-import BarrelNft from '@ui/ntf/item/BarrelNft'
+
 import { ipfsImageParser } from 'utils/ipfsImageParser'
 import Header from '@ui/layout/Header'
 import { useState } from 'react'
 import { Switch } from '@headlessui/react'
-import { useBalance } from 'wagmi'
+
 import ClientOnly from 'components/pages/ClientOnly'
 import ListBarrelModal from '@ui/modals/ListBarrelModal'
 import BarrelProfile from '@ui/ntf/item/BarrelProfile'
 
-type addressType = `0x${string}`
+import useGetBalance from '@hooks/common/useGetBalance'
+import { useOpenWallet } from '@hooks/common/useOpenWallet'
+
+// type addressType = `0x${string}`
 
 const tabs = [
   { name: 'My cellar', href: '#', key: 'my-collection' },
@@ -42,13 +45,12 @@ export const getServerSideProps = (context: any) => auth(context, 'user')
 const Profile: NextPage = () => {
   const { nfts } = useOwnedNfts()
   const {
-    state: { user },
+    state: { user, address },
   } = useGlobal()
+  const { openWallet, loading } = useOpenWallet()
+  const { balance } = useGetBalance()
   const router = useRouter()
-  const { account } = useAccount()
-  const { data } = useBalance({
-    address: account?.data as addressType,
-  })
+
   const [editMode, setEditMode] = useState(false)
   const [isListModalOpen, setIsListModalOpen] = useState(false)
 
@@ -94,7 +96,7 @@ const Profile: NextPage = () => {
                     </div>
                     <div className="px-10 -ml-20 flex flex-col items-center w-fit h-fit p-6 bg-gray-400 rounded-[30px] bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10">
                       <h3 className="font-rale font-medium text-white text-3xl text-center">
-                        {user?.nickname ?? addressSimplifier(account?.data)}
+                        {user?.nickname ?? addressSimplifier(address as string)}
                       </h3>
                       <Spacer size="md" />
                       <p className="font-poppins text-white">
@@ -110,15 +112,17 @@ const Profile: NextPage = () => {
                         Balance:{' '}
                         <span className="text-cask-chain">
                           {' '}
-                          {Number(data?.formatted).toFixed(2)} {data?.symbol}
+                          {balance.substring(0, 7)} ETH
                         </span>
                       </p>
                       <Spacer size="lg" />
                       <Button
+                        loading={loading}
+                        onClick={openWallet}
                         containerStyle="absolute px-6 py-4 -bottom-6"
                         labelStyle="text-md"
                       >
-                        Add Funds
+                        Open wallet
                       </Button>
                     </div>
                   </div>

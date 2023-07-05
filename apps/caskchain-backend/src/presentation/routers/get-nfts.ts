@@ -96,7 +96,6 @@ export default function GetNftsRouter(
   })
 
   router.get('/bestBarrels', async (req: Request, res: Response) => {
-    console.log('best barrels')
     try {
       const bestNfts = await getBestNfts.execute()
       logger.info('Successfully retrieve best Nfts', {

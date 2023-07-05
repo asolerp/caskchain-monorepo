@@ -4,18 +4,12 @@ import { BaseLayout } from '@ui'
 import { Switch } from '@headlessui/react'
 import Link from 'next/link'
 
-// import axios from 'axios'
-// import { useWeb3 } from '@providers/web3'
-// import { toast } from 'react-toastify'
-// import { ethers } from 'ethers'
-
 import { Button, Spacer } from 'caskchain-ui'
 
 import { auth } from 'utils/auth'
 import Image from 'next/image'
 import upperCaseFirstLetter from 'utils/upperCaseFirstLetter'
 import { useCreateNft } from '@hooks/web3'
-// import { getSignedData } from 'pages/api/utils'
 
 type LiquorFilterProps = {
   label: string

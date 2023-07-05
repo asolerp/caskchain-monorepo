@@ -17,12 +17,12 @@ import BarrelsSkeleton from 'components/pages/marketplace/BarrelsSkeleton'
 import Header from '@ui/layout/Header'
 import Image from 'next/image'
 import { LiquorsTypes, upperCaseFirstLetter } from 'caskchain-lib'
-import LiquorFilter from 'components/pages/marketplace/LiquorFilter'
+
 import useLocalLoading from '@hooks/common/useLocalLoading'
 import BarrelsSection from 'components/pages/home/BarrelsSection'
 import Dropdown from '@ui/common/Dropdown'
 import FilterMarketplace from 'components/pages/marketplace/FilterMarketplace'
-import { filters, sufixesByType } from './utils/filters'
+import { filters, sufixesByType } from '../../utils/filters'
 
 const NFTCaskWorld: NextPage = () => {
   const token = getCookie('token') as string
@@ -79,30 +79,6 @@ const NFTCaskWorld: NextPage = () => {
     <BaseLayout background="bg-black-light" bottomBanner={<RandomBarrels />}>
       <Header></Header>
       <Spacer size="xl" />
-      {/* <div className="sm:px-6 w-3/4 px-4">
-        <section className="flex flex-row justify-center space-x-5 ">
-          <LiquorFilter
-            liquor={LiquorsTypes.BRANDY}
-            active={nfts.activeLiquor.includes(LiquorsTypes.BRANDY)}
-            onClick={() => nfts.handleActiveLiquor(LiquorsTypes.BRANDY)}
-          />
-          <LiquorFilter
-            liquor={LiquorsTypes.RUM}
-            active={nfts.activeLiquor.includes(LiquorsTypes.RUM)}
-            onClick={() => nfts.handleActiveLiquor(LiquorsTypes.RUM)}
-          />
-          <LiquorFilter
-            liquor={LiquorsTypes.TEQUILA}
-            active={nfts.activeLiquor.includes(LiquorsTypes.TEQUILA)}
-            onClick={() => nfts.handleActiveLiquor(LiquorsTypes.TEQUILA)}
-          />
-          <LiquorFilter
-            liquor={LiquorsTypes.WHISKEY}
-            active={nfts.activeLiquor.includes(LiquorsTypes.WHISKEY)}
-            onClick={() => nfts.handleActiveLiquor(LiquorsTypes.WHISKEY)}
-          />
-        </section>
-      </div> */}
       {loading ? (
         <div className="flex flex-col justify-center items-center w-full h-screen"></div>
       ) : (

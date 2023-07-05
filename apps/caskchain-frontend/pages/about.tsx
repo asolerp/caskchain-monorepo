@@ -19,7 +19,7 @@ const About: NextPage = () => {
             "
             >
               <Image
-                src="https://res.cloudinary.com/enalbis/image/upload/v1682948941/CaskChain/g3gifzmroouhkdj7ffpz.png"
+                src="https://res.cloudinary.com/caskchain/image/upload/v1688555397/CaskChain/IMG_8898.png"
                 width={400}
                 height={400}
                 alt="caskchain_about"
@@ -31,14 +31,20 @@ const About: NextPage = () => {
                 for brandy connoisseurs
               </h1>
               <Spacer size="md" />
-              <p className="text-gray-300 text-lg font-popins font-light">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Phasellus malesuada massa vitae sapien vestibulum varius. Etiam
-                tempus augue ac tellus congue molestie. Aliquam posuere
-                facilisis aliquam. Maecenas a diam rhoncus mauris dapibus
-                pellentesque eu nec lacus. Sed tempor ex a odio bibendum
-                consectetur. Morbi nec aliquam neque, vitae feugiat eros. Fusce
-                tristique at velit sed pulvinar.
+              <p className="text-gray-500 text-lg font-popins font-light">
+                CaskChain is a groundbreaking digital platform that unites the
+                traditional world of spirits with innovative blockchain
+                technology. This unique online marketplace empowers brandy
+                enthusiasts and collectors worldwide to buy, sell, and trade
+                non-fungible token (NFT) representations of real-world brandy
+                casks. Each NFT represents actual ownership or share of a cask
+                of brandy maturing in renowned distilleries across the globe.
+                The marketplace offers complete transparency, ensuring each
+                NFT’s provenance, rarity, and ownership is verified and
+                immutable. By converging the intricate art of brandy-making with
+                the digital frontier, the NFT Cask Marketplace for Brandy
+                Connoisseurs opens up a fascinating new way to invest in and
+                enjoy this cherished spirit.
               </p>
             </div>
           </div>

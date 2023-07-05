@@ -3,7 +3,7 @@ import { Button, Spacer } from 'caskchain-ui'
 
 import { AnimatePresence } from 'framer-motion'
 import { useAccount } from '@hooks/web3'
-import { useAuth } from '@hooks/auth'
+
 import Image from 'next/image'
 import { useGlobal } from '@providers/global'
 import { useEffect } from 'react'
@@ -11,7 +11,6 @@ import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 
 const Home: NextPage = () => {
-  useAuth()
   const { account } = useAccount()
   const { state: user } = useGlobal()
   const router = useRouter()

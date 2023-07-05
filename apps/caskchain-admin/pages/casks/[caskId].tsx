@@ -1,11 +1,11 @@
-import { useAccount, useCaskNft } from '@hooks/web3'
+import { useCaskNft } from '@hooks/web3'
 import { BaseLayout } from '@ui'
 import { Button, Spacer } from 'caskchain-ui'
 import { NextPageContext } from 'next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { ethers } from 'ethers'
-import { useBalance } from 'wagmi'
+
 import ClientOnly from 'components/pages/ClientOnly'
 import { auth } from 'utils/auth'
 import { addressSimplifier, ipfsImageParser } from 'caskchain-lib'
@@ -14,11 +14,8 @@ import { useEffect, useState } from 'react'
 
 function Cask() {
   const route = useRouter()
-  const { account } = useAccount()
+
   const { cask } = useCaskNft({ caskId: route.query.caskId as string })
-  const { data } = useBalance({
-    address: account?.data,
-  })
 
   const [isInSale, setIsInSale] = useState(false)
   const [bestBarrel, setBestBarrel] = useState(false)
@@ -139,7 +136,7 @@ function Cask() {
                       <dd className=" text-2xl font-extrabold text-black">
                         {cask?.data?.price &&
                           ethers.utils.formatEther(cask?.data?.price)}{' '}
-                        {data?.symbol}
+                        ETH
                       </dd>
                     </div>
                     <div className="flex flex-col">
@@ -163,7 +160,7 @@ function Cask() {
                         htmlFor="price"
                         className="block text-sm font-medium text-gray-700"
                       >
-                        Update price in ({data?.symbol})
+                        Update price in ETH
                       </label>
                       <div className="mt-1 flex rounded-md shadow-sm">
                         <input

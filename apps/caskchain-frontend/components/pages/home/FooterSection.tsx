@@ -16,6 +16,7 @@ const SocialIcon: React.FC<SocialIconProps> = ({ social, width, height }) => {
         src={`/icons/${social}.svg`}
         width={width || 18}
         height={height || 18}
+        className="w-auto h-auto"
         alt="twitter"
       />
     </div>
@@ -30,11 +31,17 @@ const FooterSection = () => {
         width={1000}
         height={500}
         alt="wave"
-        className="scale-x-110 lg:scale-x-100 w-full"
+        className="scale-x-110 lg:scale-x-100 w-auto h-auto"
       />
       <div className="grid grid-cols-2 bg-black-light px-6 lg:px-32 lg:pb-20 pt-10 lg:pt-0">
         <div className="flex col-span-2 lg:col-span-1  flex-col justify-center items-start">
-          <Image src="/images/logo.svg" width={150} height={100} alt="logo" />
+          <Image
+            src="/images/logo.svg"
+            width={150}
+            height={100}
+            alt="logo"
+            className="w-auto h-auto"
+          />
           <Spacer size="sm" />
           <p className="font-poppins text-gray-400 font-thin max-w-sm">
             Cask Chain is the new way to take your own cask in NFT world with

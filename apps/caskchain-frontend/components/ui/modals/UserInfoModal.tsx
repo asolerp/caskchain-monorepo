@@ -1,9 +1,9 @@
-import { useAccount } from '@hooks/web3'
 import { useGlobal } from '@providers/global'
 import { GlobalTypes } from '@providers/global/utils'
 import Button from '@ui/common/Button'
 import Input from '@ui/common/Input'
 import Spacer from '@ui/common/Spacer'
+import axios from 'axios'
 import React, { useState } from 'react'
 import Modal from 'react-modal'
 
@@ -13,14 +13,35 @@ type Props = {
 }
 
 const UserInfoModal: React.FC<Props> = ({ modalIsOpen, closeModal }) => {
-  const { account } = useAccount()
-
   const {
     dispatch,
-    state: { user },
+    state: { address },
   } = useGlobal()
   const [email, setEmail] = useState<string>('')
   const [nickname, setNickname] = useState<string>('')
+
+  const handelSaveUser = async () => {
+    try {
+      await axios.post('/api/user', {
+        id: address?.toLowerCase(),
+        email,
+        nickname,
+      })
+      dispatch({
+        type: GlobalTypes.SET_USER,
+        payload: { user: { email, nickname } },
+      })
+      closeModal()
+      setTimeout(() => {
+        return dispatch({
+          type: GlobalTypes.SET_SIGN_IN_MODAL,
+          payload: { status: true },
+        })
+      }, 300)
+    } catch (e: any) {
+      console.log(e)
+    }
+  }
 
   return (
     <Modal
@@ -84,26 +105,7 @@ const UserInfoModal: React.FC<Props> = ({ modalIsOpen, closeModal }) => {
             </div>
             <Spacer size="md" />
             <div className="flex items-center justify-center rounded-b">
-              <Button
-                onClick={() => {
-                  account.handelSaveUser({
-                    id: user._id,
-                    email,
-                    nickname,
-                    callback: () => {
-                      closeModal()
-                      setTimeout(() => {
-                        return dispatch({
-                          type: GlobalTypes.SET_SIGN_IN_MODAL,
-                          payload: { status: true },
-                        })
-                      }, 300)
-                    },
-                  })
-                }}
-              >
-                Continue
-              </Button>
+              <Button onClick={handelSaveUser}>Continue</Button>
             </div>
             <Spacer size="md" />
             <div>

@@ -33,7 +33,7 @@ let CaskIllustration = ({
     <div className="flex  justify-center col-span-2 rounded-2xl">
       {activeAsset === 1 && (
         <Image
-          className={`object-contain rounded-2xl`}
+          className={`object-cover w-full h-full rounded-2xl`}
           src={src}
           alt="New NFT"
           width={350}
@@ -42,10 +42,11 @@ let CaskIllustration = ({
       )}
       {activeAsset === 2 && (
         <video
-          width="500"
-          height="300"
+          width={350}
+          height={400}
           autoPlay={true}
           controls={false}
+          className={`object-cover w-full h-full rounded-2xl`}
           src="https://res.cloudinary.com/enalbis/video/upload/v1681586853/CaskChain/flofru3viqsirclxlapx.mp4"
         />
       )}
@@ -69,8 +70,6 @@ function CaskDetail() {
   }, [cask])
 
   const liquor = cask?.data?.meta?.attributes[0].value
-
-  console.log('Liquor: ', liquor)
 
   const mapLiquorHeader: any = {
     whiskey: 'Smoky Elixir',

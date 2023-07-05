@@ -6,7 +6,6 @@ import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import useSWR from 'swr'
-import { useProvider } from 'wagmi'
 import useLoading from '@hooks/common/useLoading'
 import useFractionFactoryForm from '@hooks/common/useFractionFactoryForm'
 import axiosClient from 'lib/fetcher/axiosInstance'
@@ -16,7 +15,7 @@ type CaskNftHookFactory = CryptoHookFactory<Nft[]>
 export type UseCaskNftsHook = ReturnType<CaskNftHookFactory>
 
 export const hookFactory: CaskNftHookFactory =
-  ({ ccNft, nftVendor, nftFractionsFactory }) =>
+  ({ ccNft, nftVendor }) =>
   ({ caskId }) => {
     const [formState, handleChange] = useFractionFactoryForm({
       tokenName: '',
@@ -29,11 +28,11 @@ export const hookFactory: CaskNftHookFactory =
     const [tokenAmmount, setTokenAmmount] = useState<number | undefined>(0)
     const [listPrice, setListPrice] = useState<number>(0)
     const [erc20ListPrice, setERC20ListPrice] = useState<number>(0)
-    const provider = useProvider()
+
     const [isFavorite, setIsFavorite] = useState<boolean>(false)
 
     const {
-      state: { user },
+      state: { user, address },
     } = useGlobal()
 
     useEffect(() => {
@@ -113,30 +112,39 @@ export const hookFactory: CaskNftHookFactory =
     const updateERC20Price = async () => {
       const id = toast.loading('Pricing barrel...')
       try {
-        const gasPrice = await provider?.getGasPrice()
+        const gasPriceApprove = await ccNft?.methods
+          .approve(nftVendor!.address as string, caskId)
+          .estimateGas({ from: address })
 
-        const txApprove = await ccNft?.approve(
-          nftVendor!.address as string,
-          caskId,
-          {
-            gasPrice,
-            gasLimit: 100000,
-          }
-        )
+        const txApprove = await ccNft?.methods
+          ?.approve(nftVendor!.address as string, caskId)
+          .send({
+            from: address,
+            gas: gasPriceApprove,
+          })
 
-        const responseApprove: any = await txApprove!.wait()
+        if (!txApprove.status) throw new Error('Approve failed')
 
-        if (responseApprove.status !== 1) throw new Error('Approve failed')
+        const gasPriceList = await _nftVendor?.methods
+          .updateERC20TokenPrice(
+            caskId,
+            process.env.NEXT_PUBILC_USDT_CONTRACT_ADDRESS,
+            ethers.utils.parseUnits(erc20ListPrice.toString(), 'ether')
+          )
+          .estimateGas({ from: address })
 
-        const txList = await _nftVendor?.updateERC20TokenPrice(
-          caskId,
-          process.env.NEXT_PUBILC_USDT_CONTRACT_ADDRESS,
-          ethers.utils.parseUnits(erc20ListPrice.toString(), 'ether')
-        )
+        const txList = await _nftVendor
+          ?.updateERC20TokenPrice(
+            caskId,
+            process.env.NEXT_PUBILC_USDT_CONTRACT_ADDRESS,
+            ethers.utils.parseUnits(erc20ListPrice.toString(), 'ether')
+          )
+          .send({
+            from: address,
+            gas: gasPriceList,
+          })
 
-        const responseList: any = await txList!.wait()
-
-        if (responseList.status !== 1) throw new Error('Listing failed')
+        if (!txList.status) throw new Error('Listing failed')
 
         await refetchNft()
 
@@ -162,27 +170,31 @@ export const hookFactory: CaskNftHookFactory =
     const updateNftSaleState = async (state: boolean) => {
       const id = toast.loading('Updating barrel state...')
       try {
-        const gasPrice = await provider?.getGasPrice()
+        const gasPriceApprove = await ccNft?.methods
+          ?.approve(nftVendor!._address as string, caskId)
+          ?.estimateGas({ from: address })
 
-        const txApprove = await ccNft?.approve(
-          nftVendor!.address as string,
-          caskId,
-          {
-            gasPrice,
-            gasLimit: 100000,
-          }
-        )
+        const txApprove = await ccNft?.methods
+          ?.approve(nftVendor!._address as string, caskId)
+          .send({
+            from: address,
+            gas: gasPriceApprove,
+          })
 
-        const responseApprove: any = await txApprove!.wait()
+        if (!txApprove.status) throw new Error('Approve failed')
 
-        if (responseApprove.status !== 1) throw new Error('Approve failed')
+        const gasPriceSale = await _nftVendor?.methods
+          ?.updateStateForSale(caskId, state)
+          .estimateGas({ from: address })
 
-        const txSale = await _nftVendor?.updateStateForSale(caskId, state)
+        const txSale = await _nftVendor?.methods
+          ?.updateStateForSale(caskId, state)
+          .send({
+            from: address,
+            gas: gasPriceSale,
+          })
 
-        const responseSaleStateUpdate: any = await txSale!.wait()
-
-        if (responseSaleStateUpdate.status !== 1)
-          throw new Error('Listing failed')
+        if (!txSale.status) throw new Error('Listing failed')
 
         await refetchNft()
 
@@ -236,29 +248,37 @@ export const hookFactory: CaskNftHookFactory =
     const updateNftPrice = async () => {
       const id = toast.loading('Pricing barrel...')
       try {
-        const gasPrice = await provider?.getGasPrice()
+        const gasPriceApprove = await ccNft?.methods
+          ?.approve(nftVendor!.address as string, caskId)
+          ?.estimateGas({ from: address })
 
-        const txApprove = await ccNft?.approve(
-          nftVendor!.address as string,
-          caskId,
-          {
-            gasPrice,
-            gasLimit: 100000,
-          }
-        )
+        const txApprove = await ccNft?.methods
+          ?.approve(nftVendor!.address as string, caskId)
+          .send({
+            from: address,
+            gas: gasPriceApprove,
+          })
 
-        const responseApprove: any = await txApprove!.wait()
+        if (!txApprove.status) throw new Error('Approve failed')
 
-        if (responseApprove.status !== 1) throw new Error('Approve failed')
+        const gasPriceList = await _nftVendor?.methods
+          .updateListingPrice(
+            caskId,
+            ethers.utils.parseUnits(listPrice.toString(), 'ether')
+          )
+          .estimateGas({ from: address })
 
-        const txList = await _nftVendor?.updateListingPrice(
-          caskId,
-          ethers.utils.parseUnits(listPrice.toString(), 'ether')
-        )
+        const txList = await _nftVendor?.methods
+          ?.updateListingPrice(
+            caskId,
+            ethers.utils.parseUnits(listPrice.toString(), 'ether')
+          )
+          .send({
+            from: address,
+            gas: gasPriceList,
+          })
 
-        const responseList: any = await txList!.wait()
-
-        if (responseList.status !== 1) throw new Error('Listing failed')
+        if (!txList.status) throw new Error('Listing failed')
 
         await refetchNft()
 

@@ -1,9 +1,14 @@
-import { useAccount } from '@hooks/web3'
 import Image from 'next/image'
 import Link from 'next/link'
+import { logout } from 'caskchain-lib/utils'
+import { useWeb3Instance } from 'caskchain-lib/provider/web3'
+import { useGlobal } from '@providers/global'
+import { magic } from 'lib/magic'
+import { GlobalTypes } from '@providers/global/utils'
 
 const LeftSidebar = () => {
-  const { account } = useAccount()
+  const { dispatch } = useGlobal()
+  const { setWeb3 } = useWeb3Instance()
 
   return (
     <div className="flex bg-gray-200">
@@ -65,7 +70,15 @@ const LeftSidebar = () => {
                 <li>
                   <span
                     onClick={() => {
-                      account.logout()
+                      logout(
+                        setWeb3,
+                        () =>
+                          dispatch({
+                            type: GlobalTypes.SET_USER,
+                            payload: { address: null },
+                          }),
+                        magic
+                      )
                     }}
                     className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                   >

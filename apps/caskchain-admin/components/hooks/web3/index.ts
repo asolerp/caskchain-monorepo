@@ -1,4 +1,4 @@
-import { useHooks } from '@providers/web3'
+import { useHooks } from 'caskchain-lib/provider/web3'
 
 export const useAccount = () => {
   const hooks = useHooks()

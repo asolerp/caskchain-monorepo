@@ -52,7 +52,7 @@ const MainAnimationSection = () => {
           src="https://res.cloudinary.com/enalbis/image/upload/v1683188732/CaskChain/tpkeirnrtu6to38h1q7f.svg"
           width={300}
           height={200}
-          className="object-cover"
+          className="object-cover h-auto"
           alt="cc"
           priority
         />

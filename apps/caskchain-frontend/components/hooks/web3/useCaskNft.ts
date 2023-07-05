@@ -1,45 +1,33 @@
 import { useGlobal } from '@providers/global'
 import { GlobalTypes } from '@providers/global/utils'
-import { AcceptedChainIds, loadContractByABI } from '@providers/web3/utils'
+
 import { CryptoHookFactory } from '@_types/hooks'
 import { Nft } from '@_types/nft'
 import axios from 'axios'
 import { getCookie } from 'cookies-next'
-import { Contract, Signer, ethers } from 'ethers'
+import { ethers } from 'ethers'
 import axiosClient from 'lib/fetcher/axiosInstance'
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import useSWR from 'swr'
-import { useNetwork, useProvider } from 'wagmi'
-import NftFractionToken from 'contracts/build/contracts/NftFractionToken.json'
-import { fetchSigner } from '@wagmi/core'
-import useDebounce from '@hooks/common/useDebounce'
 
-const NETWORK_ID = process.env.NEXT_PUBLIC_NETWORK_ID
+import useDebounce from '@hooks/common/useDebounce'
 
 type CaskNftHookFactory = CryptoHookFactory<Nft[]>
 
 export type UseCaskNftsHook = ReturnType<CaskNftHookFactory>
 
 export const hookFactory: CaskNftHookFactory =
-  ({
-    nftOffers,
-    nftVendor,
-    nftFractionsVendor,
-    nftFractionToken,
-    erc20Contracts,
-  }) =>
+  ({ nftOffers, nftVendor, nftFractionsVendor, erc20Contracts }) =>
   ({ caskId }) => {
     const [successModal, setSuccessModal] = useState<boolean>(false)
     const [tokenAmmount, setTokenAmmount] = useState<number | undefined>(0)
     const [totalFavorites, setTotalFavorites] = useState<number | undefined>(0)
 
-    const { chain } = useNetwork()
-    const provider = useProvider()
     const [isFavorite, setIsFavorite] = useState<boolean>(false)
 
     const {
-      state: { user },
+      state: { user, address },
       dispatch,
     } = useGlobal()
 
@@ -99,8 +87,7 @@ export const hookFactory: CaskNftHookFactory =
     const _nftVendor = nftVendor
     const _nftFractionsVendor = nftFractionsVendor
 
-    const isUserNeededDataFilled =
-      user?.email && token && AcceptedChainIds.some((id) => id === chain?.id)
+    const isUserNeededDataFilled = true
     const hasOffersFromUser = data?.offer?.bidders?.some(
       (bidder: string) => bidder === user?.address
     )
@@ -140,66 +127,75 @@ export const hookFactory: CaskNftHookFactory =
     }
 
     const handleUserState = useCallback(() => {
-      if (
-        provider.chains &&
-        provider.chains.some((c: any) =>
-          AcceptedChainIds.some((aChainId) => aChainId === c)
-        )
-      ) {
-        return dispatch({
-          type: GlobalTypes.SET_NETWORK_MODAL,
-          payload: { status: true },
-        })
-      }
-      if (!user?.email) {
-        return dispatch({
-          type: GlobalTypes.SET_USER_INFO_MODAL,
-          payload: { status: true },
-        })
-      }
+      // if (
+      //   provider.chains &&
+      //   provider.chains.some((c: any) =>
+      //     AcceptedChainIds.some((aChainId) => aChainId === c)
+      //   )
+      // ) {
+      //   return dispatch({
+      //     type: GlobalTypes.SET_NETWORK_MODAL,
+      //     payload: { status: true },
+      //   })
+      // }
+      // if (!user?.email) {
+      //   return dispatch({
+      //     type: GlobalTypes.SET_USER_INFO_MODAL,
+      //     payload: { status: true },
+      //   })
+      // }
       if (!token) {
         return dispatch({
           type: GlobalTypes.SET_SIGN_IN_MODAL,
           payload: { status: true },
         })
       }
-    }, [dispatch, token, user?.email])
+    }, [dispatch, token])
 
     const hasFractions = data?.fractions?.total
 
     const buyNft = useCallback(
       async (tokenId: number, price: string) => {
+        const id = toast.loading('Updating barrel state...')
         try {
           if (isUserNeededDataFilled) {
-            const result = await _nftVendor?.buyItem(tokenId, {
-              value: price.toString(),
-            })
-            await toast.promise(result!.wait(), {
-              pending: 'Processing transaction',
-              success: 'Nft is yours! Go to Profile page',
-              error: 'Processing error',
+            const gasPriceBuy = await _nftVendor?.methods
+              ?.buyItem(tokenId)
+              .estimateGas({ from: address })
+
+            const txBuy = await _nftVendor?.methods
+              ?.buyItem(tokenId, {
+                value: price.toString(),
+              })
+              .send({
+                from: address,
+                gasPrice: gasPriceBuy,
+              })
+            if (!txBuy.status) throw new Error('Buy Nft failed')
+
+            toast.update(id, {
+              render: 'Sale state updated',
+              type: 'success',
+              isLoading: false,
+              closeOnClick: true,
+              autoClose: 2000,
             })
           } else {
             return handleUserState()
           }
           setSuccessModal(true)
         } catch (e: any) {
-          if (e.code === -32603) {
-            toast.error('🏦 Insufficient funds', {
-              position: 'top-right',
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: 'light',
-            })
-          }
+          toast.update(id, {
+            render: 'Something went wrong',
+            type: 'error',
+            isLoading: false,
+            closeOnClick: true,
+            autoClose: 2000,
+          })
           console.error(e)
         }
       },
-      [_nftVendor, handleUserState, isUserNeededDataFilled]
+      [_nftVendor, handleUserState, isUserNeededDataFilled, address]
     )
 
     const buyWithERC20 = useCallback(
@@ -253,31 +249,31 @@ export const hookFactory: CaskNftHookFactory =
       [_nftVendor, handleUserState, isUserNeededDataFilled]
     )
 
-    const buyFractionizedNft = useCallback(async () => {
-      try {
-        console.log('Data', data)
-        if (isUserNeededDataFilled) {
-          const listingPrice = data?.fractions?.listingPrice.toString()
+    // const buyFractionizedNft = useCallback(async () => {
+    //   try {
+    //     console.log('Data', data)
+    //     if (isUserNeededDataFilled) {
+    //       const listingPrice = data?.fractions?.listingPrice.toString()
 
-          const tokenContract = await loadContractByABI(
-            NftFractionToken.networks[4447].address as string,
-            NftFractionToken.abi
-          )
+    //       const tokenContract = await loadContractByABI(
+    //         NftFractionToken.networks[4447].address as string,
+    //         NftFractionToken.abi
+    //       )
 
-          const signer = (await fetchSigner()) as unknown as Signer
+    //       const signer = (await fetchSigner()) as unknown as Signer
 
-          const signedTokenContract = tokenContract.connect(signer)
+    //       const signedTokenContract = tokenContract.connect(signer)
 
-          await signedTokenContract.purchase({
-            value: listingPrice,
-          })
-        } else {
-          handleUserState()
-        }
-      } catch (err) {
-        console.log(err)
-      }
-    }, [data, isUserNeededDataFilled, handleUserState])
+    //       await signedTokenContract.purchase({
+    //         value: listingPrice,
+    //       })
+    //     } else {
+    //       handleUserState()
+    //     }
+    //   } catch (err) {
+    //     console.log(err)
+    //   }
+    // }, [data, isUserNeededDataFilled, handleUserState])
 
     const buyFractions = useCallback(
       async (
@@ -294,9 +290,6 @@ export const hookFactory: CaskNftHookFactory =
                   'ether'
                 )
               ) / unitPrice
-
-            console.log('value', value)
-            console.log('tokenAddress', tokenAddress)
 
             await _nftFractionsVendor?.buyTokens(tokenAddress, {
               value: value.toString(),
@@ -366,7 +359,7 @@ export const hookFactory: CaskNftHookFactory =
       handleShareCask,
       setTokenAmmount,
       hasOffersFromUser,
-      buyFractionizedNft,
+      // buyFractionizedNft,
       debounceAddFavorite,
       isUserNeededDataFilled,
     }

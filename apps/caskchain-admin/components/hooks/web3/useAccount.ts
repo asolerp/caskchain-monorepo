@@ -2,15 +2,17 @@ import { useGlobal } from '@providers/global'
 import { GlobalTypes } from '@providers/global/utils'
 import { CryptoHookFactory } from '@_types/hooks'
 import axios from 'axios'
-import { deleteCookie, getCookie, setCookie } from 'cookies-next'
-import axiosClient from 'lib/fetcher/axiosInstance'
-
-import { useWeb3Modal } from '@web3modal/react'
+import { getCookie, setCookie } from 'cookies-next'
 
 import { getSignedData } from 'pages/api/utils'
 
-import { useAccount, useProvider, useSigner } from 'wagmi'
 import { useRouter } from 'next/router'
+
+import { getWeb3, connectWithMagic } from 'caskchain-lib'
+
+import { toast } from 'react-toastify'
+import { useWeb3Instance } from 'caskchain-lib/provider/web3'
+import { magic } from 'lib/magic'
 
 type AccountHookFactory = CryptoHookFactory<string, any>
 
@@ -18,24 +20,20 @@ export type UseAccountHook = ReturnType<AccountHookFactory>
 
 export const hookFactory: AccountHookFactory = () => () => {
   const {
-    state: { user },
+    state: { user, address },
     dispatch,
   } = useGlobal()
+  const { web3, setWeb3 } = useWeb3Instance()
   const token = getCookie('token')
   const router = useRouter()
-  const { address, isConnected } = useAccount()
-  const provider = useProvider()
-  const { data: signer } = useSigner()
 
-  const { open } = useWeb3Modal()
-
-  const signAddress = async (callback: any) => {
+  const signAddress = async (address: string, callback: any) => {
     try {
-      const signedMessage = await getSignedData(signer, address as string)
-      const responseSign = await axios.post(
-        `/api/user/${address}/signature`,
-        signedMessage
-      )
+      const signedMessage = await getSignedData(web3, address as string)
+      const responseSign = await axios.post(`/api/user/${address}/signature`, {
+        ...signedMessage,
+        address,
+      })
       setCookie('token', responseSign.data?.token)
       setCookie('refresh-token', responseSign.data?.refreshToken)
 
@@ -72,41 +70,29 @@ export const hookFactory: AccountHookFactory = () => () => {
     }
   }
 
-  const multiConnect = async () => {
-    try {
-      open()
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
   const connect = async () => {
-    if (!isConnected) {
-      return open()
-    }
-    signAddress(() => router.push('/dashboard'))
-  }
+    const accounts = await connectWithMagic(magic)
 
-  const logout = async () => {
-    deleteCookie('token')
-    deleteCookie('refresh-token')
-    dispatch({
-      type: GlobalTypes.SET_USER,
-      payload: { user: null },
-    })
-    await axiosClient.get(`/api/user/${address}/cleanTokens`)
-    window.location.reload()
+    if (accounts) {
+      console.log('Logged in user:', accounts[0])
+      localStorage.setItem('user', accounts[0])
+      const web3 = await getWeb3(magic)
+      setWeb3(web3)
+      dispatch({
+        type: GlobalTypes.SET_ADDRESS,
+        payload: { address: accounts[0] },
+      })
+      signAddress(accounts[0], () => router.push('/dashboard'))
+    } else {
+      toast.error('Please connect your wallet')
+    }
   }
 
   return {
     data: address,
-    logout,
     connect,
     signAddress,
-    multiConnect,
     handelSaveUser,
     hasAllAuthData: token && user,
-    isInstalled: provider !== null,
-    isConnected,
   }
 }

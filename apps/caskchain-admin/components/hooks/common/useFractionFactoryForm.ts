@@ -1,7 +1,7 @@
 import { useReducer } from 'react'
 
 // Definimos el reducer
-function formReducer(state, action) {
+function formReducer(state: any, action: any) {
   switch (action.type) {
     case 'UPDATE_FIELD':
       return {

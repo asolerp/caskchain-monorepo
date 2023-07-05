@@ -5,7 +5,8 @@ import { SWRResponse } from 'swr'
 // import { NftVendorContract } from 'contracts/types/nftVendorContract'
 
 export type Web3Dependencies = {
-  web3Modal?: any
+  web3?: any
+  setWeb3?: any
   erc20Contracts?: any
   nftFractionsVendor?: any
   nftFractionsFactory?: any
@@ -14,7 +15,6 @@ export type Web3Dependencies = {
   provider: any | undefined
   ccNft: any
   nftVendor: any
-  ethereum: any | undefined
   isLoading: boolean
 }
 

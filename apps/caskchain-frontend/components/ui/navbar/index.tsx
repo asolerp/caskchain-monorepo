@@ -1,19 +1,17 @@
 import React from 'react'
 import { Disclosure } from '@headlessui/react'
-import { Bars3Icon, WalletIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
 import ActiveLink from '../link'
 
-import { useAccount, useNetwork } from '@hooks/web3'
 import Walletbar from './Walletbar'
 import SignInModal from '@ui/modals/SignInModal'
 
 import { useGlobal } from '@providers/global'
 import { GlobalTypes } from '@providers/global/utils'
 import UserInfoModal from '@ui/modals/UserInfoModal'
-import { useAuth } from '@hooks/auth'
 import Link from 'next/link'
-import { getCookie } from 'cookies-next'
+
 import Image from 'next/image'
 import Sidebar from './Sidebar'
 import NetworkModal from '@ui/modals/NetworkModal'
@@ -33,25 +31,11 @@ const navigation = [
     url: '/about',
     key: 'about',
   },
-  // { name: 'About us', href: '/about' },
 ]
 
 const Navbar = () => {
-  useAuth()
-  const { account } = useAccount()
-  const { network } = useNetwork()
-
-  const token = getCookie('token') as string
-
   const {
-    state: {
-      userInfoModal,
-      signInModal,
-      networkModal,
-      shareModal,
-      user,
-      sideBar,
-    },
+    state: { userInfoModal, signInModal, networkModal, shareModal, sideBar },
     dispatch,
   } = useGlobal()
 
@@ -130,7 +114,7 @@ const Navbar = () => {
                             src="/images/logo.svg"
                             width={205}
                             height={200}
-                            className="w-40 h-40 lg:w-62 lg:h-62"
+                            className="h-auto lg:w-62 lg:h-62"
                             alt="caskchain_logo"
                           />
                         </div>
@@ -138,7 +122,7 @@ const Navbar = () => {
                     </div>
                     <div className="hidden lg:flex col-span-4 space-x-3 justify-center items-center">
                       {navigation.map((item) => (
-                        <div key={item.keuy}>
+                        <div key={item.key}>
                           <ActiveLink
                             activeclass="text-cask-chain border-b-2 border-b-cask-chain"
                             href={item.href}
@@ -156,13 +140,7 @@ const Navbar = () => {
                       ))}
                     </div>
                     <div className="hidden lg:flex col-span-4 justify-end items-center pr-2 sm:static sm:inset-auto sm:pr-0">
-                      <WalletIcon
-                        onClick={() => account.multiConnect()}
-                        width={40}
-                        height={40}
-                        className="text-cask-chain mr-5"
-                      />
-                      <div className="text-gray-200 self-center mr-2">
+                      {/* <div className="text-gray-200 self-center mr-2">
                         <span className="inline-flex items-center px-6 py-3 rounded-full text-sm font-medium ring-2 ring-cask-chain text-white shadow-lg">
                           <svg
                             className="-ml-0.5 mr-1.5 h-2 w-2 text-cask-chain"
@@ -177,16 +155,8 @@ const Navbar = () => {
                             ? network.data
                             : 'Install Web3 Wallet'}
                         </span>
-                      </div>
-                      <Walletbar
-                        token={token}
-                        user={user}
-                        isConnected={account.isConnected}
-                        isInstalled={account.isInstalled}
-                        account={account?.data as string}
-                        connect={account.connect}
-                        logout={account.logout}
-                      />
+                      </div> */}
+                      <Walletbar />
                     </div>
                   </div>
                 </div>

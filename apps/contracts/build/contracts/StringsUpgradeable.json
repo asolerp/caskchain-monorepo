@@ -14,8 +14,12 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol",
     "exportedSymbols": {
-      "MathUpgradeable": [5162],
-      "StringsUpgradeable": [4241]
+      "MathUpgradeable": [
+        5162
+      ],
+      "StringsUpgradeable": [
+        4241
+      ]
     },
     "id": 4242,
     "license": "MIT",
@@ -23,7 +27,12 @@
     "nodes": [
       {
         "id": 4068,
-        "literals": ["solidity", "^", "0.8", ".0"],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
         "nodeType": "PragmaDirective",
         "src": "101:23:26"
       },
@@ -53,7 +62,9 @@
         },
         "fullyImplemented": true,
         "id": 4241,
-        "linearizedBaseContracts": [4241],
+        "linearizedBaseContracts": [
+          4241
+        ],
         "name": "StringsUpgradeable",
         "nameLocation": "207:18:26",
         "nodeType": "ContractDefinition",
@@ -156,7 +167,9 @@
                   "src": "518:620:26",
                   "statements": [
                     {
-                      "assignments": [4085],
+                      "assignments": [
+                        4085
+                      ],
                       "declarations": [
                         {
                           "constant": false,
@@ -290,7 +303,9 @@
                       "src": "542:49:26"
                     },
                     {
-                      "assignments": [4094],
+                      "assignments": [
+                        4094
+                      ],
                       "declarations": [
                         {
                           "constant": false,
@@ -385,7 +400,9 @@
                       "src": "605:41:26"
                     },
                     {
-                      "assignments": [4101],
+                      "assignments": [
+                        4101
+                      ],
                       "declarations": [
                         {
                           "constant": false,
@@ -1012,7 +1029,11 @@
                           "id": 4132,
                           "name": "toHexString",
                           "nodeType": "Identifier",
-                          "overloadedDeclarations": [4144, 4220, 4240],
+                          "overloadedDeclarations": [
+                            4144,
+                            4220,
+                            4240
+                          ],
                           "referencedDeclaration": 4220,
                           "src": "1364:11:26",
                           "typeDescriptions": {
@@ -1139,7 +1160,9 @@
               "src": "1647:347:26",
               "statements": [
                 {
-                  "assignments": [4155],
+                  "assignments": [
+                    4155
+                  ],
                   "declarations": [
                     {
                       "constant": false,
@@ -1683,7 +1706,9 @@
                   },
                   "id": 4206,
                   "initializationExpression": {
-                    "assignments": [4178],
+                    "assignments": [
+                      4178
+                    ],
                     "declarations": [
                       {
                         "constant": false,
@@ -1912,7 +1937,10 @@
                       "id": 4207,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [4294967278, 4294967278],
+                      "overloadedDeclarations": [
+                        4294967278,
+                        4294967278
+                      ],
                       "referencedDeclaration": 4294967278,
                       "src": "1901:7:26",
                       "typeDescriptions": {
@@ -2257,7 +2285,11 @@
                       "id": 4228,
                       "name": "toHexString",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [4144, 4220, 4240],
+                      "overloadedDeclarations": [
+                        4144,
+                        4220,
+                        4240
+                      ],
                       "referencedDeclaration": 4220,
                       "src": "2236:11:26",
                       "typeDescriptions": {
@@ -2390,7 +2422,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-07-03T07:18:52.698Z",
+  "updatedAt": "2023-07-04T12:07:14.131Z",
   "devdoc": {
     "details": "String operations.",
     "kind": "dev",

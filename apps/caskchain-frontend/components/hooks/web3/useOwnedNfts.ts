@@ -20,7 +20,7 @@ type OwnedNftsHookFactory = CryptoHookFactory<UseOwnedNftsResponse>
 export type UseOwnedNftsHook = ReturnType<OwnedNftsHookFactory>
 
 export const hookFactory: OwnedNftsHookFactory =
-  ({ ccNft, ethereum, nftVendor, nftFractionToken, nftOffers, provider }) =>
+  ({ ccNft, nftVendor, nftFractionToken, nftOffers, provider }) =>
   () => {
     const token = getCookie('token')
 
@@ -73,13 +73,7 @@ export const hookFactory: OwnedNftsHookFactory =
 
     useEffect(() => {
       setIsLoading(isLoadingMe || isValidatingMe)
-    }, [isLoadingMe, isValidatingMe])
-
-    console.log('ISLOADINGME', isLoadingMe)
-
-    // useLoading({
-    //   loading: isLoadingMe,
-    // })
+    }, [isLoadingMe, isValidatingMe, setIsLoading])
 
     const redeemFractions = async (tokenAddress: string, amount: number) => {
       try {
@@ -194,34 +188,6 @@ export const hookFactory: OwnedNftsHookFactory =
       }
     }
 
-    const addNFTToMetaMask = async (tokenId: string) => {
-      try {
-        // Check if the MetaMask extension is installed
-
-        // Request the user to add the NFT to their MetaMask wallet
-        const added = await ethereum.request({
-          method: 'wallet_watchAsset',
-          params: {
-            type: 'ERC20', // ERC721 for NFTs
-            options: {
-              address: _ccNft!.address,
-              decimals: 0, // NFT contract address
-              symbol: 'CSKNFT', // NFT symbol or abbreviation
-              tokenId: tokenId, // NFT token ID
-            },
-          },
-        })
-
-        if (added) {
-          console.log('NFT added to MetaMask')
-        } else {
-          console.log('NFT not added to MetaMask')
-        }
-      } catch (error) {
-        console.error('Error adding NFT to MetaMask:', error)
-      }
-    }
-
     return {
       listNft,
       favorites,
@@ -238,7 +204,6 @@ export const hookFactory: OwnedNftsHookFactory =
       setIsApproved,
       handleActiveNft,
       redeemFractions,
-      addNFTToMetaMask,
       data: data || [],
     }
   }

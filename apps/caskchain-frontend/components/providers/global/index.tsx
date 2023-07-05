@@ -15,6 +15,14 @@ import {
   GlobalTypes,
   initialState,
 } from './utils'
+import { getMagicProvider } from 'caskchain-lib'
+
+import axiosClient from 'lib/fetcher/axiosInstance'
+
+import { logout } from 'caskchain-lib/utils'
+
+import { useWeb3Instance } from 'caskchain-lib/provider/web3'
+import { magic } from 'lib/magic'
 
 const GlobalContext = createContext<{
   state: GlobalState
@@ -30,6 +38,43 @@ interface Props {
 
 const GlobalProvider: React.FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(globalReducer, initialState)
+
+  const { setWeb3 } = useWeb3Instance()
+
+  const handleUserOnPageLoad = async () => {
+    let userDB
+    const provider = await getMagicProvider(magic)
+    const accounts = await provider.request({ method: 'eth_accounts' })
+    const user = localStorage.getItem('user')
+    // If user wallet is no longer connected, logout
+    if (!accounts[0] && user) {
+      return logout(
+        setWeb3,
+        () =>
+          dispatch({ type: GlobalTypes.SET_USER, payload: { address: null } }),
+        magic
+      )
+    }
+
+    if (accounts[0]) {
+      userDB = await axiosClient
+        .get(`/api/user/${accounts[0]?.toLowerCase()}`)
+        .then((res: any) => res.data)
+
+      dispatch({
+        type: GlobalTypes.SET_USER,
+        payload: { user: { ...userDB } },
+      })
+
+      dispatch({
+        type: GlobalTypes.SET_ADDRESS,
+        payload: { address: user },
+      })
+    } else {
+      dispatch({ type: GlobalTypes.SET_USER, payload: { user: null } })
+      dispatch({ type: GlobalTypes.SET_ADDRESS, payload: { address: null } })
+    }
+  }
 
   const handleRouteChange = useCallback(() => {
     if (state.sideBar)
@@ -53,6 +98,10 @@ const GlobalProvider: React.FC<Props> = ({ children }) => {
     }
   }, [handleRouteChange])
 
+  useEffect(() => {
+    handleUserOnPageLoad()
+  }, [])
+
   return (
     <GlobalContext.Provider value={{ state, dispatch }}>
       {children}
@@ -62,13 +111,6 @@ const GlobalProvider: React.FC<Props> = ({ children }) => {
 
 export function useGlobal() {
   return useContext(GlobalContext)
-}
-
-export function useHooks() {
-  const {
-    state: { hooks },
-  } = useGlobal()
-  return hooks
 }
 
 export default GlobalProvider

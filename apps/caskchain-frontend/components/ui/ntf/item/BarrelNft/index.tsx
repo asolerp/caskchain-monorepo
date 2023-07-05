@@ -8,7 +8,7 @@ import { useRouter } from 'next/router'
 
 import Spacer from '@ui/common/Spacer'
 import { ipfsImageParser } from 'utils/ipfsImageParser'
-import { NftAttribute } from '@_types/nft'
+
 import { ethers } from 'ethers'
 
 type NftItemProps = {
@@ -27,11 +27,6 @@ type NftItemProps = {
 
 const DEFAULT_IMAGE = '/images/nft.png'
 const BARREL_HEIGHT = 650
-
-const getBarrelAttribute = (attrs: NftAttribute[], trait_type: string) => {
-  const attribute = attrs?.find((attr) => attr?.trait_type === trait_type)
-  return attribute?.value
-}
 
 const BarrelNft: React.FC<NftItemProps> = ({
   item,

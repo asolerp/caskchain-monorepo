@@ -1,40 +1,55 @@
 import { Switch } from '@headlessui/react'
 import { BellIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
+import useGetBalance from '@hooks/common/useGetBalance'
 import { useAccount, useSideBar } from '@hooks/web3'
 import { useGlobal } from '@providers/global'
+import { GlobalTypes } from '@providers/global/utils'
+
 import Button from '@ui/common/Button'
 import ItemMenu from '@ui/common/ItemMenu'
 import Spacer from '@ui/common/Spacer'
+import { useWeb3Instance } from 'caskchain-lib/provider/web3'
 
 import ClientOnly from 'components/pages/ClientOnly'
-import { openTransak } from 'lib/crypto/transak'
+
 import Image from 'next/image'
 
 import { useRouter } from 'next/router'
 
 import React, { useState } from 'react'
-import { useBalance } from 'wagmi'
+import { logout } from 'caskchain-lib/utils'
+import { useOpenWallet } from '@hooks/common/useOpenWallet'
+import { magic } from 'lib/magic'
 
 type SidebarProps = {
   open: boolean
 }
 
-type addressType = `0x${string}`
-
 const Sidebar: React.FC<SidebarProps> = ({ open }) => {
   const openClass = open ? 'translate-x-0' : 'translate-x-full'
   const { account } = useAccount()
   const { sidebar } = useSideBar()
+  const { openWallet } = useOpenWallet()
+
+  const { setWeb3 } = useWeb3Instance()
   const router = useRouter()
   const {
     state: { user },
+    dispatch,
   } = useGlobal()
 
+  const { balance } = useGetBalance()
   const [activeNotification, setActiveNotification] = useState(false)
 
-  const { data } = useBalance({
-    address: account?.data as addressType,
-  })
+  const handleLogout = () => {
+    const dispatches = () => {
+      dispatch({ type: GlobalTypes.SET_USER, payload: { user: null } })
+      dispatch({ type: GlobalTypes.SET_ADDRESS, payload: { address: null } })
+    }
+
+    logout(setWeb3, dispatches, magic)
+    router.push('/')
+  }
 
   return (
     <div
@@ -58,14 +73,14 @@ const Sidebar: React.FC<SidebarProps> = ({ open }) => {
           <Spacer size="xl" />
           <section className="flex flex-col items-center">
             <p className="font-poppins text-xl text-white">Total balance</p>
-            {account && data && (
-              <p className="font-poppins font-semibold text-lg text-cask-chain">
-                {Number(data?.formatted).toFixed(2)} {data?.symbol}
-              </p>
-            )}
+
+            <p className="font-poppins font-semibold text-lg text-cask-chain">
+              {balance.substring(0, 7)} ETH
+            </p>
+
             <Spacer size="md" />
-            <Button containerStyle="px-20 py-4" onClick={openTransak} fit>
-              Add funds
+            <Button containerStyle="px-20 py-4" onClick={openWallet} fit>
+              Open wallet
             </Button>
           </section>
           <Spacer size="2xl" />
@@ -191,7 +206,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open }) => {
             <Spacer size="md" />
             <div className="flex flex-col divide-y-[1px] divide-gray-700 w-full bg-[#292929] rounded-xl">
               <ItemMenu
-                onClick={account.logout}
+                onClick={handleLogout}
                 leftSide={
                   <div className="flex items-center space-x-2">
                     <Image
