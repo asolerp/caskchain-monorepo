@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "jsxImportSource": "@welldone-software/why-did-you-render",
     "baseUrl": ".",
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
