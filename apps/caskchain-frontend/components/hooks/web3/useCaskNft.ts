@@ -156,11 +156,14 @@ export const hookFactory: CaskNftHookFactory =
 
     const buyNft = useCallback(
       async (tokenId: number, price: string) => {
-        const id = toast.loading('Updating barrel state...')
+        const id = toast.loading('Buying a barrel...')
+        console.log('price', price.toString())
         try {
           if (isUserNeededDataFilled) {
             const gasPriceBuy = await _nftVendor?.methods
-              ?.buyItem(tokenId)
+              ?.buyItem(tokenId, {
+                value: price.toString(),
+              })
               .estimateGas({ from: address })
 
             const txBuy = await _nftVendor?.methods
@@ -174,7 +177,7 @@ export const hookFactory: CaskNftHookFactory =
             if (!txBuy.status) throw new Error('Buy Nft failed')
 
             toast.update(id, {
-              render: 'Sale state updated',
+              render: 'Buy Nft success',
               type: 'success',
               isLoading: false,
               closeOnClick: true,
