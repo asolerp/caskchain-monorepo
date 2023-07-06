@@ -44,13 +44,13 @@ function Cask() {
         <div className="flex flex-col w-full   px-20 py-10">
           <div className="grid grid-cols-2 gap-6">
             <div className="flex items-center justify-center">
-              <Image
+              {/* <Image
                 src={mainImage}
                 width={500}
                 height={500}
                 alt={cask?.data?.meta?.name}
                 className="rounded-xl object-contain"
-              ></Image>
+              ></Image> */}
             </div>
             <div className="flex flex-col justify-start w-full">
               <div className="flex flex-row items-center space-x-4">
