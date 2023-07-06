@@ -8,7 +8,7 @@ import { ethers } from 'ethers'
 
 import ClientOnly from 'components/pages/ClientOnly'
 import { auth } from 'utils/auth'
-import { addressSimplifier, ipfsImageParser } from 'caskchain-lib'
+import { addressSimplifier } from 'caskchain-lib'
 import { Switch } from '@headlessui/react'
 import { useEffect, useState } from 'react'
 
@@ -27,8 +27,8 @@ function Cask() {
     }
   }, [cask?.data])
 
-  const mainImage =
-    cask?.data?.meta?.image && ipfsImageParser(cask?.data?.meta?.image)
+  // const mainImage =
+  //   cask?.data?.meta?.image && ipfsImageParser(cask?.data?.meta?.image)
 
   if (cask?.isLoading || cask?.isValidating) {
     return (
