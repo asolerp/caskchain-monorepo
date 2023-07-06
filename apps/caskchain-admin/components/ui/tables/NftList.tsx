@@ -1,8 +1,8 @@
 import { Trait } from '@_types/nft'
 import { ethers } from 'ethers'
 import PaginationBar from './PaginationBar'
-import { addressSimplifier } from 'caskchain-lib'
-// import Image from 'next/image'
+import { addressSimplifier, ipfsImageParser } from 'caskchain-lib'
+import Image from 'next/image'
 
 const NftList = ({
   barrels,
@@ -66,21 +66,22 @@ const NftList = ({
           {barrels &&
             barrels?.documents?.map((barrel: any, i: number) => (
               <tr
-                key={barrel._id}
                 onClick={() => onClickBarrel(barrel._id.toString())}
                 className={`group ${
                   i % 2 === 0 ? 'bg-gray-600' : 'bg-transparent'
                 } border-b rounded-lg dark:bg-gray-800 dark:border-gray-700 text-red-600 hover:bg-cask-chain dark:hover:bg-cask-chain`}
               >
-                {/* <td className={`px-6 py-4 ${getClassByIndex(i)}`}>
+                <td className={`px-6 py-4 ${getClassByIndex(i)}`}>
                   <Image
                     className={`object-contain rounded-3xl border-4 border-white`}
                     src={ipfsImageParser(barrel.image)}
                     alt="New NFT"
                     width={100}
                     height={100}
+                    priority={true}
+                    quality={100}
                   />
-                </td> */}
+                </td>
                 <th
                   scope="row"
                   className={`px-6 py-4 font-medium ${getClassByIndex(

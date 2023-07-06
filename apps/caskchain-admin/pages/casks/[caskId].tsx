@@ -8,7 +8,7 @@ import { ethers } from 'ethers'
 
 import ClientOnly from 'components/pages/ClientOnly'
 import { auth } from 'utils/auth'
-import { addressSimplifier } from 'caskchain-lib'
+import { addressSimplifier, ipfsImageParser } from 'caskchain-lib'
 import { Switch } from '@headlessui/react'
 import { useEffect, useState } from 'react'
 
@@ -27,8 +27,8 @@ function Cask() {
     }
   }, [cask?.data])
 
-  // const mainImage =
-  //   cask?.data?.meta?.image && ipfsImageParser(cask?.data?.meta?.image)
+  const mainImage =
+    cask?.data?.meta?.image && ipfsImageParser(cask?.data?.meta?.image)
 
   if (cask?.isLoading || cask?.isValidating) {
     return (
@@ -45,13 +45,13 @@ function Cask() {
           <div className="grid grid-cols-2 gap-6">
             <div className="flex items-center justify-center">
               <Image
-                src={
-                  'https://gateway.pinata.cloud/ipfs/QmU1MBw3Mrtpi9gh38MX3zwCmK7915pk6QMTyhwLwZZqMq'
-                }
+                src={mainImage}
                 width={500}
                 height={500}
                 alt={cask?.data?.meta?.name}
                 className="rounded-xl object-contain"
+                priority={true}
+                quality={100}
               ></Image>
             </div>
             <div className="flex flex-col justify-start w-full">
