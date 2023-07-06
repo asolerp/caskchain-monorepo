@@ -161,19 +161,14 @@ export const hookFactory: CaskNftHookFactory =
         try {
           if (isUserNeededDataFilled) {
             const gasPriceBuy = await _nftVendor?.methods
-              ?.buyItem(tokenId, {
-                value: price.toString(),
-              })
+              ?.buyItem(tokenId)
               .estimateGas({ from: address })
 
-            const txBuy = await _nftVendor?.methods
-              ?.buyItem(tokenId, {
-                value: price.toString(),
-              })
-              .send({
-                from: address,
-                gasPrice: gasPriceBuy,
-              })
+            const txBuy = await _nftVendor?.methods?.buyItem(tokenId).send({
+              from: address,
+              value: price.toString(),
+              gasPrice: gasPriceBuy,
+            })
             if (!txBuy.status) throw new Error('Buy Nft failed')
 
             toast.update(id, {
