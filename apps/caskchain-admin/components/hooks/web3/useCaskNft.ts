@@ -56,7 +56,7 @@ export const hookFactory: CaskNftHookFactory =
           ...nfts,
         }
       },
-      { revalidateOnFocus: true }
+      { revalidateOnFocus: false }
     )
 
     const {
@@ -71,7 +71,7 @@ export const hookFactory: CaskNftHookFactory =
         )
         return salesHistoryData
       },
-      { revalidateOnFocus: true }
+      { revalidateOnFocus: false }
     )
 
     const {
@@ -84,7 +84,7 @@ export const hookFactory: CaskNftHookFactory =
         const { data: offers }: any = await axios.get(`/api/offers/${caskId}`)
         return offers
       },
-      { revalidateOnFocus: true }
+      { revalidateOnFocus: false }
     )
 
     const { data: totalFavoritesData } = useSWR(

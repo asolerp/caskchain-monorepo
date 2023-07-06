@@ -66,6 +66,7 @@ const NftList = ({
           {barrels &&
             barrels?.documents?.map((barrel: any, i: number) => (
               <tr
+                key={barrel._id}
                 onClick={() => onClickBarrel(barrel._id.toString())}
                 className={`group ${
                   i % 2 === 0 ? 'bg-gray-600' : 'bg-transparent'

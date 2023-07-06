@@ -40,7 +40,7 @@ export const hookFactory: AllNftsHookFactory =
         return nfts?.data || []
       },
       {
-        revalidateOnMount: true,
+        revalidateOnMount: false,
       }
     )
 
