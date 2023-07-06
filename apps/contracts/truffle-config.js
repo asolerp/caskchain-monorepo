@@ -107,6 +107,7 @@ module.exports = {
       network_id: 80001,
       networkCheckTimeout: 10000,
       timeoutBlocks: 200,
+      gasPrice: 30000000000,
     },
     //
     // Useful for private networks

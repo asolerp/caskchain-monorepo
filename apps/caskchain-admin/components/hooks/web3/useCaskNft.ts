@@ -249,11 +249,11 @@ export const hookFactory: CaskNftHookFactory =
       const id = toast.loading('Pricing barrel...')
       try {
         const gasPriceApprove = await ccNft?.methods
-          ?.approve(nftVendor!.address as string, caskId)
+          ?.approve(nftVendor._address as string, caskId)
           ?.estimateGas({ from: address })
 
         const txApprove = await ccNft?.methods
-          ?.approve(nftVendor!.address as string, caskId)
+          ?.approve(nftVendor._address as string, caskId)
           .send({
             from: address,
             gas: gasPriceApprove,

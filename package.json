@@ -11,7 +11,7 @@
   "scripts": {
     "start:mongodb": "sudo run-rs --mongod",
     "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
+    "dev": "turbo run dev --parallel --no-cache",
     "deploy": "npx cross-env node scripts/startup.js",
     "stop": "npx pm2 stop all",
     "build:caskchain-admin": "turbo run build --filter=caskchain-admin",
