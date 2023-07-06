@@ -2,7 +2,7 @@ import { useCaskNft } from '@hooks/web3'
 import { BaseLayout } from '@ui'
 import { Button, Spacer } from 'caskchain-ui'
 import { NextPageContext } from 'next'
-// import Image from 'next/image'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { ethers } from 'ethers'
 
@@ -44,13 +44,15 @@ function Cask() {
         <div className="flex flex-col w-full   px-20 py-10">
           <div className="grid grid-cols-2 gap-6">
             <div className="flex items-center justify-center">
-              {/* <Image
-                src={mainImage}
+              <Image
+                src={
+                  'https://gateway.pinata.cloud/ipfs/QmU1MBw3Mrtpi9gh38MX3zwCmK7915pk6QMTyhwLwZZqMq'
+                }
                 width={500}
                 height={500}
                 alt={cask?.data?.meta?.name}
                 className="rounded-xl object-contain"
-              ></Image> */}
+              ></Image>
             </div>
             <div className="flex flex-col justify-start w-full">
               <div className="flex flex-row items-center space-x-4">
