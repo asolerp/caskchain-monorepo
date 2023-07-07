@@ -143,18 +143,24 @@ export const loadContract = async (
 
 export const sendTransaction = async (
   address: any,
+  estimatedGas: boolean = true,
   transaction: any,
   gasIncreasePercent: number = 0
 ) => {
   try {
-    // Estimate the gas required for the transaction
-    let estimatedGas = await transaction.estimateGas({ from: address });
+    let tx;
+    if (estimatedGas) {
+      // Estimate the gas required for the transaction
+      let estimatedGas = await transaction.estimateGas({ from: address });
 
-    // Increase the estimated gas by the specified percentage
-    estimatedGas = Math.ceil(estimatedGas * (1 + gasIncreasePercent / 100));
+      // Increase the estimated gas by the specified percentage
+      estimatedGas = Math.ceil(estimatedGas * (1 + gasIncreasePercent / 100));
 
-    // Send the transaction with the increased gas limit
-    const tx = await transaction.send({ from: address, gas: estimatedGas });
+      // Send the transaction with the increased gas limit
+      tx = await transaction.send({ from: address, gas: estimatedGas });
+    } else {
+      tx = await transaction.send({ from: address });
+    }
 
     if (!tx.status) throw new Error("Transaction failed");
 
