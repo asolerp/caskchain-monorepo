@@ -204,7 +204,7 @@ export const hookFactory: CreateNftHookFactory =
         })
 
         const txMint = ccNft?.methods?.mintNFT(nftURI)
-        const txMintRes = await sendTransaction(address, false, txMint, 0)
+        const txMintRes = await sendTransaction(address, true, txMint, 0)
 
         const tokenId = Number(txMintRes.events.Mint.returnValues.tokenId)
 
@@ -212,14 +212,14 @@ export const hookFactory: CreateNftHookFactory =
           nftVendor._address as string,
           tokenId
         )
-        await sendTransaction(address, true, txApprove, 10)
+        await sendTransaction(address, true, txApprove, 0)
 
         const txList = nftVendor?.methods?.listItem(
           tokenId,
           ethers.utils.parseUnits(price.toString(), 'ether'),
           false
         )
-        await sendTransaction(address, false, txList, 0)
+        await sendTransaction(address, true, txList, 0)
 
         toast.update(id, {
           render: 'NFT listed',
