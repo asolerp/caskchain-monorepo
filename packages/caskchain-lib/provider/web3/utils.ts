@@ -140,3 +140,26 @@ export const loadContract = async (
     return Promise.reject(`Contract ${name} cannot be loaded`);
   }
 };
+
+export const sendTransaction = async (
+  address: any,
+  transaction: any,
+  gasIncreasePercent: number = 0
+) => {
+  try {
+    // Estimate the gas required for the transaction
+    let estimatedGas = await transaction.estimateGas({ from: address });
+
+    // Increase the estimated gas by the specified percentage
+    estimatedGas = Math.ceil(estimatedGas * (1 + gasIncreasePercent / 100));
+
+    // Send the transaction with the increased gas limit
+    const tx = await transaction.send({ from: address, gas: estimatedGas });
+
+    if (!tx.status) throw new Error("Transaction failed");
+
+    return tx;
+  } catch (e: any) {
+    throw new Error(`Failed transaction: ${e.message}`);
+  }
+};

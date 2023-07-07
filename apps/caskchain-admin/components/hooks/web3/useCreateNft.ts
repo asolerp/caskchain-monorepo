@@ -2,6 +2,7 @@ import { CryptoHookFactory } from '@_types/hooks'
 import { NftMeta, PinataRes } from '@_types/nft'
 import { useGlobal } from '@providers/global'
 import axios from 'axios'
+import { sendTransaction } from 'caskchain-lib/provider/web3/utils'
 import { ethers } from 'ethers'
 import axiosClient from 'lib/fetcher/axiosInstance'
 import { ChangeEvent, useState } from 'react'
@@ -185,9 +186,14 @@ export const hookFactory: CreateNftHookFactory =
     const createNft = async () => {
       const id = toast.loading('Listing new barrel...')
       const ipfsHash = nftURI.split('/ipfs/')[1]
+
+      // Assign environment variables to constants
+      const PINATA_GATEWAY_URL = process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL
+      const PINATA_GATEWAY_TOKEN = process.env.NEXT_PUBLIC_PINATA_GATEWAY_TOKEN
+
       try {
         const nftRes = await axios.get(
-          `${process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL}/${ipfsHash}?pinataGatewayToken=${process.env.NEXT_PUBLIC_PINATA_GATEWAY_TOKEN}`
+          `${PINATA_GATEWAY_URL}/${ipfsHash}?pinataGatewayToken=${PINATA_GATEWAY_TOKEN}`
         )
         const content = nftRes.data
 
@@ -197,52 +203,23 @@ export const hookFactory: CreateNftHookFactory =
           }
         })
 
-        const gasPriceMint = await ccNft?.methods
-          ?.mintNFT(nftURI)
-          .estimateGas({ from: address })
+        const txMint = ccNft?.methods?.mintNFT(nftURI)
+        const txMintRes = await sendTransaction(address, txMint, 10)
 
-        const txMint = await ccNft?.methods?.mintNFT(nftURI).send({
-          from: address,
-          gas: gasPriceMint,
-        })
+        const tokenId = Number(txMintRes.events.Mint.returnValues.tokenId)
 
-        if (!txMint.status) throw new Error('Minting failed')
+        const txApprove = ccNft?.methods?.approve(
+          nftVendor._address as string,
+          tokenId
+        )
+        await sendTransaction(address, txApprove, 10)
 
-        const tokenId = Number(txMint.events.Mint.returnValues.tokenId)
-
-        const gasPriceApprove = await ccNft?.methods
-          ?.approve(nftVendor._address as string, tokenId)
-          .estimateGas({ from: address })
-
-        const txApprove = await ccNft?.methods
-          .approve(nftVendor._address as string, tokenId)
-          .send({
-            from: address,
-            gas: gasPriceApprove,
-          })
-
-        if (!txApprove.status) throw new Error('Approve failed')
-
-        const gasPriceList = await nftVendor?.methods
-          ?.listItem(
-            tokenId,
-            ethers.utils.parseUnits(price.toString(), 'ether'),
-            false
-          )
-          .estimateGas({ from: address })
-
-        const txList = await nftVendor?.methods
-          ?.listItem(
-            tokenId,
-            ethers.utils.parseUnits(price.toString(), 'ether'),
-            false
-          )
-          .send({
-            from: address,
-            gas: gasPriceList,
-          })
-
-        if (!txList.status) throw new Error('Listing failed')
+        const txList = nftVendor?.methods?.listItem(
+          tokenId,
+          ethers.utils.parseUnits(price.toString(), 'ether'),
+          false
+        )
+        await sendTransaction(address, txList, 10)
 
         toast.update(id, {
           render: 'NFT listed',

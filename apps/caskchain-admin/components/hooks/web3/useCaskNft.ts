@@ -9,6 +9,7 @@ import useSWR from 'swr'
 import useLoading from '@hooks/common/useLoading'
 import useFractionFactoryForm from '@hooks/common/useFractionFactoryForm'
 import axiosClient from 'lib/fetcher/axiosInstance'
+import { sendTransaction } from 'caskchain-lib/provider/web3/utils'
 
 type CaskNftHookFactory = CryptoHookFactory<Nft[]>
 
@@ -248,37 +249,19 @@ export const hookFactory: CaskNftHookFactory =
     const updateNftPrice = async () => {
       const id = toast.loading('Pricing barrel...')
       try {
-        const gasPriceApprove = await ccNft?.methods
-          ?.approve(nftVendor._address as string, caskId)
-          ?.estimateGas({ from: address })
+        const txApprove = await ccNft?.methods?.approve(
+          nftVendor._address as string,
+          caskId
+        )
 
-        const txApprove = await ccNft?.methods
-          ?.approve(nftVendor._address as string, caskId)
-          .send({
-            from: address,
-            gas: gasPriceApprove,
-          })
+        await sendTransaction(address, txApprove, 10)
 
-        if (!txApprove.status) throw new Error('Approve failed')
+        const txList = await _nftVendor?.methods.updateListingPrice(
+          caskId,
+          ethers.utils.parseUnits(listPrice.toString(), 'ether')
+        )
 
-        const gasPriceList = await _nftVendor?.methods
-          .updateListingPrice(
-            caskId,
-            ethers.utils.parseUnits(listPrice.toString(), 'ether')
-          )
-          .estimateGas({ from: address })
-
-        const txList = await _nftVendor?.methods
-          ?.updateListingPrice(
-            caskId,
-            ethers.utils.parseUnits(listPrice.toString(), 'ether')
-          )
-          .send({
-            from: address,
-            gas: gasPriceList,
-          })
-
-        if (!txList.status) throw new Error('Listing failed')
+        await sendTransaction(address, txList, 10)
 
         await refetchNft()
 
