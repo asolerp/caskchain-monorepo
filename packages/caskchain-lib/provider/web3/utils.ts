@@ -157,7 +157,7 @@ export const sendTransaction = async (
       estimatedGas = Math.ceil(estimatedGas * (1 + gasIncreasePercent / 100));
 
       // Send the transaction with the increased gas limit
-      tx = await transaction.send({ from: address, gas: 2100000 });
+      tx = await transaction.send({ from: address, gas: estimatedGas });
     } else {
       tx = await transaction.send({ from: address });
     }
