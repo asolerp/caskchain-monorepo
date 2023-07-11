@@ -1,5 +1,5 @@
 import React from 'react'
-import Spinner from './Spinner'
+import PuffLoader from 'react-spinners/PuffLoader'
 
 type ButtonProps = {
   fit?: boolean
@@ -41,7 +41,7 @@ const Button: React.FC<ButtonProps> = ({
       } cursor-pointer rounded-full hover:bg-opacity-80 ${activeClass} ${containerClass} ${disabledClass}`}
     >
       {loading ? (
-        <Spinner color="black" />
+        <PuffLoader size={30} />
       ) : (
         <p className={`font-semibold ${labelClass}`}>{children}</p>
       )}

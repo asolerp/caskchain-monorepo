@@ -96,14 +96,6 @@ const HeroSection = () => {
             >
               Explore
             </Button>
-            <Spacer size="sm" />
-            <Button
-              containerStyle="px-12 py-4 lg:py-6 w-full lg:w-fit"
-              labelStyle="text-xl text-center"
-              active={false}
-            >
-              Create
-            </Button>
           </motion.div>
           <Spacer size="2xl" />
           <div className="px-6 h-fi">

@@ -4,6 +4,7 @@ import useGetBalance from '@hooks/common/useGetBalance'
 import { useAccount, useSideBar } from '@hooks/web3'
 import { useGlobal } from '@providers/global'
 import { GlobalTypes } from '@providers/global/utils'
+import { useMediaQuery } from 'react-responsive'
 
 import Button from '@ui/common/Button'
 import ItemMenu from '@ui/common/ItemMenu'
@@ -15,23 +16,25 @@ import ClientOnly from 'components/pages/ClientOnly'
 import Image from 'next/image'
 
 import { useRouter } from 'next/router'
-
-import React, { useState } from 'react'
+import { motion, useAnimation } from 'framer-motion'
+import React, { useEffect, useState } from 'react'
 import { logout } from 'caskchain-lib/utils'
 import { useOpenWallet } from '@hooks/common/useOpenWallet'
 import { magic } from 'lib/magic'
+import useWindowDimensions from '@hooks/common/useWindowDimensions'
 
 type SidebarProps = {
   open: boolean
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ open }) => {
-  const openClass = open ? 'translate-x-0' : 'translate-x-full'
+  // const openClass = open ? 'translate-x-0' : 'translate-x-full'
   const { account } = useAccount()
   const { sidebar } = useSideBar()
   const { openWallet } = useOpenWallet()
-
+  const { width } = useWindowDimensions()
   const { setWeb3 } = useWeb3Instance()
+
   const router = useRouter()
   const {
     state: { user },
@@ -40,6 +43,11 @@ const Sidebar: React.FC<SidebarProps> = ({ open }) => {
 
   const { balance } = useGetBalance()
   const [activeNotification, setActiveNotification] = useState(false)
+
+  const mainVariants = {
+    visible: { opacity: 1, x: 0 },
+    hidden: { opacity: 0, x: width },
+  }
 
   const handleLogout = () => {
     const dispatches = () => {
@@ -51,12 +59,17 @@ const Sidebar: React.FC<SidebarProps> = ({ open }) => {
     router.push('/')
   }
 
+  if (!open) return null
+
   return (
-    <div
-      className={`hidden absolute overflow-auto lg:flex flex-col p-4 mt-24 right-0 h-[calc(100vh-96px)] rounded-bl-[50px] w-[500px] shadow-2xl border-t border-gray-700 bg-black-light transition-transform ease-in-out duration-500 z-50 px-12 ${openClass}`}
+    <motion.div
+      animate={open ? 'visible' : 'hidden'}
+      variants={mainVariants}
+      transition={{ duration: 0.5 }}
+      className={`absolute overflow-auto lg:flex flex-col p-4 mt-24 lg:right-0 h-screen lg:h-[calc(100vh-96px)] lg:rounded-bl-[50px] w-screen lg:w-[500px] shadow-2xl border-t border-gray-700 bg-black-light z-50 px-12`}
     >
-      <ClientOnly>
-        <div className="flex flex-col items-center p-4">
+      {/* <ClientOnly> */}
+      {/* <div className="flex flex-col items-center p-4">
           <section className="flex flex-col items-center">
             <h3 className="font-rale font-semibold text-white text-4xl">
               {user?.nickname}
@@ -84,8 +97,8 @@ const Sidebar: React.FC<SidebarProps> = ({ open }) => {
             </Button>
           </section>
           <Spacer size="2xl" />
-          <Spacer size="2xl" />
-          <section className="flex flex-col items-center">
+          <Spacer size="2xl" /> */}
+      {/* <section className="flex flex-col items-center">
             <p className="font-poppins font-bold text-2xl text-white">
               Invite frinds
             </p>
@@ -108,8 +121,8 @@ const Sidebar: React.FC<SidebarProps> = ({ open }) => {
             </Button>
           </section>
           <Spacer size="2xl" />
-          <Spacer size="2xl" />
-          <section className="flex flex-col items-center w-full">
+          <Spacer size="2xl" /> */}
+      {/* <section className="flex flex-col items-center w-full">
             <div className="flex flex-col divide-y-[1px] divide-gray-700 w-full bg-[#292929] rounded-xl">
               <ItemMenu
                 onClick={() => router.push('/profile/my-collection')}
@@ -222,9 +235,9 @@ const Sidebar: React.FC<SidebarProps> = ({ open }) => {
                 }
               />
             </div>
-          </section>
-        </div>
-      </ClientOnly>
+          </section> */}
+      {/* </div> */}
+      {/* // </ClientOnly> */}
       {/* <Spacer size="md" />
       <div>
         <div className="border-t border-b border-gray-700 w-full py-3">
@@ -252,7 +265,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open }) => {
           Logout
         </p>
       </div> */}
-    </div>
+    </motion.div>
   )
 }
 

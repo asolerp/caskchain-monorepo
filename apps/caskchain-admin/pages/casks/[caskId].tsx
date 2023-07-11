@@ -74,7 +74,8 @@ function Cask() {
               </p>
             </div>
           </div>
-          {true && (
+          {cask?.data?.creator?.toLowerCase() ===
+            cask?.data?.owner?.address.toLowerCase() && (
             <>
               <Spacer size="xl" />
               <div>
@@ -208,9 +209,117 @@ function Cask() {
                   </div>
                 </div>
               </div>
+              <Spacer size="xl" />
+              <div>
+                <h1 className="font-semibold text-4xl font-poppins text-black-light">
+                  Fractions
+                </h1>
+                <Spacer size="md" />
+                <div className="grid grid-cols-4 gap-4">
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="block text-xl font-medium text-gray-700"
+                    >
+                      Fraction name
+                    </label>
+                    <div className="mt-1 flex rounded-md shadow-sm">
+                      <input
+                        value={cask.formState.tokenName}
+                        onChange={cask.handleFormFractionsChange}
+                        type="text"
+                        name="tokenName"
+                        id="name"
+                        className="w-full bg-transparent mt-2 text-xl text-black focus:ring-0 focus:ring-indigo-500 focus:border-indigo-500 rounded-lg"
+                        placeholder="My Nice NFT"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="block text-xl font-medium text-gray-700"
+                    >
+                      Fraction symbol
+                    </label>
+                    <div className="mt-1 flex rounded-md shadow-sm">
+                      <input
+                        value={cask.formState.tokenSymbol}
+                        onChange={cask.handleFormFractionsChange}
+                        type="text"
+                        name="tokenSymbol"
+                        id="name"
+                        className="w-full bg-transparent mt-2 text-xl text-black focus:ring-0 focus:ring-indigo-500 focus:border-indigo-500 rounded-lg"
+                        placeholder="My Nice NFT"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="block text-xl font-medium text-gray-700"
+                    >
+                      Supply
+                    </label>
+                    <div className="mt-1 flex rounded-md shadow-sm">
+                      <input
+                        value={cask.formState.tokenSupply}
+                        onChange={cask.handleFormFractionsChange}
+                        type="number"
+                        name="tokenSupply"
+                        id="name"
+                        className="w-full bg-transparent mt-2 text-xl text-black focus:ring-0 focus:ring-indigo-500 focus:border-indigo-500 rounded-lg"
+                        placeholder="My Nice NFT"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="block text-xl font-medium text-gray-700"
+                    >
+                      Fee
+                    </label>
+                    <div className="mt-1 flex rounded-md shadow-sm">
+                      <input
+                        value={cask.formState.tokenFee}
+                        onChange={cask.handleFormFractionsChange}
+                        type="number"
+                        name="tokenFee"
+                        id="name"
+                        className="w-full bg-transparent mt-2 text-xl text-black focus:ring-0 focus:ring-indigo-500 focus:border-indigo-500 rounded-lg"
+                        placeholder="My Nice NFT"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="block text-xl font-medium text-gray-700"
+                    >
+                      Listing price
+                    </label>
+                    <div className="mt-1 flex rounded-md shadow-sm">
+                      <input
+                        value={cask.formState.tokenListingPrice}
+                        onChange={cask.handleFormFractionsChange}
+                        type="number"
+                        name="tokenListingPrice"
+                        id="name"
+                        className="w-full bg-transparent mt-2 text-xl text-black focus:ring-0 focus:ring-indigo-500 focus:border-indigo-500 rounded-lg"
+                        placeholder="My Nice NFT"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-4 gap-4 mt-6">
+                  <Button onClick={cask.createFraction}>
+                    Create fractions
+                  </Button>
+                </div>
+              </div>
             </>
           )}
-
           <Spacer size="xl" />
           <div>
             <h1 className="font-semibold text-4xl font-poppins text-black-light">
@@ -231,113 +340,6 @@ function Cask() {
                   </dd>
                 </div>
               ))}
-            </div>
-          </div>
-          <Spacer size="xl" />
-          <div>
-            <h1 className="font-semibold text-4xl font-poppins text-black-light">
-              Fractions
-            </h1>
-            <Spacer size="md" />
-            <div className="grid grid-cols-4 gap-4">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-xl font-medium text-gray-700"
-                >
-                  Fraction name
-                </label>
-                <div className="mt-1 flex rounded-md shadow-sm">
-                  <input
-                    value={cask.formState.tokenName}
-                    onChange={cask.handleFormFractionsChange}
-                    type="text"
-                    name="tokenName"
-                    id="name"
-                    className="w-full bg-transparent mt-2 text-xl text-black focus:ring-0 focus:ring-indigo-500 focus:border-indigo-500 rounded-lg"
-                    placeholder="My Nice NFT"
-                  />
-                </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-xl font-medium text-gray-700"
-                >
-                  Fraction symbol
-                </label>
-                <div className="mt-1 flex rounded-md shadow-sm">
-                  <input
-                    value={cask.formState.tokenSymbol}
-                    onChange={cask.handleFormFractionsChange}
-                    type="text"
-                    name="tokenSymbol"
-                    id="name"
-                    className="w-full bg-transparent mt-2 text-xl text-black focus:ring-0 focus:ring-indigo-500 focus:border-indigo-500 rounded-lg"
-                    placeholder="My Nice NFT"
-                  />
-                </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-xl font-medium text-gray-700"
-                >
-                  Supply
-                </label>
-                <div className="mt-1 flex rounded-md shadow-sm">
-                  <input
-                    value={cask.formState.tokenSupply}
-                    onChange={cask.handleFormFractionsChange}
-                    type="number"
-                    name="tokenSupply"
-                    id="name"
-                    className="w-full bg-transparent mt-2 text-xl text-black focus:ring-0 focus:ring-indigo-500 focus:border-indigo-500 rounded-lg"
-                    placeholder="My Nice NFT"
-                  />
-                </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-xl font-medium text-gray-700"
-                >
-                  Fee
-                </label>
-                <div className="mt-1 flex rounded-md shadow-sm">
-                  <input
-                    value={cask.formState.tokenFee}
-                    onChange={cask.handleFormFractionsChange}
-                    type="number"
-                    name="tokenFee"
-                    id="name"
-                    className="w-full bg-transparent mt-2 text-xl text-black focus:ring-0 focus:ring-indigo-500 focus:border-indigo-500 rounded-lg"
-                    placeholder="My Nice NFT"
-                  />
-                </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-xl font-medium text-gray-700"
-                >
-                  Listing price
-                </label>
-                <div className="mt-1 flex rounded-md shadow-sm">
-                  <input
-                    value={cask.formState.tokenListingPrice}
-                    onChange={cask.handleFormFractionsChange}
-                    type="number"
-                    name="tokenListingPrice"
-                    id="name"
-                    className="w-full bg-transparent mt-2 text-xl text-black focus:ring-0 focus:ring-indigo-500 focus:border-indigo-500 rounded-lg"
-                    placeholder="My Nice NFT"
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="grid grid-cols-4 gap-4 mt-6">
-              <Button onClick={cask.createFraction}>Create fractions</Button>
             </div>
           </div>
         </div>

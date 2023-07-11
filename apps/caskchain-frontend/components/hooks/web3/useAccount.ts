@@ -8,6 +8,7 @@ import { getSignedData } from 'pages/api/utils'
 
 import { connectWithMagic, getWeb3 } from 'caskchain-lib'
 import { magic } from 'lib/magic'
+import { useState } from 'react'
 
 type AccountHookFactory = CryptoHookFactory<string, any>
 
@@ -21,6 +22,7 @@ export const hookFactory: AccountHookFactory =
       dispatch,
     } = useGlobal()
 
+    const [loading, setLoading] = useState<boolean>(false)
     const token = getCookie('token')
 
     // const [erc20Balances, setERC20Balances] = useState()
@@ -50,6 +52,7 @@ export const hookFactory: AccountHookFactory =
     }
 
     const connect = async () => {
+      setLoading(true)
       try {
         const accounts = await connectWithMagic(magic)
 
@@ -85,6 +88,8 @@ export const hookFactory: AccountHookFactory =
         }
       } catch (error) {
         console.error(error)
+      } finally {
+        setLoading(false)
       }
     }
 
@@ -105,6 +110,7 @@ export const hookFactory: AccountHookFactory =
 
     return {
       connect,
+      loading,
       signAddress,
       data: user?.address,
       // erc20Balances,

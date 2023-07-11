@@ -16,7 +16,7 @@ const SocialIcon: React.FC<SocialIconProps> = ({ social, width, height }) => {
         src={`/icons/${social}.svg`}
         width={width || 18}
         height={height || 18}
-        className="w-auto h-auto"
+        className="w-18 h-18"
         alt="twitter"
       />
     </div>

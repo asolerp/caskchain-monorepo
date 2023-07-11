@@ -73,7 +73,7 @@ const NftList = ({
               >
                 <td className={`px-6 py-4 ${getClassByIndex(i)}`}>
                   <Image
-                    className={`object-contain rounded-3xl border-4 border-white`}
+                    className={`object-contain rounded-xl border-2 border-white`}
                     src={ipfsImageParser(barrel.image)}
                     alt="New NFT"
                     width={100}
