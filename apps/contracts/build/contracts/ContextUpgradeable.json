@@ -28,15 +28,9 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol",
     "exportedSymbols": {
-      "AddressUpgradeable": [
-        3890
-      ],
-      "ContextUpgradeable": [
-        3932
-      ],
-      "Initializable": [
-        715
-      ]
+      "AddressUpgradeable": [3890],
+      "ContextUpgradeable": [3932],
+      "Initializable": [715]
     },
     "id": 3933,
     "license": "MIT",
@@ -44,12 +38,7 @@
     "nodes": [
       {
         "id": 3892,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "86:23:23"
       },
@@ -72,9 +61,7 @@
             "baseName": {
               "id": 3895,
               "name": "Initializable",
-              "nameLocations": [
-                "691:13:23"
-              ],
+              "nameLocations": ["691:13:23"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 715,
               "src": "691:13:23"
@@ -95,10 +82,7 @@
         },
         "fullyImplemented": true,
         "id": 3932,
-        "linearizedBaseContracts": [
-          3932,
-          715
-        ],
+        "linearizedBaseContracts": [3932, 715],
         "name": "ContextUpgradeable",
         "nameLocation": "669:18:23",
         "nodeType": "ContractDefinition",
@@ -120,9 +104,7 @@
                 "modifierName": {
                   "id": 3898,
                   "name": "onlyInitializing",
-                  "nameLocations": [
-                    "746:16:23"
-                  ],
+                  "nameLocations": ["746:16:23"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 660,
                   "src": "746:16:23"
@@ -169,9 +151,7 @@
                 "modifierName": {
                   "id": 3904,
                   "name": "onlyInitializing",
-                  "nameLocations": [
-                    "821:16:23"
-                  ],
+                  "nameLocations": ["821:16:23"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 660,
                   "src": "821:16:23"
@@ -462,7 +442,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-07-08T05:48:46.305Z",
+  "updatedAt": "2023-08-10T07:20:11.678Z",
   "devdoc": {
     "details": "Provides information about the current execution context, including the sender of the transaction and its data. While these are generally available via msg.sender and msg.data, they should not be accessed in such a direct manner, since when dealing with meta-transactions the account sending and paying for execution may not be the actual sender (as far as an application is concerned). This contract is only required for intermediate, library-like contracts.",
     "kind": "dev",

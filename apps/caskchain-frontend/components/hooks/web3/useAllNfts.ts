@@ -113,6 +113,7 @@ export const hookFactory: AllNftsHookFactory =
     }
 
     const handleSetFilterList = (filterType: string) => {
+      if (!filters) return
       if (!activeLiquor || activeLiquor.length === 0) {
         const selectedFilters = Object.entries(filters)
           .map(([key]) => {

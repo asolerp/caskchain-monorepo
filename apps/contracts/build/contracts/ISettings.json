@@ -132,9 +132,7 @@
   "ast": {
     "absolutePath": "project:/contracts/Interfaces/Isettings.sol",
     "exportedSymbols": {
-      "ISettings": [
-        10940
-      ]
+      "ISettings": [10940]
     },
     "id": 10941,
     "license": "MIT",
@@ -142,12 +140,7 @@
     "nodes": [
       {
         "id": 10894,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "31:23:53"
       },
@@ -159,9 +152,7 @@
         "contractKind": "interface",
         "fullyImplemented": false,
         "id": 10940,
-        "linearizedBaseContracts": [
-          10940
-        ],
+        "linearizedBaseContracts": [10940],
         "name": "ISettings",
         "nameLocation": "66:9:53",
         "nodeType": "ContractDefinition",
@@ -676,7 +667,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-07-08T05:48:46.363Z",
+  "updatedAt": "2023-08-10T07:20:11.790Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

@@ -160,13 +160,10 @@ export const hookFactory: CaskNftHookFactory =
         console.log('price', price.toString())
         try {
           if (isUserNeededDataFilled) {
-            const txBuy = await await _nftVendor?.methods
-              ?.buyItem(tokenId)
-              .send({
-                from: address,
-                value: price.toString(),
-              })
-
+            const txBuy = await _nftVendor?.methods?.buyItem(tokenId).send({
+              from: address,
+              value: price.toString(),
+            })
             if (!txBuy.status) throw new Error('Buy Nft failed')
 
             toast.update(id, {

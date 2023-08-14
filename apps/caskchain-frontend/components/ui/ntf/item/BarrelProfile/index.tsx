@@ -12,7 +12,7 @@ type NftItemProps = {
   onPressProfileCTA?: () => void
 }
 
-const BARREL_HEIGHT = 650
+const BARREL_HEIGHT = 680
 
 const BarrelProfile: React.FC<NftItemProps> = ({ item, onPressProfileCTA }) => {
   const router = useRouter()
@@ -44,7 +44,7 @@ const BarrelProfile: React.FC<NftItemProps> = ({ item, onPressProfileCTA }) => {
               />
             </div>
           </div>
-          <div className="relative h-[260px] w-full">
+          <div className="relative h-[290px] w-full">
             <div className="absolute bottom-0 py-4 w-full h-full">
               <div className={`flex-1 flex flex-col h-full justify-between`}>
                 <div className="flex flex-col justify-between w-full h-full px-4">

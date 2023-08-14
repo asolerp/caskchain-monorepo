@@ -12279,78 +12279,30 @@
   "ast": {
     "absolutePath": "project:/contracts/NftFractions/NftFractionToken.sol",
     "exportedSymbols": {
-      "Address": [
-        7722
-      ],
-      "AddressUpgradeable": [
-        3890
-      ],
-      "Context": [
-        7744
-      ],
-      "ContextUpgradeable": [
-        3932
-      ],
-      "ERC165": [
-        8017
-      ],
-      "ERC20": [
-        6174
-      ],
-      "ERC20Upgradeable": [
-        1663
-      ],
-      "ERC721": [
-        7204
-      ],
-      "ERC721Holder": [
-        7392
-      ],
-      "ERC721HolderUpgradeable": [
-        3388
-      ],
-      "IERC165": [
-        8029
-      ],
-      "IERC20": [
-        6252
-      ],
-      "IERC20Metadata": [
-        6277
-      ],
-      "IERC20MetadataUpgradeable": [
-        1766
-      ],
-      "IERC20Upgradeable": [
-        1741
-      ],
-      "IERC721": [
-        7320
-      ],
-      "IERC721Metadata": [
-        7365
-      ],
-      "IERC721Receiver": [
-        7338
-      ],
-      "IERC721ReceiverUpgradeable": [
-        3053
-      ],
-      "Initializable": [
-        715
-      ],
-      "Math": [
-        8894
-      ],
-      "NftFractionToken": [
-        11512
-      ],
-      "SafeMath": [
-        9206
-      ],
-      "Strings": [
-        7993
-      ]
+      "Address": [7722],
+      "AddressUpgradeable": [3890],
+      "Context": [7744],
+      "ContextUpgradeable": [3932],
+      "ERC165": [8017],
+      "ERC20": [6174],
+      "ERC20Upgradeable": [1663],
+      "ERC721": [7204],
+      "ERC721Holder": [7392],
+      "ERC721HolderUpgradeable": [3388],
+      "IERC165": [8029],
+      "IERC20": [6252],
+      "IERC20Metadata": [6277],
+      "IERC20MetadataUpgradeable": [1766],
+      "IERC20Upgradeable": [1741],
+      "IERC721": [7320],
+      "IERC721Metadata": [7365],
+      "IERC721Receiver": [7338],
+      "IERC721ReceiverUpgradeable": [3053],
+      "Initializable": [715],
+      "Math": [8894],
+      "NftFractionToken": [11512],
+      "SafeMath": [9206],
+      "Strings": [7993]
     },
     "id": 11513,
     "license": "MIT",
@@ -12358,12 +12310,7 @@
     "nodes": [
       {
         "id": 11112,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "31:23:58"
       },
@@ -12458,9 +12405,7 @@
             "baseName": {
               "id": 11120,
               "name": "ERC20Upgradeable",
-              "nameLocations": [
-                "554:16:58"
-              ],
+              "nameLocations": ["554:16:58"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 1663,
               "src": "554:16:58"
@@ -12473,9 +12418,7 @@
             "baseName": {
               "id": 11122,
               "name": "ERC721HolderUpgradeable",
-              "nameLocations": [
-                "572:23:58"
-              ],
+              "nameLocations": ["572:23:58"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 3388,
               "src": "572:23:58"
@@ -12491,14 +12434,7 @@
         "fullyImplemented": true,
         "id": 11512,
         "linearizedBaseContracts": [
-          11512,
-          3388,
-          3053,
-          1663,
-          1766,
-          1741,
-          3932,
-          715
+          11512, 3388, 3053, 1663, 1766, 1741, 3932, 715
         ],
         "name": "NftFractionToken",
         "nameLocation": "534:16:58",
@@ -12510,9 +12446,7 @@
             "libraryName": {
               "id": 11124,
               "name": "Address",
-              "nameLocations": [
-                "606:7:58"
-              ],
+              "nameLocations": ["606:7:58"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 7722,
               "src": "606:7:58"
@@ -12537,9 +12471,7 @@
             "libraryName": {
               "id": 11127,
               "name": "SafeMath",
-              "nameLocations": [
-                "635:8:58"
-              ],
+              "nameLocations": ["635:8:58"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 9206,
               "src": "635:8:58"
@@ -14013,9 +13945,7 @@
                 "modifierName": {
                   "id": 11238,
                   "name": "initializer",
-                  "nameLocations": [
-                    "3141:11:58"
-                  ],
+                  "nameLocations": ["3141:11:58"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 617,
                   "src": "3141:11:58"
@@ -14441,10 +14371,7 @@
                       "id": 11288,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "3648:7:58",
                       "typeDescriptions": {
@@ -14769,10 +14696,7 @@
                       "id": 11313,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "3835:7:58",
                       "typeDescriptions": {
@@ -15081,10 +15005,7 @@
                       "id": 11337,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "4010:7:58",
                       "typeDescriptions": {
@@ -15348,10 +15269,7 @@
                       "id": 11359,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "4179:7:58",
                       "typeDescriptions": {
@@ -15489,10 +15407,7 @@
                       "id": 11364,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "4217:7:58",
                       "typeDescriptions": {
@@ -15893,10 +15808,7 @@
                       "id": 11400,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "4442:7:58",
                       "typeDescriptions": {
@@ -15925,9 +15837,7 @@
                   "src": "4442:46:58"
                 },
                 {
-                  "assignments": [
-                    11406
-                  ],
+                  "assignments": [11406],
                   "declarations": [
                     {
                       "constant": false,
@@ -16034,9 +15944,7 @@
                   "src": "4494:42:58"
                 },
                 {
-                  "assignments": [
-                    11414
-                  ],
+                  "assignments": [11414],
                   "declarations": [
                     {
                       "constant": false,
@@ -16178,9 +16086,7 @@
                   "src": "4543:57:58"
                 },
                 {
-                  "assignments": [
-                    11424
-                  ],
+                  "assignments": [11424],
                   "declarations": [
                     {
                       "constant": false,
@@ -16353,9 +16259,7 @@
                   "src": "4606:54:58"
                 },
                 {
-                  "assignments": [
-                    11435
-                  ],
+                  "assignments": [11435],
                   "declarations": [
                     {
                       "constant": false,
@@ -16937,10 +16841,7 @@
                       "id": 11468,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "4872:7:58",
                       "typeDescriptions": {
@@ -16969,9 +16870,7 @@
                   "src": "4872:57:58"
                 },
                 {
-                  "assignments": [
-                    11477
-                  ],
+                  "assignments": [11477],
                   "declarations": [
                     {
                       "constant": false,
@@ -17157,10 +17056,7 @@
                       "id": 11484,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "4985:7:58",
                       "typeDescriptions": {
@@ -17189,10 +17085,7 @@
                   "src": "4985:53:58"
                 },
                 {
-                  "assignments": [
-                    11492,
-                    null
-                  ],
+                  "assignments": [11492, null],
                   "declarations": [
                     {
                       "constant": false,
@@ -17303,9 +17196,7 @@
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
-                      "names": [
-                        "value"
-                      ],
+                      "names": ["value"],
                       "nodeType": "FunctionCallOptions",
                       "options": [
                         {
@@ -17452,10 +17343,7 @@
                       "id": 11505,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "5117:7:58",
                       "typeDescriptions": {
@@ -17524,15 +17412,15 @@
     "version": "0.8.17+commit.8df45f5f.Emscripten.clang"
   },
   "networks": {
-    "80001": {
+    "4447": {
       "events": {},
       "links": {},
-      "address": "0x5D2410A575aF079428133d46554cBb58D021640e",
-      "transactionHash": "0x3c78a225498f744f56c89184e5582c286a4d2af44d0e4b3d105b185ba60bdd31"
+      "address": "0x40b0038cB26BE57a361D1F9B6E7c88d1724b5fd8",
+      "transactionHash": "0x526932f7d20fe7340bc4a201299e7f1f85d9c0f402f3277da14c4da31e02f16a"
     }
   },
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-07-08T05:51:33.599Z",
+  "updatedAt": "2023-08-10T07:20:21.211Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

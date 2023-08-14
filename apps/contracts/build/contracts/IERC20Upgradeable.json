@@ -198,9 +198,7 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol",
     "exportedSymbols": {
-      "IERC20Upgradeable": [
-        1741
-      ]
+      "IERC20Upgradeable": [1741]
     },
     "id": 1742,
     "license": "MIT",
@@ -208,12 +206,7 @@
     "nodes": [
       {
         "id": 1665,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "106:23:11"
       },
@@ -231,9 +224,7 @@
         },
         "fullyImplemented": false,
         "id": 1741,
-        "linearizedBaseContracts": [
-          1741
-        ],
+        "linearizedBaseContracts": [1741],
         "name": "IERC20Upgradeable",
         "nameLocation": "212:17:11",
         "nodeType": "ContractDefinition",
@@ -1116,7 +1107,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-07-08T05:48:46.289Z",
+  "updatedAt": "2023-08-10T07:20:11.624Z",
   "devdoc": {
     "details": "Interface of the ERC20 standard as defined in the EIP.",
     "events": {

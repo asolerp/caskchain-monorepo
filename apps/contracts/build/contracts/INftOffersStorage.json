@@ -475,9 +475,7 @@
   "ast": {
     "absolutePath": "project:/contracts/NftOffers/INftOffersStorage.sol",
     "exportedSymbols": {
-      "INftOffersStorage": [
-        12760
-      ]
+      "INftOffersStorage": [12760]
     },
     "id": 12761,
     "license": "MIT",
@@ -485,12 +483,7 @@
     "nodes": [
       {
         "id": 12588,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "32:23:63"
       },
@@ -502,9 +495,7 @@
         "contractKind": "interface",
         "fullyImplemented": false,
         "id": 12760,
-        "linearizedBaseContracts": [
-          12760
-        ],
+        "linearizedBaseContracts": [12760],
         "name": "INftOffersStorage",
         "nameLocation": "67:17:63",
         "nodeType": "ContractDefinition",
@@ -810,9 +801,7 @@
                     "pathNode": {
                       "id": 12610,
                       "name": "Offer",
-                      "nameLocations": [
-                        "441:5:63"
-                      ],
+                      "nameLocations": ["441:5:63"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 12597,
                       "src": "441:5:63"
@@ -1681,9 +1670,7 @@
                     "pathNode": {
                       "id": 12682,
                       "name": "Offer",
-                      "nameLocations": [
-                        "1381:5:63"
-                      ],
+                      "nameLocations": ["1381:5:63"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 12597,
                       "src": "1381:5:63"
@@ -2580,7 +2567,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-07-08T05:48:46.396Z",
+  "updatedAt": "2023-08-10T07:20:11.862Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

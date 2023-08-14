@@ -34,12 +34,8 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts/utils/introspection/ERC165.sol",
     "exportedSymbols": {
-      "ERC165": [
-        8017
-      ],
-      "IERC165": [
-        8029
-      ]
+      "ERC165": [8017],
+      "IERC165": [8029]
     },
     "id": 8018,
     "license": "MIT",
@@ -47,12 +43,7 @@
     "nodes": [
       {
         "id": 7995,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "99:23:44"
       },
@@ -75,9 +66,7 @@
             "baseName": {
               "id": 7998,
               "name": "IERC165",
-              "nameLocations": [
-                "754:7:44"
-              ],
+              "nameLocations": ["754:7:44"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 8029,
               "src": "754:7:44"
@@ -98,18 +87,13 @@
         },
         "fullyImplemented": true,
         "id": 8017,
-        "linearizedBaseContracts": [
-          8017,
-          8029
-        ],
+        "linearizedBaseContracts": [8017, 8029],
         "name": "ERC165",
         "nameLocation": "744:6:44",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "baseFunctions": [
-              8028
-            ],
+            "baseFunctions": [8028],
             "body": {
               "id": 8015,
               "nodeType": "Block",
@@ -325,7 +309,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-07-08T05:48:46.336Z",
+  "updatedAt": "2023-08-10T07:20:11.739Z",
   "devdoc": {
     "details": "Implementation of the {IERC165} interface. Contracts that want to implement ERC165 should inherit from this contract and override {supportsInterface} to check for the additional interface id that will be supported. For example: ```solidity function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {     return interfaceId == type(MyInterface).interfaceId || super.supportsInterface(interfaceId); } ``` Alternatively, {ERC165Storage} provides an easier to use but more expensive implementation.",
     "kind": "dev",

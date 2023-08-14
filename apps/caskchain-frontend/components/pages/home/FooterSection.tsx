@@ -2,6 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import Spacer from '@ui/common/Spacer'
 import { PaperAirplaneIcon } from '@heroicons/react/24/outline'
+import useWindowDimensions from '@hooks/common/useWindowDimensions'
 
 interface SocialIconProps {
   width?: number
@@ -16,7 +17,7 @@ const SocialIcon: React.FC<SocialIconProps> = ({ social, width, height }) => {
         src={`/icons/${social}.svg`}
         width={width || 18}
         height={height || 18}
-        className="w-auto h-auto"
+        className="w-18 h-18"
         alt="twitter"
       />
     </div>
@@ -24,14 +25,17 @@ const SocialIcon: React.FC<SocialIconProps> = ({ social, width, height }) => {
 }
 
 const FooterSection = () => {
+  const { width } = useWindowDimensions()
+  console.log('width', width)
+
   return (
     <div className="flex flex-col">
       <Image
         src="/images/wave2.svg"
-        width={1000}
+        width={300}
         height={500}
         alt="wave"
-        className="scale-x-110 lg:scale-x-100 w-auto h-auto"
+        className=" lg:scale-x-100 w-auto h-auto"
       />
       <div className="grid grid-cols-2 bg-black-light px-6 lg:px-32 lg:pb-20 pt-10 lg:pt-0">
         <div className="flex col-span-2 lg:col-span-1  flex-col justify-center items-start">

@@ -47,18 +47,10 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol",
     "exportedSymbols": {
-      "AddressUpgradeable": [
-        3890
-      ],
-      "ERC165Upgradeable": [
-        4285
-      ],
-      "IERC165Upgradeable": [
-        4297
-      ],
-      "Initializable": [
-        715
-      ]
+      "AddressUpgradeable": [3890],
+      "ERC165Upgradeable": [4285],
+      "IERC165Upgradeable": [4297],
+      "Initializable": [715]
     },
     "id": 4286,
     "license": "MIT",
@@ -66,12 +58,7 @@
     "nodes": [
       {
         "id": 4243,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "99:23:27"
       },
@@ -106,9 +93,7 @@
             "baseName": {
               "id": 4247,
               "name": "Initializable",
-              "nameLocations": [
-                "822:13:27"
-              ],
+              "nameLocations": ["822:13:27"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 715,
               "src": "822:13:27"
@@ -121,9 +106,7 @@
             "baseName": {
               "id": 4249,
               "name": "IERC165Upgradeable",
-              "nameLocations": [
-                "837:18:27"
-              ],
+              "nameLocations": ["837:18:27"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 4297,
               "src": "837:18:27"
@@ -144,11 +127,7 @@
         },
         "fullyImplemented": true,
         "id": 4285,
-        "linearizedBaseContracts": [
-          4285,
-          4297,
-          715
-        ],
+        "linearizedBaseContracts": [4285, 4297, 715],
         "name": "ERC165Upgradeable",
         "nameLocation": "801:17:27",
         "nodeType": "ContractDefinition",
@@ -170,9 +149,7 @@
                 "modifierName": {
                   "id": 4252,
                   "name": "onlyInitializing",
-                  "nameLocations": [
-                    "896:16:27"
-                  ],
+                  "nameLocations": ["896:16:27"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 660,
                   "src": "896:16:27"
@@ -219,9 +196,7 @@
                 "modifierName": {
                   "id": 4258,
                   "name": "onlyInitializing",
-                  "nameLocations": [
-                    "970:16:27"
-                  ],
+                  "nameLocations": ["970:16:27"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 660,
                   "src": "970:16:27"
@@ -252,9 +227,7 @@
             "visibility": "internal"
           },
           {
-            "baseFunctions": [
-              4296
-            ],
+            "baseFunctions": [4296],
             "body": {
               "id": 4278,
               "nodeType": "Block",
@@ -528,7 +501,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-07-08T05:48:46.307Z",
+  "updatedAt": "2023-08-10T07:20:11.684Z",
   "devdoc": {
     "details": "Implementation of the {IERC165} interface. Contracts that want to implement ERC165 should inherit from this contract and override {supportsInterface} to check for the additional interface id that will be supported. For example: ```solidity function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {     return interfaceId == type(MyInterface).interfaceId || super.supportsInterface(interfaceId); } ``` Alternatively, {ERC165Storage} provides an easier to use but more expensive implementation.",
     "kind": "dev",

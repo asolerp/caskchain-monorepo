@@ -36,7 +36,7 @@ const OwnerSection = () => {
           How To Be Owner
         </h2>
         <Spacer size="lg" />
-        <div className="grid grid-cols-3 gap-6 lg:flex-row">
+        <div className="flex lg:grid lg:grid-cols-3 lg:gap-6 flex-col lg:flex-row lg:space-y-0 space-y-5">
           <OwnerTip
             imgSrc="/images/owner_tip1.png"
             title="Set up your wallet"

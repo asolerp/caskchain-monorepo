@@ -117,30 +117,14 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol",
     "exportedSymbols": {
-      "AddressUpgradeable": [
-        3890
-      ],
-      "ERC1967UpgradeUpgradeable": [
-        536
-      ],
-      "IBeaconUpgradeable": [
-        546
-      ],
-      "IERC1822ProxiableUpgradeable": [
-        181
-      ],
-      "IERC1967Upgradeable": [
-        152
-      ],
-      "Initializable": [
-        715
-      ],
-      "StorageSlotUpgradeable": [
-        4066
-      ],
-      "UUPSUpgradeable": [
-        851
-      ]
+      "AddressUpgradeable": [3890],
+      "ERC1967UpgradeUpgradeable": [536],
+      "IBeaconUpgradeable": [546],
+      "IERC1822ProxiableUpgradeable": [181],
+      "IERC1967Upgradeable": [152],
+      "Initializable": [715],
+      "StorageSlotUpgradeable": [4066],
+      "UUPSUpgradeable": [851]
     },
     "id": 852,
     "license": "MIT",
@@ -148,12 +132,7 @@
     "nodes": [
       {
         "id": 717,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "115:23:7"
       },
@@ -200,9 +179,7 @@
             "baseName": {
               "id": 722,
               "name": "Initializable",
-              "nameLocations": [
-                "965:13:7"
-              ],
+              "nameLocations": ["965:13:7"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 715,
               "src": "965:13:7"
@@ -215,9 +192,7 @@
             "baseName": {
               "id": 724,
               "name": "IERC1822ProxiableUpgradeable",
-              "nameLocations": [
-                "980:28:7"
-              ],
+              "nameLocations": ["980:28:7"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 181,
               "src": "980:28:7"
@@ -230,9 +205,7 @@
             "baseName": {
               "id": 726,
               "name": "ERC1967UpgradeUpgradeable",
-              "nameLocations": [
-                "1010:25:7"
-              ],
+              "nameLocations": ["1010:25:7"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 536,
               "src": "1010:25:7"
@@ -253,13 +226,7 @@
         },
         "fullyImplemented": false,
         "id": 851,
-        "linearizedBaseContracts": [
-          851,
-          536,
-          152,
-          181,
-          715
-        ],
+        "linearizedBaseContracts": [851, 536, 152, 181, 715],
         "name": "UUPSUpgradeable",
         "nameLocation": "946:15:7",
         "nodeType": "ContractDefinition",
@@ -281,9 +248,7 @@
                 "modifierName": {
                   "id": 729,
                   "name": "onlyInitializing",
-                  "nameLocations": [
-                    "1085:16:7"
-                  ],
+                  "nameLocations": ["1085:16:7"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 660,
                   "src": "1085:16:7"
@@ -330,9 +295,7 @@
                 "modifierName": {
                   "id": 735,
                   "name": "onlyInitializing",
-                  "nameLocations": [
-                    "1168:16:7"
-                  ],
+                  "nameLocations": ["1168:16:7"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 660,
                   "src": "1168:16:7"
@@ -580,10 +543,7 @@
                       "id": 749,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "1873:7:7",
                       "typeDescriptions": {
@@ -706,10 +666,7 @@
                       "id": 759,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "1963:7:7",
                       "typeDescriptions": {
@@ -891,10 +848,7 @@
                       "id": 772,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "2308:7:7",
                       "typeDescriptions": {
@@ -950,9 +904,7 @@
             "visibility": "internal"
           },
           {
-            "baseFunctions": [
-              180
-            ],
+            "baseFunctions": [180],
             "body": {
               "id": 795,
               "nodeType": "Block",
@@ -995,9 +947,7 @@
                 "modifierName": {
                   "id": 788,
                   "name": "notDelegated",
-                  "nameLocations": [
-                    "3062:12:7"
-                  ],
+                  "nameLocations": ["3062:12:7"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 784,
                   "src": "3062:12:7"
@@ -1282,9 +1232,7 @@
                 "modifierName": {
                   "id": 801,
                   "name": "onlyProxy",
-                  "nameLocations": [
-                    "3380:9:7"
-                  ],
+                  "nameLocations": ["3380:9:7"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 769,
                   "src": "3380:9:7"
@@ -1512,9 +1460,7 @@
                 "modifierName": {
                   "id": 825,
                   "name": "onlyProxy",
-                  "nameLocations": [
-                    "3860:9:7"
-                  ],
+                  "nameLocations": ["3860:9:7"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 769,
                   "src": "3860:9:7"
@@ -1733,7 +1679,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-07-08T05:48:46.283Z",
+  "updatedAt": "2023-08-10T07:20:11.607Z",
   "devdoc": {
     "details": "An upgradeability mechanism designed for UUPS proxies. The functions included here can perform an upgrade of an {ERC1967Proxy}, when this contract is set as the implementation behind such a proxy. A security mechanism ensures that an upgrade does not turn off upgradeability accidentally, although this risk is reinstated if the upgrade retains upgradeability but removes the security mechanism, e.g. by replacing `UUPSUpgradeable` with a custom implementation of upgrades. The {_authorizeUpgrade} function must be overridden to include access restriction to the upgrade mechanism. _Available since v4.1._",
     "kind": "dev",

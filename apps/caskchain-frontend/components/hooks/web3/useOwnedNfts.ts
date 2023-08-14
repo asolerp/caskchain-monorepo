@@ -1,5 +1,6 @@
 import { CryptoHookFactory } from '@_types/hooks'
 import { Nft } from '@_types/nft'
+import { useGlobal } from '@providers/global'
 
 import { LoadingContext } from 'components/contexts/LoadingContext'
 // import { useGlobal } from '@providers/global'
@@ -22,7 +23,9 @@ export const hookFactory: OwnedNftsHookFactory =
   ({ ccNft, nftVendor, nftFractionToken, nftOffers, provider }) =>
   () => {
     const token = getCookie('token')
-
+    const {
+      state: { address },
+    } = useGlobal()
     const _ccNft = ccNft
 
     const [activeNft, setActiveNft] = useState<Nft>()
@@ -107,16 +110,16 @@ export const hookFactory: OwnedNftsHookFactory =
 
     const approveSell = async (tokenId: number) => {
       try {
-        const gasPrice = await provider?.getGasPrice()
+        const gasPrice = await provider?.methods?.approve?.estimateGas({
+          from: address,
+        })
 
-        const result = await _ccNft?.approve(
-          nftVendor!.address as string,
-          tokenId,
-          {
-            gasPrice,
-            gasLimit: 100000,
-          }
-        )
+        const result = await _ccNft?.methods
+          ?.approve(nftVendor!.address as string, tokenId)
+          .send({
+            gas: gasPrice,
+            from: address,
+          })
 
         await toast.promise(result!.wait(), {
           pending: 'Processing transaction',
@@ -135,30 +138,25 @@ export const hookFactory: OwnedNftsHookFactory =
     const listNft = async (tokenId: number, price: string) => {
       const id = toast.loading('Listing new barrel...')
       try {
-        const gasPrice = await provider?.getGasPrice()
+        const txApprove = await ccNft?.methods
+          ?.approve(nftVendor!._address as string, tokenId)
+          .send({
+            from: address,
+          })
 
-        const txApprove = await ccNft?.approve(
-          nftVendor!.address as string,
-          tokenId,
-          {
-            gasPrice,
-            gasLimit: 100000,
-          }
-        )
+        if (!txApprove.status) throw new Error('Approve failed')
 
-        const responseApprove: any = await txApprove!.wait()
+        const txList = await nftVendor?.methods
+          ?.listItem(
+            tokenId,
+            ethers.utils.parseUnits(price.toString(), 'ether'),
+            true
+          )
+          .send({
+            from: address,
+          })
 
-        if (responseApprove.status !== 1) throw new Error('Approve failed')
-
-        const txList = await nftVendor?.listItem(
-          tokenId,
-          ethers.utils.parseUnits(price.toString(), 'ether'),
-          true
-        )
-
-        const responseList: any = await txList!.wait()
-
-        if (responseList.status !== 1) throw new Error('Listing failed')
+        if (!txList.status) throw new Error('Listing failed')
 
         toast.update(id, {
           render: 'NFT listed',

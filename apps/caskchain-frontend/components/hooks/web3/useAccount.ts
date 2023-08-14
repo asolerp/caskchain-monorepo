@@ -8,6 +8,7 @@ import { getSignedData } from 'pages/api/utils'
 
 import { connectWithMagic, getWeb3 } from 'caskchain-lib'
 import { magic } from 'lib/magic'
+import { useState } from 'react'
 
 type AccountHookFactory = CryptoHookFactory<string, any>
 
@@ -21,6 +22,7 @@ export const hookFactory: AccountHookFactory =
       dispatch,
     } = useGlobal()
 
+    const [loading, setLoading] = useState<boolean>(false)
     const token = getCookie('token')
 
     // const [erc20Balances, setERC20Balances] = useState()
@@ -32,6 +34,30 @@ export const hookFactory: AccountHookFactory =
     //   )
     //   return await Tether.balanceOf(address)
     // }, [])
+
+    const checkIfUserDataIsNeeded = (
+      email: string,
+      token: any,
+      callback: any
+    ) => {
+      console.log(user)
+
+      if (!email) {
+        return dispatch({
+          type: GlobalTypes.SET_USER_INFO_MODAL,
+          payload: { status: true },
+        })
+      }
+      if (!token) {
+        return dispatch({
+          type: GlobalTypes.SET_SIGN_IN_MODAL,
+          payload: { status: true },
+        })
+      }
+      if (callback) {
+        callback()
+      }
+    }
 
     const signAddress = async ({ callback }: { callback: () => void }) => {
       try {
@@ -49,7 +75,17 @@ export const hookFactory: AccountHookFactory =
       }
     }
 
+    const handleOpenSidebar = (status: boolean) => {
+      checkIfUserDataIsNeeded(user?.email, token, () => {
+        dispatch({
+          type: GlobalTypes.SET_SIDE_BAR,
+          payload: { status: !status },
+        })
+      })
+    }
+
     const connect = async () => {
+      setLoading(true)
       try {
         const accounts = await connectWithMagic(magic)
 
@@ -58,33 +94,23 @@ export const hookFactory: AccountHookFactory =
 
         // Once user is logged in, re-initialize web3 instance to use the new provider (if connected with third party wallet)
         const web3 = await getWeb3(magic)
+        if (!web3) return
         setWeb3(web3)
         dispatch({
           type: GlobalTypes.SET_ADDRESS,
           payload: { address: accounts[0] },
         })
         const userDB = await axios.get(`/api/user/${accounts[0].toLowerCase()}`)
-
-        const { email } = userDB?.data
-        if (!email) {
-          dispatch({
-            type: GlobalTypes.SET_USER_INFO_MODAL,
-            payload: { status: true },
-          })
-        } else {
+        checkIfUserDataIsNeeded(userDB?.data, token, () => {
           dispatch({
             type: GlobalTypes.SET_USER,
             payload: { user: userDB?.data },
           })
-        }
-        if (!token) {
-          return dispatch({
-            type: GlobalTypes.SET_SIGN_IN_MODAL,
-            payload: { status: true },
-          })
-        }
+        })
       } catch (error) {
         console.error(error)
+      } finally {
+        setLoading(false)
       }
     }
 
@@ -105,8 +131,11 @@ export const hookFactory: AccountHookFactory =
 
     return {
       connect,
+      loading,
       signAddress,
+      handleOpenSidebar,
       data: user?.address,
+      checkIfUserDataIsNeeded,
       // erc20Balances,
     }
   }

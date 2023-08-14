@@ -345,15 +345,9 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/IERC721MetadataUpgradeable.sol",
     "exportedSymbols": {
-      "IERC165Upgradeable": [
-        4297
-      ],
-      "IERC721MetadataUpgradeable": [
-        3341
-      ],
-      "IERC721Upgradeable": [
-        3169
-      ]
+      "IERC165Upgradeable": [4297],
+      "IERC721MetadataUpgradeable": [3341],
+      "IERC721Upgradeable": [3169]
     },
     "id": 3342,
     "license": "MIT",
@@ -361,12 +355,7 @@
     "nodes": [
       {
         "id": 3316,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "112:23:19"
       },
@@ -389,9 +378,7 @@
             "baseName": {
               "id": 3319,
               "name": "IERC721Upgradeable",
-              "nameLocations": [
-                "348:18:19"
-              ],
+              "nameLocations": ["348:18:19"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 3169,
               "src": "348:18:19"
@@ -412,11 +399,7 @@
         },
         "fullyImplemented": false,
         "id": 3341,
-        "linearizedBaseContracts": [
-          3341,
-          3169,
-          4297
-        ],
+        "linearizedBaseContracts": [3341, 3169, 4297],
         "name": "IERC721MetadataUpgradeable",
         "nameLocation": "318:26:19",
         "nodeType": "ContractDefinition",
@@ -646,7 +629,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-07-08T05:48:46.301Z",
+  "updatedAt": "2023-08-10T07:20:11.670Z",
   "devdoc": {
     "details": "See https://eips.ethereum.org/EIPS/eip-721",
     "kind": "dev",

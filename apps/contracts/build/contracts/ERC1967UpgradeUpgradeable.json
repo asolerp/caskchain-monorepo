@@ -73,27 +73,13 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol",
     "exportedSymbols": {
-      "AddressUpgradeable": [
-        3890
-      ],
-      "ERC1967UpgradeUpgradeable": [
-        536
-      ],
-      "IBeaconUpgradeable": [
-        546
-      ],
-      "IERC1822ProxiableUpgradeable": [
-        181
-      ],
-      "IERC1967Upgradeable": [
-        152
-      ],
-      "Initializable": [
-        715
-      ],
-      "StorageSlotUpgradeable": [
-        4066
-      ]
+      "AddressUpgradeable": [3890],
+      "ERC1967UpgradeUpgradeable": [536],
+      "IBeaconUpgradeable": [546],
+      "IERC1822ProxiableUpgradeable": [181],
+      "IERC1967Upgradeable": [152],
+      "Initializable": [715],
+      "StorageSlotUpgradeable": [4066]
     },
     "id": 537,
     "license": "MIT",
@@ -101,12 +87,7 @@
     "nodes": [
       {
         "id": 183,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".2"
-        ],
+        "literals": ["solidity", "^", "0.8", ".2"],
         "nodeType": "PragmaDirective",
         "src": "116:23:4"
       },
@@ -189,9 +170,7 @@
             "baseName": {
               "id": 191,
               "name": "Initializable",
-              "nameLocations": [
-                "708:13:4"
-              ],
+              "nameLocations": ["708:13:4"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 715,
               "src": "708:13:4"
@@ -204,9 +183,7 @@
             "baseName": {
               "id": 193,
               "name": "IERC1967Upgradeable",
-              "nameLocations": [
-                "723:19:4"
-              ],
+              "nameLocations": ["723:19:4"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 152,
               "src": "723:19:4"
@@ -227,11 +204,7 @@
         },
         "fullyImplemented": true,
         "id": 536,
-        "linearizedBaseContracts": [
-          536,
-          152,
-          715
-        ],
+        "linearizedBaseContracts": [536, 152, 715],
         "name": "ERC1967UpgradeUpgradeable",
         "nameLocation": "679:25:4",
         "nodeType": "ContractDefinition",
@@ -253,9 +226,7 @@
                 "modifierName": {
                   "id": 196,
                   "name": "onlyInitializing",
-                  "nameLocations": [
-                    "791:16:4"
-                  ],
+                  "nameLocations": ["791:16:4"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 660,
                   "src": "791:16:4"
@@ -302,9 +273,7 @@
                 "modifierName": {
                   "id": 202,
                   "name": "onlyInitializing",
-                  "nameLocations": [
-                    "873:16:4"
-                  ],
+                  "nameLocations": ["873:16:4"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 660,
                   "src": "873:16:4"
@@ -686,10 +655,7 @@
                       "id": 232,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "1824:7:4",
                       "typeDescriptions": {
@@ -1594,8 +1560,7 @@
                                       "name": "require",
                                       "nodeType": "Identifier",
                                       "overloadedDeclarations": [
-                                        4294967278,
-                                        4294967278
+                                        4294967278, 4294967278
                                       ],
                                       "referencedDeclaration": 4294967278,
                                       "src": "3582:7:4",
@@ -1702,8 +1667,7 @@
                                       "name": "revert",
                                       "nodeType": "Identifier",
                                       "overloadedDeclarations": [
-                                        4294967277,
-                                        4294967277
+                                        4294967277, 4294967277
                                       ],
                                       "referencedDeclaration": 4294967277,
                                       "src": "3704:6:4",
@@ -2432,10 +2396,7 @@
                       "id": 369,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "4496:7:4",
                       "typeDescriptions": {
@@ -3157,10 +3118,7 @@
                       "id": 429,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "5586:7:4",
                       "typeDescriptions": {
@@ -3359,10 +3317,7 @@
                       "id": 437,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "5686:7:4",
                       "typeDescriptions": {
@@ -4144,10 +4099,7 @@
                       "id": 505,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        4294967278,
-                        4294967278
-                      ],
+                      "overloadedDeclarations": [4294967278, 4294967278],
                       "referencedDeclaration": 4294967278,
                       "src": "6887:7:4",
                       "typeDescriptions": {
@@ -4176,10 +4128,7 @@
                   "src": "6887:88:4"
                 },
                 {
-                  "assignments": [
-                    514,
-                    516
-                  ],
+                  "assignments": [514, 516],
                   "declarations": [
                     {
                       "constant": false,
@@ -4600,7 +4549,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-07-08T05:48:46.279Z",
+  "updatedAt": "2023-08-10T07:20:11.601Z",
   "devdoc": {
     "custom:oz-upgrades-unsafe-allow": "delegatecall",
     "details": "This abstract contract provides getters and event emitting update functions for https://eips.ethereum.org/EIPS/eip-1967[EIP1967] slots. _Available since v4.1._",

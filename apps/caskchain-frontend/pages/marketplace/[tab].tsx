@@ -23,11 +23,13 @@ import BarrelsSection from 'components/pages/home/BarrelsSection'
 import Dropdown from '@ui/common/Dropdown'
 import FilterMarketplace from 'components/pages/marketplace/FilterMarketplace'
 import { filters, sufixesByType } from '../../utils/filters'
+import useWindowDimensions from '@hooks/common/useWindowDimensions'
 
 const NFTCaskWorld: NextPage = () => {
   const token = getCookie('token') as string
   const { nfts } = useAllNfts()
   const { account } = useAccount()
+  const { width } = useWindowDimensions()
   const { loading } = useLocalLoading()
   const {
     state: { user },
@@ -65,10 +67,10 @@ const NFTCaskWorld: NextPage = () => {
       <section className="bg-white">
         <Image
           src="/images/wave1.svg"
-          width={1000}
+          width={width || 300}
           height={500}
           alt="wave"
-          className="scale-y-110 scale-x-110 lg:scale-x-100 w-full"
+          className="scale-y-110 lg:scale-x-100 w-full"
         />
         <BarrelsSection />
       </section>
@@ -82,11 +84,11 @@ const NFTCaskWorld: NextPage = () => {
       {loading ? (
         <div className="flex flex-col justify-center items-center w-full h-screen"></div>
       ) : (
-        <div className="sm:px-6 pt-10 w-3/4 px-4">
+        <div className="sm:px-6 lg:pt-10 lg:w-3/4 px-4">
           <section>
-            <div className="grid grid-cols-8 items-center">
-              <div className="col-span-2">
-                <div className="flex flex-row items-center justify-around mr-10">
+            <div className="flex flex-col lg:grid lg:grid-cols-8 items-center">
+              <div className="lg:col-span-2 order-3">
+                <div className="flex flex-row items-center lg:justify-around justify-center lg:mr-10">
                   <Dropdown
                     label="Sort By"
                     items={[
@@ -109,7 +111,7 @@ const NFTCaskWorld: NextPage = () => {
               </div>
               <div
                 tabIndex={0}
-                className="relative col-span-4 bg-[#292929] rounded-2xl"
+                className="w-full relative lg:col-span-4 lg:order-2 bg-[#292929] rounded-2xl lg:mb-0 mb-4"
               >
                 <Image
                   onClick={() => nfts.handleSearch()}
@@ -127,7 +129,7 @@ const NFTCaskWorld: NextPage = () => {
                   placeholder="Search by Collection, NFT name, Cellar, etc"
                 ></input>
               </div>
-              <div className="col-span-2" />
+              <div className="lg:col-span-2" />
             </div>
           </section>
           <Spacer size="xl" />
@@ -201,9 +203,8 @@ const NFTCaskWorld: NextPage = () => {
               </>
             )}
           </section>
-
           <section>
-            <div className="grid grid-cols-4 gap-x-5 gap-y-4 flex-wrap mx-auto lg:max-w-none">
+            <div className="lg:grid lg:grid-cols-4 lg:gap-x-5 lg:gap-y-4 lg:flex-wrap flex flex-col mx-auto lg:max-w-none">
               <>
                 {nfts.searchLoading ? (
                   <BarrelsSkeleton />

@@ -6,12 +6,17 @@ import { motion, useAnimation } from 'framer-motion'
 import { useGlobal } from '@providers/global'
 import MarketPlaceStats from './MarketPlaceStats'
 
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+
 const HeroSection = () => {
+  const route = useRouter()
   const {
     state: { mainAnimationFinished },
   } = useGlobal()
 
   const controls = useAnimation()
+  
   useEffect(() => {
     if (mainAnimationFinished) {
       controls.start('visible')
@@ -90,20 +95,15 @@ const HeroSection = () => {
             transition={{ duration: 1 }}
             className="flex flex-col w-full lg:flex-row px-6 lg:px-0 lg:space-x-4"
           >
-            <Button
-              containerStyle="px-12 py-4 lg:py-6 w-full lg:w-fit"
-              labelStyle="text-xl text-center"
-            >
-              Explore
-            </Button>
-            <Spacer size="sm" />
-            <Button
-              containerStyle="px-12 py-4 lg:py-6 w-full lg:w-fit"
-              labelStyle="text-xl text-center"
-              active={false}
-            >
-              Create
-            </Button>
+            <Link href="/marketplace/search" passHref>
+              <Button
+                containerStyle="px-12 py-4 lg:py-6 w-full lg:w-fit"
+                labelStyle="text-xl text-center"
+                onClick={() => route.push('/marketplace/search')}
+              >
+                Explore
+              </Button>
+            </Link>
           </motion.div>
           <Spacer size="2xl" />
           <div className="px-6 h-fi">

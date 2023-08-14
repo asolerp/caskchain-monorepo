@@ -1596,18 +1596,10 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts-upgradeable/token/ERC721/utils/ERC721HolderUpgradeable.sol",
     "exportedSymbols": {
-      "AddressUpgradeable": [
-        3890
-      ],
-      "ERC721HolderUpgradeable": [
-        3388
-      ],
-      "IERC721ReceiverUpgradeable": [
-        3053
-      ],
-      "Initializable": [
-        715
-      ]
+      "AddressUpgradeable": [3890],
+      "ERC721HolderUpgradeable": [3388],
+      "IERC721ReceiverUpgradeable": [3053],
+      "Initializable": [715]
     },
     "id": 3389,
     "license": "MIT",
@@ -1615,12 +1607,7 @@
     "nodes": [
       {
         "id": 3343,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".0"
-        ],
+        "literals": ["solidity", "^", "0.8", ".0"],
         "nodeType": "PragmaDirective",
         "src": "104:23:20"
       },
@@ -1655,9 +1642,7 @@
             "baseName": {
               "id": 3347,
               "name": "Initializable",
-              "nameLocations": [
-                "495:13:20"
-              ],
+              "nameLocations": ["495:13:20"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 715,
               "src": "495:13:20"
@@ -1670,9 +1655,7 @@
             "baseName": {
               "id": 3349,
               "name": "IERC721ReceiverUpgradeable",
-              "nameLocations": [
-                "510:26:20"
-              ],
+              "nameLocations": ["510:26:20"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 3053,
               "src": "510:26:20"
@@ -1693,11 +1676,7 @@
         },
         "fullyImplemented": true,
         "id": 3388,
-        "linearizedBaseContracts": [
-          3388,
-          3053,
-          715
-        ],
+        "linearizedBaseContracts": [3388, 3053, 715],
         "name": "ERC721HolderUpgradeable",
         "nameLocation": "468:23:20",
         "nodeType": "ContractDefinition",
@@ -1719,9 +1698,7 @@
                 "modifierName": {
                   "id": 3352,
                   "name": "onlyInitializing",
-                  "nameLocations": [
-                    "583:16:20"
-                  ],
+                  "nameLocations": ["583:16:20"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 660,
                   "src": "583:16:20"
@@ -1768,9 +1745,7 @@
                 "modifierName": {
                   "id": 3358,
                   "name": "onlyInitializing",
-                  "nameLocations": [
-                    "663:16:20"
-                  ],
+                  "nameLocations": ["663:16:20"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 660,
                   "src": "663:16:20"
@@ -1801,9 +1776,7 @@
             "visibility": "internal"
           },
           {
-            "baseFunctions": [
-              3052
-            ],
+            "baseFunctions": [3052],
             "body": {
               "id": 3381,
               "nodeType": "Block",
@@ -2109,7 +2082,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-07-08T05:48:46.301Z",
+  "updatedAt": "2023-08-10T07:20:11.670Z",
   "devdoc": {
     "details": "Implementation of the {IERC721Receiver} interface. Accepts all token transfers. Make sure the contract is able to use its token with {IERC721-safeTransferFrom}, {IERC721-approve} or {IERC721-setApprovalForAll}.",
     "kind": "dev",

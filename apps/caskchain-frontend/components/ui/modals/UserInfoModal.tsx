@@ -59,7 +59,7 @@ const UserInfoModal: React.FC<Props> = ({ modalIsOpen, closeModal }) => {
       onRequestClose={closeModal}
     >
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-        <div className="relative w-1/4 sm:w-1/2 my-6 mx-auto max-w-md">
+        <div className="relative lg:w-1/4 w-full my-6 mx-auto max-w-md">
           {/*content*/}
           <div className="h-full w-full bg-black-light rounded-3xl bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-90 p-6">
             {/*header*/}

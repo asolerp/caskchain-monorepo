@@ -120,9 +120,7 @@
   "ast": {
     "absolutePath": "project:/contracts/NftFractions/INftFractionsVendorStorage.sol",
     "exportedSymbols": {
-      "INftFractionsVendorStorage": [
-        11110
-      ]
+      "INftFractionsVendorStorage": [11110]
     },
     "id": 11111,
     "license": "MIT",
@@ -130,12 +128,7 @@
     "nodes": [
       {
         "id": 11067,
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".7"
-        ],
+        "literals": ["solidity", "^", "0.8", ".7"],
         "nodeType": "PragmaDirective",
         "src": "32:23:57"
       },
@@ -147,9 +140,7 @@
         "contractKind": "interface",
         "fullyImplemented": false,
         "id": 11110,
-        "linearizedBaseContracts": [
-          11110
-        ],
+        "linearizedBaseContracts": [11110],
         "name": "INftFractionsVendorStorage",
         "nameLocation": "67:26:57",
         "nodeType": "ContractDefinition",
@@ -344,9 +335,7 @@
                     "pathNode": {
                       "id": 11080,
                       "name": "TokenPaymentInfo",
-                      "nameLocations": [
-                        "305:16:57"
-                      ],
+                      "nameLocations": ["305:16:57"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 11076,
                       "src": "305:16:57"
@@ -686,7 +675,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-07-08T05:48:46.369Z",
+  "updatedAt": "2023-08-10T07:20:11.798Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},
