@@ -11,7 +11,6 @@ export class CryptoRatesServiceImpl implements CryptoRateServiceRepository {
         (crypto: any) =>
           crypto.symbol === 'ETHEUR' || crypto.symbol === 'MATICEUR'
       )
-      console.log(filteredCrytpos)
       return filteredCrytpos
     } catch (err) {
       console.log(err)
