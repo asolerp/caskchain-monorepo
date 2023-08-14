@@ -31,6 +31,7 @@
     "express-rate-limit": "^6.7.0",
     "express-session": "^1.17.3",
     "form-data": "^4.0.0",
+    "node-cron": "^3.0.2",
     "helmet": "^6.0.1",
     "hpp": "^0.2.3",
     "iron-session": "^6.3.1",
@@ -50,6 +51,7 @@
     "winston-loggly-bulk": "^3.2.1"
   },
   "devDependencies": {
+    "@types/node-cron": "^3.0.8",
     "@types/amqplib": "^0.10.1",
     "@types/cookie-parser": "^1.4.3",
     "@types/cookie-session": "^2.0.44",

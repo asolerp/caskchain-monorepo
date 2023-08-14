@@ -4,9 +4,11 @@ import { motion, useAnimation } from 'framer-motion'
 import Image from 'next/image'
 import { useGlobal } from '@providers/global'
 import { GlobalTypes } from '@providers/global/utils'
+import { useRouter } from 'next/router'
 
 const MainAnimationSection = () => {
   const [startMainAnimation, setStartMainAnimation] = useState(false)
+  const route = useRouter()
 
   const {
     dispatch,
@@ -33,7 +35,7 @@ const MainAnimationSection = () => {
     hidden: { opacity: 0 },
   }
 
-  if (!mainAnimationFinished) {
+  if (!mainAnimationFinished && route.pathname === '/') {
     return (
       <motion.div
         exit="hidden"

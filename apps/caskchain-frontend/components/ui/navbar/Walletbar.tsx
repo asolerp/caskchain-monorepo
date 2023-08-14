@@ -15,19 +15,12 @@ const Walletbar: React.FC = () => {
 
   const { account } = useAccount()
 
-  const handleOpenSidebar = () => {
-    dispatch({
-      type: GlobalTypes.SET_SIDE_BAR,
-      payload: { status: !sideBar },
-    })
-  }
-
   if (address) {
     return (
       <>
         <div className="lg:hidden">
           <Image
-            onClick={handleOpenSidebar}
+            onClick={() => account.handleOpenSidebar(sideBar)}
             src="/images/user.png"
             alt=""
             width={40}
@@ -39,7 +32,7 @@ const Walletbar: React.FC = () => {
           <div className="flex justify-center items-center">
             <div>
               <div
-                onClick={handleOpenSidebar}
+                onClick={() => account.handleOpenSidebar(sideBar)}
                 className="cursor-pointer px-1 py-1 justify-center items-center hover:border bg-cask-chain flex text-sm rounded-full focus:outline-none"
               >
                 <Image src="/images/user.png" alt="" width={40} height={40} />

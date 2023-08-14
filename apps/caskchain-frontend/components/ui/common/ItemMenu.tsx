@@ -14,7 +14,7 @@ const ItemMenu: React.FC<ItemMenuProps> = ({
   return (
     <div
       onClick={onClick}
-      className="cursor-pointer w-full flex justify-between  items-center p-4"
+      className="cursor-pointer w-full flex flex-row-reverse justify-between  items-center p-4"
     >
       <div>{leftSide}</div>
       {rightSide ? (

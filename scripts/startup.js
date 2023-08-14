@@ -162,9 +162,19 @@ pm2.connect(false, async function (err) {
       );
     }
 
+    const ganacheAccounts = jetpack.read("ganache-accounts.json");
+    const accounts = JSON.parse(ganacheAccounts);
+
     const envFileGanache = jetpack.read(".env.ganache");
     const buf = Buffer.from(envFileGanache);
     const parsed = dotenv.parse(buf);
+
+    const publicKey = Object.keys(accounts.private_keys)[0];
+    const privateKey =
+      accounts.private_keys[Object.keys(accounts.private_keys)[0]];
+
+    parsed.PRIVATE_KEY = privateKey;
+    parsed.PUBLIC_KEY = publicKey;
 
     insertInEnvFile({ params: { ...parsed } });
   } else {

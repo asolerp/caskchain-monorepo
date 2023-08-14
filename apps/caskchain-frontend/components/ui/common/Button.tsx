@@ -34,6 +34,7 @@ const Button: React.FC<ButtonProps> = ({
     <div
       onClick={(e) => {
         e.stopPropagation()
+        e.preventDefault()
         onClick && onClick()
       }}
       className={`${

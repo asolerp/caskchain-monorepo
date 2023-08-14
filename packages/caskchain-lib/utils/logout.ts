@@ -5,6 +5,7 @@ import axiosClient from "../lib/fetcher/axiosInstance";
 // When a user logs out, disconnect with Magic & re-set web3 provider
 export const logout = async (setWeb3: any, setUser: any, magic: any) => {
   if (!magic) return;
+  if (!setWeb3) return;
   const account = localStorage.getItem("user");
   localStorage.removeItem("user");
   deleteCookie("token");
