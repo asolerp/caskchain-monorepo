@@ -1,8 +1,8 @@
 import React from 'react'
 import Image from 'next/image'
 import Spacer from '@ui/common/Spacer'
-import { PaperAirplaneIcon } from '@heroicons/react/24/outline'
-import useWindowDimensions from '@hooks/common/useWindowDimensions'
+import SubscriptionForm from 'components/forms/SubscriptionForm'
+import Link from 'next/link'
 
 interface SocialIconProps {
   width?: number
@@ -25,9 +25,6 @@ const SocialIcon: React.FC<SocialIconProps> = ({ social, width, height }) => {
 }
 
 const FooterSection = () => {
-  const { width } = useWindowDimensions()
-  console.log('width', width)
-
   return (
     <div className="flex flex-col">
       <Image
@@ -53,10 +50,10 @@ const FooterSection = () => {
           </p>
           <Spacer size="sm" />
           <div className="flex flex-row space-x-4">
-            <SocialIcon social="twitter" />
+            {/* <SocialIcon social="twitter" />
             <SocialIcon social="linkedin" />
             <SocialIcon social="facebook" width={10} height={10} />
-            <SocialIcon social="youtube" />
+            <SocialIcon social="youtube" /> */}
             <SocialIcon social="instagram" />
           </div>
         </div>
@@ -67,21 +64,11 @@ const FooterSection = () => {
             </h4>
             <Spacer size="sm" />
             <div className="space-y-2">
-              <p className="font-poppins text-gray-400 font-thin text-lg">
-                About us
-              </p>
-              <p className="font-poppins text-gray-400 font-thin text-lg">
-                Blog
-              </p>
-              <p className="font-poppins text-gray-400 font-thin text-lg">
-                Contact us
-              </p>
-              <p className="font-poppins text-gray-400 font-thin text-lg">
-                Pricing
-              </p>
-              <p className="font-poppins text-gray-400 font-thin text-lg">
-                Testimonials
-              </p>
+              <Link href="/about" passHref>
+                <p className="font-poppins text-gray-400 font-thin text-lg">
+                  About us
+                </p>
+              </Link>
             </div>
           </div>
           <div className="flex flex-col col-span-3 lg:col-span-1 justify-start items-start">
@@ -102,23 +89,10 @@ const FooterSection = () => {
               <p className="font-poppins text-gray-400 font-thin text-lg">
                 Privacy policy
               </p>
-              <p className="font-poppins text-gray-400 font-thin text-lg">
-                Status
-              </p>
             </div>
           </div>
           <div className="flex flex-col col-span-3 lg:col-span-1 justify-start items-start">
-            <h4 className="font-poppins text-white font-medium text-xl">
-              Stay up to date
-            </h4>
-            <Spacer size="sm" />
-            <div className="flex flex-row w-full lg:w-fit space-x-4 items-center px-4 py-3 bg-gray-500 rounded-3xl">
-              <input
-                className="bg-transparent w-full lg:w-fit placeholder-gray-300 font-poppins text-sm font-thin  text-gray-300"
-                placeholder="Your email address"
-              ></input>
-              <PaperAirplaneIcon className="w-4 h-4 -rotate-45 text-gray-300" />
-            </div>
+            <SubscriptionForm />
           </div>
         </div>
         <Spacer size="xl" />

@@ -221,8 +221,9 @@ export const hookFactory: CaskNftHookFactory =
     const updateNftBestBarel = async (state: boolean) => {
       const id = toast.loading('Updating barrel state...')
       try {
-        await axios.post(`/api/casks/${caskId}/best-barrel`, {
-          bestBarrel: state,
+        await axios.post(`/api/casks/makeBestBarrel`, {
+          caskId,
+          state,
         })
 
         await refetchNft()
@@ -254,14 +255,16 @@ export const hookFactory: CaskNftHookFactory =
           caskId
         )
 
-        await sendTransaction(address, txApprove, 10)
+        console.log('txApprove', txApprove)
+
+        await sendTransaction(address, true, txApprove, 10)
 
         const txList = await _nftVendor?.methods.updateListingPrice(
           caskId,
           ethers.utils.parseUnits(listPrice.toString(), 'ether')
         )
 
-        await sendTransaction(address, txList, 10)
+        await sendTransaction(address, true, txList, 10)
 
         await refetchNft()
 

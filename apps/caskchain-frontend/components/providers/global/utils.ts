@@ -24,6 +24,7 @@ export enum GlobalTypes {
   SET_MAIN_ANIMATION_FINISHED = 'SET_MAIN_ANIMATION_FINISHED',
   SET_SIGN_IN_MODAL = 'SET_SIGN_IN_MODAL',
   SET_USER_INFO_MODAL = 'SET_USER_INFO_MODAL',
+  SET_INITITAL_USER_INFO = 'SET_INITITAL_USER_INFO_MODAL',
   SET_USER = 'SET_USER',
   SET_TOKEN = 'SET_TOKEN',
   SET_SIDE_BAR = 'SET_SIDE_BAR',
@@ -53,6 +54,11 @@ type SetNetworkModal = {
   payload: {
     status: boolean
   }
+}
+
+type SetInitialUserInfo = {
+  type: typeof GlobalTypes.SET_INITITAL_USER_INFO
+  payload: any
 }
 
 type SetAnimationsExecuted = {
@@ -101,6 +107,7 @@ export type GlobalActionTypes =
   | SetToken
   | SetUser
   | SetSignInModal
+  | SetInitialUserInfo
   | SetUserInfoModal
   | SetSideBar
   | SetMainAnimationFinished

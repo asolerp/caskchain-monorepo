@@ -19,17 +19,17 @@ import Image from 'next/image'
 import { LiquorsTypes, upperCaseFirstLetter } from 'caskchain-lib'
 
 import useLocalLoading from '@hooks/common/useLocalLoading'
-import BarrelsSection from 'components/pages/home/BarrelsSection'
+
 import Dropdown from '@ui/common/Dropdown'
 import FilterMarketplace from 'components/pages/marketplace/FilterMarketplace'
 import { filters, sufixesByType } from '../../utils/filters'
-import useWindowDimensions from '@hooks/common/useWindowDimensions'
+import useGetRates from '@hooks/common/useGetRates'
 
 const NFTCaskWorld: NextPage = () => {
   const token = getCookie('token') as string
   const { nfts } = useAllNfts()
+  const { rates } = useGetRates()
   const { account } = useAccount()
-  const { width } = useWindowDimensions()
   const { loading } = useLocalLoading()
   const {
     state: { user },
@@ -62,23 +62,8 @@ const NFTCaskWorld: NextPage = () => {
     return null
   }
 
-  const RandomBarrels = () => {
-    return (
-      <section className="bg-white">
-        <Image
-          src="/images/wave1.svg"
-          width={width || 300}
-          height={500}
-          alt="wave"
-          className="scale-y-110 lg:scale-x-100 w-full"
-        />
-        <BarrelsSection />
-      </section>
-    )
-  }
-
   return (
-    <BaseLayout background="bg-black-light" bottomBanner={<RandomBarrels />}>
+    <BaseLayout background="bg-black-light" withFooter={false}>
       <Header></Header>
       <Spacer size="xl" />
       {loading ? (
@@ -216,6 +201,7 @@ const NFTCaskWorld: NextPage = () => {
                         <div key={idx} className="felx">
                           <BarrelNft
                             isMarketPlace
+                            rates={rates}
                             item={nft}
                             onPressFavorite={(nftId: string) =>
                               nfts.handleAddFavorite(nftId)

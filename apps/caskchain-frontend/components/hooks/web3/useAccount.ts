@@ -38,10 +38,8 @@ export const hookFactory: AccountHookFactory =
     const checkIfUserDataIsNeeded = (
       email: string,
       token: any,
-      callback: any
+      callback?: any
     ) => {
-      console.log(user)
-
       if (!email) {
         return dispatch({
           type: GlobalTypes.SET_USER_INFO_MODAL,
@@ -59,7 +57,11 @@ export const hookFactory: AccountHookFactory =
       }
     }
 
-    const signAddress = async ({ callback }: { callback: () => void }) => {
+    const signAddress = async ({
+      callback = () => null,
+    }: {
+      callback?: () => void
+    }) => {
       try {
         const signedMessage = await getSignedData(web3, address)
         const responseSign = await axios.post(
@@ -69,7 +71,7 @@ export const hookFactory: AccountHookFactory =
         setCookie('token', responseSign.data?.token)
         setCookie('refresh-token', responseSign.data?.refreshToken)
 
-        callback()
+        callback && callback()
       } catch (e) {
         console.error(e)
       }
@@ -89,45 +91,29 @@ export const hookFactory: AccountHookFactory =
       try {
         const accounts = await connectWithMagic(magic)
 
-        console.log('Logged in user:', accounts[0])
         localStorage.setItem('user', accounts[0])
 
         // Once user is logged in, re-initialize web3 instance to use the new provider (if connected with third party wallet)
         const web3 = await getWeb3(magic)
         if (!web3) return
         setWeb3(web3)
+        const userDB = await axios.get(`/api/user/${accounts[0].toLowerCase()}`)
+
+        dispatch({
+          type: GlobalTypes.SET_USER,
+          payload: { user: userDB?.data },
+        })
         dispatch({
           type: GlobalTypes.SET_ADDRESS,
           payload: { address: accounts[0] },
         })
-        const userDB = await axios.get(`/api/user/${accounts[0].toLowerCase()}`)
-        checkIfUserDataIsNeeded(userDB?.data, token, () => {
-          dispatch({
-            type: GlobalTypes.SET_USER,
-            payload: { user: userDB?.data },
-          })
-        })
+        checkIfUserDataIsNeeded(userDB?.data, token)
       } catch (error) {
         console.error(error)
       } finally {
         setLoading(false)
       }
     }
-
-    // const connect = async () => {
-    //   if (!user?.email) {
-    //     return dispatch({
-    //       type: GlobalTypes.SET_USER_INFO_MODAL,
-    //       payload: { status: true },
-    //     })
-    //   }
-    //   if (!token) {
-    //     return dispatch({
-    //       type: GlobalTypes.SET_SIGN_IN_MODAL,
-    //       payload: { status: true },
-    //     })
-    //   }
-    // }
 
     return {
       connect,

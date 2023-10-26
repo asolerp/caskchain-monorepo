@@ -16,7 +16,7 @@ const HeroSection = () => {
   } = useGlobal()
 
   const controls = useAnimation()
-  
+
   useEffect(() => {
     if (mainAnimationFinished) {
       controls.start('visible')
@@ -97,16 +97,16 @@ const HeroSection = () => {
           >
             <Link href="/marketplace/search" passHref>
               <Button
-                containerStyle="px-12 py-4 lg:py-6 w-full lg:w-fit"
-                labelStyle="text-xl text-center"
+                containerStyle="px-6 py-4 lg:py-4 w-full lg:w-fit"
+                labelStyle="text-xl text-center font-poppins font-medium"
                 onClick={() => route.push('/marketplace/search')}
               >
-                Explore
+                Explore casks
               </Button>
             </Link>
           </motion.div>
           <Spacer size="2xl" />
-          <div className="px-6 h-fi">
+          {/* <div className="px-6 h-fi">
             <motion.div
               initial="hidden"
               animate={controls}
@@ -118,7 +118,7 @@ const HeroSection = () => {
               <MarketPlaceStats />
             </motion.div>
             <Spacer size="xl" />
-          </div>
+          </div> */}
         </div>
         <div />
       </div>

@@ -6,6 +6,7 @@ export interface NFTsDataSource {
   addFraction(id: string, fraction: any): Promise<void>
   save(id: string, nft: NFTRequestModel): Promise<void>
   getNFTFavoriteCounter(id: string): Promise<number>
+  updateBestBarrels(id: string, state: boolean): Promise<void>
   updateFavoriteCounter(id: string, action: string): Promise<number>
   search(tokenId: string): Promise<NFTResponseModel[] | null>
   updateOwnerNft(id: string, owner: string): Promise<void>

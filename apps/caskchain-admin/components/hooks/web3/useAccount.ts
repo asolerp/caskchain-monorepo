@@ -74,7 +74,6 @@ export const hookFactory: AccountHookFactory = () => () => {
     const accounts = await connectWithMagic(magic)
 
     if (accounts) {
-      console.log('Logged in user:', accounts[0])
       localStorage.setItem('user', accounts[0])
       const web3 = await getWeb3(magic)
       setWeb3(web3)

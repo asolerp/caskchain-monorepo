@@ -47,7 +47,7 @@ const nextConfig = withTM({
     domains: [
       'res.cloudinary.com',
       'gateway.pinata.cloud',
-      'ivory-worthy-sparrow-388.mypinata.cloud',
+      'gold-tropical-mongoose-649.mypinata.cloud',
     ],
   },
   transpilePackages: ['caskchain-lib, caskchain-ui'],

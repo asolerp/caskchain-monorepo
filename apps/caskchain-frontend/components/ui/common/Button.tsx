@@ -28,7 +28,8 @@ const Button: React.FC<ButtonProps> = ({
     ? 'bg-cask-chain'
     : 'ring-1 ring-cask-chain text-cask-chain'
   const containerClass = containerStyle || 'px-6 py-3'
-  const labelClass = labelStyle || 'font-poppins text-lg text-center'
+  const labelClass =
+    labelStyle || 'font-poppins font-medium text-lg text-center'
   const disabledClass = disabled ? 'opacity-50 cursor-not-allowed' : ''
   return (
     <div
@@ -44,7 +45,7 @@ const Button: React.FC<ButtonProps> = ({
       {loading ? (
         <PuffLoader size={30} />
       ) : (
-        <p className={`font-semibold ${labelClass}`}>{children}</p>
+        <p className={`font-semibold  ${labelClass}`}>{children}</p>
       )}
     </div>
   )

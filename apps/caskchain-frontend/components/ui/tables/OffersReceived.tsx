@@ -7,6 +7,8 @@ import Link from 'next/link'
 import Badge from '@ui/common/Badge'
 import parseStatusColors from './utils/parseStatusColors'
 import Button from '@ui/common/Button'
+import Image from 'next/image'
+import { Spacer } from 'caskchain-ui'
 
 type OffersReceivedProps = {
   onAccept: (tokenId: string) => void
@@ -19,59 +21,61 @@ const OffersReceived: React.FC<OffersReceivedProps> = ({
   loading,
   offersReceived,
 }) => {
+  console.log('OffersReceived', offersReceived)
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col border-b border-b-gray-400 ">
       <div className="overflow-x-auto sm:mx-0.5 lg:mx-0.5">
-        <div className="py-2 inline-block min-w-full">
+        <div className="inline-block min-w-full">
           <div className="overflow-hidden">
             <table className="min-w-full">
-              <thead className="border-b">
-                <tr>
+              <thead className="border-b bg-[#282828]">
+                <tr className="divide-x-[.5px] divide-gray-500">
                   <th
                     scope="col"
-                    className="text-lg font-medium text-cask-chain px-6 py-4 text-left"
+                    className="text-lg font-poppins font-light text-gray-300 py-2 px-6 text-left"
                   >
                     #
                   </th>
                   <th
                     scope="col"
-                    className="text-lg font-medium text-cask-chain px-6 py-4 text-left"
+                    className="text-lg font-poppins font-light text-gray-300 py-2 px-6 text-left"
                   >
                     Nft Id
                   </th>
                   <th
                     scope="col"
-                    className="text-lg font-medium text-cask-chain px-6 py-4 text-left"
+                    className="text-lg font-poppins font-light text-gray-300 py-2 px-6 text-left"
                   >
                     Bidder
                   </th>
                   <th
                     scope="col"
-                    className="text-lg font-medium text-cask-chain px-6 py-4 text-left"
+                    className="text-lg font-poppins font-light text-gray-300 py-2 px-6 text-left"
                   >
                     Owner
                   </th>
                   <th
                     scope="col"
-                    className="text-lg font-medium text-cask-chain px-6 py-4 text-left"
+                    className="text-lg font-poppins font-light text-gray-300 py-2 px-6 text-left"
                   >
                     Date
                   </th>
                   <th
                     scope="col"
-                    className="text-lg font-medium text-cask-chain px-6 py-4 text-left"
+                    className="text-lg font-poppins font-light text-gray-300 py-2 px-6 text-left"
                   >
                     Offer
                   </th>
                   <th
                     scope="col"
-                    className="text-lg font-medium text-cask-chain px-6 py-4 text-center"
+                    className="text-lg font-poppins font-light text-gray-300 py-2 px-6 text-left"
                   >
                     Status
                   </th>
                   <th
                     scope="col"
-                    className="text-lg font-medium text-cask-chain px-6 py-4 text-center"
+                    className="text-lg font-poppins font-light text-gray-300 py-2 px-6 text-left"
                   >
                     Action
                   </th>
@@ -80,6 +84,7 @@ const OffersReceived: React.FC<OffersReceivedProps> = ({
               <tbody>
                 <>
                   {offersReceived &&
+                    offersReceived?.length > 0 &&
                     offersReceived?.map((item, i) => {
                       return (
                         <tr
@@ -149,6 +154,21 @@ const OffersReceived: React.FC<OffersReceivedProps> = ({
                 </>
               </tbody>
             </table>
+            {!offersReceived ||
+              (offersReceived.length === 0 && (
+                <div className="flex flex-col h-60 w-full justify-center items-center">
+                  <Image
+                    src="/icons/barrels.svg"
+                    width={100}
+                    height={100}
+                    alt="empty favourites"
+                  />
+                  <Spacer size="md" />
+                  <h3 className="font-poppins text-2xl text-gray-500 font-thin tracking-wider">
+                    {`No data`}
+                  </h3>
+                </div>
+              ))}
           </div>
         </div>
       </div>

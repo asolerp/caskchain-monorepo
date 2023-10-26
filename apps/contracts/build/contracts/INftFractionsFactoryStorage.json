@@ -145,7 +145,9 @@
   "ast": {
     "absolutePath": "project:/contracts/NftFractions/INftFractionsFactoryStorage.sol",
     "exportedSymbols": {
-      "INftFractionsFactoryStorage": [11065]
+      "INftFractionsFactoryStorage": [
+        11065
+      ]
     },
     "id": 11066,
     "license": "MIT",
@@ -153,7 +155,12 @@
     "nodes": [
       {
         "id": 11012,
-        "literals": ["solidity", "^", "0.8", ".7"],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".7"
+        ],
         "nodeType": "PragmaDirective",
         "src": "32:23:56"
       },
@@ -165,7 +172,9 @@
         "contractKind": "interface",
         "fullyImplemented": false,
         "id": 11065,
-        "linearizedBaseContracts": [11065],
+        "linearizedBaseContracts": [
+          11065
+        ],
         "name": "INftFractionsFactoryStorage",
         "nameLocation": "67:27:56",
         "nodeType": "ContractDefinition",
@@ -647,7 +656,9 @@
                     "pathNode": {
                       "id": 11051,
                       "name": "Vault",
-                      "nameLocations": ["582:5:56"],
+                      "nameLocations": [
+                        "582:5:56"
+                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 11017,
                       "src": "582:5:56"
@@ -795,7 +806,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-08-10T07:20:11.798Z",
+  "updatedAt": "2023-10-25T07:43:16.140Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

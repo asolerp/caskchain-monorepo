@@ -8,11 +8,12 @@ import { useRouter } from 'next/router'
 
 import Spacer from '@ui/common/Spacer'
 import { ipfsImageParser } from 'utils/ipfsImageParser'
-
+import { motion } from 'framer-motion'
 import { ethers } from 'ethers'
 
 type NftItemProps = {
   item: any
+  rates?: any
   active?: boolean
   isFavorite?: boolean
   isMarketPlace?: boolean
@@ -30,6 +31,7 @@ const BARREL_HEIGHT = 650
 
 const BarrelNft: React.FC<NftItemProps> = ({
   item,
+  rates = [],
   active = false,
   showAnimation = true,
   isFavorite = false,
@@ -51,6 +53,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
   const mainImage = item && ipfsImageParser(isProfileMeta?.image)
 
   useEffect(() => {
+    if (!item.video) return
     if (videoRef.current) {
       if (isHover) {
         videoRef.current.play()
@@ -58,15 +61,32 @@ const BarrelNft: React.FC<NftItemProps> = ({
         videoRef.current.pause()
       }
     }
-  }, [isHover])
+  }, [isHover, item?.video])
+
+  const MATICEUR = rates?.find((rate: any) => rate?._id === 'matic')?.lastPrice
+
+  const variants = {
+    hover: {
+      border: '1px solid #CAFC01',
+      transition: {
+        duration: 5, // Adjust the duration as needed
+      },
+    },
+    initial: {
+      border: '0px solid transparent',
+    },
+  }
 
   return (
-    <div
-      className={`group relative cursor-pointer min-h-[${BARREL_HEIGHT}px] ${
+    <motion.div
+      className={`group relative cursor-pointer min-h-[${BARREL_HEIGHT}px] rounded-[30px] ${
         isMarketPlace
           ? 'group-hover:scale-[1.02] transform-gpu transition-all'
           : ''
       }`}
+      variants={variants}
+      initial="initial"
+      whileHover="hover"
     >
       {showFavorite && (
         <div className="absolute right-5 top-5 z-30">
@@ -91,7 +111,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
         >
           <div className="relative h-[330px] w-full overflow-hidden rounded-tl-[30px] rounded-tr-[30px]">
             <div className="overflow-hidden relative w-full flex justify-center items-center">
-              {(!isHover || !showAnimation) && (
+              {(!isHover || !showAnimation || !item?.video) && (
                 <Image
                   onMouseEnter={() => setIsHover(true)}
                   onMouseLeave={() => setIsHover(false)}
@@ -103,7 +123,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
                   priority
                 />
               )}
-              {isHover && showAnimation && (
+              {isHover && showAnimation && item?.video && (
                 <video
                   ref={videoRef}
                   width="600"
@@ -112,7 +132,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
                   onMouseLeave={() => setIsHover(false)}
                   className="h-[330px] scale-[3] overflow-hidden"
                   controls={false}
-                  src="https://res.cloudinary.com/enalbis/video/upload/v1681586853/CaskChain/flofru3viqsirclxlapx.mp4"
+                  src={item?.video}
                 />
               )}
             </div>
@@ -208,9 +228,17 @@ const BarrelNft: React.FC<NftItemProps> = ({
                   <div className="px-4">
                     {item?.price ? (
                       <div className="flex flex-row items-center justify-between">
-                        <p className="text-gray-400">Barrel price</p>
+                        <p className="text-gray-400">Price</p>
                         <p className="text-white">
                           {ethers.utils.formatEther(item?.price)} MATIC
+                        </p>
+                        <p className="text-white">~</p>
+                        <p className="text-white">
+                          {(
+                            Number(ethers.utils.formatEther(item?.price)) *
+                            MATICEUR
+                          ).toFixed(2)}{' '}
+                          EUR
                         </p>
                       </div>
                     ) : (
@@ -255,7 +283,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

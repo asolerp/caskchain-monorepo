@@ -12,7 +12,7 @@ const Badge: React.FC<BadgeProps> = ({
   children,
 }) => {
   return (
-    <div className={`px-6 py-2 rounded-3xl ${bgColor}`}>
+    <div className={`px-6 py-2 w-fit rounded-3xl ${bgColor}`}>
       <p
         className={`font-poppins font-semibold text-md text-center ${textColor}`}
       >

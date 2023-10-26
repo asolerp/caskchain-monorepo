@@ -39,9 +39,9 @@ const BarrelsSection = () => {
   const { bestBarrels } = useBestBarrels()
 
   return (
-    <div className="h-full lg:h-screen flex flex-col items-center justify-center bg-white py-10 lg:py-20">
+    <div className="h-full lg:h-screen flex flex-col items-center justify-center bg-black-light py-10 lg:py-20">
       <div className="flex flex-col w-full items-center">
-        <h2 className="font-rale font-semibold text-center text-4xl lg:text-6xl">
+        <h2 className="font-rale text-white text-center lg:text-left font-semibold text-4xl lg:text-5xl">
           The Best Barrels
         </h2>
         <Spacer sm="md" size="3xl" />

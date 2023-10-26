@@ -31,6 +31,16 @@ const OwnerTip: React.FC<OwnerTipProps> = ({ imgSrc, title, subtitle }) => {
 const OwnerSection = () => {
   return (
     <div>
+      <div className="hidden lg:flex relative bg-bg_owner bg-cover bg-center bg-no-repeat h-[600px] w-full flex-col items-center justify-center">
+        <div className="absolute right-32 flex flex-col items-center w-72 p-6 bg-gray-400 rounded-[30px] bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10">
+          <h3 className="font-rale font-medium text-white text-3xl text-center">
+            Now you can be a pionner in the digital world of spirit
+          </h3>
+          <Spacer size="md" />
+          <Button labelStyle="text-md">Set up Now</Button>
+        </div>
+      </div>
+
       <div className="w-full bg-black-light flex flex-col items-center py-20">
         <h2 className="font-rale text-white text-center lg:text-left font-semibold text-4xl lg:text-5xl">
           How To Be Owner
@@ -54,7 +64,6 @@ const OwnerSection = () => {
           />
         </div>
         <Spacer size="2xl" />
-        <Spacer size="2xl" />
         <div className="flex flex-col lg:hidden items-center bg-white w-full py-20">
           <Image
             src="https://res.cloudinary.com/enalbis/image/upload/v1683179367/CaskChain/ddnaaleg8prhfuhiwal4.png"
@@ -64,18 +73,8 @@ const OwnerSection = () => {
           />
           <Button labelStyle="text-md">Set up Now</Button>
         </div>
-        <div className="hidden lg:flex relative bg-bg_owner bg-cover bg-center bg-no-repeat h-[600px] w-full flex-col items-center justify-center">
-          <div className="absolute right-32 flex flex-col items-center w-72 p-6 bg-gray-400 rounded-[30px] bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10">
-            <h3 className="font-rale font-medium text-white text-3xl text-center">
-              Now you can be a pionner in the digital world of spirit
-            </h3>
-            <Spacer size="md" />
-            <Button labelStyle="text-md">Set up Now</Button>
-          </div>
-        </div>
+        <Spacer size="2xl" />
 
-        <Spacer size="2xl" />
-        <Spacer size="2xl" />
         <div className="flex flex-col items-center px-6 lg:px-0">
           <h2 className="font-rale text-white font-semibold text-4xl lg:text-5xl">
             Meet CaskChain

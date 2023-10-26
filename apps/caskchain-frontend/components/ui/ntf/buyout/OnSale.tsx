@@ -7,38 +7,14 @@ import { useEffect, useState } from 'react'
 
 type Props = {
   cask: Nft
+  rates: any
   onBuy: () => void
   onBuyWithERC20: () => void
 }
 
-type CoinSelectorProps = {
-  label: string
-  active: boolean
-  onClick: () => void
-}
+const OnSale: React.FC<Props> = ({ cask, rates, onBuy, onBuyWithERC20 }) => {
+  const MATICEUR = rates?.find((rate: any) => rate?._id === 'matic')?.lastPrice
 
-const CoinSelector: React.FC<CoinSelectorProps> = ({
-  label,
-  active,
-  onClick,
-}) => {
-  const activeClassContainer = active
-    ? 'bg-cask-chain'
-    : 'border border-cask-chain'
-  const activeClassLabel = active ? 'text-black' : 'text-cask-chain'
-  return (
-    <div
-      onClick={onClick}
-      className={`cursor-pointer pinter p-4  rounded-xl ${activeClassContainer}`}
-    >
-      <span className={` font-poppins font-bold ${activeClassLabel}`}>
-        {label}
-      </span>
-    </div>
-  )
-}
-
-const OnSale: React.FC<Props> = ({ cask, onBuy, onBuyWithERC20 }) => {
   const [selectedCoin, setSelectedCoin] = useState<'ETH' | 'MATIC' | 'USDT'>()
 
   useEffect(() => {
@@ -62,23 +38,6 @@ const OnSale: React.FC<Props> = ({ cask, onBuy, onBuyWithERC20 }) => {
         </p>
       </div>
       <Spacer size="md" />
-      <div className="flex flex-row space-x-3">
-        {cask?.price && cask?.price > 0 && (
-          <CoinSelector
-            label="ETH"
-            active={selectedCoin === 'ETH'}
-            onClick={() => setSelectedCoin('ETH')}
-          />
-        )}
-        {cask?.erc20Prices?.USDT > 0 && (
-          <CoinSelector
-            label="USDT"
-            active={selectedCoin === 'USDT'}
-            onClick={() => setSelectedCoin('USDT')}
-          />
-        )}
-      </div>
-      <Spacer size="md" />
       <div className="flex items-center">
         <div>
           <p className="text-cask-chain mb-1">PRICE</p>
@@ -90,8 +49,14 @@ const OnSale: React.FC<Props> = ({ cask, onBuy, onBuyWithERC20 }) => {
               : `${
                   cask?.price &&
                   ethers.utils.formatEther(cask?.price).toString()
-                } ETH`}
+                } MATIC`}
           </h2>
+          <p className="text-white">
+            {(Number(ethers.utils.formatEther(cask?.price)) * MATICEUR).toFixed(
+              2
+            )}{' '}
+            EUR
+          </p>
         </div>
       </div>
       <Spacer size="md" />

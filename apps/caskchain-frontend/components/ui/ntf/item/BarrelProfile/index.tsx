@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 
 import Spacer from '@ui/common/Spacer'
 import { ipfsImageParser } from 'utils/ipfsImageParser'
+import { useGlobal } from '@providers/global'
 
 type NftItemProps = {
   item: any
@@ -17,7 +18,9 @@ const BARREL_HEIGHT = 680
 const BarrelProfile: React.FC<NftItemProps> = ({ item, onPressProfileCTA }) => {
   const router = useRouter()
   const isMarketPlaceClass = `h-[${BARREL_HEIGHT}px] w-[400px] m-0`
-
+  const {
+    state: { address },
+  } = useGlobal()
   const isProfileMeta = item.meta
   const mainImage = item && ipfsImageParser(isProfileMeta?.image)
 
@@ -84,9 +87,18 @@ const BarrelProfile: React.FC<NftItemProps> = ({ item, onPressProfileCTA }) => {
                   </div>
                 </div>
                 <div className="px-4 pt-4 pb-2">
-                  <Button onClick={onPressProfileCTA} fit={false}>
-                    Sell the barrel
-                  </Button>
+                  {item?.owner?.address === address ? (
+                    <Button onClick={onPressProfileCTA} fit={false}>
+                      Sell the barrel
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => router.push(`/cask/${item.tokenId}`)}
+                      fit={false}
+                    >
+                      View cask
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>

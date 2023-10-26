@@ -81,6 +81,8 @@ import CronService from './data/scheduling/CronService'
 import { CryptoRateRepositoryImpl } from './domain/repositories/crypto-rate-repository'
 import { MongoDBCryptoRatesDataSource } from './data/data-sources/mongodb/MongoDBCryptoRatesDataSource'
 import { CryptoRatesServiceImpl } from './domain/services/crypto-rate-service'
+import RateRouter from './presentation/routers/rates-router'
+import { GetCryptoRates } from './domain/use-cases/rates/get-crypto-rates'
 ;(async () => {
   const clientDB = MongoClientFactory.createClient(
     process.env.CONTEXT_NAME as string,
@@ -124,6 +126,9 @@ import { CryptoRatesServiceImpl } from './domain/services/crypto-rate-service'
   )
   const offerImpl = new OfferImpl(new MongoDBOfferDataSource(clientDB))
   const statsImpl = new StatsImpl(new MongoDBStatsDataSource(clientDB))
+  const ratesImpl = new CryptoRateRepositoryImpl(
+    new MongoDBCryptoRatesDataSource(clientDB)
+  )
 
   const recordOfferImpl = new RecordOfferImpl(
     new MongoDBOfferDataSource(clientDB)
@@ -150,6 +155,8 @@ import { CryptoRatesServiceImpl } from './domain/services/crypto-rate-service'
     new CreateCheckoutSession(paymentsRepositoryImpl),
     new RecordInitPayment(recordPaymentsImpl)
   )
+
+  const rates = RateRouter(new GetCryptoRates(ratesImpl))
 
   const stats = StatsRouter(
     new GetTotalUsers(statsImpl),
@@ -269,6 +276,7 @@ import { CryptoRatesServiceImpl } from './domain/services/crypto-rate-service'
       handler: user(clientDB, web3Client, web3WsClient, web3Contracts),
     },
     { path: '/api/stats', handler: stats },
+    { path: '/api/rates', handler: rates },
     { path: '/api/signature', handler: signature },
     { path: '/api/pin-nft', handler: pinNftMiddleWare },
     { path: '/api/order-bottle', handler: orderBottleMiddleWare },

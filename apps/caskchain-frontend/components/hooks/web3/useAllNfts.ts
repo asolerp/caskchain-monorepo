@@ -16,6 +16,7 @@ import groupByAndSum from './utils/groupAndSum'
 import useSWR from 'swr'
 import buildQueryString from './utils/buildQuery'
 import { useAuth } from '@hooks/web3'
+import { GlobalTypes } from '@providers/global/utils'
 
 type AllNftsHookFactory = CryptoHookFactory<Nft[], any>
 
@@ -26,6 +27,7 @@ export const hookFactory: AllNftsHookFactory =
   () => {
     const {
       state: { user },
+      dispatch,
     } = useGlobal()
 
     const { setIsLoading } = useContext(LoadingContext)
@@ -114,29 +116,15 @@ export const hookFactory: AllNftsHookFactory =
 
     const handleSetFilterList = (filterType: string) => {
       if (!filters) return
-      if (!activeLiquor || activeLiquor.length === 0) {
-        const selectedFilters = Object.entries(filters)
-          .map(([key]) => {
-            return filters[key][filterType]
-          })
-          .filter((filter: any) => filter !== undefined)
+      const selectedFilters = Object.entries(filters)
+        .map(([key]) => {
+          return filters[key][filterType]
+        })
+        .filter((filter: any) => filter !== undefined)
 
-        const groupedFilters = groupByAndSum(selectedFilters)
+      const groupedFilters = groupByAndSum(selectedFilters)
 
-        setFilterList(Object.keys(groupedFilters))
-      } else {
-        const selectedFilters = activeLiquor
-          .map((liquor: string) => {
-            return filters[liquor][filterType]
-          })
-          .filter((filter: any) => filter !== undefined)
-
-        const groupedFilters = groupByAndSum(selectedFilters)
-
-        setFilterList(
-          Object.keys(groupedFilters).map((key) => normalizeString(key))
-        )
-      }
+      setFilterList(Object.keys(groupedFilters))
     }
 
     const handleSearch = async () => {
@@ -157,7 +145,13 @@ export const hookFactory: AllNftsHookFactory =
         await axiosClient.post(`/api/casks/${nftId}/favorite`, {
           userId: user?._id,
         })
-        auth.refetchUser()
+        auth.refetchUser({
+          callback: (userFetched: any) =>
+            dispatch({
+              type: GlobalTypes.SET_USER,
+              payload: { user: userFetched },
+            }),
+        })
       } catch (err: any) {
         toast.error(err?.response?.data?.message)
       }

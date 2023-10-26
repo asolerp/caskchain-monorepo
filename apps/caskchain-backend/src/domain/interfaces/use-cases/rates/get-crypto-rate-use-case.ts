@@ -1,3 +1,3 @@
 export interface GetCryptoRateUseCase {
-  execute(pair: string): Promise<any>
+  execute(): Promise<any>
 }

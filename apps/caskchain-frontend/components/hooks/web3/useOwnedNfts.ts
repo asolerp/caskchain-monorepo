@@ -42,7 +42,6 @@ export const hookFactory: OwnedNftsHookFactory =
       token ? '/api/casks/me' : null,
       async () => {
         const ownedNfts: any = await axiosClient.get('/api/casks/me')
-
         const nfts = [] as any[]
 
         for (let i = 0; i < ownedNfts.data.length; i++) {

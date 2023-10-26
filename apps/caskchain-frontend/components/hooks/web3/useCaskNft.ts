@@ -12,6 +12,8 @@ import { toast } from 'react-toastify'
 import useSWR from 'swr'
 
 import useDebounce from '@hooks/common/useDebounce'
+import useGetRates from '@hooks/common/useGetRates'
+import { useAccount } from '@hooks/web3'
 
 type CaskNftHookFactory = CryptoHookFactory<Nft[]>
 
@@ -23,7 +25,6 @@ export const hookFactory: CaskNftHookFactory =
     const [successModal, setSuccessModal] = useState<boolean>(false)
     const [tokenAmmount, setTokenAmmount] = useState<number | undefined>(0)
     const [totalFavorites, setTotalFavorites] = useState<number | undefined>(0)
-
     const [isFavorite, setIsFavorite] = useState<boolean>(false)
 
     const {
@@ -31,6 +32,9 @@ export const hookFactory: CaskNftHookFactory =
       dispatch,
     } = useGlobal()
 
+    const { account } = useAccount()
+
+    const { rates } = useGetRates()
     const token = getCookie('token')
 
     useEffect(() => {
@@ -86,7 +90,6 @@ export const hookFactory: CaskNftHookFactory =
     const _nftOffers = nftOffers
     const _nftVendor = nftVendor
     const _nftFractionsVendor = nftFractionsVendor
-
     const isUserNeededDataFilled = true
     const hasOffersFromUser = data?.offer?.bidders?.some(
       (bidder: string) => bidder === user?.address
@@ -126,38 +129,33 @@ export const hookFactory: CaskNftHookFactory =
       })
     }
 
-    const handleUserState = useCallback(() => {
-      // if (
-      //   provider.chains &&
-      //   provider.chains.some((c: any) =>
-      //     AcceptedChainIds.some((aChainId) => aChainId === c)
-      //   )
-      // ) {
-      //   return dispatch({
-      //     type: GlobalTypes.SET_NETWORK_MODAL,
-      //     payload: { status: true },
-      //   })
-      // }
-      // if (!user?.email) {
-      //   return dispatch({
-      //     type: GlobalTypes.SET_USER_INFO_MODAL,
-      //     payload: { status: true },
-      //   })
-      // }
-      if (!token) {
-        return dispatch({
-          type: GlobalTypes.SET_SIGN_IN_MODAL,
-          payload: { status: true },
-        })
-      }
-    }, [dispatch, token])
+    const handleUserState = useCallback(
+      (callback?: any) => {
+        if (!address) {
+          return account.connect()
+        }
+        if (!token) {
+          return dispatch({
+            type: GlobalTypes.SET_SIGN_IN_MODAL,
+            payload: { status: true },
+          })
+        }
+        if (!user?.email) {
+          return dispatch({
+            type: GlobalTypes.SET_USER_INFO_MODAL,
+            payload: { status: true },
+          })
+        }
+        callback && callback()
+      },
+      [dispatch, token, user?.email, account, address]
+    )
 
     const hasFractions = data?.fractions?.total
 
     const buyNft = useCallback(
       async (tokenId: number, price: string) => {
         const id = toast.loading('Buying a barrel...')
-        console.log('price', price.toString())
         try {
           if (isUserNeededDataFilled) {
             const txBuy = await _nftVendor?.methods?.buyItem(tokenId).send({
@@ -242,32 +240,6 @@ export const hookFactory: CaskNftHookFactory =
       [_nftVendor, handleUserState, isUserNeededDataFilled]
     )
 
-    // const buyFractionizedNft = useCallback(async () => {
-    //   try {
-    //     console.log('Data', data)
-    //     if (isUserNeededDataFilled) {
-    //       const listingPrice = data?.fractions?.listingPrice.toString()
-
-    //       const tokenContract = await loadContractByABI(
-    //         NftFractionToken.networks[4447].address as string,
-    //         NftFractionToken.abi
-    //       )
-
-    //       const signer = (await fetchSigner()) as unknown as Signer
-
-    //       const signedTokenContract = tokenContract.connect(signer)
-
-    //       await signedTokenContract.purchase({
-    //         value: listingPrice,
-    //       })
-    //     } else {
-    //       handleUserState()
-    //     }
-    //   } catch (err) {
-    //     console.log(err)
-    //   }
-    // }, [data, isUserNeededDataFilled, handleUserState])
-
     const buyFractions = useCallback(
       async (
         tokenAddress: string,
@@ -299,25 +271,37 @@ export const hookFactory: CaskNftHookFactory =
 
     const makeOffer = useCallback(
       async (bid: string) => {
+        const id = toast.loading('Making offer...')
         try {
           if (isUserNeededDataFilled) {
-            const result = await _nftOffers?.makeOffer(caskId, {
+            const txOffer = await _nftOffers?.methods?.makeOffer(caskId).send({
+              from: address,
               value: ethers.utils.parseUnits(bid.toString(), 'ether'),
             })
-            await toast.promise(result!.wait(), {
-              pending: 'Processing transaction',
-              success: 'You are the highest bidder!',
-              error: 'Processing error',
+            if (!txOffer.status) throw new Error('Offer Nft failed')
+
+            toast.update(id, {
+              render: 'Offer Nft success',
+              type: 'success',
+              isLoading: false,
+              closeOnClick: true,
+              autoClose: 2000,
             })
           } else {
             handleUserState()
           }
         } catch (e: any) {
           console.error('ERROR', e)
-          toast.info('🏦 There is a higher offer. Bid harder!')
+          toast.update(id, {
+            render: 'Something went wrong',
+            type: 'error',
+            isLoading: false,
+            closeOnClick: true,
+            autoClose: 2000,
+          })
         }
       },
-      [caskId, _nftOffers, handleUserState, isUserNeededDataFilled]
+      [address, caskId, _nftVendor, handleUserState, isUserNeededDataFilled]
     )
 
     const cancelOffer = useCallback(async () => {
@@ -335,6 +319,7 @@ export const hookFactory: CaskNftHookFactory =
 
     return {
       data,
+      rates,
       buyNft,
       makeOffer,
       isLoading: isLoadingNft,
@@ -348,6 +333,7 @@ export const hookFactory: CaskNftHookFactory =
       buyWithERC20,
       successModal,
       totalFavorites,
+      handleUserState,
       setSuccessModal,
       handleShareCask,
       setTokenAmmount,

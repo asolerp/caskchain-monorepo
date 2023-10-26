@@ -4,8 +4,9 @@ import type { AppProps } from 'next/app'
 import { ParallaxProvider } from 'react-scroll-parallax'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import GlobalProvider from '@providers/global'
+import 'react-datepicker/dist/react-datepicker.css'
 
+import GlobalProvider from '@providers/global'
 import { AnimatePresence } from 'framer-motion'
 
 import useInitAnalytics from '@hooks/common/useInitAnalytics'
@@ -23,7 +24,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer theme="dark" />
       <Web3Provider magic={magic}>
         <GlobalProvider>
           <ParallaxProvider>

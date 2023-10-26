@@ -25,6 +25,13 @@ export const globalReducer = (
         shareModal: action.payload.status,
       }
 
+    case GlobalTypes.SET_INITITAL_USER_INFO:
+      return {
+        ...state,
+        user: action.payload.user,
+        address: action.payload.address,
+      }
+
     case GlobalTypes.SET_USER_INFO_MODAL:
       return {
         ...state,

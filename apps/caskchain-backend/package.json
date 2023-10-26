@@ -12,6 +12,7 @@
     "dev": "APP_ENV='ganache' ts-node-dev --files --ignore-watch node_modules ./src/main.ts"
   },
   "dependencies": {
+    "@mailchimp/mailchimp_marketing": "^3.0.80",
     "@truffle/hdwallet-provider": "^2.1.4",
     "@types/winston-loggly-bulk": "^3.0.3",
     "abi-decoder": "^2.4.0",
@@ -31,7 +32,6 @@
     "express-rate-limit": "^6.7.0",
     "express-session": "^1.17.3",
     "form-data": "^4.0.0",
-    "node-cron": "^3.0.2",
     "helmet": "^6.0.1",
     "hpp": "^0.2.3",
     "iron-session": "^6.3.1",
@@ -39,6 +39,7 @@
     "jwt-decode": "^3.1.2",
     "mongodb": "^4.13.0",
     "mongodb-memory-server": "^8.12.2",
+    "node-cron": "^3.0.2",
     "nodemon": "^2.0.20",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
@@ -51,7 +52,6 @@
     "winston-loggly-bulk": "^3.2.1"
   },
   "devDependencies": {
-    "@types/node-cron": "^3.0.8",
     "@types/amqplib": "^0.10.1",
     "@types/cookie-parser": "^1.4.3",
     "@types/cookie-session": "^2.0.44",
@@ -61,7 +61,9 @@
     "@types/jest": "^29.2.4",
     "@types/jsonwebtoken": "^9.0.0",
     "@types/lodash": "^4.14.191",
+    "@types/mailchimp__mailchimp_marketing": "^3.0.15",
     "@types/node": "^18.11.17",
+    "@types/node-cron": "^3.0.8",
     "@types/passport-jwt": "^3.0.8",
     "@types/supertest": "^2.0.12",
     "@types/uuid": "^9.0.0",

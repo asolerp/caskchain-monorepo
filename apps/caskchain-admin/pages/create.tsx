@@ -143,7 +143,7 @@ const NftCreate: NextPage = () => {
                         htmlFor="price"
                         className="block text-sm font-medium text-gray-700"
                       >
-                        Price (ETH)
+                        Price (Matic)
                       </label>
                       <div className="mt-1 flex rounded-md shadow-sm">
                         <input

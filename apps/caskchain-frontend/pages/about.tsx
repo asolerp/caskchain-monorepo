@@ -80,13 +80,6 @@ const About: NextPage = () => {
               </div>
             </div>
           </div>
-          <Image
-            src="/images/wave1.svg"
-            width={1000}
-            height={500}
-            alt="wave"
-            className="w-full"
-          />
         </div>
         <BarrelsSection />
         <NewsletterSection />

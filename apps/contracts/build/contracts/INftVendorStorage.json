@@ -469,7 +469,9 @@
   "ast": {
     "absolutePath": "project:/contracts/NftVendor/INftVendorStorage.sol",
     "exportedSymbols": {
-      "INftVendorStorage": [14206]
+      "INftVendorStorage": [
+        14206
+      ]
     },
     "id": 14207,
     "license": "MIT",
@@ -477,7 +479,12 @@
     "nodes": [
       {
         "id": 14027,
-        "literals": ["solidity", "^", "0.8", ".7"],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".7"
+        ],
         "nodeType": "PragmaDirective",
         "src": "32:23:66"
       },
@@ -489,7 +496,9 @@
         "contractKind": "interface",
         "fullyImplemented": false,
         "id": 14206,
-        "linearizedBaseContracts": [14206],
+        "linearizedBaseContracts": [
+          14206
+        ],
         "name": "INftVendorStorage",
         "nameLocation": "67:17:66",
         "nodeType": "ContractDefinition",
@@ -1167,7 +1176,9 @@
                     "pathNode": {
                       "id": 14082,
                       "name": "Listing",
-                      "nameLocations": ["756:7:66"],
+                      "nameLocations": [
+                        "756:7:66"
+                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 14036,
                       "src": "756:7:66"
@@ -2565,7 +2576,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-08-10T07:20:11.903Z",
+  "updatedAt": "2023-10-25T07:43:16.195Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

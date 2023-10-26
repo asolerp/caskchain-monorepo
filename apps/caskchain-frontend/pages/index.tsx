@@ -10,16 +10,14 @@ import NewsletterSection from 'components/pages/home/NewsletterSection'
 
 const Home: NextPage = () => {
   return (
-    <>
-      <BaseLayout>
-        <div className="w-full">
-          <HeroSection />
-          <BarrelsSection />
-          <OwnerSection />
-          <NewsletterSection />
-        </div>
-      </BaseLayout>
-    </>
+    <BaseLayout>
+      <div id="modals" className="w-full">
+        <HeroSection />
+        <BarrelsSection />
+        <OwnerSection />
+        <NewsletterSection />
+      </div>
+    </BaseLayout>
   )
 }
 

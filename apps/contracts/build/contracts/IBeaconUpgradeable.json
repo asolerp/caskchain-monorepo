@@ -28,7 +28,9 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts-upgradeable/proxy/beacon/IBeaconUpgradeable.sol",
     "exportedSymbols": {
-      "IBeaconUpgradeable": [546]
+      "IBeaconUpgradeable": [
+        546
+      ]
     },
     "id": 547,
     "license": "MIT",
@@ -36,7 +38,12 @@
     "nodes": [
       {
         "id": 538,
-        "literals": ["solidity", "^", "0.8", ".0"],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
         "nodeType": "PragmaDirective",
         "src": "93:23:5"
       },
@@ -54,7 +61,9 @@
         },
         "fullyImplemented": false,
         "id": 546,
-        "linearizedBaseContracts": [546],
+        "linearizedBaseContracts": [
+          546
+        ],
         "name": "IBeaconUpgradeable",
         "nameLocation": "208:18:5",
         "nodeType": "ContractDefinition",
@@ -135,7 +144,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-08-10T07:20:11.605Z",
+  "updatedAt": "2023-10-25T07:43:16.032Z",
   "devdoc": {
     "details": "This is the interface that {BeaconProxy} expects of its beacon.",
     "kind": "dev",

@@ -83,6 +83,11 @@ export class MongoDBNFTDataSource
     return document[0]?.favorites
   }
 
+  public async updateBestBarrels(id: string, state: boolean): Promise<void> {
+    const collection = await this.collection()
+    await collection.updateOne({ _id: id }, { $set: { offer: state } })
+  }
+
   public async updateOwnerNft(id: string, owner: string): Promise<void> {
     const collection = await this.collection()
     await collection.updateOne(

@@ -1,27 +1,29 @@
 import { useAccount } from '@hooks/web3'
 import { useGlobal } from '@providers/global'
-import { GlobalTypes } from '@providers/global/utils'
+
 import Button from '@ui/common/Button'
 import ClientOnly from 'components/pages/ClientOnly'
+import { getCookie } from 'cookies-next'
+
 import Image from 'next/image'
 
 import { addressSimplifier } from 'utils/addressSimplifier'
 
 const Walletbar: React.FC = () => {
   const {
-    dispatch,
     state: { address, user, sideBar },
   } = useGlobal()
 
+  const token = getCookie('token')
   const { account } = useAccount()
 
-  if (address) {
+  if (token && address) {
     return (
       <>
         <div className="lg:hidden">
           <Image
             onClick={() => account.handleOpenSidebar(sideBar)}
-            src="/images/user.png"
+            src={user?.imageProfile || '/images/user.png'}
             alt=""
             width={40}
             height={40}
@@ -35,7 +37,13 @@ const Walletbar: React.FC = () => {
                 onClick={() => account.handleOpenSidebar(sideBar)}
                 className="cursor-pointer px-1 py-1 justify-center items-center hover:border bg-cask-chain flex text-sm rounded-full focus:outline-none"
               >
-                <Image src="/images/user.png" alt="" width={40} height={40} />
+                <Image
+                  src={user?.imageProfile || '/images/user.png'}
+                  alt=""
+                  width={40}
+                  height={40}
+                  className="rounded-full w-[40px] h-[40px] object-cover"
+                />
                 <p className="px-2 text-sm font-poppins text-black">
                   {user?.nickname || addressSimplifier(address)}
                 </p>
@@ -47,10 +55,28 @@ const Walletbar: React.FC = () => {
     )
   }
 
+  if (address) {
+    return (
+      <ClientOnly>
+        <div>
+          <Button
+            loading={account.loading}
+            onClick={() => {
+              account.signAddress()
+            }}
+          >
+            {'Sign In'}
+          </Button>
+        </div>
+      </ClientOnly>
+    )
+  }
+
   return (
     <ClientOnly>
       <div>
         <Button
+          containerStyle="px-6 py-2"
           loading={account.loading}
           onClick={() => {
             account.connect()

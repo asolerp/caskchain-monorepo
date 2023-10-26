@@ -3,7 +3,7 @@ import express, { NextFunction } from 'express'
 import { Request, Response } from 'express'
 import { FileReq, NftMeta } from '../../types/nft'
 import axios from 'axios'
-import { authenticateToken } from '../middlewares/authenticateToken'
+
 import FormData from 'form-data'
 import logger from '../utils/logger'
 

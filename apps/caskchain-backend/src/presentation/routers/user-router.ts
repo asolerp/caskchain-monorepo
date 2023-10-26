@@ -1,5 +1,6 @@
 import express, { NextFunction } from 'express'
 import { Request, Response } from 'express'
+import mailchimp from '@mailchimp/mailchimp_marketing'
 
 import { GetUserUseCase } from '../../domain/interfaces/use-cases/get-user'
 import { SaveUserUseCase } from '../../domain/interfaces/use-cases/save-user'
@@ -14,6 +15,11 @@ import { DeleteTokensUseCase } from '../../domain/interfaces/use-cases/auth/dele
 import { GetBalancesUseCase } from '../../domain/interfaces/use-cases/get-balances'
 import jwt_decode from 'jwt-decode'
 import logger from '../utils/logger'
+
+mailchimp.setConfig({
+  apiKey: process.env.MAILCHIMP_API_KEY,
+  server: 'us21',
+})
 
 export default function UserRouter(
   getUser: GetUserUseCase,
@@ -139,6 +145,26 @@ export default function UserRouter(
         metadata: { service: 'user-router' },
       })
       return res.status(422).send({ message: 'Cannot get nonce' })
+    }
+  })
+
+  router.post('/subscribe', async (req: Request, res: Response) => {
+    const { email } = req.body
+    console.log('email', email)
+    console.log('env', process.env.MAILCHIMP_AUDIENCE_ID)
+
+    try {
+      await mailchimp.lists.addListMember(
+        process.env.MAILCHIMP_AUDIENCE_ID as string,
+        {
+          email_address: email,
+          status: 'subscribed',
+        }
+      )
+      return res.status(201).json({ error: '' })
+    } catch (error: any) {
+      console.error('Mailchimp error:', error.response?.data)
+      res.status(500).json({ message: 'Subscription failed' })
     }
   })
 
@@ -276,9 +302,32 @@ export default function UserRouter(
   )
 
   router.post('/', async (req: Request, res: Response) => {
-    const { id, email, nickname } = req.body
+    const {
+      id,
+      email = '',
+      resume = '',
+      country = '',
+      lastName = '',
+      nickname = '',
+      firstName = '',
+      backupInfo = '',
+      dateOfBirth = '',
+      imageProfile = '',
+      shippingInfo = '',
+    } = req.body
     try {
-      await saveUser.execute(id, { email, nickname })
+      await saveUser.execute(id, {
+        email,
+        resume,
+        country,
+        nickname,
+        lastName,
+        firstName,
+        backupInfo,
+        dateOfBirth,
+        imageProfile,
+        shippingInfo,
+      })
       logger.info('User with ID %s updated', id, {
         metadata: {
           service: 'user-router',

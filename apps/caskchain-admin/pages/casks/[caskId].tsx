@@ -139,7 +139,7 @@ function Cask() {
                       <dd className=" text-2xl font-extrabold text-black">
                         {cask?.data?.price &&
                           ethers.utils.formatEther(cask?.data?.price)}{' '}
-                        ETH
+                        MATIC
                       </dd>
                     </div>
                     <div className="flex flex-col">
@@ -163,7 +163,7 @@ function Cask() {
                         htmlFor="price"
                         className="block text-sm font-medium text-gray-700"
                       >
-                        Update price in ETH
+                        Update price in MATIC
                       </label>
                       <div className="mt-1 flex rounded-md shadow-sm">
                         <input

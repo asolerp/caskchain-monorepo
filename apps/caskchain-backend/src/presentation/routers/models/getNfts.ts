@@ -11,9 +11,10 @@ import { GetNFTFavoritesCounter } from '../../../domain/use-cases/nft/get-nft-fa
 import { GetNFTs } from '../../../domain/use-cases/nft/get-nfts'
 import { GetOwnedNFTs } from '../../../domain/use-cases/nft/get-owned-nfts'
 import { NftFavoriteCounter } from '../../../domain/use-cases/nft/nft-favorite-counter'
-import GetNftsRouter from '../get-nfts'
+import GetNftsRouter from '../nfts-router'
 import { GetFavoriteNfts } from '../../../domain/use-cases/nft/get-favorite-nfts'
 import { GetBestNfts } from '../../../domain/use-cases/nft/get-best-nfts'
+import { PutNftBestBarrels } from '../../../domain/use-cases/nft/put-nft-best-barrels'
 
 export const getNfts = (
   clientDB: Promise<MongoClient>,
@@ -44,6 +45,7 @@ export const getNfts = (
     new GetNFTFavoritesCounter(nftRepositoryImpl),
     new GetBestNfts(nftRepositoryImpl),
     new NftFavoriteCounter(nftRepositoryImpl),
+    new PutNftBestBarrels(nftRepositoryImpl),
     new GetOwnedNFTs(nftRepositoryImpl),
     new FractionalizeNft(nftRepositoryImpl)
   )

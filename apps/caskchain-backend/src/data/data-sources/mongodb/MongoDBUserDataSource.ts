@@ -1,7 +1,6 @@
 import { UserRequestModel } from '../../../domain/model/User'
 
 import { UsersDataSource } from '../../interfaces/data-sources/UsersDataSource'
-import { MongoDBStatsDataSource } from './MongoDBStatsDataSource'
 
 import { MongoRepository } from './MongoRepository'
 
@@ -38,14 +37,19 @@ export class MongoDBUserDataSource
 
   public async getFavorites(address: string) {
     const collection = await this.collection()
-    const document = await collection.findOne<any>({ address: address })
-
+    const document = await collection.findOne<any>({ _id: address })
     const favorites = document?.favorites && Object.keys(document?.favorites)
     return favorites
   }
 
   public async save(id: string, user: UserRequestModel) {
-    await this.persist(id, user)
+    const cleanUser = Object.keys(user).reduce((acc: any, key) => {
+      if (user[key]) {
+        acc[key] = user[key]
+      }
+      return acc
+    }, {})
+    await this.persist(id, cleanUser)
   }
 
   public async search(address: string): Promise<any | null> {

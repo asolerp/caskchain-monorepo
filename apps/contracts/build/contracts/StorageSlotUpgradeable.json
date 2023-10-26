@@ -14,7 +14,9 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts-upgradeable/utils/StorageSlotUpgradeable.sol",
     "exportedSymbols": {
-      "StorageSlotUpgradeable": [4066]
+      "StorageSlotUpgradeable": [
+        4066
+      ]
     },
     "id": 4067,
     "license": "MIT",
@@ -22,7 +24,12 @@
     "nodes": [
       {
         "id": 4008,
-        "literals": ["solidity", "^", "0.8", ".0"],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
         "nodeType": "PragmaDirective",
         "src": "105:23:25"
       },
@@ -40,7 +47,9 @@
         },
         "fullyImplemented": true,
         "id": 4066,
-        "linearizedBaseContracts": [4066],
+        "linearizedBaseContracts": [
+          4066
+        ],
         "name": "StorageSlotUpgradeable",
         "nameLocation": "1287:22:25",
         "nodeType": "ContractDefinition",
@@ -328,7 +337,9 @@
                     "pathNode": {
                       "id": 4026,
                       "name": "AddressSlot",
-                      "nameLocations": ["1686:11:25"],
+                      "nameLocations": [
+                        "1686:11:25"
+                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4012,
                       "src": "1686:11:25"
@@ -477,7 +488,9 @@
                     "pathNode": {
                       "id": 4037,
                       "name": "BooleanSlot",
-                      "nameLocations": ["1974:11:25"],
+                      "nameLocations": [
+                        "1974:11:25"
+                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4015,
                       "src": "1974:11:25"
@@ -626,7 +639,9 @@
                     "pathNode": {
                       "id": 4048,
                       "name": "Bytes32Slot",
-                      "nameLocations": ["2262:11:25"],
+                      "nameLocations": [
+                        "2262:11:25"
+                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4018,
                       "src": "2262:11:25"
@@ -775,7 +790,9 @@
                     "pathNode": {
                       "id": 4059,
                       "name": "Uint256Slot",
-                      "nameLocations": ["2550:11:25"],
+                      "nameLocations": [
+                        "2550:11:25"
+                      ],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 4021,
                       "src": "2550:11:25"
@@ -812,7 +829,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-08-10T07:20:11.681Z",
+  "updatedAt": "2023-10-25T07:43:16.074Z",
   "devdoc": {
     "details": "Library for reading and writing primitive types to specific storage slots. Storage slots are often used to avoid storage conflict when dealing with upgradeable contracts. This library helps with reading and writing to such slots without the need for inline assembly. The functions in this library return Slot structs that contain a `value` member that can be used to read or write. Example usage to set ERC1967 implementation slot: ``` contract ERC1967 {     bytes32 internal constant _IMPLEMENTATION_SLOT = 0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc;     function _getImplementation() internal view returns (address) {         return StorageSlot.getAddressSlot(_IMPLEMENTATION_SLOT).value;     }     function _setImplementation(address newImplementation) internal {         require(Address.isContract(newImplementation), \"ERC1967: new implementation is not a contract\");         StorageSlot.getAddressSlot(_IMPLEMENTATION_SLOT).value = newImplementation;     } } ``` _Available since v4.1 for `address`, `bool`, `bytes32`, and `uint256`._",
     "kind": "dev",

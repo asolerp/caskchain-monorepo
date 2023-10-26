@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { useGlobal } from '@providers/global'
 import { GlobalTypes } from '@providers/global/utils'
 import { useRouter } from 'next/router'
+import TranslateYAnimation from '@ui/animations/TranslateYAnimation'
 
 const MainAnimationSection = () => {
   const [startMainAnimation, setStartMainAnimation] = useState(false)
@@ -18,18 +19,6 @@ const MainAnimationSection = () => {
   const mainAnimationControl = useAnimation()
   const { height } = useWindowDimensions()
 
-  useEffect(() => {
-    setTimeout(() => {
-      setStartMainAnimation(true)
-    }, 2000)
-  }, [])
-
-  useEffect(() => {
-    if (startMainAnimation && !mainAnimationFinished) {
-      mainAnimationControl.start('visible')
-    }
-  }, [startMainAnimation])
-
   const mainVariants = {
     visible: { opacity: 1, y: -height },
     hidden: { opacity: 0 },
@@ -41,7 +30,7 @@ const MainAnimationSection = () => {
         exit="hidden"
         animate={mainAnimationControl}
         variants={mainVariants}
-        transition={{ duration: 0.5 }}
+        transition={{ delay: 1, duration: 0.5 }}
         onAnimationComplete={() =>
           dispatch({
             type: GlobalTypes.SET_MAIN_ANIMATION_FINISHED,
@@ -50,14 +39,18 @@ const MainAnimationSection = () => {
         }
         className="h-screen w-full flex justify-center items-center bg-black-light absolute top-0 left-0 z-50 trnslate-y-32"
       >
-        <Image
-          src="https://res.cloudinary.com/enalbis/image/upload/v1683188732/CaskChain/tpkeirnrtu6to38h1q7f.svg"
-          width={300}
-          height={200}
-          className="object-cover h-auto"
-          alt="cc"
-          priority
-        />
+        <TranslateYAnimation
+          onAnimateComplete={() => mainAnimationControl.start('visible')}
+        >
+          <Image
+            src="https://res.cloudinary.com/enalbis/image/upload/v1683188732/CaskChain/tpkeirnrtu6to38h1q7f.svg"
+            width={300}
+            height={200}
+            className="object-cover h-auto"
+            alt="cc"
+            priority
+          />
+        </TranslateYAnimation>
       </motion.div>
     )
   }

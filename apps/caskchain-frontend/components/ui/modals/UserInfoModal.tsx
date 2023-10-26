@@ -1,11 +1,13 @@
 import { useGlobal } from '@providers/global'
-import { GlobalTypes } from '@providers/global/utils'
-import Button from '@ui/common/Button'
-import Input from '@ui/common/Input'
-import Spacer from '@ui/common/Spacer'
-import axios from 'axios'
-import React, { useState } from 'react'
+
+import { Button, Spacer } from 'caskchain-ui'
+
+import React from 'react'
 import Modal from 'react-modal'
+import { useForm } from 'react-hook-form'
+
+import UserInfoForm from 'components/forms/UserInfoForm'
+import useProfile from 'pages/profile/hooks/useProfile'
 
 type Props = {
   modalIsOpen: boolean
@@ -14,35 +16,27 @@ type Props = {
 
 const UserInfoModal: React.FC<Props> = ({ modalIsOpen, closeModal }) => {
   const {
-    dispatch,
-    state: { address },
+    state: { user },
   } = useGlobal()
-  const [email, setEmail] = useState<string>('')
-  const [nickname, setNickname] = useState<string>('')
 
-  const handelSaveUser = async () => {
-    try {
-      await axios.post('/api/user', {
-        id: address?.toLowerCase(),
-        email,
-        nickname,
-      })
-      dispatch({
-        type: GlobalTypes.SET_USER,
-        payload: { user: { email, nickname } },
-      })
-      closeModal()
-      setTimeout(() => {
-        return dispatch({
-          type: GlobalTypes.SET_SIGN_IN_MODAL,
-          payload: { status: true },
-        })
-      }, 300)
-    } catch (e: any) {
-      console.log(e)
-    }
+  const { handleSaveUser } = useProfile()
+  const onSubmit = (data: any) => {
+    handleSaveUser({ formState: data })
+    closeModal()
   }
 
+  const {
+    register,
+    control,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({
+    defaultValues: {
+      ...user,
+      dateOfBirth: { startDate: user?.dateOfBirth, endDate: user?.dateOfBirth },
+      country: user?.country,
+    },
+  })
   return (
     <Modal
       ariaHideApp={false}
@@ -59,7 +53,7 @@ const UserInfoModal: React.FC<Props> = ({ modalIsOpen, closeModal }) => {
       onRequestClose={closeModal}
     >
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-        <div className="relative lg:w-1/4 w-full my-6 mx-auto max-w-md">
+        <div className="relative w-full my-6 mx-auto lg:max-w-xl">
           {/*content*/}
           <div className="h-full w-full bg-black-light rounded-3xl bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-90 p-6">
             {/*header*/}
@@ -80,34 +74,18 @@ const UserInfoModal: React.FC<Props> = ({ modalIsOpen, closeModal }) => {
               </button>
             </div>
             <Spacer size="md" />
-            <div className="relative flex-auto">
-              <p className="text-gray-400 text-center text-lg mb-3">
-                Your email address is only used to send you important updates.
-                Your nickname is how other CaskChain users will identify you.
-              </p>
-              <Spacer size="md" />
-              <Input
-                onChange={(e: any) => setEmail(e.target.value)}
-                value={email}
-                type="text"
-                name="email"
-                id="email"
-                placeholder="Your email address"
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <UserInfoForm
+                register={register}
+                errors={errors}
+                control={control}
               />
-              <Input
-                onChange={(e: any) => setNickname(e.target.value)}
-                value={nickname}
-                type="text"
-                name="name"
-                id="name"
-                placeholder="Nickname (optional)"
-              />
-            </div>
-            <Spacer size="md" />
-            <div className="flex items-center justify-center rounded-b">
-              <Button onClick={handelSaveUser}>Continue</Button>
-            </div>
-            <Spacer size="md" />
+              <Spacer size="lg" />
+              <div className="flex items-center justify-center rounded-b">
+                <Button isForm>Continue</Button>
+              </div>
+            </form>
+            <Spacer size="lg" />
             <div>
               <p className="text-center text-gray-300 text-sm font-poppins">
                 By signing up, you agree to our{' '}

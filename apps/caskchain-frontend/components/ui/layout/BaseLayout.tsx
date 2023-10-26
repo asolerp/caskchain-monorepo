@@ -7,12 +7,14 @@ import MainAnimationSection from 'components/pages/home/MainAnimationSection'
 
 interface Props {
   background?: string
+  withFooter?: boolean
   bottomBanner?: ReactNode
   children: ReactNode
 }
 
 const BaseLayout: React.FC<Props> = ({
   background,
+  withFooter = true,
   bottomBanner,
   children,
 }) => {
@@ -31,7 +33,7 @@ const BaseLayout: React.FC<Props> = ({
             <div className="flex flex-col justify-center items-center w-full h-full">
               {children}
             </div>
-            {!hasBottomBanner && <FooterSection />}
+            {!hasBottomBanner && withFooter && <FooterSection />}
           </div>
         </div>
         {hasBottomBanner && (

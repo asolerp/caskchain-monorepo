@@ -11,7 +11,7 @@ export class CryptoRateRepositoryImpl implements CryptoRateRepository {
     await this.cryptoRatesDataSource.save(pairs)
   }
 
-  async getRate(pair: string): Promise<number> {
-    return await this.cryptoRatesDataSource.getRate(pair)
+  async getRates(): Promise<number> {
+    return await this.cryptoRatesDataSource.getRates()
   }
 }

@@ -58,7 +58,8 @@ const nextConfig = withTM({
       'i.imgur.com',
       'res.cloudinary.com',
       'gateway.pinata.cloud',
-      'ivory-worthy-sparrow-388.mypinata.cloud',
+      'gold-tropical-mongoose-649.mypinata.cloud',
+      'images.unsplash.com',
     ],
   },
   async rewrites() {
@@ -84,6 +85,9 @@ const nextConfig = withTM({
     ['NEXT_PUBILC_USDT_CONTRACT_ADDRESS']: process.env.USDT_CONTRACT_ADDRESS,
     ['NETX_PUBLIC_MAGIC_PUBLISHABLE_KEY']: process.env.MAGIC_PUBLISHABLE_KEY,
     ['NEXT_PUBLIC_BLOCKCHAIN_URL']: process.env.BLOCKCHAIN_URL,
+    ['NEXT_PUBLIC_TOKEN_NAME']: process.env.TOKEN_NAME,
+    ['NEXT_PUBLIC_MAILCHIMP_API_KEY']: process.env.MAILCHIMP_API_KEY,
+    ['NEXT_PUBLIC_MAILCHIMP_AUDIENCE_ID']: process.env.MAILCHIMP_AUDIENCE_ID,
   },
 })
 

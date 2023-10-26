@@ -14,6 +14,7 @@ import logger from '../utils/logger'
 import { extractAddressFromToken } from '../utils/extractTokenFromRequest'
 import { GetFavoriteNftsUseCase } from '../../domain/interfaces/use-cases/casks/get-favorite-nfts'
 import { GetBestNftsUseCase } from '../../domain/interfaces/use-cases/casks/get-best-nfts'
+import { PutNFTBestBarrelsUseCase } from '../../domain/interfaces/use-cases/casks/put-nft-best-barrels'
 
 export default function GetNftsRouter(
   getNfts: GetNFTsUseCase,
@@ -23,6 +24,7 @@ export default function GetNftsRouter(
   getNftFavoriteCounter: GetNFTFavoriteCounterUseCase,
   getBestNfts: GetBestNftsUseCase,
   nftFavoriteCounter: NftFavoriteCounterUseCase,
+  putNFTBestBarrels: PutNFTBestBarrelsUseCase,
   getOwnedNfts: GetOwnedNftsUseCase,
   fracionalizeNft: FractionalizeNftUseCase
 ) {
@@ -151,6 +153,7 @@ export default function GetNftsRouter(
     async (req: Request, res: Response) => {
       const address = extractAddressFromToken(req)
       try {
+        console.log('address', address)
         const favoritesNfts = await getFavoriteNfts.execute(address)
         logger.info('Successfully fetched favorite NFTs of %s', address, {
           metadata: {
@@ -225,6 +228,28 @@ export default function GetNftsRouter(
         }
       )
       return res.status(500).send({ message: 'Error fetching total favorites' })
+    }
+  })
+
+  router.post('/makeBestBarrel', async (req: Request, res: Response) => {
+    const { caskId, state } = req.body
+    if (!caskId || caskId === 'undefined') {
+      throw new Error('caskId is required')
+    }
+    try {
+      await putNFTBestBarrels.execute(caskId, state)
+      res.status(200).send({ message: 'Best barrel NFT created' })
+    } catch (error: any) {
+      logger.error(
+        'Error making best barrel NFT with cask ID %s: %s',
+        caskId,
+        error.message,
+        {
+          metadata: {
+            service: 'nfts-router',
+          },
+        }
+      )
     }
   })
 

@@ -33,6 +33,8 @@ const navigation = [
   },
 ]
 
+export const NAVBAR_HEIGHT = 96
+
 const Navbar = () => {
   const {
     state: { userInfoModal, signInModal, networkModal, shareModal, sideBar },
@@ -44,7 +46,7 @@ const Navbar = () => {
   if (typeof window !== 'undefined') {
     return (
       <ClientOnly>
-        <div className="w-screen z-50">
+        <div className="z-50">
           <NetworkModal
             modalIsOpen={networkModal}
             closeModal={() =>
@@ -81,16 +83,16 @@ const Navbar = () => {
               })
             }
           />
-
+        </div>
+        <div className="w-screen z-40">
           <SidebarComponent open={sideBar} />
-
           <div
-            className={`absolute z-40 mx-auto w-full px-2 sm:px-6 lg:px-32 transition-all duration-500 ${openClass}`}
+            className={`absolute  mx-auto w-full px-2 sm:px-6 lg:px-32 transition-all duration-500 ${openClass} h-[${NAVBAR_HEIGHT}px]`}
           >
             <div className="relative bg-transparent flex h-24 items-center justify-between">
               <div className="flex flex-row lg:grid lg:grid-cols-12 w-full items-center justify-between lg:justify-center px-2 lg:px-0">
                 <div className="lg:col-span-4 items-center">
-                  <Link href={`/`}>
+                  <Link href={`/`} passHref>
                     <div className="flex flex-row space-x-3 items-center">
                       <Image
                         src="/images/logo.svg"
@@ -103,7 +105,7 @@ const Navbar = () => {
                   </Link>
                 </div>
                 <div className="lg:hidden">
-                  <Link href="/marketplace/search">
+                  <Link href="/marketplace/search" passHref>
                     <Image
                       src="/icons/filters/spirit.svg"
                       width={30}
@@ -122,7 +124,7 @@ const Navbar = () => {
                       >
                         <span
                           className={
-                            'text-white font-poppins hover:border-b-2 hover:border-b-cask-chain px-4 py-5 text-sm'
+                            'text-white font-poppins hover:border-b-2 hover:border-b-cask-chain px-4 py-5 text-md'
                           }
                         >
                           {item.name}
@@ -141,6 +143,8 @@ const Navbar = () => {
       </ClientOnly>
     )
   }
+
+  return null
 }
 
 export default Navbar

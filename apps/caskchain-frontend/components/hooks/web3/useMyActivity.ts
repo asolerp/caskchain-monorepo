@@ -65,17 +65,10 @@ export const hookFactory: MyActivityHookFactory =
       isLoading: receivedOffersLoading,
       isValidating: receivedOffersValidating,
       mutate: receivedOffersRefetch,
-    } = useSWR(
-      '/api/offers/received',
-      async () => {
-        const offers: any = await axiosClient.get('/api/offers/received')
-        return offers.data
-      },
-      {
-        revalidateOnFocus: false,
-        revalidateOnMount: false,
-      }
-    )
+    } = useSWR('/api/offers/received', async () => {
+      const offers: any = await axiosClient.get('/api/offers/received')
+      return offers.data
+    })
 
     const _ccNft = ccNft
     const _nftOffers = nftOffers
@@ -89,24 +82,70 @@ export const hookFactory: MyActivityHookFactory =
 
     const acceptOffer = async (tokenId: string) => {
       setLoadingTransactions(true)
+      const id = toast.loading('Accepting offer...')
+
+      console.log('_nftOffers', _nftOffers)
+
       try {
-        const transaction = await _ccNft?.approve(
-          _nftOffers!.address as string,
-          tokenId
-        )
+        const gasPriceApprove = await _ccNft?.methods
+          .approve(_nftOffers!._address as string, tokenId)
+          .estimateGas({ from: address })
 
-        const response = await transaction!.wait()
-
-        if (response.status === 1) {
-          const result = await _nftOffers?.acceptOffer(tokenId)
-          await toast.promise(result!.wait(), {
-            pending: 'Processing transaction',
-            success: 'The sell was approved',
-            error: 'Processing error',
+        const txApprove = await ccNft?.methods
+          ?.approve(_nftOffers!._address as string, tokenId)
+          .send({
+            from: address,
+            gas: gasPriceApprove,
           })
-        }
+
+        if (!txApprove.status) throw new Error('Approve failed')
+
+        const gasPriceAcceptOffer = await _nftOffers?.methods
+          .acceptOffer(tokenId)
+          .estimateGas({ from: address })
+
+        const txAcceptOffer = await _nftOffers?.methods
+          ?.acceptOffer(tokenId)
+          .send({
+            from: address,
+            gas: gasPriceAcceptOffer,
+          })
+
+        if (!txAcceptOffer.status) throw new Error('Listing failed')
 
         receivedOffersRefetch()
+      } catch (e: any) {
+        console.log(e)
+      } finally {
+        setLoadingTransactions(false)
+        toast.update(id, {
+          render: 'Cancel offer success',
+          type: 'success',
+          isLoading: false,
+          closeOnClick: true,
+          autoClose: 2000,
+        })
+      }
+    }
+
+    const cancelOffer = async (tokenId: string) => {
+      setLoadingTransactions(true)
+      const id = toast.loading('Canceling offer...')
+      try {
+        const txCancelOffer = await _nftOffers?.methods
+          ?.cancelOffer(tokenId)
+          .send({
+            from: address,
+          })
+        if (!txCancelOffer.status) throw new Error('Cancel offer Nft failed')
+
+        toast.update(id, {
+          render: 'Cancel offer success',
+          type: 'success',
+          isLoading: false,
+          closeOnClick: true,
+          autoClose: 2000,
+        })
       } catch (e: any) {
         console.log(e)
       } finally {
@@ -125,6 +164,7 @@ export const hookFactory: MyActivityHookFactory =
       sentOffersRefetch,
       receivedOffers,
       transactions,
+      cancelOffer,
       acceptOffer,
       sentOffers,
     }

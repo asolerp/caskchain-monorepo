@@ -134,7 +134,8 @@ export class Web3Transaction extends Web3Repository {
         erc20Prices: {
           USDT: usdtPrice?.toString(),
         },
-        bestBarrel: nftData?.bestBarrel || false,
+        media: nftData?.[0]?.media,
+        bestBarrel: nftData?.[0]?.offer || false,
         offer:
           offer?.nftId != 0
             ? {
@@ -145,6 +146,9 @@ export class Web3Transaction extends Web3Repository {
             : null,
         meta,
       }
+
+      console.log('CASK', cask)
+
       return cask
     } catch (e: any) {
       console.log('Error', e)

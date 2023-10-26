@@ -63,8 +63,12 @@
   "ast": {
     "absolutePath": "@openzeppelin/contracts-upgradeable/interfaces/IERC2981Upgradeable.sol",
     "exportedSymbols": {
-      "IERC165Upgradeable": [4297],
-      "IERC2981Upgradeable": [171]
+      "IERC165Upgradeable": [
+        4297
+      ],
+      "IERC2981Upgradeable": [
+        171
+      ]
     },
     "id": 172,
     "license": "MIT",
@@ -72,7 +76,12 @@
     "nodes": [
       {
         "id": 154,
-        "literals": ["solidity", "^", "0.8", ".0"],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
         "nodeType": "PragmaDirective",
         "src": "107:23:2"
       },
@@ -95,7 +104,9 @@
             "baseName": {
               "id": 157,
               "name": "IERC165Upgradeable",
-              "nameLocations": ["512:18:2"],
+              "nameLocations": [
+                "512:18:2"
+              ],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 4297,
               "src": "512:18:2"
@@ -116,7 +127,10 @@
         },
         "fullyImplemented": false,
         "id": 171,
-        "linearizedBaseContracts": [171, 4297],
+        "linearizedBaseContracts": [
+          171,
+          4297
+        ],
         "name": "IERC2981Upgradeable",
         "nameLocation": "489:19:2",
         "nodeType": "ContractDefinition",
@@ -279,7 +293,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-08-10T07:20:11.599Z",
+  "updatedAt": "2023-10-25T07:43:16.026Z",
   "devdoc": {
     "details": "Interface for the NFT Royalty Standard. A standardized way to retrieve royalty payment information for non-fungible tokens (NFTs) to enable universal support for royalty payments across all NFT marketplaces and ecosystem participants. _Available since v4.5._",
     "kind": "dev",

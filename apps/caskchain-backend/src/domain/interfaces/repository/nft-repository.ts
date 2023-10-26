@@ -4,6 +4,7 @@ import { Nft } from '../../../types/nft'
 export interface NFTRepository {
   createNFT(id: string, nft: any): Promise<any>
   updateNFTFavoriteCounter(id: string, action: string): Promise<any>
+  updateNFTBestBarrels(id: string, state: boolean): Promise<any>
   getAllNfts(
     page: number,
     pageSize: number,
