@@ -33,7 +33,7 @@ const UserInfoModal: React.FC<Props> = ({ modalIsOpen, closeModal }) => {
   } = useForm({
     defaultValues: {
       ...user,
-      dateOfBirth: { startDate: user?.dateOfBirth, endDate: user?.dateOfBirth },
+      dateOfBirth: user?.dateOfBirth,
       country: user?.country,
     },
   })

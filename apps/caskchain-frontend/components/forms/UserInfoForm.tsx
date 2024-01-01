@@ -43,7 +43,7 @@ const UserInfoForm: React.FC<Props> = ({ register, control, errors }) => {
         control={control}
         render={({ field }) => (
           <CustomDatePicker
-            selectedDate={new Date(field.value)}
+            selectedDate={field.value ? new Date(field.value) : null}
             onChangeDate={field.onChange}
             placeholder="Date of birth"
           />

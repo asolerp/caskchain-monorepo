@@ -21,7 +21,9 @@ const CaskOperations: React.FC<CaskOperationsProps> = ({ cask }) => {
         cask={cask?.data}
         rates={cask?.rates}
         onCompletePurchase={() => {
-          cask?.buyNft(cask?.data?.tokenId, cask?.data?.price)
+          cask?.buyNft(cask?.data?.tokenId, cask?.data?.price, () =>
+            setBuyoutModalIsOpen(false)
+          )
         }}
         isModalOpen={buyoutModalIsOpen}
         closeModal={setBuyoutModalIsOpen}

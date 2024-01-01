@@ -154,7 +154,7 @@ export const hookFactory: CaskNftHookFactory =
     const hasFractions = data?.fractions?.total
 
     const buyNft = useCallback(
-      async (tokenId: number, price: string) => {
+      async (tokenId: number, price: string, callback: any) => {
         const id = toast.loading('Buying a barrel...')
         try {
           if (isUserNeededDataFilled) {
@@ -174,6 +174,7 @@ export const hookFactory: CaskNftHookFactory =
           } else {
             return handleUserState()
           }
+          callback && callback()
           setSuccessModal(true)
         } catch (e: any) {
           toast.update(id, {

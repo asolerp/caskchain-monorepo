@@ -13,15 +13,12 @@ const CaskStats: React.FC<CaskStatsProps> = ({ cask }) => {
         </h2>
         <div className="grid grid-cols-4 gap-4 mt-6 space-y-2">
           {cask?.data?.meta?.attributes?.map((attribute: any) => (
-            <div
-              key={attribute.trait_type}
-              className="flex flex-col justify-start items-start"
-            >
+            <div key={attribute.trait_type} className="">
               <dt className="text-lg font-medium text-gray-400">
                 {attribute.trait_type.toUpperCase()}
               </dt>
               <Spacer size="xs" />
-              <dd className=" text-lg font-sans text-cask-chain text-left h-10">
+              <dd className=" text-lg font-sans text-cask-chain text-left w-3/4">
                 {attribute.value}
               </dd>
             </div>

@@ -62,7 +62,7 @@ const Walletbar: React.FC = () => {
           <Button
             loading={account.loading}
             onClick={() => {
-              account.signAddress()
+              account.checkIfUserDataIsNeeded({ calback: null })
             }}
           >
             {'Sign In'}

@@ -38,6 +38,9 @@ const useProfile = () => {
         theme: 'dark',
       })
     } catch (e: any) {
+      toast.error('Something went wrong', {
+        theme: 'dark',
+      })
       console.log(e)
     }
   }

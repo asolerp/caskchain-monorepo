@@ -1,34 +1,47 @@
 import { useGlobal } from '@providers/global'
 import { GlobalTypes } from '@providers/global/utils'
+import { add } from 'date-fns'
 
 import axiosClient from 'lib/fetcher/axiosInstance'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import ImageUploading from 'react-images-uploading'
+import { toast } from 'react-toastify'
 import uploadImage from 'utils/uploadiImage'
 
 const ImageProfileUploader = () => {
-  const [image, setImage] = useState<any>([])
   const {
     dispatch,
     state: { user, address },
   } = useGlobal()
+  const [image, setImage] = useState<any>(null)
+
+  useEffect(() => {
+    const upload = async () => {
+      try {
+        const secureURL = await uploadImage(
+          image[0]?.file,
+          `caskchain/users/${address}/profile/${image[0]?.file?.name}`
+        )
+        dispatch({
+          type: GlobalTypes.SET_USER,
+          payload: { user: { ...user, imageProfile: secureURL } },
+        })
+        toast.success('Your profile image has been updated!', {
+          theme: 'dark',
+        })
+      } catch {
+        toast.error('The image was not updated! Try later', {
+          theme: 'dark',
+        })
+      }
+    }
+    if (image) {
+      upload()
+    }
+  }, [image])
+
   const onChange = async (imageList: any) => {
-    // data for submit
-    console.log(user)
-    const secureURL = await uploadImage(
-      imageList[0].file,
-      `caskchain/users/${address}/profile/${imageList[0].file.name}`
-    )
-    console.log('secureURL', secureURL)
-    await axiosClient.post('/api/user', {
-      id: user._id,
-      imageProfile: secureURL,
-    })
-    dispatch({
-      type: GlobalTypes.SET_USER,
-      payload: { user: { ...user, imageProfile: secureURL } },
-    })
     setImage(imageList)
   }
 
@@ -38,7 +51,7 @@ const ImageProfileUploader = () => {
         <div className="relative hover:opacity-40 cursor-pointer border-2 border-gray-500 rounded-full">
           <Image
             src={
-              image[0]?.data_url || user?.imageProfile || '/images/avatar.png'
+              image?.[0]?.data_url || user?.imageProfile || '/images/avatar.png'
             }
             width={250}
             height={250}

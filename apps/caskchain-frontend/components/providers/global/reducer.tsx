@@ -13,6 +13,14 @@ export const globalReducer = (
         loading: action.payload.state,
       }
 
+    case GlobalTypes.SET_RESET_USER:
+      return {
+        ...state,
+        user: null,
+        address: null,
+        token: null,
+      }
+
     case GlobalTypes.SET_ADDRESS:
       return {
         ...state,

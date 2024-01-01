@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import ActiveLink from '../link'
 
@@ -16,6 +16,7 @@ import NetworkModal from '@ui/modals/NetworkModal'
 import ShareModal from '@ui/modals/ShareModal'
 import SidebarComponent from './Sidebar'
 import ClientOnly from 'components/pages/ClientOnly'
+import { deleteCookie } from 'cookies-next'
 
 const navigation = [
   { name: 'Home', href: '/', url: '/', key: 'home' },
@@ -42,6 +43,20 @@ const Navbar = () => {
   } = useGlobal()
 
   const openClass = sideBar ? 'bg-black-light' : ''
+
+  useEffect(() => {
+    if (typeof window.ethereum !== 'undefined') {
+      // Listen for account changes
+      window.ethereum.on('accountsChanged', function () {
+        // Account has changed, reload the page
+        dispatch({ type: GlobalTypes.SET_RESET_USER, payload: {} })
+        deleteCookie('token')
+        window.location.reload()
+      })
+    } else {
+      console.log('MetaMask is not installed!')
+    }
+  }, [])
 
   if (typeof window !== 'undefined') {
     return (

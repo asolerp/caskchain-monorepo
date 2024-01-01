@@ -28,10 +28,16 @@ export enum GlobalTypes {
   SET_USER = 'SET_USER',
   SET_TOKEN = 'SET_TOKEN',
   SET_SIDE_BAR = 'SET_SIDE_BAR',
+  SET_RESET_USER = 'SET_RESET_USER',
 }
 
 type SetLoading = {
   type: typeof GlobalTypes.SET_LOADING
+  payload: any
+}
+
+type SetResetUser = {
+  type: typeof GlobalTypes.SET_RESET_USER
   payload: any
 }
 
@@ -110,6 +116,7 @@ export type GlobalActionTypes =
   | SetInitialUserInfo
   | SetUserInfoModal
   | SetSideBar
+  | SetResetUser
   | SetMainAnimationFinished
   | SetAnimationsExecuted
   | SetNetworkModal
