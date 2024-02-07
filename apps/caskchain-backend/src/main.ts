@@ -72,17 +72,18 @@ import OnSaleStateChanged from './presentation/subscriptions/on-sale-state-chang
 import { UpdateSaleStateNft } from './domain/use-cases/nft/update-sale-state-nft'
 import { contracts, getContractData } from './domain/contracts'
 import { stripeConnection } from './data/payments/StripeConnection'
-import { FetchCryptoRate } from './domain/use-cases/rates/fetch-crypto-rate'
+// import { FetchCryptoRate } from './domain/use-cases/rates/fetch-crypto-rate'
 import { PaymentsRepositoryImpl } from './domain/repositories/payments-repository'
 import OnNewFraction from './presentation/subscriptions/on-new-fraction'
 import { NewFraction } from './domain/use-cases/nft/new-fraction'
 
-import CronService from './data/scheduling/CronService'
 import { CryptoRateRepositoryImpl } from './domain/repositories/crypto-rate-repository'
-import { MongoDBCryptoRatesDataSource } from './data/data-sources/mongodb/MongoDBCryptoRatesDataSource'
-import { CryptoRatesServiceImpl } from './domain/services/crypto-rate-service'
+
+// import { CryptoRatesServiceImpl } from './domain/services/crypto-rate-service'
 import RateRouter from './presentation/routers/rates-router'
 import { GetCryptoRates } from './domain/use-cases/rates/get-crypto-rates'
+// import { CronService } from './data/scheduling/CronService'
+import { MongoDBCryptoRatesDataSource } from './data/data-sources/mongodb/MongoDBCryptoRatesDataSource'
 ;(async () => {
   const clientDB = MongoClientFactory.createClient(
     process.env.CONTEXT_NAME as string,
@@ -263,12 +264,12 @@ import { GetCryptoRates } from './domain/use-cases/rates/get-crypto-rates'
 
   // CRON JOBS
 
-  const fetchRateUseCase = new FetchCryptoRate(
-    new CryptoRateRepositoryImpl(new MongoDBCryptoRatesDataSource(clientDB)),
-    new CryptoRatesServiceImpl()
-  )
+  // const fetchRateUseCase = new FetchCryptoRate(
+  //   new CryptoRateRepositoryImpl(new MongoDBCryptoRatesDataSource(clientDB)),
+  //   new CryptoRatesServiceImpl()
+  // )
 
-  const cronService = new CronService(fetchRateUseCase)
+  // const cronService = new CronService(fetchRateUseCase)
 
   const routes = [
     {
@@ -292,7 +293,7 @@ import { GetCryptoRates } from './domain/use-cases/rates/get-crypto-rates'
 
   routes.forEach((route) => server.use(route.path, route.handler))
 
-  cronService.initCronJobs()
+  // cronService.initCronJobs()
 
   server.listen(process.env.PORT || 4000, () =>
     console.log(`Running on ${process.env.PORT}`)

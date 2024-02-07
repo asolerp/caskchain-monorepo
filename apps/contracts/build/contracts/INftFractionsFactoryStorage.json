@@ -141,7 +141,7 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.7;\n\ninterface INftFractionsFactoryStorage {\n  struct Vault {\n    address vaultAddress;\n    uint256 tokenId;\n  }\n\n  // SETTERS\n  function setVaultExists(address _token, uint256 nftId) external;\n\n  function setVault(address _vault, uint256 _tokenId) external;\n\n  function pushTokenAddressCreated(address _vault) external;\n\n  // GETTERS\n  function getVaultCount() external view returns (uint256);\n\n  function getAllCreatedVaults() external view returns (address[] memory);\n\n  function getVault(uint256 index) external view returns (Vault memory);\n\n  function vaultExists(\n    address _token,\n    uint256 nftId\n  ) external view returns (bool);\n}\n",
-  "sourcePath": "/Users/alberto/Desktop/Enalbis/caskchain-mono/apps/contracts/contracts/NftFractions/INftFractionsFactoryStorage.sol",
+  "sourcePath": "/Users/alberto/Desktop/Proyectos/caskchain-monorepo/apps/contracts/contracts/NftFractions/INftFractionsFactoryStorage.sol",
   "ast": {
     "absolutePath": "project:/contracts/NftFractions/INftFractionsFactoryStorage.sol",
     "exportedSymbols": {
@@ -805,8 +805,8 @@
     "version": "0.8.17+commit.8df45f5f.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.4.11",
-  "updatedAt": "2023-11-02T11:32:16.030Z",
+  "schemaVersion": "3.4.16",
+  "updatedAt": "2024-02-05T21:25:11.842Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

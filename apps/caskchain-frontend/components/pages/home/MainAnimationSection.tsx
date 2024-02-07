@@ -1,5 +1,5 @@
 import useWindowDimensions from '@hooks/common/useWindowDimensions'
-import { useEffect, useState } from 'react'
+
 import { motion, useAnimation } from 'framer-motion'
 import Image from 'next/image'
 import { useGlobal } from '@providers/global'
@@ -8,7 +8,6 @@ import { useRouter } from 'next/router'
 import TranslateYAnimation from '@ui/animations/TranslateYAnimation'
 
 const MainAnimationSection = () => {
-  const [startMainAnimation, setStartMainAnimation] = useState(false)
   const route = useRouter()
 
   const {
@@ -43,7 +42,7 @@ const MainAnimationSection = () => {
           onAnimateComplete={() => mainAnimationControl.start('visible')}
         >
           <Image
-            src="https://res.cloudinary.com/enalbis/image/upload/v1683188732/CaskChain/tpkeirnrtu6to38h1q7f.svg"
+            src="/images/logo.svg"
             width={300}
             height={200}
             className="object-cover h-auto"

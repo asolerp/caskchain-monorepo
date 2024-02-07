@@ -116,7 +116,7 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.7;\n\ninterface INftFractionsVendorStorage {\n  struct TokenPaymentInfo {\n    address tokenAddress;\n    uint totalSupply;\n    uint listingPrice;\n    bool enableSell;\n  }\n\n  function getTokenPaymentInfo(\n    address tokenAddress\n  ) external view returns (TokenPaymentInfo memory);\n\n  function setToken(\n    address _token,\n    uint _totalSupply,\n    uint _listingPrice,\n    bool _enableSell\n  ) external;\n\n  function updateTokenVendorSellState(\n    address tokenAddress,\n    bool state\n  ) external;\n\n  function updateStateAddressVendor(address tokenAddress, bool state) external;\n}\n",
-  "sourcePath": "/Users/alberto/Desktop/Enalbis/caskchain-mono/apps/contracts/contracts/NftFractions/INftFractionsVendorStorage.sol",
+  "sourcePath": "/Users/alberto/Desktop/Proyectos/caskchain-monorepo/apps/contracts/contracts/NftFractions/INftFractionsVendorStorage.sol",
   "ast": {
     "absolutePath": "project:/contracts/NftFractions/INftFractionsVendorStorage.sol",
     "exportedSymbols": {
@@ -685,8 +685,8 @@
     "version": "0.8.17+commit.8df45f5f.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.4.11",
-  "updatedAt": "2023-11-02T11:32:16.031Z",
+  "schemaVersion": "3.4.16",
+  "updatedAt": "2024-02-05T21:25:11.843Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

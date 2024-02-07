@@ -456,7 +456,7 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.7;\n\ninterface ICCNftStorage {\n  struct NftItem {\n    uint256 tokenId;\n    address creator;\n  }\n\n  // SETTERS\n  function pushAllNfts(uint256 tokenId) external;\n\n  function pushAddressFromTokenId(uint256 tokenId, address creator) external;\n\n  function setAllNftsTokenIdByIndex(uint256 index, uint256 tokenId) external;\n\n  function setTokenExtractionsByYear(\n    uint256 tokenId,\n    uint256 year,\n    uint256 extractions\n  ) external;\n\n  function setIdToNftIndex(uint256 tokenId, uint256 index) external;\n\n  function setIdToNftItem(uint256 tokenId, address creator) external;\n\n  function setIdToNftCreator(uint256 tokenId, address creator) external;\n\n  function setUsedTokenURI(string memory tokenURI) external;\n\n  function setOwnedTokens(\n    address owner,\n    uint256 tokenId,\n    uint256 index\n  ) external;\n\n  function setIdToOwnedIndex(uint256 tokenId, uint256 index) external;\n\n  // GETTERS\n  function getTokenIdOfOwnerByIndex(\n    address owner,\n    uint index\n  ) external view returns (uint);\n\n  function getAddressFromTokenId(\n    uint256 tokenId\n  ) external view returns (address[] memory);\n\n  function getTokenByIndex(uint index) external view returns (uint);\n\n  function getTotalSupply() external view returns (uint256);\n\n  function getNftIndex(uint256 tokenId) external view returns (uint256);\n\n  function getTokenIdByIndex(uint256 index) external view returns (uint256);\n\n  function getIdToOwnedIndex(uint256 tokenId) external view returns (uint256);\n\n  function getIdToNftItem(\n    uint256 tokenId\n  ) external view returns (NftItem memory);\n\n  function getNftCreator(uint256 tokenId) external view returns (address);\n\n  function getTokeURIUsed(string memory tokenURI) external view returns (bool);\n\n  // DELETE\n  function deleteIdToOwnedIndex(uint256 tokenId) external;\n\n  function deleteIdToNftIndex(uint256 tokenId) external;\n\n  function deleteOwnedTokens(address owner, uint256 tokenId) external;\n\n  function popAllNfts() external;\n\n  function popAddressFromTokenId(uint256 tokenId) external;\n}\n",
-  "sourcePath": "/Users/alberto/Desktop/Enalbis/caskchain-mono/apps/contracts/contracts/CCNft/ICCNftStorage.sol",
+  "sourcePath": "/Users/alberto/Desktop/Proyectos/caskchain-monorepo/apps/contracts/contracts/CCNft/ICCNftStorage.sol",
   "ast": {
     "absolutePath": "project:/contracts/CCNft/ICCNftStorage.sol",
     "exportedSymbols": {
@@ -2524,8 +2524,8 @@
     "version": "0.8.17+commit.8df45f5f.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.4.11",
-  "updatedAt": "2023-11-02T11:32:16.020Z",
+  "schemaVersion": "3.4.16",
+  "updatedAt": "2024-02-05T21:25:11.839Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

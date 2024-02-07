@@ -471,7 +471,7 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ninterface INftOffersStorage {\n  struct Offer {\n    // Current owner of NFT\n    uint256 nftId;\n    address seller;\n    uint highestBid;\n    address highestBidder;\n  }\n\n  // GETTERS\n  function getPreviousBidderBidByTokenId(\n    uint256 _tokenId,\n    address _address\n  ) external view returns (uint256);\n\n  function getNftOfferByTokenId(\n    uint256 _tokenId\n  ) external view returns (Offer memory);\n\n  function getBidFromBidderByTokenId(\n    uint256 _tokenId\n  ) external view returns (bool);\n\n  function getOffersBidsFromTokenId(\n    uint256 _tokenId,\n    address _address\n  ) external view returns (uint256);\n\n  function getAddressFromTokenId(\n    uint256 tokenId\n  ) external view returns (address[] memory);\n\n  function getIndexOfOfferBidsFromAddress(\n    uint256 _tokenId,\n    address _address\n  ) external view returns (uint256);\n\n  function getHighestBidByTokenId(\n    uint256 _tokenId\n  ) external view returns (uint256);\n\n  function getPendingWithdrawalsByAddress(\n    address _address\n  ) external view returns (uint256);\n\n  // SETTERS\n  function setIndexOfOffersBidsFromAddress(\n    uint256 _tokenId,\n    address _address,\n    uint256 _index\n  ) external;\n\n  function setHasBidFromTokenId(\n    uint256 _tokenId,\n    address _address,\n    bool _hasBid\n  ) external;\n\n  function setOfferByTokenId(uint256 _tokenId, Offer memory _offer) external;\n\n  function setTokenIdToOffer(\n    uint256 _tokenId,\n    uint256 _bid,\n    address _bidder\n  ) external;\n\n  function setPendingWithdrawals(address _address, uint256 _amount) external;\n\n  function setOfferBidFromTokenIdBySender(\n    uint256 _tokenId,\n    address _address,\n    uint256 _bid\n  ) external;\n\n  function pushAddressFromTokenId(uint256 tokenId, address bidder) external;\n\n  function updateAddrressFromTokenId(\n    uint256 tokenId,\n    uint256 index,\n    address bidder\n  ) external;\n\n  function popAddressFromTokenId(uint256 tokenId) external;\n\n  function deleteOffersBidsFromTokenId(\n    uint256 _tokenId,\n    address _address\n  ) external;\n\n  function deleteIndexOfOfferBidsFromAddress(\n    uint256 _tokenId,\n    address _address\n  ) external;\n\n  function deleteAddressFromBiddersByTokenIdAndIndex(\n    uint256 tokenId,\n    uint256 index\n  ) external;\n\n  function deleteTokenIdFromOffer(uint256 _tokenId) external;\n}\n",
-  "sourcePath": "/Users/alberto/Desktop/Enalbis/caskchain-mono/apps/contracts/contracts/NftOffers/INftOffersStorage.sol",
+  "sourcePath": "/Users/alberto/Desktop/Proyectos/caskchain-monorepo/apps/contracts/contracts/NftOffers/INftOffersStorage.sol",
   "ast": {
     "absolutePath": "project:/contracts/NftOffers/INftOffersStorage.sol",
     "exportedSymbols": {
@@ -2579,8 +2579,8 @@
     "version": "0.8.17+commit.8df45f5f.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.4.11",
-  "updatedAt": "2023-11-02T11:32:16.118Z",
+  "schemaVersion": "3.4.16",
+  "updatedAt": "2024-02-05T21:25:11.856Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

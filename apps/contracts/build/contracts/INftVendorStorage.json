@@ -465,7 +465,7 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.7;\n\ninterface INftVendorStorage {\n  struct Listing {\n    uint256 tokenId;\n    uint256 price;\n    address seller;\n    bool active;\n  }\n\n  function addAllowedAddress(address _address) external;\n\n  function removeAllowedAddress(address _address) external;\n\n  function isAllowedAddress(address _address) external view returns (bool);\n\n  function getCollection() external view returns (address);\n\n  function getCreator() external view returns (address);\n\n  function getPriceByToken(\n    address tokenAddress,\n    uint256 tokenId\n  ) external view returns (uint256);\n\n  function getAcceptedERC20tokens() external view returns (address[] memory);\n\n  function getListing(uint256 tokenId) external view returns (Listing memory);\n\n  function getProcceds(address _address) external view returns (uint256);\n\n  function getAllListedNftsLength() external view returns (uint256);\n\n  function getAllListedNftsId() external view returns (uint256[] memory);\n\n  function getListedNftsByIndex(\n    uint256 index\n  ) external view returns (uint256 tokenId);\n\n  function getIsExcluded() external view returns (bool);\n\n  function setCollection(address _collection) external;\n\n  function setCreator(address _creator) external;\n\n  function setListing(\n    uint256 _tokenId,\n    uint256 _price,\n    address _seller,\n    bool _activeSell\n  ) external;\n\n  function updateSellState(uint256 _tokenId, bool state) external;\n\n  function setProcceds(address _address, uint256 _amount) external;\n\n  function setAcceptedToken(address _tokenAddress, bool _accepted) external;\n\n  function setExcludedFromList(address _address, bool _excluded) external;\n\n  function setERC20PriceByTokenId(\n    address _tokenAddress,\n    uint256 _tokenId,\n    uint256 _price\n  ) external;\n\n  function pushToAllERC20Tokens(address _tokenAddress) external;\n\n  function addTokenToAllTokensEnumeration(uint tokenId) external;\n\n  function removeTokenFromAllListedTokensEnumeration(uint tokenId) external;\n\n  function incrementListedItems() external;\n\n  function decrementListedItems() external;\n\n  function deleteListing(uint256 _tokenId) external;\n\n  function getCurrentListedItemsCounter() external view returns (uint256);\n}\n",
-  "sourcePath": "/Users/alberto/Desktop/Enalbis/caskchain-mono/apps/contracts/contracts/NftVendor/INftVendorStorage.sol",
+  "sourcePath": "/Users/alberto/Desktop/Proyectos/caskchain-monorepo/apps/contracts/contracts/NftVendor/INftVendorStorage.sol",
   "ast": {
     "absolutePath": "project:/contracts/NftVendor/INftVendorStorage.sol",
     "exportedSymbols": {
@@ -2575,8 +2575,8 @@
     "version": "0.8.17+commit.8df45f5f.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.4.11",
-  "updatedAt": "2023-11-02T11:32:16.135Z",
+  "schemaVersion": "3.4.16",
+  "updatedAt": "2024-02-05T21:25:11.864Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

@@ -1,4 +1,5 @@
 import { MongoClient } from 'mongodb'
+import logger from '../../../presentation/utils/logger'
 
 export class MongoClientFactory {
   private static clients: { [key: string]: MongoClient } = {}
@@ -27,6 +28,12 @@ export class MongoClientFactory {
     const client = new MongoClient(config.url, { ignoreUndefined: true })
 
     await client.connect()
+
+    logger.info('Connected to MongoDB', {
+      metadata: {
+        service: 'MongoClientFactory',
+      },
+    })
 
     return client
   }

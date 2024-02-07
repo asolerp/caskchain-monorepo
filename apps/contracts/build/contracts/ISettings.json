@@ -128,7 +128,7 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "//SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ninterface ISettings {\n  function maxAuctionLength() external returns (uint256);\n\n  function minAuctionLength() external returns (uint256);\n\n  function maxCuratorFee() external returns (uint256);\n\n  function governanceFee() external returns (uint256);\n\n  function minBidIncrease() external returns (uint256);\n\n  function minVotePercentage() external returns (uint256);\n\n  function maxReserveFactor() external returns (uint256);\n\n  function minReserveFactor() external returns (uint256);\n\n  function feeReceiver() external returns (address payable);\n}\n",
-  "sourcePath": "/Users/alberto/Desktop/Enalbis/caskchain-mono/apps/contracts/contracts/Interfaces/Isettings.sol",
+  "sourcePath": "/Users/alberto/Desktop/Proyectos/caskchain-monorepo/apps/contracts/contracts/Interfaces/Isettings.sol",
   "ast": {
     "absolutePath": "project:/contracts/Interfaces/Isettings.sol",
     "exportedSymbols": {
@@ -675,8 +675,8 @@
     "version": "0.8.17+commit.8df45f5f.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.4.11",
-  "updatedAt": "2023-11-02T11:32:16.025Z",
+  "schemaVersion": "3.4.16",
+  "updatedAt": "2024-02-05T21:25:11.840Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},
