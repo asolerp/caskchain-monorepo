@@ -7,7 +7,9 @@ export class UpdatePriceNft implements UpdatePriceNftUseCase {
     this.nftRepository = nftRepository
   }
 
-  async execute(id: string, price: string) {
-    await this.nftRepository.updatePrice(id, price)
+  async execute(id: string, price: string, erc20Token?: string) {
+    console.log('ERC20TOKEN_2', erc20Token)
+
+    await this.nftRepository.updatePrice(id, price, erc20Token)
   }
 }

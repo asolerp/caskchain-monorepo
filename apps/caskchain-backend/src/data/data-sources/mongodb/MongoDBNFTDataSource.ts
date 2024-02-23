@@ -96,9 +96,23 @@ export class MongoDBNFTDataSource
     )
   }
 
-  public async updatePrice(id: string, price: string): Promise<void> {
+  public async updatePrice(
+    id: string,
+    price: string,
+    erc20Token?: string
+  ): Promise<void> {
     const collection = await this.collection()
-    await collection.updateOne({ _id: id }, { $set: { price: price } })
+
+    console.log('erc20Token', erc20Token)
+
+    if (!erc20Token) {
+      await collection.updateOne({ _id: id }, { $set: { price: price } })
+    } else {
+      await collection.updateOne(
+        { _id: id },
+        { $set: { erc20Prices: { USDT: price } } }
+      )
+    }
   }
 
   public async updateSaleState(id: string, state: boolean): Promise<void> {

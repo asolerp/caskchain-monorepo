@@ -153,7 +153,6 @@ export default function GetNftsRouter(
     async (req: Request, res: Response) => {
       const address = extractAddressFromToken(req)
       try {
-        console.log('address', address)
         const favoritesNfts = await getFavoriteNfts.execute(address)
         logger.info('Successfully fetched favorite NFTs of %s', address, {
           metadata: {

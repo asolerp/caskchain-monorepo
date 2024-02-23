@@ -150,9 +150,6 @@ export default function UserRouter(
 
   router.post('/subscribe', async (req: Request, res: Response) => {
     const { email } = req.body
-    console.log('email', email)
-    console.log('env', process.env.MAILCHIMP_AUDIENCE_ID)
-
     try {
       await mailchimp.lists.addListMember(
         process.env.MAILCHIMP_AUDIENCE_ID as string,

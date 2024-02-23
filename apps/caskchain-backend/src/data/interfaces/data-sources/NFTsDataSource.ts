@@ -10,7 +10,7 @@ export interface NFTsDataSource {
   updateFavoriteCounter(id: string, action: string): Promise<number>
   search(tokenId: string): Promise<NFTResponseModel[] | null>
   updateOwnerNft(id: string, owner: string): Promise<void>
-  updatePrice(id: string, price: string): Promise<void>
+  updatePrice(id: string, price: string, erc20Token?: string): Promise<void>
   updateSaleState(id: string, state: boolean): Promise<void>
   getBestNfts(): Promise<NFTResponseModel[]>
   getAllNfts(

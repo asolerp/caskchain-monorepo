@@ -25,6 +25,6 @@ export interface NFTRepository {
   fractionalizeNft(fractionalizeInfo: any): Promise<void>
   transferNFT(toAddress: string, tokenId: any, index: number): Promise<void>
   updateOwnerNft(id: string, owner: string): Promise<void>
-  updatePrice(id: string, price: string): Promise<void>
+  updatePrice(id: string, price: string, erc20Token?: string): Promise<void>
   updateSaleState(id: string, state: boolean): Promise<void>
 }

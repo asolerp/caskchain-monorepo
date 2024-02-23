@@ -43,8 +43,12 @@ export class NFTRepositoryImpl implements NFTRepository {
     await this.nftsDataSource.updateOwnerNft(id, owner)
   }
 
-  async updatePrice(id: string, price: string): Promise<void> {
-    await this.nftsDataSource.updatePrice(id, price)
+  async updatePrice(
+    id: string,
+    price: string,
+    erc20Token?: string
+  ): Promise<void> {
+    await this.nftsDataSource.updatePrice(id, price, erc20Token)
   }
 
   async updateSaleState(id: string, state: boolean): Promise<void> {
