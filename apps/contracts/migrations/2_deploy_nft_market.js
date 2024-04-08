@@ -4,6 +4,7 @@ dotenv.config({ path: `../../../.env` });
 const { deployProxy } = require("@openzeppelin/truffle-upgrades");
 
 const MockUSDT = artifacts.require("MockUSDT");
+const PriceOracle = artifacts.require("PriceOracle");
 
 const CCNft = artifacts.require("CCNft");
 const CCNftStorage = artifacts.require("CCNftStorage");
@@ -18,15 +19,24 @@ const CREATOR_ADDRESS = process.env.PUBLIC_KEY;
 
 module.exports = function (deployer) {
   deployer.then(async () => {
-    await deployer.deploy(MockUSDT, "USDT", "USDT", "1000000");
+    await deployer.deploy(MockUSDT, "1000000");
+
+    const priceOracle = await deployer.deploy(PriceOracle);
     const ccNftStorage = await deployer.deploy(CCNftStorage);
+
     const collection = await deployProxy(CCNft, [ccNftStorage.address], {
       deployer,
     });
     const nftVendorStorage = await deployer.deploy(NftVendorStorage);
+
     const nftVendor = await deployProxy(
       NftVendor,
-      [collection.address, CREATOR_ADDRESS, nftVendorStorage.address],
+      [
+        collection.address,
+        CREATOR_ADDRESS,
+        nftVendorStorage.address,
+        priceOracle.address,
+      ],
       {
         deployer,
       }

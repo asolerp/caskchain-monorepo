@@ -4,6 +4,7 @@ export const pinataApiKey = process.env.PINATA_API_KEY as string
 export const pinataSecretApiKey = process.env.PINATA_SECRET_API_KEY as string
 
 export const getSignedData = async (web3: any, account: any) => {
+  console.log('web3', web3)
   const messageToSign = await axios.get(`/api/user/${account}/nonce`)
 
   const signature = await web3.eth.personal.sign(

@@ -7,6 +7,8 @@ import { SWRResponse } from 'swr'
 export type Web3Dependencies = {
   web3?: any
   setWeb3?: any
+  setIsConnected: any
+  magic: any | undefined
   erc20Contracts?: any
   nftFractionsVendor?: any
   nftFractionsFactory?: any

@@ -43,12 +43,10 @@ const SidebarComponent: React.FC<SidebarProps> = ({ open }) => {
   const [activeNotification, setActiveNotification] = useState(false)
 
   const handleLogout = () => {
-    const dispatches = () => {
-      dispatch({ type: GlobalTypes.SET_USER, payload: { user: null } })
-      dispatch({ type: GlobalTypes.SET_ADDRESS, payload: { address: null } })
-    }
+    dispatch({ type: GlobalTypes.SET_USER, payload: { user: null } })
+    dispatch({ type: GlobalTypes.SET_ADDRESS, payload: { address: null } })
 
-    logout(setWeb3, dispatches, magic)
+    logout(setWeb3, magic)
     router.reload()
   }
 

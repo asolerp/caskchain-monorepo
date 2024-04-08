@@ -6,7 +6,7 @@ import { getCookie, setCookie } from 'cookies-next'
 
 import { getSignedData } from 'pages/api/utils'
 
-import { connectWithMagic, getWeb3 } from 'caskchain-lib'
+import { connectWithMagic } from 'caskchain-lib'
 import { magic } from 'lib/magic'
 import { useState } from 'react'
 
@@ -15,7 +15,7 @@ type AccountHookFactory = CryptoHookFactory<string, any>
 export type UseAccountHook = ReturnType<AccountHookFactory>
 
 export const hookFactory: AccountHookFactory =
-  ({ web3, setWeb3 }) =>
+  ({ web3, setIsConnected }) =>
   () => {
     const {
       state: { user, address },
@@ -24,16 +24,6 @@ export const hookFactory: AccountHookFactory =
 
     const [loading, setLoading] = useState<boolean>(false)
     const token = getCookie('token')
-
-    // const [erc20Balances, setERC20Balances] = useState()
-
-    // const erc20Balance = useCallback(async () => {
-    //   const Tether = await loadContractByABI(
-    //     MocksUSDTContract.networks[4447].address,
-    //     MocksUSDTContract.abi
-    //   )
-    //   return await Tether.balanceOf(address)
-    // }, [])
 
     const checkIfUserDataIsNeeded = (
       email: string,
@@ -93,10 +83,9 @@ export const hookFactory: AccountHookFactory =
 
         localStorage.setItem('user', accounts[0])
 
+        setIsConnected(true)
         // Once user is logged in, re-initialize web3 instance to use the new provider (if connected with third party wallet)
-        const web3 = await getWeb3(magic)
-        if (!web3) return
-        setWeb3(web3)
+
         const userDB = await axios.get(`/api/user/${accounts[0].toLowerCase()}`)
 
         dispatch({
@@ -122,6 +111,5 @@ export const hookFactory: AccountHookFactory =
       handleOpenSidebar,
       data: user?.address,
       checkIfUserDataIsNeeded,
-      // erc20Balances,
     }
   }

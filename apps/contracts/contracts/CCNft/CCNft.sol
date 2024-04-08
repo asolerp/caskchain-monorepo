@@ -8,7 +8,6 @@ import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721URISto
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 import "./ICCNftStorage.sol";
@@ -20,7 +19,6 @@ contract CCNft is
   OwnableUpgradeable,
   UUPSUpgradeable
 {
-  using SafeMathUpgradeable for uint256;
   using CountersUpgradeable for CountersUpgradeable.Counter;
 
   struct ERC20Token {
@@ -59,7 +57,9 @@ contract CCNft is
     return _storage.getTokeURIUsed(tokenURI);
   }
 
-  function mintNFT(string memory _tokenURI) public onlyOwner returns (uint256) {
+  function mintNFT(
+    string memory _tokenURI
+  ) external onlyOwner returns (uint256) {
     require(bytes(_tokenURI).length > 0, "Token URI must not be empty");
     require(!checkIfTokenURIExists(_tokenURI), "Token URI already exists");
 
@@ -81,7 +81,7 @@ contract CCNft is
     return newItemId;
   }
 
-  function burn(uint256 tokenId) public onlyOwner {
+  function burn(uint256 tokenId) external onlyOwner {
     require(_exists(tokenId), "Token does not exist");
     require(
       ownerOf(tokenId) == _msgSender(),

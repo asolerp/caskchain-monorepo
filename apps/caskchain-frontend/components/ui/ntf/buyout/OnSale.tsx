@@ -3,7 +3,6 @@ import Spacer from '@ui/common/Spacer'
 import { Nft } from '@_types/nft'
 import { ethers } from 'ethers'
 import { addressSimplifier } from 'utils/addressSimplifier'
-import { useEffect, useState } from 'react'
 
 type Props = {
   cask: Nft
@@ -12,18 +11,7 @@ type Props = {
   onBuyWithERC20: () => void
 }
 
-const OnSale: React.FC<Props> = ({ cask, rates, onBuy, onBuyWithERC20 }) => {
-  const MATICEUR = rates?.find((rate: any) => rate?._id === 'matic')?.lastPrice
-
-  const [selectedCoin, setSelectedCoin] = useState<'ETH' | 'MATIC' | 'USDT'>()
-
-  useEffect(() => {
-    if (cask?.price && cask?.price > 0) {
-      return setSelectedCoin('ETH')
-    }
-    return setSelectedCoin('USDT')
-  }, [cask])
-
+const OnSale: React.FC<Props> = ({ cask, onBuyWithERC20 }) => {
   return (
     <div className="p-6 w-full h-fit bg-black-light rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-90 border border-gray-700 grid grid-cols-1 ">
       <div className="w-2/3">
@@ -42,30 +30,13 @@ const OnSale: React.FC<Props> = ({ cask, rates, onBuy, onBuyWithERC20 }) => {
         <div>
           <p className="text-cask-chain mb-1">PRICE</p>
           <h2 className="text-5xl text-gray-100">
-            {selectedCoin === 'USDT'
-              ? `${ethers.utils
-                  .formatEther(cask?.erc20Prices?.USDT)
-                  .toString()} $`
-              : `${
-                  cask?.price &&
-                  ethers.utils.formatEther(cask?.price).toString()
-                } MATIC`}
+            {ethers.formatEther(cask?.erc20Prices?.USDT).toString()} USDT
           </h2>
-          <p className="text-white">
-            {(Number(ethers.utils.formatEther(cask?.price)) * MATICEUR).toFixed(
-              2
-            )}{' '}
-            EUR
-          </p>
         </div>
       </div>
       <Spacer size="md" />
       <div className="flex items-center">
-        <Button
-          fit={false}
-          active
-          onClick={selectedCoin === 'ETH' ? onBuy : onBuyWithERC20}
-        >
+        <Button fit={false} active onClick={onBuyWithERC20}>
           BUY CASK
         </Button>
       </div>

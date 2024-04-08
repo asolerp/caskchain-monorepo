@@ -21,8 +21,6 @@ const OffersReceived: React.FC<OffersReceivedProps> = ({
   loading,
   offersReceived,
 }) => {
-  console.log('OffersReceived', offersReceived)
-
   return (
     <div className="flex flex-col border-b border-b-gray-400 ">
       <div className="overflow-x-auto sm:mx-0.5 lg:mx-0.5">
@@ -120,9 +118,7 @@ const OffersReceived: React.FC<OffersReceivedProps> = ({
                           </td>
                           <td className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap">
                             {item?.bid &&
-                              ethers.utils
-                                .formatEther(item?.bid)
-                                .toString()}{' '}
+                              ethers.formatEther(item?.bid).toString()}{' '}
                             Matic
                           </td>
                           <td className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap">

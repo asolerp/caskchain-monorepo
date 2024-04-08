@@ -65,8 +65,7 @@ const GeneralNftInfo: React.FC<NftItemProps> = ({
         {!isMarketPlace && (
           <div className="mt-3">
             <button className="bg-emerald-400 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded w-full">
-              Buy for {ethers.utils.formatEther(Number(item.price).toString())}{' '}
-              ETH
+              Buy for {ethers.formatEther(Number(item.price).toString())} ETH
             </button>
           </div>
         )}

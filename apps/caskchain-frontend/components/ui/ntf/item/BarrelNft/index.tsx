@@ -31,7 +31,6 @@ const BARREL_HEIGHT = 650
 
 const BarrelNft: React.FC<NftItemProps> = ({
   item,
-  rates = [],
   active = false,
   showAnimation = true,
   isFavorite = false,
@@ -63,7 +62,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
     }
   }, [isHover, item?.video])
 
-  const MATICEUR = rates?.find((rate: any) => rate?._id === 'matic')?.lastPrice
+  console.log('ITEM', item)
 
   const variants = {
     hover: {
@@ -215,7 +214,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
                       <div className="flex flex-row items-center justify-between">
                         <p className="text-gray-400">Barrel price</p>
                         <p className="text-white">
-                          {ethers.utils.formatEther(item?.price)} MATIC
+                          {ethers.formatEther(item?.price)} MATIC
                         </p>
                       </div>
                     ) : (
@@ -230,15 +229,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
                       <div className="flex flex-row items-center justify-between">
                         <p className="text-gray-400">Price</p>
                         <p className="text-white">
-                          {ethers.utils.formatEther(item?.price)} MATIC
-                        </p>
-                        <p className="text-white">~</p>
-                        <p className="text-white">
-                          {(
-                            Number(ethers.utils.formatEther(item?.price)) *
-                            MATICEUR
-                          ).toFixed(2)}{' '}
-                          EUR
+                          {ethers.formatEther(item?.erc20Prices?.USDT)} USDT
                         </p>
                       </div>
                     ) : (

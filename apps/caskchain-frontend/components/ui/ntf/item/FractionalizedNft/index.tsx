@@ -16,7 +16,7 @@ const FractionalizedNftItem: React.FC<NftItemProps> = ({
   const [isHover, setIsHover] = useState(false)
   const fractionPrice =
     item.fractions?.unitPrice &&
-    (Number(ethers.utils.parseEther('1')) / item.fractions.unitPrice).toString()
+    (Number(ethers.parseEther('1')) / item.fractions.unitPrice).toString()
 
   return (
     <div
@@ -89,7 +89,7 @@ const FractionalizedNftItem: React.FC<NftItemProps> = ({
             </div>
             <div className="mt-3">
               <button className="bg-emerald-400 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded w-full">
-                Buy 1 fraction ~ {ethers.utils.formatEther(fractionPrice)} ETH
+                Buy 1 fraction ~ {ethers.formatEther(fractionPrice)} ETH
               </button>
             </div>
           </>

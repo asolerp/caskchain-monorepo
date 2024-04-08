@@ -9,6 +9,7 @@ import { VaultVendorContract } from "./vaultVendorContract";
 export type Web3Dependencies = {
   hooksSetter?: any;
   web3Modal?: any;
+  setIsConnected: any;
   erc20Contracts?: any;
   nftFractionsVendor?: VaultVendorContract;
   nftFractionsFactory?: VaultFactoryContract;

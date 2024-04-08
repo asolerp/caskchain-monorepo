@@ -105,9 +105,7 @@ const OffersSent: React.FC<OffersSentProps> = ({ offersSent, cancelOffer }) => {
                           </td>
                           <td className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap">
                             {item?.bid &&
-                              ethers.utils
-                                .formatEther(item?.bid)
-                                .toString()}{' '}
+                              ethers.formatEther(item?.bid).toString()}{' '}
                             Matic
                           </td>
                           <td

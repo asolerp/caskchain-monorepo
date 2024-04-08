@@ -57,9 +57,9 @@ const FractionBalances: React.FC<Props> = ({ balances, onRedeem }) => {
                             {addressSimplifier(item.address)}
                           </td>
                           <td className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap">
-                            {Number(
-                              ethers.utils.formatEther(item.balance)
-                            ).toFixed(2)}{' '}
+                            {Number(ethers.formatEther(item.balance)).toFixed(
+                              2
+                            )}{' '}
                             FRACTIONS
                           </td>
                           <td className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap">

@@ -12,6 +12,7 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 import "./INftVendorStorage.sol";
+import "../PriceOracle.sol";
 
 // Check out https://github.com/Fantom-foundation/Artion-Contracts/blob/5c90d2bc0401af6fb5abf35b860b762b31dfee02/contracts/FantomMarketplace.sol
 // For a full decentralized nft marketplace
@@ -39,11 +40,20 @@ contract NftVendor is
 
   address public collection;
   address public creator;
+  PriceOracle public oracle;
 
   event ItemListed(
     address indexed from,
     address indexed nftAddress,
     uint256 indexed tokenId,
+    uint256 price
+  );
+
+  event NftStableCoinPriceUpdated(
+    address indexed from,
+    address indexed nftAddress,
+    uint256 indexed tokenId,
+    address erc20Token,
     uint256 price
   );
 
@@ -121,13 +131,15 @@ contract NftVendor is
   function initialize(
     address _collection,
     address _creator,
-    address _storageAddress
+    address _storageAddress,
+    address _oracleAddress
   ) public initializer {
     __Ownable_init();
     __UUPSUpgradeable_init();
     collection = _collection;
     creator = _creator;
     _vendorStorage = INftVendorStorage(_storageAddress);
+    oracle = PriceOracle(_oracleAddress);
     _setDefaultRoyalty(msg.sender, 1000);
   }
 
@@ -300,46 +312,90 @@ contract NftVendor is
     );
   }
 
-  function buyNFTWithERC20(
+  function calculateAmountInStablecoin(
+    address erc20Token,
+    uint256 tokenId
+  ) private view returns (uint256) {
+    uint256 dollarAmount = getPriceByToken(erc20Token, tokenId);
+    return dollarAmount;
+  }
+
+  function calculateRoyalty(
+    address erc20Token,
     uint256 tokenId,
-    address erc20Token
-  ) external isListed(tokenId) isNotOwner(tokenId, msg.sender) nonReentrant {
-    INftVendorStorage.Listing memory listedItem = getListing(tokenId);
-    uint256 nftPrice = getPriceByToken(erc20Token, tokenId);
-    IERC20Upgradeable token = IERC20Upgradeable(erc20Token);
-    uint256 royaltyAmount;
-
-    require(
-      token.allowance(msg.sender, address(this)) >= nftPrice,
-      "Insufficient allowance."
-    );
-
+    uint256 amountInStablecoin
+  ) private returns (uint256 royaltyAmount) {
     if (!getIsExcluded()) {
       address owner = IERC721Upgradeable(collection).ownerOf(tokenId);
       if (owner != creator) {
-        (, royaltyAmount) = royaltyInfo(tokenId, nftPrice);
+        (, royaltyAmount) = royaltyInfo(tokenId, amountInStablecoin);
+        // Asume que payERC20Royalties ya no devuelve un valor sino que actúa directamente
         payERC20Royalties(erc20Token, tokenId, royaltyAmount);
       }
     }
+    return royaltyAmount;
+  }
 
-    token.transferFrom(msg.sender, listedItem.seller, nftPrice - royaltyAmount);
+  function transferStablecoin(
+    address erc20Token,
+    uint256 amountInStablecoin,
+    uint256 royaltyAmount,
+    address seller
+  ) private {
+    IERC20Upgradeable token = IERC20Upgradeable(erc20Token);
+    uint256 amountAfterRoyalties = amountInStablecoin - royaltyAmount;
+    require(
+      token.transferFrom(msg.sender, seller, amountAfterRoyalties),
+      "Payment failed"
+    );
+  }
 
-    IERC721Upgradeable(collection).safeTransferFrom(
-      listedItem.seller,
-      msg.sender,
+  function finalizeNFTTransfer(
+    uint256 tokenId,
+    address seller,
+    address buyer
+  ) private {
+    IERC721Upgradeable(collection).safeTransferFrom(seller, buyer, tokenId);
+    _vendorStorage.deleteListing(tokenId);
+    _vendorStorage.removeTokenFromAllListedTokensEnumeration(tokenId);
+  }
+
+  function buyNFTWithStableCoin(
+    uint256 tokenId,
+    address erc20Token
+  ) external isListed(tokenId) isNotOwner(tokenId, msg.sender) nonReentrant {
+    uint256 amountInStablecoin = calculateAmountInStablecoin(
+      erc20Token,
       tokenId
     );
+    uint256 royaltyAmount = calculateRoyalty(
+      erc20Token,
+      tokenId,
+      amountInStablecoin
+    );
 
-    _vendorStorage.deleteListing(tokenId);
-    _vendorStorage.setERC20PriceByTokenId(erc20Token, tokenId, 0);
-    _vendorStorage.removeTokenFromAllListedTokensEnumeration(tokenId);
+    IERC20Upgradeable token = IERC20Upgradeable(erc20Token);
+    require(
+      token.allowance(msg.sender, address(this)) >= amountInStablecoin,
+      "Insufficient allowance."
+    );
+
+    INftVendorStorage.Listing memory listedItem = getListing(tokenId);
+
+    transferStablecoin(
+      erc20Token,
+      amountInStablecoin,
+      royaltyAmount,
+      listedItem.seller
+    );
+    finalizeNFTTransfer(tokenId, listedItem.seller, msg.sender);
 
     emit ItemBought(
       msg.sender,
       listedItem.seller,
       tokenId,
       true,
-      nftPrice - royaltyAmount
+      amountInStablecoin - royaltyAmount
     );
   }
 
@@ -433,6 +489,13 @@ contract NftVendor is
       "Not approved for marketplace"
     );
     _vendorStorage.setERC20PriceByTokenId(erc20Token, tokenId, price);
+    emit NftStableCoinPriceUpdated(
+      msg.sender,
+      collection,
+      tokenId,
+      erc20Token,
+      price
+    );
   }
 
   function calculateRoyaltyForAcceptedOffer(

@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 import { motion, useAnimation } from 'framer-motion'
 
 import { useGlobal } from '@providers/global'
-import MarketPlaceStats from './MarketPlaceStats'
 
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -35,7 +34,7 @@ const HeroSection = () => {
 
   return (
     <>
-      <div className="h-full lg:h-screen w-screen bg-black-light bg-cover grid grid-cols-3 sm:px-6 lg:px-32">
+      <div className="h-full lg:h-screen w-screen bg-hero bg-cover grid grid-cols-3 sm:px-6 lg:px-32">
         <div className="flex flex-col w-full justify-center items-start col-span-3 lg:col-span-2 mt-32">
           <div className="hidden lg:flex lg:flex-col">
             <motion.h1

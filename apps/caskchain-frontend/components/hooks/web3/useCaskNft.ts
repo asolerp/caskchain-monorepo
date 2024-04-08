@@ -14,6 +14,7 @@ import useSWR from 'swr'
 import useDebounce from '@hooks/common/useDebounce'
 import useGetRates from '@hooks/common/useGetRates'
 import { useAccount } from '@hooks/web3'
+import { sendTransaction } from 'caskchain-lib/provider/web3/utils'
 
 type CaskNftHookFactory = CryptoHookFactory<Nft[]>
 
@@ -197,24 +198,22 @@ export const hookFactory: CaskNftHookFactory =
         })
         try {
           if (isUserNeededDataFilled) {
-            const txApprove = await erc20Contracts.USDT?.approve(
-              _nftVendor?.address,
+            console.log('erc20Contracts', erc20Contracts)
+
+            const txApprove = await erc20Contracts.USDT?.methods?.approve(
+              _nftVendor?._address,
               price.toString()
             )
 
-            const responseApprove: any = await txApprove!.wait()
+            await sendTransaction(address, true, txApprove, 10)
 
-            if (responseApprove.status !== 1) throw new Error('Approve failed')
+            const txBuyWithERC20 =
+              await _nftVendor?.methods?.buyNFTWithStableCoin(
+                tokenId,
+                process.env.NEXT_PUBILC_USDT_CONTRACT_ADDRESS as string
+              )
 
-            const txBuyWithERC20 = await _nftVendor?.buyNFTWithERC20(
-              tokenId,
-              process.env.NEXT_PUBILC_USDT_CONTRACT_ADDRESS as string
-            )
-
-            const responseBuyWithERC20: any = await txBuyWithERC20!.wait()
-
-            if (responseBuyWithERC20.status !== 1)
-              throw new Error('Buy with ERC20 failed')
+            await sendTransaction(address, true, txBuyWithERC20, 10)
 
             toast.update(id, {
               render: 'Barrel bought with USDT!',
@@ -251,7 +250,7 @@ export const hookFactory: CaskNftHookFactory =
           if (isUserNeededDataFilled) {
             const value =
               Number(
-                ethers.utils.parseUnits(
+                ethers.parseUnits(
                   numberOfFractions!.toString() as string,
                   'ether'
                 )
@@ -277,7 +276,7 @@ export const hookFactory: CaskNftHookFactory =
           if (isUserNeededDataFilled) {
             const txOffer = await _nftOffers?.methods?.makeOffer(caskId).send({
               from: address,
-              value: ethers.utils.parseUnits(bid.toString(), 'ether'),
+              value: ethers.parseUnits(bid.toString(), 'ether'),
             })
             if (!txOffer.status) throw new Error('Offer Nft failed')
 

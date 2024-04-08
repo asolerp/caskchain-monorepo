@@ -18,7 +18,7 @@ const FractionalizedBuyout: React.FC<Props> = ({
   const fullNftPrie = cask?.fractions?.listingPrice
   const fractionPrice =
     cask.fractions?.unitPrice &&
-    (Number(ethers.utils.parseEther('1')) / cask.fractions.unitPrice).toString()
+    (Number(ethers.parseEther('1')) / cask.fractions.unitPrice).toString()
 
   return (
     <div className="p-6 w-full h-fit bg-black-light rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-90 border border-gray-700 grid grid-cols-1 ">
@@ -65,7 +65,7 @@ const FractionalizedBuyout: React.FC<Props> = ({
               onClick={() => onFullBuy()}
               className="bg-red-400 hover:bg-red-700 text-gray-100 text-xl font-bold py-4 px-4 rounded w-full mb-3"
             >
-              BUY FULL NFT BY {ethers.utils.formatEther(fullNftPrie)} ETH
+              BUY FULL NFT BY {ethers.formatEther(fullNftPrie)} ETH
             </button>
             <button
               onClick={() => onBuyFraction(fractions)}
@@ -73,8 +73,7 @@ const FractionalizedBuyout: React.FC<Props> = ({
             >
               BUY FRACTIONS BY ~{' '}
               {(
-                Number(ethers.utils.formatEther(fractionPrice)) *
-                Number(fractions)
+                Number(ethers.formatEther(fractionPrice)) * Number(fractions)
               ).toFixed(2)}{' '}
               ETH
             </button>

@@ -64,9 +64,7 @@ const TransactionsHistory: React.FC<TransactionsHistoryProps> = ({
                             className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap"
                           >
                             {item?.value &&
-                              ethers.utils
-                                .formatEther(item?.value)
-                                .toString()}{' '}
+                              ethers.formatEther(item?.value).toString()}{' '}
                             {item?.isERC20 ? '$' : 'ETH'}
                           </td>
                           <td className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap">

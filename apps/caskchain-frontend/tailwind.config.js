@@ -32,11 +32,11 @@ module.exports = {
           "url('https://res.cloudinary.com/enalbis/image/upload/v1688029986/CaskChain/mceoyc9cd8ayyebwejw2.jpg')",
         brandy:
           "url('https://res.cloudinary.com/enalbis/image/upload/v1688029986/CaskChain/pr2daymucvmt5iz4q8nn.jpg')",
-        hero: "url('https://res.cloudinary.com/enalbis/image/upload/v1681538253/CaskChain/wtqf3wuruba9zqpezbah.png')",
+        hero: "url('https://res.cloudinary.com/caskchain/image/upload/v1708601989/CaskChain/hero_bg.png')",
         header_1:
           "url('https://res.cloudinary.com/enalbis/image/upload/v1682948719/CaskChain/header/gvl80mkyiqfhpqaydvkw.png')",
         bg_owner:
-          "url('https://res.cloudinary.com/enalbis/image/upload/v1681538336/CaskChain/vr0svpapyh5wv6580jyj.png')",
+          "url('https://res.cloudinary.com/caskchain/image/upload/v1708602359/CaskChain/liquid.png')",
       },
     },
   },

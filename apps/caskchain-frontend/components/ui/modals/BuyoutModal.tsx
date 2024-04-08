@@ -163,13 +163,12 @@ const BuyoutModal: React.FC<Props> = ({
                   <p className="font-sans text-white text-xl">
                     {' '}
                     {(
-                      Number(ethers.utils.formatEther(cask?.price)) * MATICEUR
+                      Number(ethers.formatEther(cask?.price)) * MATICEUR
                     ).toFixed(2)}{' '}
                     EUR
                   </p>
                   <p className="font-sans text-white text-xl">
-                    {cask?.price &&
-                      ethers.utils.formatEther(cask?.price).toString()}{' '}
+                    {cask?.price && ethers.formatEther(cask?.price).toString()}{' '}
                     MATIC
                   </p>
                 </div>

@@ -14,9 +14,11 @@ import { LoadingProvider } from 'components/contexts/LoadingContext'
 import { useEffect } from 'react'
 import { Web3Provider } from 'caskchain-lib'
 import { magic } from 'lib/magic'
+import useInitWeb3Listeners from '@hooks/common/useInitWeb3Listeners'
 
 export default function App({ Component, pageProps }: AppProps) {
   useInitAnalytics()
+  useInitWeb3Listeners()
 
   useEffect(() => {
     document.body.style.overflowX = 'hidden'

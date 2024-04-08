@@ -50,7 +50,7 @@ const NFTLatestOffers: React.FC<NFTLatestOffersProps> = ({
                       return (
                         <tr key={i}>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100">
-                            {ethers.utils.formatEther(item.bid)} ETH
+                            {ethers.formatEther(item.bid)} ETH
                           </td>
                           <td
                             align="left"

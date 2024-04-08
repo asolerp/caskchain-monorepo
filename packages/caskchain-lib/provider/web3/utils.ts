@@ -38,6 +38,7 @@ export const createDefaultState = () => {
 export const createWeb3State = ({
   web3,
   setWeb3,
+  setIsConnected,
   nftFractionsFactory,
   nftFractionsVendor,
   nftFractionToken,
@@ -53,6 +54,7 @@ export const createWeb3State = ({
     setWeb3,
     provider,
     ccNft,
+    setIsConnected,
     nftVendor,
     isLoading,
     nftOffers,
@@ -63,6 +65,7 @@ export const createWeb3State = ({
     hooks: setupHooks({
       web3,
       setWeb3,
+      setIsConnected,
       provider,
       nftFractionToken,
       nftFractionsFactory,

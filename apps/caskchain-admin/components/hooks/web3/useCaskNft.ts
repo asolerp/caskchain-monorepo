@@ -112,45 +112,29 @@ export const hookFactory: CaskNftHookFactory =
 
     const updateERC20Price = async () => {
       const id = toast.loading('Pricing barrel...')
+
       try {
-        const gasPriceApprove = await ccNft?.methods
-          .approve(nftVendor!.address as string, caskId)
-          .estimateGas({ from: address })
+        console.log(ethers.utils.parseUnits(erc20ListPrice.toString(), 'ether'))
 
-        const txApprove = await ccNft?.methods
-          ?.approve(nftVendor!.address as string, caskId)
-          .send({
-            from: address,
-            gas: gasPriceApprove,
-          })
+        const txApprove = await ccNft?.methods?.approve(
+          nftVendor!._address as string,
+          caskId
+        )
 
-        if (!txApprove.status) throw new Error('Approve failed')
+        await sendTransaction(address, true, txApprove, 10)
 
-        const gasPriceList = await _nftVendor?.methods
-          .updateERC20TokenPrice(
-            caskId,
-            process.env.NEXT_PUBILC_USDT_CONTRACT_ADDRESS,
-            ethers.utils.parseUnits(erc20ListPrice.toString(), 'ether')
-          )
-          .estimateGas({ from: address })
+        const txList = await _nftVendor?.methods?.updateERC20TokenPrice(
+          caskId,
+          process.env.NEXT_PUBILC_USDT_CONTRACT_ADDRESS,
+          ethers.utils.parseUnits(erc20ListPrice.toString(), 'ether')
+        )
 
-        const txList = await _nftVendor
-          ?.updateERC20TokenPrice(
-            caskId,
-            process.env.NEXT_PUBILC_USDT_CONTRACT_ADDRESS,
-            ethers.utils.parseUnits(erc20ListPrice.toString(), 'ether')
-          )
-          .send({
-            from: address,
-            gas: gasPriceList,
-          })
-
-        if (!txList.status) throw new Error('Listing failed')
+        await sendTransaction(address, true, txList, 10)
 
         await refetchNft()
 
         toast.update(id, {
-          render: 'Barrel price updated',
+          render: 'Barrel USDT price updated',
           type: 'success',
           isLoading: false,
           closeOnClick: true,
@@ -254,8 +238,6 @@ export const hookFactory: CaskNftHookFactory =
           nftVendor._address as string,
           caskId
         )
-
-        console.log('txApprove', txApprove)
 
         await sendTransaction(address, true, txApprove, 10)
 

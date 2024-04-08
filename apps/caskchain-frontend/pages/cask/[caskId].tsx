@@ -107,9 +107,7 @@ function CaskDetail() {
                                       ).map(([address, balance]: any) => ({
                                         name: address,
                                         value: Number(
-                                          ethers.utils
-                                            .formatEther(balance)
-                                            .toString()
+                                          ethers.formatEther(balance).toString()
                                         ),
                                       }))}
                                     />
@@ -129,7 +127,7 @@ function CaskDetail() {
                                         .map(([address, balance]: any) => ({
                                           address: address,
                                           balance: Number(
-                                            ethers.utils
+                                            ethers
                                               .formatEther(balance)
                                               .toString()
                                           ),

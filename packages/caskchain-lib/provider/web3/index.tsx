@@ -29,15 +29,12 @@ interface Props {
 
 const Web3Provider: React.FC<Props> = ({ magic, children }) => {
   const [web3Api, setWeb3Api] = useState<any>(createDefaultState());
-  const [web3, setWeb3] = useState<any>(null);
-
-  useEffect(() => {
-    getWeb3(magic).then(setWeb3);
-  }, []);
+  const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
     async function initWeb3() {
       try {
+        const web3 = await getWeb3(magic);
         const provider = getMagicProvider(magic);
 
         const ccNft = await loadContract("CCNft", web3);
@@ -56,8 +53,8 @@ const Web3Provider: React.FC<Props> = ({ magic, children }) => {
         setWeb3Api(
           createWeb3State({
             web3,
-            setWeb3,
             provider,
+            setIsConnected,
             erc20Contracts: { USDT: mockUSDT },
             // nftFractionToken: signedNftFractionToken,
             nftFractionsVendor: nftFractionsVendor as unknown as any,
@@ -80,7 +77,7 @@ const Web3Provider: React.FC<Props> = ({ magic, children }) => {
       }
     }
     initWeb3();
-  }, [web3]);
+  }, [isConnected]);
 
   return (
     <Web3Context.Provider value={web3Api}>{children}</Web3Context.Provider>
@@ -97,10 +94,9 @@ export function useProvider() {
 }
 
 export function useWeb3Instance() {
-  const { web3, setWeb3 } = useWeb3();
+  const { web3 } = useWeb3();
   return {
     web3,
-    setWeb3,
   };
 }
 
