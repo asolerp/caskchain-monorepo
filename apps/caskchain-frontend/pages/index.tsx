@@ -13,7 +13,7 @@ const Home: NextPage = () => {
     <BaseLayout>
       <div id="modals" className="w-full">
         <HeroSection />
-        <BarrelsSection />
+        {/* <BarrelsSection /> */}
         <OwnerSection />
         <NewsletterSection />
       </div>

@@ -4,11 +4,21 @@ import Header from '@ui/layout/Header'
 import { NextPage } from 'next'
 import ProfileTabs from './componets/ProfileTabs'
 import Spacer from '@ui/common/Spacer'
-import { auth } from 'utils/auth'
+import { useEffect } from 'react'
+import { useAuth } from 'components/contexts/AuthContext'
+import { useRouter } from 'next/router'
+// import { auth } from 'utils/auth'
 
-export const getServerSideProps = (context: any) => auth(context, 'user')
+// export const getServerSideProps = (context: any) => auth(context, 'user')
 
 const About: NextPage = () => {
+  const router = useRouter()
+  const { currentUser } = useAuth()
+  useEffect(() => {
+    if (!currentUser) {
+      router.push('/')
+    }
+  }, [currentUser, router])
   return (
     <BaseLayout background="bg-black-light">
       <div>

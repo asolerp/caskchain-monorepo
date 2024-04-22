@@ -1,4 +1,3 @@
-import { useCaskNft } from '@hooks/web3'
 import { BaseLayout } from '@ui'
 import { Button, Spacer } from 'caskchain-ui'
 import { NextPageContext } from 'next'
@@ -11,26 +10,43 @@ import { auth } from 'utils/auth'
 import { addressSimplifier, ipfsImageParser } from 'caskchain-lib'
 import { Switch } from '@headlessui/react'
 import { useEffect, useState } from 'react'
+import { useCaskNft } from '@hooks/web3/useCaskNft'
 
 function Cask() {
   const route = useRouter()
 
-  const { cask } = useCaskNft({ caskId: route.query.caskId as string })
+  const {
+    data,
+    formState,
+    isLoading,
+    listPrice,
+    setListPrice,
+    isValidating,
+    updateNftPrice,
+    createFraction,
+    erc20ListPrice,
+    updateERC20Price,
+    updateNftSaleState,
+    setERC20ListPrice,
+    handleFormFractionsChange,
+    updateNftBestBarel,
+  } = useCaskNft({
+    caskId: route.query.caskId as string,
+  })
 
   const [isInSale, setIsInSale] = useState(false)
   const [bestBarrel, setBestBarrel] = useState(false)
 
   useEffect(() => {
-    if (cask?.data) {
-      setIsInSale(cask?.data?.active)
-      setBestBarrel(cask?.data?.bestBarrel)
+    if (data) {
+      setIsInSale(data?.active)
+      setBestBarrel(data?.bestBarrel)
     }
-  }, [cask?.data])
+  }, [data])
 
-  const mainImage =
-    cask?.data?.meta?.image && ipfsImageParser(cask?.data?.meta?.image)
+  const mainImage = data?.meta?.image && ipfsImageParser(data?.meta?.image)
 
-  if (cask?.isLoading || cask?.isValidating) {
+  if (isLoading || isValidating) {
     return (
       <BaseLayout background="bg-gray-200">
         <></>
@@ -48,7 +64,7 @@ function Cask() {
                 src={mainImage}
                 width={500}
                 height={500}
-                alt={cask?.data?.meta?.name}
+                alt={data?.meta?.name}
                 className="rounded-xl object-contain"
                 priority={true}
                 quality={100}
@@ -57,25 +73,23 @@ function Cask() {
             <div className="flex flex-col justify-start w-full">
               <div className="flex flex-row items-center space-x-4">
                 <h4 className="font-poppins font-bold text-gray-400">
-                  Cask #{cask?.data?.tokenId}
+                  Cask #{data?.tokenId}
                 </h4>
                 <h4 className="font-poppins font-bold text-yellow-400 text-lg">
-                  {cask?.data?.owner?.nickname
-                    ? `@${cask?.data?.owner?.nickname}`
-                    : `${addressSimplifier(cask?.data?.owner?.address)}`}
+                  {data?.owner?.nickname
+                    ? `@${data?.owner?.nickname}`
+                    : `${addressSimplifier(data?.owner?.address)}`}
                 </h4>
               </div>
               <h1 className="font-semibold text-4xl font-poppins text-black-light">
-                {cask?.data?.meta?.name}
+                {data?.meta?.name}
               </h1>
               <Spacer size="sm" />
-              <p className="font-poppins text-md">
-                {cask?.data?.meta?.description}
-              </p>
+              <p className="font-poppins text-md">{data?.meta?.description}</p>
             </div>
           </div>
-          {cask?.data?.creator?.toLowerCase() ===
-            cask?.data?.owner?.address.toLowerCase() && (
+          {data?.creator?.toLowerCase() ===
+            data?.owner?.address.toLowerCase() && (
             <>
               <Spacer size="xl" />
               <div>
@@ -90,7 +104,7 @@ function Cask() {
                       checked={isInSale}
                       onChange={() => {
                         setIsInSale(!isInSale)
-                        cask?.updateNftSaleState(!isInSale)
+                        updateNftSaleState(!isInSale)
                       }}
                       className={`${isInSale ? 'bg-cask-chain' : 'bg-gray-300'}
                       relative inline-flex flex-shrink-0 h-[28px] w-[64px] border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
@@ -111,7 +125,7 @@ function Cask() {
                       checked={bestBarrel}
                       onChange={() => {
                         setBestBarrel(!bestBarrel)
-                        cask?.updateNftBestBarel(!bestBarrel)
+                        updateNftBestBarel(!bestBarrel)
                       }}
                       className={`${
                         bestBarrel ? 'bg-cask-chain' : 'bg-gray-300'
@@ -137,8 +151,7 @@ function Cask() {
                       </dt>
                       <Spacer size="xs" />
                       <dd className=" text-2xl font-extrabold text-black">
-                        {cask?.data?.price &&
-                          ethers.utils.formatEther(cask?.data?.price)}{' '}
+                        {data?.price && ethers.utils.formatEther(data?.price)}{' '}
                         MATIC
                       </dd>
                     </div>
@@ -148,10 +161,8 @@ function Cask() {
                       </dt>
                       <Spacer size="xs" />
                       <dd className=" text-2xl font-extrabold text-black">
-                        {cask?.data?.erc20Prices?.USDT &&
-                          ethers.utils.formatEther(
-                            cask?.data?.erc20Prices?.USDT
-                          )}
+                        {data?.erc20Prices?.USDT &&
+                          ethers.utils.formatEther(data?.erc20Prices?.USDT)}
                         $
                       </dd>
                     </div>
@@ -167,8 +178,8 @@ function Cask() {
                       </label>
                       <div className="mt-1 flex rounded-md shadow-sm">
                         <input
-                          onChange={(e) => cask.setListPrice(e.target.value)}
-                          value={cask.listPrice}
+                          onChange={(e: any) => setListPrice(e.target.value)}
+                          value={listPrice}
                           type="number"
                           name="price"
                           id="price"
@@ -177,9 +188,7 @@ function Cask() {
                         />
                       </div>
                       <Spacer size="sm" />
-                      <Button onClick={cask.updateNftPrice}>
-                        Update price
-                      </Button>
+                      <Button onClick={updateNftPrice}>Update price</Button>
                     </div>
                     <div>
                       <label
@@ -190,10 +199,10 @@ function Cask() {
                       </label>
                       <div className="mt-1 flex rounded-md shadow-sm">
                         <input
-                          onChange={(e) =>
-                            cask.setERC20ListPrice(e.target.value)
+                          onChange={(e: any) =>
+                            setERC20ListPrice(e.target.value)
                           }
-                          value={cask.erc20ListPrices}
+                          value={erc20ListPrice}
                           type="number"
                           name="price"
                           id="price"
@@ -202,9 +211,7 @@ function Cask() {
                         />
                       </div>
                       <Spacer size="sm" />
-                      <Button onClick={cask.updateERC20Price}>
-                        Update price
-                      </Button>
+                      <Button onClick={updateERC20Price}>Update price</Button>
                     </div>
                   </div>
                 </div>
@@ -225,8 +232,8 @@ function Cask() {
                     </label>
                     <div className="mt-1 flex rounded-md shadow-sm">
                       <input
-                        value={cask.formState.tokenName}
-                        onChange={cask.handleFormFractionsChange}
+                        value={formState.tokenName}
+                        onChange={handleFormFractionsChange}
                         type="text"
                         name="tokenName"
                         id="name"
@@ -244,8 +251,8 @@ function Cask() {
                     </label>
                     <div className="mt-1 flex rounded-md shadow-sm">
                       <input
-                        value={cask.formState.tokenSymbol}
-                        onChange={cask.handleFormFractionsChange}
+                        value={formState.tokenSymbol}
+                        onChange={handleFormFractionsChange}
                         type="text"
                         name="tokenSymbol"
                         id="name"
@@ -263,8 +270,8 @@ function Cask() {
                     </label>
                     <div className="mt-1 flex rounded-md shadow-sm">
                       <input
-                        value={cask.formState.tokenSupply}
-                        onChange={cask.handleFormFractionsChange}
+                        value={formState.tokenSupply}
+                        onChange={handleFormFractionsChange}
                         type="number"
                         name="tokenSupply"
                         id="name"
@@ -282,8 +289,8 @@ function Cask() {
                     </label>
                     <div className="mt-1 flex rounded-md shadow-sm">
                       <input
-                        value={cask.formState.tokenFee}
-                        onChange={cask.handleFormFractionsChange}
+                        value={formState.tokenFee}
+                        onChange={handleFormFractionsChange}
                         type="number"
                         name="tokenFee"
                         id="name"
@@ -301,8 +308,8 @@ function Cask() {
                     </label>
                     <div className="mt-1 flex rounded-md shadow-sm">
                       <input
-                        value={cask.formState.tokenListingPrice}
-                        onChange={cask.handleFormFractionsChange}
+                        value={formState.tokenListingPrice}
+                        onChange={handleFormFractionsChange}
                         type="number"
                         name="tokenListingPrice"
                         id="name"
@@ -313,9 +320,7 @@ function Cask() {
                   </div>
                 </div>
                 <div className="grid grid-cols-4 gap-4 mt-6">
-                  <Button onClick={cask.createFraction}>
-                    Create fractions
-                  </Button>
+                  <Button onClick={createFraction}>Create fractions</Button>
                 </div>
               </div>
             </>
@@ -326,7 +331,7 @@ function Cask() {
               Attributes
             </h1>
             <div className="grid grid-cols-4 gap-4 mt-6">
-              {cask?.data?.meta?.attributes?.map((attribute: any) => (
+              {data?.meta?.attributes?.map((attribute: any) => (
                 <div
                   key={attribute.trait_type}
                   className="flex flex-col bg-cask-chain rounded-xl p-4 shadow"

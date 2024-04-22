@@ -1,4 +1,4 @@
-import { useAccount } from '@hooks/web3'
+import { useAccount } from '@hooks/web3/useAccount'
 import Button from '@ui/common/Button'
 import React from 'react'
 import Modal from 'react-modal'
@@ -9,7 +9,7 @@ type Props = {
 }
 
 const SignInModal: React.FC<Props> = ({ modalIsOpen, closeModal }) => {
-  const { account } = useAccount()
+  const { signAddress, loading } = useAccount()
 
   return (
     <Modal
@@ -58,7 +58,8 @@ const SignInModal: React.FC<Props> = ({ modalIsOpen, closeModal }) => {
             {/*footer*/}
             <div className="flex items-center justify-end p-6  rounded-b">
               <Button
-                onClick={() => account.signAddress({ callback: closeModal })}
+                loading={loading}
+                onClick={() => signAddress({ callback: closeModal })}
               >
                 Sign In
               </Button>

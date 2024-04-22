@@ -9,7 +9,7 @@ import { Button, Spacer } from 'caskchain-ui'
 import { auth } from 'utils/auth'
 import Image from 'next/image'
 import upperCaseFirstLetter from 'utils/upperCaseFirstLetter'
-import { useCreateNft } from '@hooks/web3'
+import { useCreateNft } from '@hooks/web3/useCreateNft'
 
 type LiquorFilterProps = {
   label: string
@@ -38,23 +38,21 @@ export const getServerSideProps = (context: any) => auth(context, 'admin')
 
 const NftCreate: NextPage = () => {
   const {
-    nft: {
-      nftURI,
-      hasURI,
-      nftMeta,
-      setHasURI,
-      setNftURI,
-      price,
-      setPrice,
-      nftImage,
-      activeLiquor,
-      uploadMetaData,
-      createNft,
-      handleImage,
-      handleChange,
-      handleAttributeChange,
-      handleActiveLiquorChange,
-    },
+    nftURI,
+    hasURI,
+    nftMeta,
+    setHasURI,
+    setNftURI,
+    price,
+    setPrice,
+    nftImage,
+    activeLiquor,
+    uploadMetaData,
+    createNft,
+    handleImage,
+    handleChange,
+    handleAttributeChange,
+    handleActiveLiquorChange,
   } = useCreateNft()
 
   return (

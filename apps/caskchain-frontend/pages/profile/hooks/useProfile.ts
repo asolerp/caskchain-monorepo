@@ -1,35 +1,31 @@
 import { useGlobal } from '@providers/global'
 import { GlobalTypes } from '@providers/global/utils'
-import axios from 'axios'
-import { toast } from 'react-toastify'
-import useSWRMutation from 'swr/mutation'
 
-async function updateUserData(url: string, { arg }: { arg: any }) {
-  return axios.post(url, arg)
-}
+import { toast } from 'react-toastify'
+import { useQueryClient } from '@tanstack/react-query'
+
+import { useMutation } from '@tanstack/react-query'
+import { updateUser } from 'pages/api/user/updateUser'
 
 const useProfile = () => {
   const {
-    state: { address, user },
+    state: { address },
     dispatch,
   } = useGlobal()
 
-  const { trigger, isMutating } = useSWRMutation(
-    '/api/user',
-    updateUserData /* options */
-  )
+  const queryClient = useQueryClient()
+
+  const { mutate, status } = useMutation({
+    mutationKey: ['updateUser'],
+    mutationFn: (data: any) => updateUser(address as string, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getUserData', address] })
+    },
+  })
 
   const handleSaveUser = async ({ formState }: any) => {
     try {
-      trigger({
-        id: address?.toLowerCase(),
-        firstName: formState.firstName,
-        lastName: formState.lastName,
-        dateOfBirth: formState.dateOfBirth,
-        email: formState.email,
-        nickname: formState.nickname,
-        country: formState.country,
-      })
+      mutate(formState)
       dispatch({
         type: GlobalTypes.SET_USER,
         payload: { user: { ...formState } },
@@ -46,15 +42,10 @@ const useProfile = () => {
   }
 
   const handleSaveShippingInfo = async ({ formState }: any) => {
-    trigger({
-      id: address?.toLowerCase(),
+    mutate({
       shippingInfo: {
         ...formState,
       },
-    })
-    dispatch({
-      type: GlobalTypes.SET_USER,
-      payload: { user: { ...user, shippingInfo: formState } },
     })
     toast.success('Your shipping information has been updated!', {
       theme: 'dark',
@@ -62,15 +53,10 @@ const useProfile = () => {
   }
 
   const handleSaveBackupInfo = async ({ formState }: any) => {
-    trigger({
-      id: address?.toLowerCase(),
+    mutate({
       backupInfo: {
         ...formState,
       },
-    })
-    dispatch({
-      type: GlobalTypes.SET_USER,
-      payload: { user: { ...user, backupInfo: formState } },
     })
     toast.success('Your backup information has been updated!', {
       theme: 'dark',
@@ -79,7 +65,7 @@ const useProfile = () => {
 
   return {
     handleSaveUser,
-    loading: isMutating,
+    loading: status === 'pending',
     handleSaveBackupInfo,
     handleSaveShippingInfo,
   }

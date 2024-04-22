@@ -1,207 +1,138 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CryptoHookFactory } from '@_types/hooks'
-import { Nft, NftsPaginated } from '@_types/nft'
-
 import useMarketPlaceFilters from '@hooks/common/useMarketPlaceFilters'
-import { normalizeString } from 'caskchain-lib'
+
 import { useGlobal } from '@providers/global'
-import axios, { AxiosResponse } from 'axios'
-import { LoadingContext } from 'components/contexts/LoadingContext'
+
+import { useInfiniteQuery } from '@tanstack/react-query'
 
 import axiosClient from 'lib/fetcher/axiosInstance'
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import groupByAndSum from './utils/groupAndSum'
-import useSWR from 'swr'
-import buildQueryString from './utils/buildQuery'
-import { useAuth } from '@hooks/web3'
+
 import { GlobalTypes } from '@providers/global/utils'
+import { getNfts } from 'pages/api/nfts/getNfts'
+import { useAuth } from './useAuth'
 
-type AllNftsHookFactory = CryptoHookFactory<Nft[], any>
+export const useAllNfts = () => {
+  const {
+    state: { user },
+    dispatch,
+  } = useGlobal()
 
-export type UseAllNftsHook = ReturnType<any>
+  const {
+    activeSort,
+    removeFilter,
+    setActiveSort,
+    sortDirection,
+    selectedFilters,
+    handleAddFilter,
+    setSortDirection,
+    mapSortDirection,
+  } = useMarketPlaceFilters()
 
-export const hookFactory: AllNftsHookFactory =
-  ({}) =>
-  () => {
-    const {
-      state: { user },
-      dispatch,
-    } = useGlobal()
+  const { refetchUser } = useAuth()
+  const [name, setName] = useState('')
+  const [filters, setFilters] = useState<any>({})
+  const [lastDocId, setLastDocId] = useState(null)
+  const [activeLiquor, setActiveLiquor] = useState<string[] | undefined>([])
 
-    const { setIsLoading } = useContext(LoadingContext)
-    const {
-      activeSort,
-      removeFilter,
-      setActiveSort,
-      sortDirection,
-      selectedFilters,
-      handleAddFilter,
-      setSortDirection,
-      mapSortDirection,
-    } = useMarketPlaceFilters()
+  const {
+    status,
+    refetch,
+    isSuccess,
+    data: casks,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    initialPageParam: 10,
+    queryKey: ['getCasks'],
+    queryFn: ({ pageParam }) => getNfts({ pageParam, filters, lastDocId }),
+    refetchOnWindowFocus: false,
+    getNextPageParam: (lastPage: any) => {
+      return lastPage?.nextPageToken
+    },
+  })
 
-    const [pageSize, setPageSize] = useState(10)
-    const [name, setName] = useState('')
+  useEffect(() => {
+    setLastDocId(null)
+  }, [filters])
 
-    const [searchLoading, setSearchLoading] = useState(false)
-    const [activeLiquor, setActiveLiquor] = useState<string[] | undefined>([])
-
-    const [filterList, setFilterList] = useState<string[]>([])
-
-    const { auth } = useAuth()
-
-    const fetchNFTs = async (): Promise<NftsPaginated> => {
-      const response: AxiosResponse = await axios.get(
-        buildQueryString(
-          1,
-          pageSize,
-          name,
-          selectedFilters,
-          activeSort,
-          sortDirection
-        )
-      )
-      return response.data
-    }
-
-    const fetchFilters = async (): Promise<any> => {
-      const response: AxiosResponse = await axios.get('/api/stats/filters')
-      return response.data
-    }
-
-    const {
-      data,
-      isLoading,
-      isValidating,
-      mutate: refetchData,
-    } = useSWR('web3/useAllNfts', fetchNFTs, {
-      revalidateOnFocus: false,
-    })
-
-    const { data: filters } = useSWR('/api/stats/filters', fetchFilters, {
-      revalidateOnFocus: false,
-    })
-
-    const fetchMoreBarrels = async () => {
-      if (pageSize < parseInt(data?.paging?.totalCount as string)) {
-        setPageSize((prev) => prev + 1)
-      }
-    }
-
-    useEffect(() => {
-      if (isLoading) {
-        return setIsLoading(true)
-      }
-      return setIsLoading(false)
-    }, [isLoading])
-
-    useEffect(() => {
-      if (isValidating) {
-        setSearchLoading(true)
-        setTimeout(() => {
-          setSearchLoading(false)
-        }, 1000)
-      }
-    }, [isValidating])
-
-    useEffect(() => {
-      refetchData()
-    }, [pageSize, activeLiquor, sortDirection, activeSort, selectedFilters])
-
-    const handleSelectFilterOption = (filterType: string, value: string) => {
-      handleAddFilter(filterType, value)
-    }
-
-    const handleSetFilterList = (filterType: string) => {
-      if (!filters) return
-      const selectedFilters = Object.entries(filters)
-        .map(([key]) => {
-          return filters[key][filterType]
-        })
-        .filter((filter: any) => filter !== undefined)
-
-      const groupedFilters = groupByAndSum(selectedFilters)
-
-      setFilterList(Object.keys(groupedFilters))
-    }
-
-    const handleSearch = async () => {
-      refetchData()
-    }
-
-    const handleActiveLiquor = (liquor: string) => {
-      if (activeLiquor?.includes(liquor)) {
-        setActiveLiquor(activeLiquor?.filter((l) => l !== liquor))
+  useEffect(() => {
+    if (isSuccess && casks?.pages.length > 0) {
+      const pages = casks.pages
+      const lastPage = pages[pages.length - 1]
+      const lastItem = lastPage.items?.[lastPage.items.length - 1]
+      if (lastItem) {
+        setLastDocId(lastItem.id)
       } else {
-        setActiveLiquor([...(activeLiquor || []), liquor])
-      }
-      handleAddFilter('liquor', liquor)
-    }
-
-    const handleAddFavorite = async (nftId: string) => {
-      try {
-        await axiosClient.post(`/api/casks/${nftId}/favorite`, {
-          userId: user?._id,
-        })
-        auth.refetchUser({
-          callback: (userFetched: any) =>
-            dispatch({
-              type: GlobalTypes.SET_USER,
-              payload: { user: userFetched },
-            }),
-        })
-      } catch (err: any) {
-        toast.error(err?.response?.data?.message)
+        setLastDocId(null)
       }
     }
+  }, [isSuccess, casks])
 
-    // Function to handle debouncing
-    const debounce = (callback: any, delay: number) => {
-      let timeoutId: NodeJS.Timeout
-      return function (...args: any) {
-        clearTimeout(timeoutId)
-        timeoutId = setTimeout(() => {
-          // eslint-disable-next-line prefer-spread
-          callback.apply(null, args)
-        }, delay)
-      }
+  const handleChange = (e: any) => {
+    setFilters({ ...filters, [e.target.name]: e.target.value })
+  }
+
+  const handleSelectFilterOption = (filterType: string, value: string) => {
+    handleAddFilter(filterType, value)
+  }
+
+  const handleActiveLiquor = (liquor: string) => {
+    if (activeLiquor?.includes(liquor)) {
+      setActiveLiquor(activeLiquor?.filter((l) => l !== liquor))
+    } else {
+      setActiveLiquor([...(activeLiquor || []), liquor])
     }
+    handleAddFilter('liquor', liquor)
+  }
 
-    // Debounced version of fetchSearchResults
-    const debouncedFetchSearchResults = debounce(refetchData, 300)
-
-    // Event handler for search input change
-    const handleSearchInputChange = (event: any) => {
-      const name = event.target.value
-      setName(name)
-      debouncedFetchSearchResults(name)
-    }
-
-    return {
-      name,
-      setName,
-      isLoading,
-      activeSort,
-      filterList,
-      isValidating,
-      activeLiquor,
-      removeFilter,
-      handleSearch,
-      setActiveSort,
-      searchLoading,
-      sortDirection,
-      handleAddFilter,
-      selectedFilters,
-      data: data || [],
-      fetchMoreBarrels,
-      setSortDirection,
-      mapSortDirection,
-      handleAddFavorite,
-      handleActiveLiquor,
-      handleSetFilterList,
-      handleSearchInputChange,
-      handleSelectFilterOption,
+  const handleAddFavorite = async (nftId: string) => {
+    try {
+      await axiosClient.post(`/api/casks/${nftId}/favorite`, {
+        userId: user?._id,
+      })
+      refetchUser({
+        callback: (userFetched: any) =>
+          dispatch({
+            type: GlobalTypes.SET_USER,
+            payload: { user: userFetched },
+          }),
+      })
+    } catch (err: any) {
+      toast.error(err?.response?.data?.message)
     }
   }
+
+  const handleSearchInputChange = (event: any) => {
+    const name = event.target.value
+    setName(name)
+  }
+
+  return {
+    name,
+    refetch,
+    setName,
+    hasNextPage,
+    activeSort,
+    activeLiquor,
+    removeFilter,
+    handleChange,
+    fetchNextPage,
+    setActiveSort,
+    sortDirection,
+    handleAddFilter,
+    selectedFilters,
+    data: casks || [],
+    setSortDirection,
+    mapSortDirection,
+    handleAddFavorite,
+    handleActiveLiquor,
+    isValidating: false,
+    handleSearchInputChange,
+    handleSelectFilterOption,
+    isLoading: status === 'pending' || isFetchingNextPage,
+  }
+}

@@ -1,5 +1,5 @@
 import { useGlobal } from '@providers/global'
-import { useWeb3Instance } from 'caskchain-lib/provider/web3'
+import { useWeb3 } from 'caskchain-lib/provider/web3'
 
 import { useEffect, useState } from 'react'
 
@@ -7,7 +7,7 @@ const useGetBalance = () => {
   const {
     state: { address },
   } = useGlobal()
-  const { web3 } = useWeb3Instance()
+  const { web3 } = useWeb3()
   const [balance, setBalance] = useState('...')
 
   useEffect(() => {

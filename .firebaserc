@@ -1,0 +1,13 @@
+{
+  "projects": {
+    "default": "cask-chain"
+  },
+  "targets": {},
+  "etags": {
+    "cask-chain": {
+      "extensionInstances": {
+        "moralis-streams": "b15f6917ebf642fdad709a47e563fd5ba2d10236580b13804850690bbf667542"
+      }
+    }
+  }
+}

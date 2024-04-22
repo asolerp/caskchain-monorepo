@@ -1,13 +1,13 @@
 import useGetBalance from '@hooks/common/useGetBalance'
-import { useNftTransactions } from '@hooks/web3'
+// import { useNftTransactions } from '@hooks/web3'
 import Card from '@ui/common/Card'
 
 import ClientOnly from 'components/pages/ClientOnly'
-import { format } from 'date-fns'
-import { ethers } from 'ethers'
+// import { format } from 'date-fns'
+// import { ethers } from 'ethers'
 
 const RightSidebar = () => {
-  const { transactions } = useNftTransactions()
+  // const { transactions } = useNftTransactions()
   const { balance } = useGetBalance()
 
   return (
@@ -31,7 +31,7 @@ const RightSidebar = () => {
         <h1 className="font-semibold text-4xl font-poppins text-black-light mb-6">
           Last royalties
         </h1>
-        <div className="w-full">
+        {/* <div className="w-full">
           {transactions?.allRoyalties?.map((royalty: any, index: number) => (
             <>
               <div
@@ -53,7 +53,7 @@ const RightSidebar = () => {
               <div className="w-full border-b border-gray-500 my-3"></div>
             </>
           ))}
-        </div>
+        </div> */}
       </ClientOnly>
     </div>
   )

@@ -24,8 +24,6 @@ const BarrelProfile: React.FC<NftItemProps> = ({ item, onPressProfileCTA }) => {
   const isProfileMeta = item.meta
   const mainImage = item && ipfsImageParser(isProfileMeta?.image)
 
-  console.log('ITEM', item)
-
   return (
     <div className={`group relative cursor-pointer min-h-[${BARREL_HEIGHT}px]`}>
       <div
@@ -70,16 +68,14 @@ const BarrelProfile: React.FC<NftItemProps> = ({ item, onPressProfileCTA }) => {
                     </h3>
                   </div>
                   <div className="flex flex-row flex-wrap  justify-start items-center">
-                    {isProfileMeta.attributes
+                    {Object.entries(isProfileMeta.attributes)
                       .filter(
-                        (a: any) =>
-                          a.trait_type !== 'historical' &&
-                          a.trait_type !== 'awards'
+                        ([key]: any) => key !== 'historical' && key !== 'awards'
                       )
-                      .map((attr: any, index: number) => (
-                        <div key={index} className="flex items-center">
+                      .map(([key, value]: any) => (
+                        <div key={key} className="flex items-center">
                           <p className="text-cask-chain text-[12px]">
-                            {attr.value.toUpperCase()}
+                            {value.toUpperCase()}
                           </p>
                           <p className="text-cask-chain px-1">{' · '}</p>
                         </div>

@@ -1,4 +1,3 @@
-import { useAccount, useAllNfts } from '@hooks/web3'
 import { BaseLayout } from '@ui'
 import { Chip } from 'caskchain-ui'
 import BarrelNft from '@ui/ntf/item/BarrelNft'
@@ -8,7 +7,6 @@ import FlatList from 'flatlist-react'
 import { getCookie } from 'cookies-next'
 
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
 
 import { useGlobal } from '@providers/global'
 import Button from '@ui/common/Button'
@@ -21,42 +19,58 @@ import { LiquorsTypes, upperCaseFirstLetter } from 'caskchain-lib'
 import useLocalLoading from '@hooks/common/useLocalLoading'
 
 import Dropdown from '@ui/common/Dropdown'
-import FilterMarketplace from 'components/pages/marketplace/FilterMarketplace'
-import { filters, sufixesByType } from '../../utils/filters'
+import { sufixesByType } from '../../utils/filters'
 import useGetRates from '@hooks/common/useGetRates'
+import { useAllNfts } from '@hooks/web3/useAllNfts'
 
 const NFTCaskWorld: NextPage = () => {
   const token = getCookie('token') as string
-  const { nfts } = useAllNfts()
+  const {
+    data,
+    refetch,
+    isLoading,
+    activeSort,
+    hasNextPage,
+    removeFilter,
+    isValidating,
+    handleChange,
+    fetchNextPage,
+    sortDirection,
+    setActiveSort,
+    selectedFilters,
+    mapSortDirection,
+    setSortDirection,
+    handleAddFavorite,
+    handleActiveLiquor,
+  } = useAllNfts()
   const { rates } = useGetRates()
-  const { account } = useAccount()
   const { loading } = useLocalLoading()
   const {
     state: { user },
   } = useGlobal()
 
   const router = useRouter()
-  const _selectedTab = (router.query.tab as string) ?? 'search'
-  const [filteredNfts, setFilteredNfts] = useState(nfts?.data)
+  // const _selectedTab = (router.query.tab as string) ?? 'search'
+  // const [filteredNfts, setFilteredNfts] = useState(nfts?.data)
 
   const hasFavorite = (nftId: number) => {
     return user?.favorites?.[nftId]
   }
 
-  useEffect(() => {
-    const filtered = nfts?.data?.documents?.filter((nft: Nft) => {
-      if (_selectedTab === 'search') {
-        return true
-      }
-      if (_selectedTab === 'on-sale' && nft?.price) {
-        return nft?.price > 0
-      }
-      if (_selectedTab === 'fractionized') {
-        return nft?.fractions?.total > 0
-      }
-    })
-    setFilteredNfts(filtered)
-  }, [_selectedTab, nfts?.data?.documents])
+  // useEffect(() => {
+  //   const filtered = nfts?.data?.filter((nft: Nft) => {
+  //     if (_selectedTab === 'search') {
+  //       return true
+  //     }
+  //     if (_selectedTab === 'on-sale' && nft?.price) {
+  //       return nft?.price > 0
+  //     }
+  //     if (_selectedTab === 'fractionized') {
+  //       return nft?.fractions?.total > 0
+  //     }
+  //   })
+  //   setFilteredNfts(filtered)
+  // }, [_selectedTab, nfts?.data])
 
   if (!router.isReady) {
     return null
@@ -80,17 +94,17 @@ const NFTCaskWorld: NextPage = () => {
                       { label: 'Age', key: 'age' },
                       { label: 'ABV', key: 'abv' },
                     ]}
-                    active={nfts.activeSort}
-                    onClick={(item: any) => nfts.setActiveSort(item.label)}
+                    active={activeSort}
+                    onClick={(item: any) => setActiveSort(item.label)}
                   />
                   <Dropdown
                     label="Order By"
                     items={[
-                      { label: nfts.mapSortDirection['asc'], key: 'asc' },
-                      { label: nfts.mapSortDirection['desc'], key: 'desc' },
+                      { label: mapSortDirection['asc'], key: 'asc' },
+                      { label: mapSortDirection['desc'], key: 'desc' },
                     ]}
-                    active={nfts.mapSortDirection[nfts.sortDirection]}
-                    onClick={(item: any) => nfts.setSortDirection(item.key)}
+                    active={mapSortDirection[sortDirection]}
+                    onClick={(item: any) => setSortDirection(item.key)}
                   />
                 </div>
               </div>
@@ -99,7 +113,7 @@ const NFTCaskWorld: NextPage = () => {
                 className="w-full relative lg:col-span-4 lg:order-2 bg-[#292929] rounded-2xl lg:mb-0 mb-4"
               >
                 <Image
-                  onClick={() => nfts.handleSearch()}
+                  onClick={() => refetch()}
                   src="/icons/search.svg"
                   width={30}
                   height={30}
@@ -108,8 +122,8 @@ const NFTCaskWorld: NextPage = () => {
                 />
                 <input
                   type="text"
-                  value={nfts.name}
-                  onChange={nfts.handleSearchInputChange}
+                  name="name"
+                  onChange={handleChange}
                   className="pl-24 bg-transparent border border-gray-600 rounded-2xl  focus:border-0 w-full h-16 font-poppins text-white text-xl"
                   placeholder="Search by Collection, NFT name, Cellar, etc"
                 ></input>
@@ -119,7 +133,7 @@ const NFTCaskWorld: NextPage = () => {
           </section>
           <Spacer size="xl" />
           <section>
-            <div className="flex flex-row justify-center flex-wrap space-x-2">
+            {/* <div className="flex flex-row justify-center flex-wrap space-x-2">
               {filters.map((filter) => (
                 <div key={filter.icon}>
                   <FilterMarketplace
@@ -136,19 +150,19 @@ const NFTCaskWorld: NextPage = () => {
                   <Spacer size="sm" />
                 </div>
               ))}
-            </div>
+            </div> */}
           </section>
           <Spacer size="lg" />
-          <section>
-            {nfts.selectedFilters.length > 0 && (
+          {/* <section>
+            {selectedFilters.length > 0 && (
               <>
                 <div className="flex flex-row items-center">
-                  {nfts.selectedFilters.length > 0 && (
+                  {selectedFilters.length > 0 && (
                     <h2 className="font-poppins text-cask-chain mr-4">
                       Active Filters:
                     </h2>
                   )}
-                  {nfts.selectedFilters.map((filter: any) => (
+                  {selectedFilters.map((filter: any) => (
                     <div key={filter.type} className="flex flex-row">
                       {filter.value && (
                         <div className="flex flex-row">
@@ -165,14 +179,14 @@ const NFTCaskWorld: NextPage = () => {
                               }
                               color="caskChain"
                               onClick={() =>
-                                nfts.removeFilter(filter.type, item, () => {
+                                removeFilter(filter.type, item, () => {
                                   if (
                                     item === LiquorsTypes.TEQUILA ||
                                     item === LiquorsTypes.WHISKEY ||
                                     item === LiquorsTypes.RUM ||
                                     item === LiquorsTypes.BRANDY
                                   ) {
-                                    nfts.handleActiveLiquor(item)
+                                    handleActiveLiquor(item)
                                   }
                                 })
                               }
@@ -187,33 +201,35 @@ const NFTCaskWorld: NextPage = () => {
                 <Spacer size="lg" />
               </>
             )}
-          </section>
+          </section> */}
           <section>
             <div className="lg:grid lg:grid-cols-4 lg:gap-x-5 lg:gap-y-4 lg:flex-wrap flex flex-col mx-auto lg:max-w-none">
               <>
-                {nfts.searchLoading ? (
+                {isLoading ? (
                   <BarrelsSkeleton />
                 ) : (
                   <>
                     <FlatList
-                      list={filteredNfts}
-                      renderItem={(nft: Nft, idx: string) => (
-                        <div key={idx} className="felx">
-                          <BarrelNft
-                            isMarketPlace
-                            rates={rates}
-                            item={nft}
-                            onPressFavorite={(nftId: string) =>
-                              nfts.handleAddFavorite(nftId)
-                            }
-                            showFavorite={
-                              token && user?.email && account.isConnected
-                            }
-                            isFavorite={hasFavorite(nft?.tokenId)}
-                            blow
-                          />
-                        </div>
+                      list={(data as any)?.pages?.flatMap(
+                        (page: any) => page.items
                       )}
+                      renderItem={(nft: Nft, idx: string) => {
+                        return (
+                          <div key={idx} className="felx">
+                            <BarrelNft
+                              isMarketPlace
+                              rates={rates}
+                              item={nft}
+                              onPressFavorite={(nftId: string) =>
+                                handleAddFavorite(nftId)
+                              }
+                              showFavorite={token && user?.email}
+                              isFavorite={hasFavorite(nft?.tokenId)}
+                              blow
+                            />
+                          </div>
+                        )
+                      }}
                       renderWhenEmpty={() => {
                         return (
                           <>
@@ -226,18 +242,20 @@ const NFTCaskWorld: NextPage = () => {
                         )
                       }}
                     />
-                    {nfts.isValidating && <BarrelsSkeleton />}
+                    {isValidating && <BarrelsSkeleton />}
                   </>
                 )}
               </>
             </div>
           </section>
           <Spacer size="xl" />
-          <section className="flex justify-center py-16">
-            <Button active={false} onClick={() => nfts.fetchMoreBarrels()}>
-              Load more
-            </Button>
-          </section>
+          {hasNextPage && (
+            <section className="flex justify-center py-16">
+              <Button active={false} onClick={() => fetchNextPage()}>
+                Load more
+              </Button>
+            </section>
+          )}
         </div>
       )}
     </BaseLayout>

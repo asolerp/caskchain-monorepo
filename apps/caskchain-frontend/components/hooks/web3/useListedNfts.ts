@@ -1,37 +1,35 @@
 import { CryptoHookFactory } from '@_types/hooks'
-import { Nft } from '@_types/nft'
-import axios from 'axios'
+// import axios from 'axios'
 
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import useSWR from 'swr'
+// import useSWR from 'swr'
+import { useQuery } from '@tanstack/react-query'
+import { getNfts } from 'pages/api/nfts/getNfts'
 
-// const USDTAddress = process.env.NEXT_PUBLIC_USDT_TOKEN as string
+const PAZE_SIZE = 10
 
-type UseListedNftsResponse = {
-  // burnNft: (tokenId: number) => Promise<void>
-  buyNft: (tokenId: number, price: string) => Promise<void>
-  // buyNftWithEUR: (tokenId: number, address: string) => Promise<void>
-  // buyNftWithERC20: (
-  //   tokenId: number,
-  //   erc20Token: string,
-  //   price: number
-  // ) => Promise<void>
-}
-type ListedNftsHookFactory = CryptoHookFactory<Nft[], UseListedNftsResponse>
+type ListedNftsHookFactory = CryptoHookFactory
 
 export type UseListedNftsHook = ReturnType<ListedNftsHookFactory>
 
 export const hookFactory: ListedNftsHookFactory =
-  ({ ccNft, nftVendor }) =>
+  ({ nftVendor }) =>
   () => {
-    const { data, ...swr } = useSWR(
-      ccNft && nftVendor ? 'web3/useListedNfts' : null,
-      async () => {
-        const { data: nfts }: any = await axios.get('/api/casks')
-        return nfts.filter((nft: any) => nft?.price > 0)
+    const [lastDocId, setLastDocId] = useState(null)
+
+    const { data, isSuccess } = useQuery({
+      queryKey: ['getCasks'],
+      queryFn: () => getNfts(PAZE_SIZE, lastDocId),
+      staleTime: 5 * 1000,
+    })
+
+    useEffect(() => {
+      if (isSuccess) {
+        const lastDocId = data[data.length - 1].id
+        setLastDocId(lastDocId)
       }
-    )
+    }, [isSuccess, data])
 
     const _nftVendor = nftVendor
 
@@ -131,7 +129,6 @@ export const hookFactory: ListedNftsHookFactory =
     // )
 
     return {
-      ...swr,
       // buyNftWithERC20,
       // buyNftWithEUR,
       // burnNft,

@@ -1,4 +1,4 @@
-import { useAllNfts } from '@hooks/web3'
+import { useAllNfts } from '@hooks/web3/useAllNfts'
 import { BaseLayout } from '@ui'
 
 import NftList from '@ui/tables/NftList'
@@ -9,7 +9,7 @@ import { auth } from 'utils/auth'
 export const getServerSideProps = (context: any) => auth(context, 'admin')
 
 const Casks = () => {
-  const { nfts } = useAllNfts()
+  const { isLoading, isValidating, data, pageSize, setPage } = useAllNfts()
   const router = useRouter()
 
   return (
@@ -21,16 +21,16 @@ const Casks = () => {
         <Spacer size="md" />
         <Button onClick={() => router.push('/create')}>New barrel</Button>
         <Spacer size="md" />
-        {nfts.isLoading || nfts.isValidating ? (
+        {isLoading || isValidating ? (
           <p>Loading ...</p>
         ) : (
           <NftList
-            barrels={nfts.data}
-            pageSize={nfts.pageSize}
+            barrels={data}
+            pageSize={pageSize}
             onClickBarrel={(barrelId: string) =>
               router.push(`/casks/${barrelId}`)
             }
-            onClickPage={(page: string) => nfts.setPage(page)}
+            onClickPage={(page: any) => setPage(page)}
           />
         )}
       </div>

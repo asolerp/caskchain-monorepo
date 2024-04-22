@@ -1,10 +1,15 @@
+import { useAccount } from '@hooks/web3'
 import { useGlobal } from '@providers/global'
 import { Spacer } from 'caskchain-ui'
 
 const SettingsTab = () => {
   const {
-    state: { address, user },
+    state: { address },
   } = useGlobal()
+
+  const {
+    account: { user },
+  } = useAccount()
 
   return (
     <div>

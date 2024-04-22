@@ -18,7 +18,7 @@ import { getMagicProvider } from 'caskchain-lib'
 import axiosClient from 'lib/fetcher/axiosInstance'
 import { magic } from 'lib/magic'
 import { logout } from 'caskchain-lib/utils'
-import { useWeb3Instance } from 'caskchain-lib/provider/web3'
+import { useWeb3 } from 'caskchain-lib/provider/web3'
 
 const GlobalContext = createContext<{
   state: GlobalState
@@ -34,7 +34,7 @@ interface Props {
 
 const GlobalProvider: React.FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(globalReducer, initialState)
-  const { setWeb3 } = useWeb3Instance()
+  const { setWeb3 } = useWeb3()
 
   const handleUserOnPageLoad = async () => {
     let userDB

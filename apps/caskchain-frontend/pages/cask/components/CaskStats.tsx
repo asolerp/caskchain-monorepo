@@ -1,10 +1,10 @@
 import { Spacer } from 'caskchain-ui'
 
 type CaskStatsProps = {
-  cask: any
+  data: any
 }
 
-const CaskStats: React.FC<CaskStatsProps> = ({ cask }) => {
+const CaskStats: React.FC<CaskStatsProps> = ({ data }) => {
   return (
     <section>
       <div className="flex flex-col justify-center">
@@ -12,14 +12,14 @@ const CaskStats: React.FC<CaskStatsProps> = ({ cask }) => {
           Stats
         </h2>
         <div className="grid grid-cols-4 gap-4 mt-6 space-y-2">
-          {cask?.data?.meta?.attributes?.map((attribute: any) => (
-            <div key={attribute.trait_type} className="">
+          {Object.entries(data?.meta?.attributes)?.map(([key, value]: any) => (
+            <div key={key} className="">
               <dt className="text-lg font-medium text-gray-400">
-                {attribute.trait_type.toUpperCase()}
+                {key.toUpperCase()}
               </dt>
               <Spacer size="xs" />
               <dd className=" text-lg font-sans text-cask-chain text-left w-3/4">
-                {attribute.value}
+                {value}
               </dd>
             </div>
           ))}

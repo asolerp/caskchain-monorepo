@@ -84,8 +84,6 @@ export const hookFactory: MyActivityHookFactory =
       setLoadingTransactions(true)
       const id = toast.loading('Accepting offer...')
 
-      console.log('_nftOffers', _nftOffers)
-
       try {
         const gasPriceApprove = await _ccNft?.methods
           .approve(_nftOffers!._address as string, tokenId)

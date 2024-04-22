@@ -2,16 +2,16 @@ import type { NextPage } from 'next'
 import { Button, Spacer } from 'caskchain-ui'
 
 import { AnimatePresence } from 'framer-motion'
-import { useAccount } from '@hooks/web3'
 
 import Image from 'next/image'
 import { useGlobal } from '@providers/global'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
+import { useAccount } from '@hooks/web3/useAccount'
 
 const Home: NextPage = () => {
-  const { account } = useAccount()
+  const { connect } = useAccount()
   const { state: user } = useGlobal()
   const router = useRouter()
 
@@ -40,7 +40,7 @@ const Home: NextPage = () => {
           <Spacer size="lg" />
           <Button
             containerStyle="rounded-full px-6 py-3 mt-6"
-            onClick={() => account.connect()}
+            onClick={() => connect()}
           >
             Connect
           </Button>

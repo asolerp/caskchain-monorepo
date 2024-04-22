@@ -30,7 +30,7 @@ const OnSale: React.FC<Props> = ({ cask, onBuyWithERC20 }) => {
         <div>
           <p className="text-cask-chain mb-1">PRICE</p>
           <h2 className="text-5xl text-gray-100">
-            {ethers.formatEther(cask?.erc20Prices?.USDT).toString()} USDT
+            {ethers.formatEther(cask?.price as number).toString()} USDT
           </h2>
         </div>
       </div>

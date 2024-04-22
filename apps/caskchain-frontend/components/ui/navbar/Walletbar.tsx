@@ -1,9 +1,9 @@
-import { useAccount } from '@hooks/web3'
+import { useAccount } from '@hooks/web3/useAccount'
 import { useGlobal } from '@providers/global'
 
 import Button from '@ui/common/Button'
+import { useAuth } from 'components/contexts/AuthContext'
 import ClientOnly from 'components/pages/ClientOnly'
-import { getCookie } from 'cookies-next'
 
 import Image from 'next/image'
 
@@ -11,18 +11,19 @@ import { addressSimplifier } from 'utils/addressSimplifier'
 
 const Walletbar: React.FC = () => {
   const {
-    state: { address, user, sideBar },
+    state: { address, sideBar },
   } = useGlobal()
 
-  const token = getCookie('token')
-  const { account } = useAccount()
+  const { currentUser } = useAuth()
+  const { handleOpenSidebar, user, loading, checkIfUserDataIsNeeded, connect } =
+    useAccount()
 
-  if (token && address) {
+  if (currentUser && address) {
     return (
       <>
         <div className="lg:hidden">
           <Image
-            onClick={() => account.handleOpenSidebar(sideBar)}
+            onClick={() => handleOpenSidebar(sideBar)}
             src={user?.imageProfile || '/images/user.png'}
             alt=""
             width={40}
@@ -34,7 +35,7 @@ const Walletbar: React.FC = () => {
           <div className="flex justify-center items-center">
             <div>
               <div
-                onClick={() => account.handleOpenSidebar(sideBar)}
+                onClick={() => handleOpenSidebar(sideBar)}
                 className="cursor-pointer px-1 py-1 justify-center items-center hover:border bg-cask-chain flex text-sm rounded-full focus:outline-none"
               >
                 <Image
@@ -60,9 +61,9 @@ const Walletbar: React.FC = () => {
       <ClientOnly>
         <div>
           <Button
-            loading={account.loading}
+            loading={loading}
             onClick={() => {
-              account.checkIfUserDataIsNeeded({ calback: null })
+              checkIfUserDataIsNeeded()
             }}
           >
             {'Sign In'}
@@ -77,9 +78,9 @@ const Walletbar: React.FC = () => {
       <div>
         <Button
           containerStyle="px-6 py-2"
-          loading={account.loading}
+          loading={loading}
           onClick={() => {
-            account.connect()
+            connect()
           }}
         >
           {'Start'}

@@ -1,14 +1,14 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { logout } from 'caskchain-lib/utils'
-import { useWeb3Instance } from 'caskchain-lib/provider/web3'
+import { useWeb3 } from 'caskchain-lib/provider/web3'
 import { useGlobal } from '@providers/global'
 import { magic } from 'lib/magic'
 import { GlobalTypes } from '@providers/global/utils'
 
 const LeftSidebar = () => {
   const { dispatch } = useGlobal()
-  const { setWeb3 } = useWeb3Instance()
+  const { setWeb3 } = useWeb3()
 
   return (
     <div className="flex bg-gray-200">

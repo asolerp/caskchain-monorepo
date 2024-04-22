@@ -19,7 +19,7 @@ const CREATOR_ADDRESS = process.env.PUBLIC_KEY;
 
 module.exports = function (deployer) {
   deployer.then(async () => {
-    await deployer.deploy(MockUSDT, "1000000");
+    await deployer.deploy(MockUSDT, "10000000000000000000000000");
 
     const priceOracle = await deployer.deploy(PriceOracle);
     const ccNftStorage = await deployer.deploy(CCNftStorage);

@@ -1,115 +1,114 @@
 import { useGlobal } from '@providers/global'
 import { GlobalTypes } from '@providers/global/utils'
-import { CryptoHookFactory } from '@_types/hooks'
-import axios from 'axios'
-import { getCookie, setCookie } from 'cookies-next'
 
-import { getSignedData } from 'pages/api/utils'
+import { getCustomToken } from 'pages/api/utils'
 
 import { connectWithMagic } from 'caskchain-lib'
 import { magic } from 'lib/magic'
 import { useState } from 'react'
+import { signInUser } from 'lib/firebase/firebase'
+import { useQuery } from '@tanstack/react-query'
+import { useAuth } from 'components/contexts/AuthContext'
+import { getUserData } from 'pages/api/auth/getUserData'
+import { useWeb3 } from 'caskchain-lib/provider/web3'
 
-type AccountHookFactory = CryptoHookFactory<string, any>
+export const useAccount = () => {
+  const { web3, setIsConnected } = useWeb3()
 
-export type UseAccountHook = ReturnType<AccountHookFactory>
+  const {
+    state: { address },
+    dispatch,
+  } = useGlobal()
 
-export const hookFactory: AccountHookFactory =
-  ({ web3, setIsConnected }) =>
-  () => {
-    const {
-      state: { user, address },
-      dispatch,
-    } = useGlobal()
+  const { data } = useQuery({
+    queryKey: ['getUserData', address],
+    queryFn: () => getUserData(address as string),
+    staleTime: 5 * 1000,
+  })
 
-    const [loading, setLoading] = useState<boolean>(false)
-    const token = getCookie('token')
+  const { currentUser } = useAuth()
 
-    const checkIfUserDataIsNeeded = (
-      email: string,
-      token: any,
-      callback?: any
-    ) => {
-      if (!email) {
-        return dispatch({
-          type: GlobalTypes.SET_USER_INFO_MODAL,
-          payload: { status: true },
-        })
-      }
-      if (!token) {
-        return dispatch({
-          type: GlobalTypes.SET_SIGN_IN_MODAL,
-          payload: { status: true },
-        })
-      }
-      if (callback) {
-        callback()
-      }
-    }
+  const [loading, setLoading] = useState<boolean>(false)
 
-    const signAddress = async ({
-      callback = () => null,
-    }: {
-      callback?: () => void
-    }) => {
-      try {
-        const signedMessage = await getSignedData(web3, address)
-        const responseSign = await axios.post(
-          `/api/user/${address}/signature`,
-          { ...signedMessage, address }
-        )
-        setCookie('token', responseSign.data?.token)
-        setCookie('refresh-token', responseSign.data?.refreshToken)
+  const checkIfUserDataIsNeeded = async (callback?: any) => {
+    const user = data?.user
 
-        callback && callback()
-      } catch (e) {
-        console.error(e)
-      }
-    }
-
-    const handleOpenSidebar = (status: boolean) => {
-      checkIfUserDataIsNeeded(user?.email, token, () => {
-        dispatch({
-          type: GlobalTypes.SET_SIDE_BAR,
-          payload: { status: !status },
-        })
+    if (!currentUser) {
+      return dispatch({
+        type: GlobalTypes.SET_SIGN_IN_MODAL,
+        payload: { status: true },
       })
     }
-
-    const connect = async () => {
-      setLoading(true)
-      try {
-        const accounts = await connectWithMagic(magic)
-
-        localStorage.setItem('user', accounts[0])
-
-        setIsConnected(true)
-        // Once user is logged in, re-initialize web3 instance to use the new provider (if connected with third party wallet)
-
-        const userDB = await axios.get(`/api/user/${accounts[0].toLowerCase()}`)
-
-        dispatch({
-          type: GlobalTypes.SET_USER,
-          payload: { user: userDB?.data },
-        })
-        dispatch({
-          type: GlobalTypes.SET_ADDRESS,
-          payload: { address: accounts[0] },
-        })
-        checkIfUserDataIsNeeded(userDB?.data, token)
-      } catch (error) {
-        console.error(error)
-      } finally {
-        setLoading(false)
-      }
+    if (!user?.email) {
+      return dispatch({
+        type: GlobalTypes.SET_USER_INFO_MODAL,
+        payload: { status: true },
+      })
     }
-
-    return {
-      connect,
-      loading,
-      signAddress,
-      handleOpenSidebar,
-      data: user?.address,
-      checkIfUserDataIsNeeded,
+    if (callback) {
+      callback()
     }
   }
+
+  const signAddress = async ({
+    callback = () => null,
+  }: {
+    callback?: () => void
+  }) => {
+    try {
+      setLoading(true)
+      const customToken = await getCustomToken(web3, address)
+
+      if (!customToken) {
+        throw new Error('Invalid JWT')
+      }
+
+      console.log('Signing in user with custom token: ', customToken)
+
+      await signInUser(customToken)
+
+      callback && callback()
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleOpenSidebar = (status: boolean) => {
+    checkIfUserDataIsNeeded(() => {
+      dispatch({
+        type: GlobalTypes.SET_SIDE_BAR,
+        payload: { status: !status },
+      })
+    })
+  }
+
+  const connect = async () => {
+    setLoading(true)
+    try {
+      const accounts = await connectWithMagic(magic)
+      console.log('[[ACCOUNTS]]', accounts)
+      localStorage.setItem('user', accounts[0])
+      dispatch({
+        type: GlobalTypes.SET_ADDRESS,
+        payload: { address: accounts[0] },
+      })
+      setIsConnected(true)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return {
+    connect,
+    loading,
+    signAddress,
+    data: address,
+    handleOpenSidebar,
+    user: data?.user,
+    checkIfUserDataIsNeeded,
+  }
+}

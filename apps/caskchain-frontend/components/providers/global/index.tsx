@@ -7,8 +7,11 @@ import {
   useContext,
   useEffect,
   useReducer,
+  useState,
 } from 'react'
 import { globalReducer } from './reducer'
+import { useQuery } from '@tanstack/react-query'
+
 import {
   GlobalActionTypes,
   GlobalState,
@@ -23,6 +26,7 @@ import { logout } from 'caskchain-lib/utils'
 
 import { useWeb3Instance } from 'caskchain-lib/provider/web3'
 import { magic } from 'lib/magic'
+import { getUserData } from 'pages/api/auth/getUserData'
 
 const GlobalContext = createContext<{
   state: GlobalState
@@ -37,42 +41,26 @@ interface Props {
 }
 
 const GlobalProvider: React.FC<Props> = ({ children }) => {
+  const [user, setUser] = useState<string | null>(null)
   const [state, dispatch] = useReducer(globalReducer, initialState)
 
-  const { setWeb3 } = useWeb3Instance()
+  const { data, refetch } = useQuery({
+    queryKey: ['getUserData', user],
+    queryFn: () => getUserData(user as string),
+    staleTime: 5 * 1000,
+  })
+
+  // const { setWeb3 } = useWeb3Instance()
 
   const handleUserOnPageLoad = async () => {
-    let userDB
-    const provider = await getMagicProvider(magic)
-    const accounts = await provider.request({ method: 'eth_accounts' })
-    const user = localStorage.getItem('user')
-    // If user wallet is no longer connected, logout
-    if (!accounts[0] && user) {
-      return logout(
-        setWeb3,
-        () =>
-          dispatch({ type: GlobalTypes.SET_USER, payload: { address: null } }),
-        magic
-      )
-    }
-
-    if (accounts[0]) {
-      userDB = await axiosClient
-        .get(`/api/user/${accounts[0]?.toLowerCase()}`)
-        .then((res: any) => res.data)
-
-      dispatch({
-        type: GlobalTypes.SET_USER,
-        payload: { user: { ...userDB } },
-      })
-
+    const userLocal = localStorage.getItem('user')
+    if (userLocal) {
+      setUser(userLocal)
       dispatch({
         type: GlobalTypes.SET_ADDRESS,
-        payload: { address: user },
+        payload: { address: userLocal },
       })
-    } else {
-      dispatch({ type: GlobalTypes.SET_USER, payload: { user: null } })
-      dispatch({ type: GlobalTypes.SET_ADDRESS, payload: { address: null } })
+      refetch()
     }
   }
 
@@ -101,6 +89,15 @@ const GlobalProvider: React.FC<Props> = ({ children }) => {
   useEffect(() => {
     handleUserOnPageLoad()
   }, [])
+
+  useEffect(() => {
+    if (data) {
+      dispatch({
+        type: GlobalTypes.SET_USER,
+        payload: { user: data.user },
+      })
+    }
+  }, [data])
 
   return (
     <GlobalContext.Provider value={{ state, dispatch }}>

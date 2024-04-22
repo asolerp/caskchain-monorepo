@@ -15,6 +15,8 @@ import { useEffect } from 'react'
 import { Web3Provider } from 'caskchain-lib'
 import { magic } from 'lib/magic'
 import useInitWeb3Listeners from '@hooks/common/useInitWeb3Listeners'
+import { Provider } from 'utils/Provider'
+import { AuthProvider } from 'components/contexts/AuthContext'
 
 export default function App({ Component, pageProps }: AppProps) {
   useInitAnalytics()
@@ -25,19 +27,21 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [])
 
   return (
-    <>
+    <Provider>
       <ToastContainer theme="dark" />
-      <Web3Provider magic={magic}>
-        <GlobalProvider>
-          <ParallaxProvider>
-            <AnimatePresence mode="wait" initial={false}>
-              <LoadingProvider>
-                <Component {...pageProps} />
-              </LoadingProvider>
-            </AnimatePresence>
-          </ParallaxProvider>
-        </GlobalProvider>
-      </Web3Provider>
-    </>
+      <AuthProvider>
+        <Web3Provider magic={magic}>
+          <GlobalProvider>
+            <ParallaxProvider>
+              <AnimatePresence mode="wait" initial={false}>
+                <LoadingProvider>
+                  <Component {...pageProps} />
+                </LoadingProvider>
+              </AnimatePresence>
+            </ParallaxProvider>
+          </GlobalProvider>
+        </Web3Provider>
+      </AuthProvider>
+    </Provider>
   )
 }

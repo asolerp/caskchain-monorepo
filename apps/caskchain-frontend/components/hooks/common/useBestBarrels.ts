@@ -11,7 +11,7 @@ const useBestBarrels = () => {
 
       return bestBarrels
     },
-    { revalidateOnFocus: true }
+    { revalidateOnFocus: false }
   )
 
   return {

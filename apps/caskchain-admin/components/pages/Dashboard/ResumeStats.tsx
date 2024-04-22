@@ -2,11 +2,11 @@ import { useStats } from '@hooks/web3'
 import Card from '@ui/common/Card'
 
 const ResumeStats = () => {
-  const { stats } = useStats()
+  // const { stats } = useStats()
 
   return (
     <div className="flex w-full flex-col">
-      <div className="w-full grid grid-cols-4 gap-8 mt-12 ">
+      {/* <div className="w-full grid grid-cols-4 gap-8 mt-12 ">
         <Card color="bg-cask-chain">
           <p className="font-poppins font-normal text-2xl text-black dark:text-gray-400 mb-3">
             Users
@@ -39,7 +39,7 @@ const ResumeStats = () => {
             {stats?.totalNfts || 0}
           </h5>
         </Card>
-      </div>
+      </div> */}
     </div>
   )
 }

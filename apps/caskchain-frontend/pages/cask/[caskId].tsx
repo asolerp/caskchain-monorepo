@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { useCaskNft } from '@hooks/web3'
 import { BaseLayout } from '@ui'
 import PieResponsive from '@ui/charts/PieResponsive'
 import Spacer from '@ui/common/Spacer'
@@ -19,11 +18,12 @@ import useLocalLoading from '@hooks/common/useLocalLoading'
 import Header from '@ui/layout/Header'
 
 import CaskGallery from './components/CaskGallery'
-import CaskFavorite from './components/CaskFavorite'
+// import CaskFavorite from './components/CaskFavorite'
 import CaskOperations from './components/CaskOperations'
 import CaskDetails from './components/CaskDetails'
 import CaskStats from './components/CaskStats'
 import TransactionsHistory from '@ui/tables/TransactionsHistory'
+import { useCaskNft } from '@hooks/web3/useCaskNft'
 
 export enum AssetType {
   IMAGE = 'image',
@@ -33,11 +33,28 @@ export enum AssetType {
 
 function CaskDetail() {
   const route = useRouter()
+
   const { loading } = useLocalLoading()
-  const { cask } = useCaskNft({ caskId: route.query.caskId as string })
+  const {
+    data,
+    rates,
+    buyNft,
+    makeOffer,
+    isLoading,
+    // isFavorite,
+    cancelOffer,
+    latestOffers,
+    successModal,
+    salesHistory,
+    buyWithERC20,
+    // totalFavorites,
+    handleUserState,
+    setSuccessModal,
+    // handleShareCask,
+    // debounceAddFavorite,
+  } = useCaskNft({ caskId: route.query.caskId as string })
 
-  const liquor = cask?.data?.meta?.attributes[0].value
-
+  const liquor = data?.meta?.attributes
   const mapLiquorHeader: any = {
     whiskey: 'Smoky Elixir',
     rum: `Corsair's Island`,
@@ -48,10 +65,10 @@ function CaskDetail() {
   return (
     <>
       <SuccessPurchaseModal
-        cask={cask?.data}
-        modalIsOpen={cask?.successModal}
+        cask={data}
+        modalIsOpen={successModal}
         closeModal={() => {
-          cask?.setSuccessModal(false)
+          setSuccessModal(false)
         }}
       />
 
@@ -68,27 +85,40 @@ function CaskDetail() {
                 </span>
               </h1>
             </Header>
-            {cask?.data?.meta ? (
+            {data?.meta ? (
               <div className="lg:w-3/4 mx-auto pt-20 pb-8 rounded-lg">
                 <div>
                   <div className="max-w-7xl mx-auto grid grid-cols-5 gap-10 sm:px-6 px-4 rounded-lg">
-                    <CaskGallery cask={cask} />
+                    <CaskGallery isLoading={isLoading} data={data} />
                     <div className="flex flex-col col-span-2">
-                      <CaskFavorite cask={cask} />
+                      {/* <CaskFavorite
+                        onClickFavorite={() => debounceAddFavorite()}
+                        onClickShare={() => handleShareCask()}
+                        isFavorite={isFavorite}
+                        totalFavorites={totalFavorites}
+                      /> */}
                       <Spacer size="xs" />
-                      <CaskOperations cask={cask} />
+                      <CaskOperations
+                        data={data}
+                        rates={rates}
+                        buyNft={buyNft}
+                        makeOffer={makeOffer}
+                        cancelOffer={cancelOffer}
+                        buyWithERC20={buyWithERC20}
+                        handleUserState={handleUserState}
+                      />
                     </div>
                   </div>
                   <Spacer size="xl" />
                   <Spacer size="xl" />
                   <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 px-4">
-                    <CaskDetails cask={cask} />
+                    <CaskDetails data={data} />
                     <Spacer size="xl" />
                     <Spacer size="xl" />
-                    <CaskStats cask={cask} />
+                    <CaskStats data={data} />
                     <Spacer size="xl" />
                     <Spacer size="xl" />
-                    {cask?.data?.fractions?.isForSale && (
+                    {data?.fractions?.isForSale && (
                       <>
                         <section>
                           <div>
@@ -103,7 +133,7 @@ function CaskDetail() {
                                   <div className="flex justify-center">
                                     <PieResponsive
                                       data={Object.entries(
-                                        cask?.data?.fractions?.holders
+                                        data?.fractions?.holders
                                       ).map(([address, balance]: any) => ({
                                         name: address,
                                         value: Number(
@@ -115,14 +145,14 @@ function CaskDetail() {
                                 </>
                               </div>
                               <div className="w-1/2 flex flex-grow justify-center items-center">
-                                {cask?.data?.fractions && (
+                                {data?.fractions && (
                                   <div className="w-full">
                                     <h2 className="text-white text-5xl font-semibold mb-4">
                                       HOLDERS
                                     </h2>
                                     <FractionHolders
                                       holders={Object.entries(
-                                        cask?.data?.fractions?.holders
+                                        data?.fractions?.holders
                                       )
                                         .map(([address, balance]: any) => ({
                                           address: address,
@@ -150,7 +180,7 @@ function CaskDetail() {
                       </h2>
                       <Spacer size="md" />
                       <div>
-                        <NFTLatestOffers nftLatestOffers={cask?.latestOffers} />
+                        <NFTLatestOffers nftLatestOffers={latestOffers} />
                       </div>
                     </div>
                     <Spacer size="xl" />
@@ -160,9 +190,7 @@ function CaskDetail() {
                       </h2>
                       <Spacer size="md" />
                       <div>
-                        <TransactionsHistory
-                          transactions={cask?.salesHistory}
-                        />
+                        <TransactionsHistory transactions={salesHistory} />
                       </div>
                     </div>
                   </div>

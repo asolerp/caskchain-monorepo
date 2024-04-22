@@ -31,7 +31,6 @@ export const createDefaultState = () => {
     nftVendor: null,
     isLoading: true,
     erc20Contracts: null,
-    hooks: setupHooks({ isLoading: true } as any),
   };
 };
 
@@ -51,31 +50,17 @@ export const createWeb3State = ({
 }: Web3Dependencies) => {
   return {
     web3,
+    ccNft,
     setWeb3,
     provider,
-    ccNft,
-    setIsConnected,
     nftVendor,
     isLoading,
     nftOffers,
+    erc20Contracts,
+    setIsConnected,
     nftFractionToken,
     nftFractionsVendor,
     nftFractionsFactory,
-    erc20Contracts,
-    hooks: setupHooks({
-      web3,
-      setWeb3,
-      setIsConnected,
-      provider,
-      nftFractionToken,
-      nftFractionsFactory,
-      nftFractionsVendor,
-      ccNft,
-      nftVendor,
-      nftOffers,
-      isLoading,
-      erc20Contracts,
-    }),
   };
 };
 

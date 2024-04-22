@@ -51,6 +51,8 @@ const BarrelNft: React.FC<NftItemProps> = ({
   const isProfileMeta = isProfile ? item.meta : item
   const mainImage = item && ipfsImageParser(isProfileMeta?.image)
 
+  console.log('item', item)
+
   useEffect(() => {
     if (!item.video) return
     if (videoRef.current) {
@@ -61,8 +63,6 @@ const BarrelNft: React.FC<NftItemProps> = ({
       }
     }
   }, [isHover, item?.video])
-
-  console.log('ITEM', item)
 
   const variants = {
     hover: {
@@ -102,7 +102,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
         </div>
       )}
       <div
-        onClick={() => router.push(`/cask/${item._id || item.tokenId}`)}
+        onClick={() => router.push(`/cask/${item.id || item.tokenId}`)}
         className={`relative flex flex-row justify-center items-center min-h-[${BARREL_HEIGHT}px] h-full`}
       >
         <div
@@ -143,7 +143,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
                   <div>
                     <div className="flex flex-row justify-between">
                       <p className="font-poppins text-cask-chain">
-                        Cask Number {`#${item._id || item.tokenId}`}
+                        Cask Number {`#${item.id || item.tokenId}`}
                       </p>
                       <div>
                         <p className="text-cask-chain font-poppins text-sm">
@@ -161,13 +161,13 @@ const BarrelNft: React.FC<NftItemProps> = ({
                   <div className="flex flex-row flex-wrap  justify-start items-center">
                     <div className="flex items-center">
                       <p className="text-cask-chain text-[12px]">
-                        {isProfileMeta.attributes.liquor?.toUpperCase()}
+                        {isProfileMeta.attributes?.liquor?.toUpperCase()}
                       </p>
                       <p className="text-cask-chain px-1">{' · '}</p>
                     </div>
                     <div className="flex items-center">
                       <p className="text-cask-chain text-[12px]">
-                        {isProfileMeta.attributes.distillery?.toUpperCase()}
+                        {isProfileMeta.attributes?.distillery?.toUpperCase()}
                       </p>
                       <p className="text-cask-chain px-1">{' · '}</p>
                     </div>
@@ -179,31 +179,31 @@ const BarrelNft: React.FC<NftItemProps> = ({
                     </div>
                     <div className="flex items-center">
                       <p className="text-cask-chain text-[12px]">
-                        {isProfileMeta.attributes.region?.toUpperCase()}
+                        {isProfileMeta.attributes?.region?.toUpperCase()}
                       </p>
                       <p className="text-cask-chain px-1">{' · '}</p>
                     </div>
                     <div className="flex items-center">
                       <p className="text-cask-chain text-[12px]">
-                        {isProfileMeta.attributes.cask_wood?.toUpperCase()}
+                        {isProfileMeta.attributes?.cask_wood?.toUpperCase()}
                       </p>
                       <p className="text-cask-chain px-1">{' · '}</p>
                     </div>
                     <div className="flex items-center">
                       <p className="text-cask-chain text-[12px]">
-                        {isProfileMeta.attributes.age?.toUpperCase()}
+                        {isProfileMeta.attributes?.age?.toUpperCase()}
                         years
                       </p>
                       <p className="text-cask-chain px-1">{' · '}</p>
                     </div>
                     <div className="flex items-center">
                       <p className="text-cask-chain text-[12px]">
-                        {isProfileMeta.attributes.cask_size?.toUpperCase()}L
+                        {isProfileMeta.attributes?.cask_size?.toUpperCase()}L
                       </p>
                       <p className="text-cask-chain px-1">{' · '}</p>
                     </div>
                     <p className="text-cask-chain text-[12px]">
-                      {isProfileMeta.attributes.abv?.toUpperCase()}%
+                      {isProfileMeta.attributes?.abv?.toUpperCase()}%
                     </p>
                   </div>
                 </div>
@@ -229,7 +229,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
                       <div className="flex flex-row items-center justify-between">
                         <p className="text-gray-400">Price</p>
                         <p className="text-white">
-                          {ethers.formatEther(item?.erc20Prices?.USDT)} USDT
+                          {ethers.formatEther(item?.price)} USDT
                         </p>
                       </div>
                     ) : (
@@ -258,7 +258,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
                   <Spacer size="md" />
                   <Button
                     onClick={() =>
-                      router.push(`/cask/${item._id || item.tokenId}`)
+                      router.push(`/cask/${item.id || item.tokenId}`)
                     }
                     fit={false}
                   >

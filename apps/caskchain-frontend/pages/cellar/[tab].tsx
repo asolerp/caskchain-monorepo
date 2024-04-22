@@ -3,12 +3,21 @@ import Header from '@ui/layout/Header'
 
 import { NextPage } from 'next'
 import Spacer from '@ui/common/Spacer'
-import { auth } from 'utils/auth'
-import CellarTabs from './componets/CellarTabs'
 
-export const getServerSideProps = (context: any) => auth(context, 'user')
+import CellarTabs from './componets/CellarTabs'
+import { useRouter } from 'next/router'
+import { useAuth } from 'components/contexts/AuthContext'
+import { useEffect } from 'react'
 
 const Cellar: NextPage = () => {
+  const router = useRouter()
+  const { currentUser } = useAuth()
+  useEffect(() => {
+    if (!currentUser) {
+      router.push('/')
+    }
+  }, [currentUser, router])
+
   return (
     <BaseLayout background="bg-black-light">
       <div>

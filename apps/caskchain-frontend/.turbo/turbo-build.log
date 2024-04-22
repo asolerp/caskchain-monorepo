@@ -1,0 +1,76 @@
+warning package.json: "dependencies" has dependency "@types/node" with range "18.11.13" that collides with a dependency in "devDependencies" of the same name with version "17.0.23"
+warning package.json: "dependencies" has dependency "@types/react" with range "18.0.26" that collides with a dependency in "devDependencies" of the same name with version "17.0.43"
+warning package.json: "dependencies" has dependency "@types/react-dom" with range "18.0.9" that collides with a dependency in "devDependencies" of the same name with version "17.0.14"
+$ next build
+warn  - Invalid next.config.js options detected: 
+  - The root value has an unexpected property, transpilePackages, which is not in the list of allowed properties (amp, analyticsId, assetPrefix, basePath, cleanDistDir, compiler, compress, crossOrigin, devIndicators, distDir, env, eslint, excludeDefaultMomentLocales, experimental, exportPathMap, generateBuildId, generateEtags, headers, httpAgentOptions, i18n, images, onDemandEntries, optimizeFonts, output, outputFileTracing, pageExtensions, poweredByHeader, productionBrowserSourceMaps, publicRuntimeConfig, reactStrictMode, redirects, rewrites, sassOptions, serverRuntimeConfig, staticPageGenerationTimeout, swcMinify, trailingSlash, typescript, useFileSystemPublicRoutes, webpack).
+
+See more info here: https://nextjs.org/docs/messages/invalid-next-config
+warn  - You have enabled experimental feature (appDir) in next.config.js.
+warn  - Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
+info  - Thank you for testing `appDir` please leave your feedback at https://nextjs.link/app-feedback
+
+info  - Linting and checking validity of types...
+
+Failed to compile.
+
+./pages/cellar/componets/MyOffersReceived.tsx
+10:6  Warning: React Hook useEffect has a missing dependency: 'myActivity'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./pages/cellar/componets/MyOffersSent.tsx
+10:6  Warning: React Hook useEffect has a missing dependency: 'myActivity'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/hooks/common/useInitAnalytics.ts
+26:6  Warning: React Hook useEffect has missing dependencies: 'Router.events' and 'onRouteChangeComplete'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/hooks/common/useLoading.ts
+21:6  Warning: React Hook useEffect has a missing dependency: 'dispatch'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/hooks/common/useMarketPlaceFilters.ts
+45:5  Warning: React Hook useCallback has a missing dependency: 'removeFilter'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/hooks/common/useOutsideClick.ts
+18:6  Warning: React Hook useEffect has a missing dependency: 'callback'. Either include it or remove the dependency array. If 'callback' changes too often, find the parent component that defines it and wrap that definition in useCallback.  react-hooks/exhaustive-deps
+
+./components/hooks/web3/useAccount.ts
+5:21  Error: 'setCookie' is defined but never used.  @typescript-eslint/no-unused-vars
+7:10  Error: 'getSignedData' is defined but never used.  @typescript-eslint/no-unused-vars
+12:10  Error: 'get' is defined but never used.  @typescript-eslint/no-unused-vars
+19:6  Error: 'web3' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/hooks/web3/useAllNfts.ts
+7:10  Error: 'normalizeString' is defined but never used.  @typescript-eslint/no-unused-vars
+98:8  Warning: React Hook useEffect has a missing dependency: 'setIsLoading'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+111:8  Warning: React Hook useEffect has a missing dependency: 'refetchData'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/hooks/web3/useCaskNft.ts
+240:7  Warning: React Hook useCallback has a missing dependency: 'address'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+304:7  Warning: React Hook useCallback has a missing dependency: '_nftOffers?.methods'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/hooks/web3/useSideBar.ts
+38:8  Warning: React Hook useEffect has an unnecessary dependency: 'web3'. Either exclude it or remove the dependency array. Outer scope values like 'web3' aren't valid dependencies because mutating them doesn't re-render the component.  react-hooks/exhaustive-deps
+
+./components/pages/profile/ImageProfileUploader.tsx
+3:10  Error: 'add' is defined but never used.  @typescript-eslint/no-unused-vars
+5:8  Error: 'axiosClient' is defined but never used.  @typescript-eslint/no-unused-vars
+42:6  Warning: React Hook useEffect has missing dependencies: 'address', 'dispatch', and 'user'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/providers/global/index.tsx
+103:6  Warning: React Hook useEffect has a missing dependency: 'handleUserOnPageLoad'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ui/navbar/index.tsx
+1:17  Error: 'useEffect' is defined but never used.  @typescript-eslint/no-unused-vars
+19:10  Error: 'useWeb3Instance' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./components/ui/ntf/list/index.tsx
+17:11  Warning: passHref is missing. See: https://nextjs.org/docs/messages/link-passhref  @next/next/link-passhref
+
+./components/ui/ntf/lists/fractionalizedList/index.tsx
+17:11  Warning: passHref is missing. See: https://nextjs.org/docs/messages/link-passhref  @next/next/link-passhref
+
+./components/ui/tables/NFTLatestOffers.tsx
+65:29  Warning: passHref is missing. See: https://nextjs.org/docs/messages/link-passhref  @next/next/link-passhref
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+error Command failed with exit code 1.

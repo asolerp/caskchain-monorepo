@@ -1,5 +1,6 @@
 import { Nft } from '@_types/nft'
-import { useOwnedNfts } from '@hooks/web3'
+import { useOwnedNfts } from '@hooks/web3/useOwnedNfts'
+
 import BarrelProfile from '@ui/ntf/item/BarrelProfile'
 import { Button, Spacer } from 'caskchain-ui'
 import Image from 'next/image'
@@ -7,16 +8,16 @@ import { useRouter } from 'next/router'
 
 const CasksTab = () => {
   const router = useRouter()
-  const { nfts } = useOwnedNfts()
+  const { data } = useOwnedNfts()
 
   return (
     <section className="mt-8 pb-16" aria-labelledby="gallery-heading">
-      {nfts.data.length ? (
+      {data.length ? (
         <>
           <ul role="list" className="flex flex-row flex-wrap">
             <li className="relative col-span-1" />
             <li className="grid grid-cols-3 gap-5 col-span-5">
-              {(nfts?.data as Nft[])?.map((nft) => (
+              {(data as Nft[])?.map((nft) => (
                 <BarrelProfile
                   key={nft.tokenId}
                   // onPressProfileCTA={() => {

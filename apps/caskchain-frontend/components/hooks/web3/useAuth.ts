@@ -1,20 +1,10 @@
 import { useGlobal } from '@providers/global'
 
-import { CryptoHandlerHook } from '@_types/hooks'
-
 import axiosClient from 'lib/fetcher/axiosInstance'
 
-type UseAuthResponse = {
-  refetchUser: () => Promise<any>
-}
-
-type AuthHookFactory = CryptoHandlerHook<UseAuthResponse>
-export type UseAuthHook = ReturnType<AuthHookFactory>
-
-export const hookFactory: AuthHookFactory = () => () => {
+export const useAuth = () => {
   const {
     state: { address },
-    // dispatch,
   } = useGlobal()
 
   const refetchUser = async ({ callback }: any) => {

@@ -1,0 +1,29 @@
+warning package.json: "dependencies" has dependency "@types/node" with range "18.11.13" that collides with a dependency in "devDependencies" of the same name with version "17.0.23"
+warning package.json: "dependencies" has dependency "@types/react" with range "18.0.26" that collides with a dependency in "devDependencies" of the same name with version "17.0.43"
+warning package.json: "dependencies" has dependency "@types/react-dom" with range "18.0.9" that collides with a dependency in "devDependencies" of the same name with version "17.0.14"
+$ next build
+warn  - Invalid next.config.js options detected: 
+  - The root value has an unexpected property, transpilePackages, which is not in the list of allowed properties (amp, analyticsId, assetPrefix, basePath, cleanDistDir, compiler, compress, crossOrigin, devIndicators, distDir, env, eslint, excludeDefaultMomentLocales, experimental, exportPathMap, generateBuildId, generateEtags, headers, httpAgentOptions, i18n, images, onDemandEntries, optimizeFonts, output, outputFileTracing, pageExtensions, poweredByHeader, productionBrowserSourceMaps, publicRuntimeConfig, reactStrictMode, redirects, rewrites, sassOptions, serverRuntimeConfig, staticPageGenerationTimeout, swcMinify, trailingSlash, typescript, useFileSystemPublicRoutes, webpack).
+
+See more info here: https://nextjs.org/docs/messages/invalid-next-config
+warn  - You have enabled experimental feature (appDir) in next.config.js.
+warn  - Experimental features are not covered by semver, and may cause unexpected or broken application behavior. Use at your own risk.
+info  - Thank you for testing `appDir` please leave your feedback at https://nextjs.link/app-feedback
+
+info  - Linting and checking validity of types...
+info  - VS Code settings.json has been updated for Next.js' automatic app types, this file can be added to .gitignore if desired
+warn  - The Next.js plugin was not detected in your ESLint configuration. See https://nextjs.org/docs/basic-features/eslint#migrating-existing-config
+Failed to compile.
+
+./components/providers/global/index.tsx:37:11
+Type error: Property 'setWeb3' does not exist on type '{ web3: any; }'.
+
+[0m [90m 35 | [39m[36mconst[39m [33mGlobalProvider[39m[33m:[39m [33mReact[39m[33m.[39m[33mFC[39m[33m<[39m[33mProps[39m[33m>[39m [33m=[39m ({ children }) [33m=>[39m {[0m
+[0m [90m 36 | [39m  [36mconst[39m [state[33m,[39m dispatch] [33m=[39m useReducer(globalReducer[33m,[39m initialState)[0m
+[0m[31m[1m>[22m[39m[90m 37 | [39m  [36mconst[39m { setWeb3 } [33m=[39m useWeb3Instance()[0m
+[0m [90m    | [39m          [31m[1m^[22m[39m[0m
+[0m [90m 38 | [39m[0m
+[0m [90m 39 | [39m  [36mconst[39m handleUserOnPageLoad [33m=[39m [36masync[39m () [33m=>[39m {[0m
+[0m [90m 40 | [39m    [36mlet[39m userDB[0m
+error Command failed with exit code 1.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.

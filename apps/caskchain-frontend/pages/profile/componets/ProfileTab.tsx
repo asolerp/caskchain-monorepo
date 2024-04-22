@@ -1,16 +1,15 @@
-import { useGlobal } from '@providers/global'
 import { Button, Spacer } from 'caskchain-ui'
 import UserInfoForm from 'components/forms/UserInfoForm'
 
 import useProfile from '../hooks/useProfile'
 import { useForm } from 'react-hook-form'
 import ImageProfileUploader from 'components/pages/profile/ImageProfileUploader'
+import { useAccount } from '@hooks/web3'
 
 const ProfileTab = () => {
   const {
-    state: { user },
-  } = useGlobal()
-
+    account: { user },
+  } = useAccount()
   const { handleSaveUser, loading } = useProfile()
   const onSubmit = (data: any) => handleSaveUser({ formState: data })
 

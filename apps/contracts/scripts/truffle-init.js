@@ -102,7 +102,7 @@ module.exports = async function (callback) {
     await nftVendor.setExcludedFromList(process.env.PUBLIC_KEY, true);
     await nftVendor.addERC20Token(mockUSDT.address);
 
-    mockUSDT.transfer(process.env.PUBLIC_KEY, "1000000");
+    mockUSDT.transfer(process.env.PUBLIC_KEY, "100000000000000000000000");
 
     console.log(`Init complete!`);
   } catch (error) {

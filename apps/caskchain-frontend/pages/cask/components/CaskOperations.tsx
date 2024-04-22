@@ -1,71 +1,63 @@
 import BuyoutModal from '@ui/modals/BuyoutModal'
-import FractionalizedBuyout from '@ui/ntf/buyout/FractionalizedBuyout'
 import MakeOffer from '@ui/ntf/buyout/MakeOffer'
 import OnSale from '@ui/ntf/buyout/OnSale'
 import { useCallback, useState } from 'react'
 
 type CaskOperationsProps = {
-  cask: any
+  data: any
+  rates: any
+  buyNft: (tokenId: number, price: string, callback: any) => Promise<void>
+  makeOffer: (offer: any) => void
+  cancelOffer: () => void
+  buyWithERC20: (tokenId: number, price: string) => void
+  handleUserState: (callback: () => void) => void
 }
 
-const CaskOperations: React.FC<CaskOperationsProps> = ({ cask }) => {
+const CaskOperations: React.FC<CaskOperationsProps> = ({
+  data,
+  rates,
+  buyNft,
+  makeOffer,
+  cancelOffer,
+  buyWithERC20,
+  handleUserState,
+}) => {
   const [buyoutModalIsOpen, setBuyoutModalIsOpen] = useState<any>(false)
 
   const handleCancelOffer = useCallback(() => {
-    cask?.cancelOffer()
-  }, [cask])
+    cancelOffer()
+  }, [cancelOffer])
 
   return (
     <>
       <BuyoutModal
-        cask={cask?.data}
-        rates={cask?.rates}
+        cask={data}
+        rates={rates}
         onCompletePurchase={() => {
-          cask?.buyNft(cask?.data?.tokenId, cask?.data?.price, () =>
-            setBuyoutModalIsOpen(false)
-          )
+          buyNft(data?.tokenId, data?.price, () => setBuyoutModalIsOpen(false))
         }}
         isModalOpen={buyoutModalIsOpen}
         closeModal={setBuyoutModalIsOpen}
       />
       <div className="flex w-full justify-start">
-        {cask?.data?.fractions?.isForSale ? (
-          <FractionalizedBuyout
-            cask={cask?.data}
-            onFullBuy={cask?.buyFractionizedNft}
-            onBuyFraction={(fractions: number) =>
-              cask?.buyFractions(
-                cask?.data?.fractions?.tokenAddress,
-                cask?.data?.fractions?.unitPrice,
-                fractions
-              )
-            }
-          />
-        ) : (
-          <>
-            {cask?.data?.price > 0 ? (
-              <OnSale
-                cask={cask?.data}
-                rates={cask?.rates}
-                onBuyWithERC20={() =>
-                  cask?.buyWithERC20(
-                    cask?.data?.tokenId,
-                    cask?.data?.erc20Prices?.USDT
-                  )
-                }
-                onBuy={() => {
-                  cask?.handleUserState(() => setBuyoutModalIsOpen(true))
-                }}
-              />
-            ) : (
-              <MakeOffer
-                cask={cask?.data}
-                onCancelOffer={handleCancelOffer}
-                onOffer={(offer) => cask?.makeOffer(offer)}
-              />
-            )}
-          </>
-        )}
+        <>
+          {data?.price > 0 ? (
+            <OnSale
+              cask={data}
+              rates={rates}
+              onBuyWithERC20={() => buyWithERC20(data?.tokenId, data?.price)}
+              onBuy={() => {
+                handleUserState(() => setBuyoutModalIsOpen(true))
+              }}
+            />
+          ) : (
+            <MakeOffer
+              cask={data}
+              onCancelOffer={handleCancelOffer}
+              onOffer={(offer) => makeOffer(offer)}
+            />
+          )}
+        </>
       </div>
     </>
   )

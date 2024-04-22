@@ -6,18 +6,19 @@ import { Spacer } from 'caskchain-ui'
 import { ipfsImageParser } from 'caskchain-lib'
 
 type CaskGalleryProps = {
-  cask: any
+  isLoading: boolean
+  data: any
 }
 
-const CaskGallery: React.FC<CaskGalleryProps> = ({ cask }) => {
+const CaskGallery: React.FC<CaskGalleryProps> = ({ isLoading, data }) => {
   const [activeAsset, setActiveAsset] = useState<any>()
   const [activeType, setActiveType] = useState<AssetType>(AssetType.PINATA)
 
   useEffect(() => {
-    if (!cask.isLoading) {
-      setActiveAsset(cask?.data?.meta?.image)
+    if (!isLoading) {
+      setActiveAsset(data?.meta?.image)
     }
-  }, [cask.isLoading, cask?.data?.meta?.image])
+  }, [isLoading, data?.meta?.image])
 
   if (!activeAsset) return null
 
@@ -31,7 +32,7 @@ const CaskGallery: React.FC<CaskGalleryProps> = ({ cask }) => {
               setActiveAsset(0)
             }}
             className={`${
-              activeAsset === cask?.data?.meta?.image
+              activeAsset === data?.meta?.image
                 ? 'border-2 border-cask-chain'
                 : ''
             } p-2 rounded-xl`}
@@ -46,7 +47,7 @@ const CaskGallery: React.FC<CaskGalleryProps> = ({ cask }) => {
             />
           </div>
           <Spacer size="xs" />
-          {cask?.data?.media?.map((asset: any) => (
+          {data?.media?.map((asset: any) => (
             <>
               <div
                 key={asset}

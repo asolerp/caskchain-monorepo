@@ -41,7 +41,7 @@ export const hookFactory: NetworkHookFactory =
         return NETWORKS[chainId]
       },
       {
-        revalidateOnFocus: true,
+        revalidateOnFocus: false,
       }
     )
 

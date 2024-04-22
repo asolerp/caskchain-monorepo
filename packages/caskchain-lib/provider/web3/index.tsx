@@ -88,21 +88,4 @@ export function useWeb3() {
   return useContext(Web3Context);
 }
 
-export function useProvider() {
-  const { provider } = useWeb3();
-  return provider;
-}
-
-export function useWeb3Instance() {
-  const { web3 } = useWeb3();
-  return {
-    web3,
-  };
-}
-
-export function useHooks() {
-  const { hooks } = useWeb3();
-  return hooks;
-}
-
 export default Web3Provider;
