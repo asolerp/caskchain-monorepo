@@ -41,7 +41,7 @@ function convertToEnv(object) {
 const insertInEnvFile = ({ params }) => {
   let env = {};
 
-  const envFile = jetpack.read(".env.base");
+  const envFile = jetpack.read(".env.local");
   const buf = Buffer.from(envFile);
   const parsed = dotenv.parse(buf);
 
@@ -167,7 +167,7 @@ pm2.connect(false, async function (err) {
     const ganacheAccounts = jetpack.read("ganache-accounts.json");
     const accounts = JSON.parse(ganacheAccounts);
 
-    const envFileGanache = jetpack.read(".env.ganache");
+    const envFileGanache = jetpack.read(".env.test");
     const buf = Buffer.from(envFileGanache);
     const parsed = dotenv.parse(buf);
 
