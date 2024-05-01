@@ -4,7 +4,8 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
 import cors from "cors";
-import { log } from "console";
+import { log } from "firebase-functions/logger";
+import { REGION } from "../../constants";
 
 if (admin.apps.length === 0) {
   admin.initializeApp();
@@ -12,72 +13,69 @@ if (admin.apps.length === 0) {
 
 const corsHandler = cors({ origin: true });
 
-export const getNfts = functions.https.onRequest(
-  async (req: Request, res: Response): Promise<void> => {
+export const getNfts = functions
+  .region(REGION)
+  .https.onRequest(async (req: Request, res: Response): Promise<void> => {
     corsHandler(req, res, async () => {
-      const pageSize = parseInt(req.query.pageSize as string) || 10;
-      const lastDocId = req.query.lastDocId;
-      const filters = JSON.parse((req.query.filters as string) || "{}"); // Esperamos que los filtros sean pasados como un JSON string
+      // const pageSize = parseInt(req.query.pageSize as string) || 10;
+      // const lastDocId = req.query.lastDocId;
+      // const filters = JSON.parse((req.query.filters as string) || "{}");
+      // const sortBy = req.query.sortBy as string;
 
-      log("PageSize: ", pageSize);
+      const { startAfter, limit, orderBy, filters }: any = req.query;
+      let nextCursor = null;
+
+      log("startAfter: ", startAfter);
+      log("filters", filters);
+
+      let query = admin.firestore().collection("casks") as any;
+
+      if (orderBy) {
+        if (orderBy === "age") {
+          query = query.orderBy("attributes.age");
+        } else {
+          query = query.orderBy(orderBy);
+        }
+      }
+
+      if (filters?.active) {
+        query = query.where("active", "==", filters.active);
+      }
+
+      if (filters?.name) {
+        query = query
+          .where("name", ">=", filters.name)
+          .where("name", "<=", filters.name + "\uf8ff");
+      }
+
+      log("query: ", query);
+
+      if (startAfter) {
+        const docSnapshot = await admin
+          .firestore()
+          .doc(`casks/${startAfter}`)
+          .get();
+        if (docSnapshot.exists) {
+          query = query.startAfter(docSnapshot);
+        }
+      }
+
+      if (limit) {
+        query = query.limit(parseInt(limit, 10));
+      }
 
       try {
-        let query = admin
-          .firestore()
-          .collection("casks")
-          .orderBy("name")
-          .limit(pageSize + 1);
-
-        if (lastDocId) {
-          const lastDoc = await admin
-            .firestore()
-            .collection("casks")
-            .doc(lastDocId as string)
-            .get();
-          if (!lastDoc.exists) {
-            return res.status(404).send("Last document not found.");
-          }
-          query = query.startAfter(lastDoc);
-        }
-
-        if (filters.name) {
-          const endName = filters.name.replace(/.$/, (c: any) =>
-            String.fromCharCode(c.charCodeAt(0) + 1)
-          );
-          query = query
-            .where("name", ">=", filters.name)
-            .where("name", "<", endName);
-        }
-
-        // Object.keys(filters).forEach((key) => {
-        //   query = query.where(key, "==", filters[key]);
-        // });
-
         const snapshot = await query.get();
-        const results: any = [];
-        let nextPageToken = null;
-
-        snapshot.forEach((doc) => {
-          log("Doc: ", doc.id, " => ", doc.data());
-          if (results.length < pageSize) {
-            results.push({ id: doc.id, ...doc.data() });
-          } else {
-            nextPageToken = doc.id;
-          }
+        const result: any = [];
+        snapshot.forEach((doc: any) => {
+          result.push({ id: doc.id, ...doc.data() });
         });
-
-        log("Results: ", results);
-
-        res.status(200).json({
-          items: results,
-          nextPageToken,
-          hasMore: nextPageToken !== null,
-          error: null,
-        });
-      } catch (error) {
-        console.error("Error getting documents: ", error);
-        res.status(500).send("Error fetching documents.");
+        if (!snapshot.empty && snapshot.docs.length === parseInt(limit, 10)) {
+          nextCursor = snapshot.docs[snapshot.docs.length - 1].id;
+        }
+        res.json({ result, nextCursor });
+      } catch (error: any) {
+        res.status(500).send(error.toString());
       }
     });
-  }
-);
+  });

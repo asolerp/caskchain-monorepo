@@ -5,19 +5,12 @@ import { NextPage } from 'next'
 import Spacer from '@ui/common/Spacer'
 
 import CellarTabs from './componets/CellarTabs'
-import { useRouter } from 'next/router'
-import { useAuth } from 'components/contexts/AuthContext'
-import { useEffect } from 'react'
+import { auth } from 'utils/auth'
+import CasksTab from './componets/CasksTab'
+
+export const getServerSideProps = (context: any) => auth(context)
 
 const Cellar: NextPage = () => {
-  const router = useRouter()
-  const { currentUser } = useAuth()
-  useEffect(() => {
-    if (!currentUser) {
-      router.push('/')
-    }
-  }, [currentUser, router])
-
   return (
     <BaseLayout background="bg-black-light">
       <div>
@@ -28,7 +21,8 @@ const Cellar: NextPage = () => {
         </Header>
         <Spacer size="xl" />
         <div className="px-32 flex justify-center min-h-[700px]">
-          <CellarTabs />
+          <CasksTab />
+          {/* <CellarTabs /> */}
         </div>
       </div>
     </BaseLayout>

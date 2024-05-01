@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
 dotenv.config({ path: `../../.env` });
 
-const { MNEMONIC, BLOCKCHAIN_URL, PUBLIC_KEY } = process.env;
+const { MNEMONIC, BLOCKCHAIN_URL, PUBLIC_KEY, TARGET_CHAIN_ID } = process.env;
 
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 
@@ -14,10 +14,10 @@ module.exports = {
       port: 8545, // Standard Ethereum port (default: none)
       network_id: "*", // Any network (default: none)
     },
-    mumbai: {
+    amoi: {
       provider: () => new HDWalletProvider(MNEMONIC, BLOCKCHAIN_URL),
       from: PUBLIC_KEY,
-      network_id: 80001,
+      network_id: TARGET_CHAIN_ID,
       gasPrice: 10000000000,
       gas: 6721975,
     },

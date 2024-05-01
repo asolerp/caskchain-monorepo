@@ -1,10 +1,10 @@
 import { BaseLayout } from '@ui'
-import { Chip } from 'caskchain-ui'
+// import { Chip } from 'caskchain-ui'
 import BarrelNft from '@ui/ntf/item/BarrelNft'
 import { Nft } from '@_types/nft'
 import { NextPage } from 'next'
 import FlatList from 'flatlist-react'
-import { getCookie } from 'cookies-next'
+// import { getCookie } from 'cookies-next'
 
 import { useRouter } from 'next/router'
 
@@ -14,70 +14,60 @@ import Spacer from '@ui/common/Spacer'
 import BarrelsSkeleton from 'components/pages/marketplace/BarrelsSkeleton'
 import Header from '@ui/layout/Header'
 import Image from 'next/image'
-import { LiquorsTypes, upperCaseFirstLetter } from 'caskchain-lib'
-
-import useLocalLoading from '@hooks/common/useLocalLoading'
+// import { LiquorsTypes, upperCaseFirstLetter } from 'caskchain-lib'
 
 import Dropdown from '@ui/common/Dropdown'
-import { sufixesByType } from '../../utils/filters'
+// import { sufixesByType } from '../../utils/filters'
 import useGetRates from '@hooks/common/useGetRates'
 import { useAllNfts } from '@hooks/web3/useAllNfts'
+import { useContext } from 'react'
+import { LoadingContext } from 'components/contexts/LoadingContext'
+
+const SORTS = [
+  { label: 'Cask Id', key: 'tokenId' },
+  { label: 'Name', key: 'name' },
+  { label: 'Age', key: 'age' },
+]
 
 const NFTCaskWorld: NextPage = () => {
-  const token = getCookie('token') as string
+  const { isLoading: loading } = useContext(LoadingContext)
+
   const {
     data,
-    refetch,
+    name,
     isLoading,
     activeSort,
     hasNextPage,
-    removeFilter,
     isValidating,
     handleChange,
     fetchNextPage,
     sortDirection,
     setActiveSort,
-    selectedFilters,
+    mapSortActive,
     mapSortDirection,
     setSortDirection,
     handleAddFavorite,
-    handleActiveLiquor,
+    handlePressSearch,
   } = useAllNfts()
+
   const { rates } = useGetRates()
-  const { loading } = useLocalLoading()
+
   const {
     state: { user },
   } = useGlobal()
 
   const router = useRouter()
-  // const _selectedTab = (router.query.tab as string) ?? 'search'
-  // const [filteredNfts, setFilteredNfts] = useState(nfts?.data)
 
   const hasFavorite = (nftId: number) => {
     return user?.favorites?.[nftId]
   }
-
-  // useEffect(() => {
-  //   const filtered = nfts?.data?.filter((nft: Nft) => {
-  //     if (_selectedTab === 'search') {
-  //       return true
-  //     }
-  //     if (_selectedTab === 'on-sale' && nft?.price) {
-  //       return nft?.price > 0
-  //     }
-  //     if (_selectedTab === 'fractionized') {
-  //       return nft?.fractions?.total > 0
-  //     }
-  //   })
-  //   setFilteredNfts(filtered)
-  // }, [_selectedTab, nfts?.data])
 
   if (!router.isReady) {
     return null
   }
 
   return (
-    <BaseLayout background="bg-black-light" withFooter={false}>
+    <BaseLayout background="bg-black-light" withFooter={true}>
       <Header></Header>
       <Spacer size="xl" />
       {loading ? (
@@ -90,12 +80,9 @@ const NFTCaskWorld: NextPage = () => {
                 <div className="flex flex-row items-center lg:justify-around justify-center lg:mr-10">
                   <Dropdown
                     label="Sort By"
-                    items={[
-                      { label: 'Age', key: 'age' },
-                      { label: 'ABV', key: 'abv' },
-                    ]}
-                    active={activeSort}
-                    onClick={(item: any) => setActiveSort(item.label)}
+                    items={SORTS}
+                    active={(mapSortActive as any)[activeSort]}
+                    onClick={(item: any) => setActiveSort(item.key)}
                   />
                   <Dropdown
                     label="Order By"
@@ -113,7 +100,7 @@ const NFTCaskWorld: NextPage = () => {
                 className="w-full relative lg:col-span-4 lg:order-2 bg-[#292929] rounded-2xl lg:mb-0 mb-4"
               >
                 <Image
-                  onClick={() => refetch()}
+                  onClick={() => handlePressSearch()}
                   src="/icons/search.svg"
                   width={30}
                   height={30}
@@ -123,6 +110,7 @@ const NFTCaskWorld: NextPage = () => {
                 <input
                   type="text"
                   name="name"
+                  value={name}
                   onChange={handleChange}
                   className="pl-24 bg-transparent border border-gray-600 rounded-2xl  focus:border-0 w-full h-16 font-poppins text-white text-xl"
                   placeholder="Search by Collection, NFT name, Cellar, etc"
@@ -211,7 +199,7 @@ const NFTCaskWorld: NextPage = () => {
                   <>
                     <FlatList
                       list={(data as any)?.pages?.flatMap(
-                        (page: any) => page.items
+                        (page: any) => page.result
                       )}
                       renderItem={(nft: Nft, idx: string) => {
                         return (
@@ -223,7 +211,7 @@ const NFTCaskWorld: NextPage = () => {
                               onPressFavorite={(nftId: string) =>
                                 handleAddFavorite(nftId)
                               }
-                              showFavorite={token && user?.email}
+                              showFavorite={false}
                               isFavorite={hasFavorite(nft?.tokenId)}
                               blow
                             />

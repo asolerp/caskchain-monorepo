@@ -1,5 +1,6 @@
 import "dotenv/config";
 
+export const PINATA_API_KEY = process.env.PINATA_API_KEY;
 export const PINATA_GATEWAY_URL = process.env.PINATA_GATEWAY_URL;
 export const PINATA_GATEWAY_TOKEN = process.env.PINATA_GATEWAY_TOKEN;
 export const BLOCKCHAIH_URL = process.env.BLOCKCHAIN_URL;
@@ -12,3 +13,4 @@ export const NFT_VENDOR_CONTRACT_ADDRESS =
 export const MNEMONIC = process.env.MNEMONIC;
 export const NEXT_PUBILC_USDT_CONTRACT_ADDRESS =
   process.env.NEXT_PUBILC_USDT_CONTRACT_ADDRESS;
+export const REGION = "europe-west1";

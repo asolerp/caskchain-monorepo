@@ -4,21 +4,19 @@ import Header from '@ui/layout/Header'
 import { NextPage } from 'next'
 import ProfileTabs from './componets/ProfileTabs'
 import Spacer from '@ui/common/Spacer'
-import { useEffect } from 'react'
-import { useAuth } from 'components/contexts/AuthContext'
-import { useRouter } from 'next/router'
-// import { auth } from 'utils/auth'
 
-// export const getServerSideProps = (context: any) => auth(context, 'user')
+import { auth } from 'utils/auth'
+// import { magic } from 'lib/magic'
+// import { SignOutUser } from 'lib/firebase/firebase'
+
+// const onNoAuthToken = async () => {
+//   await (magic as any)?.wallet.disconnect()
+//   SignOutUser()
+// }
+
+export const getServerSideProps = (context: any) => auth(context)
 
 const About: NextPage = () => {
-  const router = useRouter()
-  const { currentUser } = useAuth()
-  useEffect(() => {
-    if (!currentUser) {
-      router.push('/')
-    }
-  }, [currentUser, router])
   return (
     <BaseLayout background="bg-black-light">
       <div>

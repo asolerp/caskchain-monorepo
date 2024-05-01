@@ -4,19 +4,21 @@ import { BASE_URL } from '../utils'
 export const getNfts = async ({
   pageParam = null,
   filters = null,
-  lastDocId,
+  orderBy = 'tokenId',
+  limit = 10,
 }: any) => {
+  console.log('PAGE PARAMS: ', pageParam)
+
   const queryParams = new URLSearchParams({
-    pageSize: pageParam,
+    startAfter: pageParam,
+    limit,
+    orderBy,
   })
 
   if (Object.values(filters).filter((v) => !!v).length > 0) {
     queryParams.set('filters', JSON.stringify(filters))
   }
 
-  if (lastDocId) {
-    queryParams.set('lastDocId', lastDocId) // Añadir lastDocId de manera segura
-  }
   return await axios.get(`${BASE_URL}/getNfts?${queryParams}`).then((res) => {
     return res.data
   })

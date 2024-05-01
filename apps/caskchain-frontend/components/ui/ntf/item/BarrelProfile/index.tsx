@@ -22,7 +22,8 @@ const BarrelProfile: React.FC<NftItemProps> = ({ item, onPressProfileCTA }) => {
     state: { address },
   } = useGlobal()
   const isProfileMeta = item.meta
-  const mainImage = item && ipfsImageParser(isProfileMeta?.image)
+  const mainImage =
+    item && isProfileMeta?.image ? ipfsImageParser(isProfileMeta?.image) : ''
 
   return (
     <div className={`group relative cursor-pointer min-h-[${BARREL_HEIGHT}px]`}>
@@ -68,18 +69,20 @@ const BarrelProfile: React.FC<NftItemProps> = ({ item, onPressProfileCTA }) => {
                     </h3>
                   </div>
                   <div className="flex flex-row flex-wrap  justify-start items-center">
-                    {Object.entries(isProfileMeta.attributes)
-                      .filter(
-                        ([key]: any) => key !== 'historical' && key !== 'awards'
-                      )
-                      .map(([key, value]: any) => (
-                        <div key={key} className="flex items-center">
-                          <p className="text-cask-chain text-[12px]">
-                            {value.toUpperCase()}
-                          </p>
-                          <p className="text-cask-chain px-1">{' · '}</p>
-                        </div>
-                      ))}
+                    {isProfileMeta?.attributes &&
+                      Object.entries(isProfileMeta.attributes)
+                        .filter(
+                          ([key]: any) =>
+                            key !== 'historical' && key !== 'awards'
+                        )
+                        .map(([key, value]: any) => (
+                          <div key={key} className="flex items-center">
+                            <p className="text-cask-chain text-[12px]">
+                              {value.toUpperCase()}
+                            </p>
+                            <p className="text-cask-chain px-1">{' · '}</p>
+                          </div>
+                        ))}
                   </div>
                 </div>
                 <div className="px-4 pt-4 pb-2">

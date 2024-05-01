@@ -4,15 +4,15 @@ import { GlobalTypes } from '@providers/global/utils'
 import axios from 'axios'
 import { getCookie, setCookie } from 'cookies-next'
 
-import { getSignedData } from 'pages/api/utils'
-
-import { useRouter } from 'next/router'
+import { getCustomToken } from 'pages/api/utils'
 
 import { connectWithMagic } from 'caskchain-lib'
 
-import { toast } from 'react-toastify'
+// import { toast } from 'react-toastify'
 import { magic } from 'lib/magic'
 import { useWeb3 } from 'caskchain-lib/provider/web3'
+import { signInUser } from 'lib/firebase/firebase'
+import { useRouter } from 'next/router'
 
 export const useAccount = () => {
   const {
@@ -20,21 +20,28 @@ export const useAccount = () => {
     dispatch,
   } = useGlobal()
 
+  const router = useRouter()
   const { web3, setIsConnected } = useWeb3()
   const token = getCookie('token')
-  const router = useRouter()
 
-  const signAddress = async (address: string, callback: any) => {
+  const signAddress = async ({
+    address,
+    callback = () => null,
+  }: {
+    address: string
+    callback?: (user: any) => void
+  }) => {
     try {
-      const signedMessage = await getSignedData(web3, address as string)
-      const responseSign = await axios.post(`/api/user/${address}/signature`, {
-        ...signedMessage,
-        address,
-      })
-      setCookie('token', responseSign.data?.token)
-      setCookie('refresh-token', responseSign.data?.refreshToken)
+      const customToken = await getCustomToken(web3, address)
 
-      callback && callback()
+      if (!customToken) {
+        throw new Error('Invalid JWT')
+      }
+
+      const signedUser = await signInUser(customToken)
+      const user: any = signedUser?.user
+
+      callback && callback(user)
     } catch (e) {
       console.error(e)
     }
@@ -68,22 +75,23 @@ export const useAccount = () => {
   }
 
   const connect = async () => {
-    const accounts = await connectWithMagic(magic)
-    if (accounts) {
+    try {
+      const accounts = await connectWithMagic(magic)
       localStorage.setItem('user', accounts[0])
-      setIsConnected(true)
-      const userDB = await axios.get(`/api/user/${accounts[0].toLowerCase()}`)
-      dispatch({
-        type: GlobalTypes.SET_USER,
-        payload: { user: userDB?.data },
-      })
       dispatch({
         type: GlobalTypes.SET_ADDRESS,
         payload: { address: accounts[0] },
       })
-      signAddress(accounts[0], () => router.push('/dashboard'))
-    } else {
-      toast.error('Please connect your wallet')
+      setIsConnected(true)
+      signAddress({
+        address: accounts[0],
+        callback: (user) => {
+          setCookie('token', user?.accessToken)
+          router.push('/dashboard')
+        },
+      })
+    } catch (error) {
+      console.error(error)
     }
   }
 

@@ -10,10 +10,11 @@ import GlobalProvider from '@providers/global'
 import { AnimatePresence } from 'framer-motion'
 import { Web3Provider } from 'caskchain-lib'
 import { magic } from 'lib/magic'
+import { Provider } from 'utils/Provider'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <Provider>
       <ToastContainer theme="dark" closeOnClick />
       <Web3Provider magic={magic}>
         <GlobalProvider>
@@ -22,6 +23,6 @@ export default function App({ Component, pageProps }: AppProps) {
           </AnimatePresence>
         </GlobalProvider>
       </Web3Provider>
-    </>
+    </Provider>
   )
 }

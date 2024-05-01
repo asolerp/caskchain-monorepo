@@ -23,6 +23,7 @@ export const useAllNfts = () => {
   const {
     activeSort,
     removeFilter,
+    mapSortActive,
     setActiveSort,
     sortDirection,
     selectedFilters,
@@ -33,8 +34,8 @@ export const useAllNfts = () => {
 
   const { refetchUser } = useAuth()
   const [name, setName] = useState('')
-  const [filters, setFilters] = useState<any>({})
-  const [lastDocId, setLastDocId] = useState(null)
+  const [filters, setFilters] = useState<any>({ active: true })
+  const [lastDocId, setLastDocId] = useState<any>(undefined)
   const [activeLiquor, setActiveLiquor] = useState<string[] | undefined>([])
 
   const {
@@ -46,18 +47,30 @@ export const useAllNfts = () => {
     fetchNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    initialPageParam: 10,
-    queryKey: ['getCasks'],
-    queryFn: ({ pageParam }) => getNfts({ pageParam, filters, lastDocId }),
+    initialPageParam: 0,
+    queryKey: ['getCasks', filters, activeSort],
+    queryFn: ({ pageParam }) =>
+      getNfts({
+        pageParam,
+        filters,
+        orderBy: activeSort,
+        limit: 20,
+      }),
     refetchOnWindowFocus: false,
     getNextPageParam: (lastPage: any) => {
-      return lastPage?.nextPageToken
+      return lastPage?.nextCursor
     },
   })
 
   useEffect(() => {
     setLastDocId(null)
-  }, [filters])
+  }, [filters, activeSort, sortDirection, refetch])
+
+  useEffect(() => {
+    if (lastDocId === null) {
+      refetch()
+    }
+  }, [lastDocId, refetch])
 
   useEffect(() => {
     if (isSuccess && casks?.pages.length > 0) {
@@ -73,7 +86,11 @@ export const useAllNfts = () => {
   }, [isSuccess, casks])
 
   const handleChange = (e: any) => {
-    setFilters({ ...filters, [e.target.name]: e.target.value })
+    setName(e.target.value)
+  }
+
+  const handlePressSearch = () => {
+    setFilters({ ...filters, name })
   }
 
   const handleSelectFilterOption = (filterType: string, value: string) => {
@@ -120,6 +137,7 @@ export const useAllNfts = () => {
     activeLiquor,
     removeFilter,
     handleChange,
+    mapSortActive,
     fetchNextPage,
     setActiveSort,
     sortDirection,
@@ -128,6 +146,7 @@ export const useAllNfts = () => {
     data: casks || [],
     setSortDirection,
     mapSortDirection,
+    handlePressSearch,
     handleAddFavorite,
     handleActiveLiquor,
     isValidating: false,

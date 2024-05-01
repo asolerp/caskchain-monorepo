@@ -10,7 +10,7 @@ type LoadingProviderProps = {
 }
 
 export const LoadingContext = createContext<LoadingContextProps>({
-  isLoading: false,
+  isLoading: true,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   setIsLoading: () => {},
 })

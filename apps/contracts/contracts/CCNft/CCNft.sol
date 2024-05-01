@@ -35,6 +35,7 @@ contract CCNft is
   CountersUpgradeable.Counter private _tokenIds;
 
   event Mint(address owner, uint256 tokenId, string tokenURI);
+  event Burn(uint256 tokenId);
 
   event NftItemCreated(uint256 tokenId, address creator);
 
@@ -89,6 +90,7 @@ contract CCNft is
     );
     _resetTokenRoyalty(tokenId);
     super._burn(tokenId);
+    emit Burn(tokenId);
   }
 
   function getNftTotalSupply() external view returns (uint256) {

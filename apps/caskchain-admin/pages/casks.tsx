@@ -6,7 +6,7 @@ import { Button, Spacer } from 'caskchain-ui'
 import { useRouter } from 'next/router'
 import { auth } from 'utils/auth'
 
-export const getServerSideProps = (context: any) => auth(context, 'admin')
+export const getServerSideProps = (context: any) => auth(context, true)
 
 const Casks = () => {
   const { isLoading, isValidating, data, pageSize, setPage } = useAllNfts()

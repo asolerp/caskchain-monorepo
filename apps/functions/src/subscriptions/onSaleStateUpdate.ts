@@ -6,6 +6,7 @@ import * as admin from "firebase-admin";
 import cors from "cors";
 
 import { log } from "console";
+import { REGION } from "../constants";
 
 if (admin.apps.length === 0) {
   admin.initializeApp();
@@ -13,8 +14,9 @@ if (admin.apps.length === 0) {
 
 const corsHandler = cors({ origin: true });
 
-export const onSaleStateUpdate = functions.https.onRequest(
-  async (req: Request, res: Response): Promise<void> => {
+export const onSaleStateUpdate = functions
+  .region(REGION)
+  .https.onRequest(async (req: Request, res: Response): Promise<void> => {
     corsHandler(req, res, async () => {
       try {
         const { tokenId, state } = req.body;
@@ -37,5 +39,4 @@ export const onSaleStateUpdate = functions.https.onRequest(
         res.json({ error: error.message });
       }
     });
-  }
-);
+  });

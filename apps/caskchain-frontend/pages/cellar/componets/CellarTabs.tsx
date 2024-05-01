@@ -9,10 +9,10 @@ import MyOffersReceived from './MyOffersReceived'
 
 const tabs = [
   { id: 'my-casks', label: 'My casks' },
-  { id: 'favourites', label: 'Favourites' },
-  { id: 'my-offers-sent', label: 'Offers sent' },
-  { id: 'my-offers-received', label: 'Offers received' },
-  { id: 'my-activity', label: 'My activity' },
+  // { id: 'favourites', label: 'Favourites' },
+  // { id: 'my-offers-sent', label: 'Offers sent' },
+  // { id: 'my-offers-received', label: 'Offers received' },
+  // { id: 'my-activity', label: 'My activity' },
 ]
 
 const CellarTabs = () => {
@@ -58,9 +58,9 @@ const CellarTabs = () => {
         {_selectedTab === 'my-casks' && <CasksTab />}
       </div>
       <div className="w-full">
-        {_selectedTab === 'favourites' && <FavouritesTab />}
+        {/* {_selectedTab === 'favourites' && <FavouritesTab />}
         {_selectedTab === 'my-offers-sent' && <MyOffersSent />}
-        {_selectedTab === 'my-offers-received' && <MyOffersReceived />}
+        {_selectedTab === 'my-offers-received' && <MyOffersReceived />} */}
       </div>
     </div>
   )

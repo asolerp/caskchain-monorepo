@@ -7,6 +7,7 @@ import cors from "cors";
 import {
   NEXT_PUBILC_USDT_CONTRACT_ADDRESS,
   NFT_VENDOR_CONTRACT_ADDRESS,
+  REGION,
 } from "../../constants";
 import { getContract, initWeb3 } from "../../web3";
 
@@ -23,8 +24,9 @@ const corsHandler = cors({ origin: true });
 
 const wallet = initWeb3();
 
-export const updateERC20TokenPrice = functions.https.onRequest(
-  async (req: Request, res: Response): Promise<void> => {
+export const updateERC20TokenPrice = functions
+  .region(REGION)
+  .https.onRequest(async (req: Request, res: Response): Promise<void> => {
     corsHandler(req, res, async () => {
       try {
         const { tokenId, erc20ListPrice } = req.body;
@@ -66,5 +68,4 @@ export const updateERC20TokenPrice = functions.https.onRequest(
         res.status(500).json({ error: "server_error" });
       }
     });
-  }
-);
+  });

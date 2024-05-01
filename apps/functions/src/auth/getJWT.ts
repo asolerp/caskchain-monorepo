@@ -1,8 +1,10 @@
 import { isValidEthAddress, isValidSignature } from "../utils/utils";
 import { Request, Response } from "express";
 import * as functions from "firebase-functions";
+
 import * as admin from "firebase-admin";
 import cors from "cors";
+import { REGION } from "../constants";
 
 // Asegúrate de inicializar la aplicación admin de Firebase una sola vez
 if (admin.apps.length === 0) {
@@ -11,8 +13,9 @@ if (admin.apps.length === 0) {
 
 const corsHandler = cors({ origin: true });
 
-export const getJWT = functions.https.onRequest(
-  async (req: Request, res: Response): Promise<void> => {
+export const getJWT = functions
+  .region(REGION)
+  .https.onRequest(async (req: Request, res: Response): Promise<void> => {
     corsHandler(req, res, async () => {
       try {
         const { address, signature } = req.query;
@@ -79,5 +82,4 @@ export const getJWT = functions.https.onRequest(
         res.status(500).json({ error: "server_error" });
       }
     });
-  }
-);
+  });

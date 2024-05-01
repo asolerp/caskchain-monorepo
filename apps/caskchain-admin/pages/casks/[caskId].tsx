@@ -1,6 +1,6 @@
 import { BaseLayout } from '@ui'
 import { Button, Spacer } from 'caskchain-ui'
-import { NextPageContext } from 'next'
+
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { ethers } from 'ethers'
@@ -9,19 +9,25 @@ import ClientOnly from 'components/pages/ClientOnly'
 import { auth } from 'utils/auth'
 import { addressSimplifier, ipfsImageParser } from 'caskchain-lib'
 import { Switch } from '@headlessui/react'
-import { useEffect, useState } from 'react'
+
 import { useCaskNft } from '@hooks/web3/useCaskNft'
+
+export const getServerSideProps = (context: any) => auth(context, true)
 
 function Cask() {
   const route = useRouter()
 
   const {
     data,
+    isInSale,
     formState,
     isLoading,
     listPrice,
+    bestBarrel,
+    setIsInSale,
     setListPrice,
     isValidating,
+    setBestBarrel,
     updateNftPrice,
     createFraction,
     erc20ListPrice,
@@ -33,16 +39,6 @@ function Cask() {
   } = useCaskNft({
     caskId: route.query.caskId as string,
   })
-
-  const [isInSale, setIsInSale] = useState(false)
-  const [bestBarrel, setBestBarrel] = useState(false)
-
-  useEffect(() => {
-    if (data) {
-      setIsInSale(data?.active)
-      setBestBarrel(data?.bestBarrel)
-    }
-  }, [data])
 
   const mainImage = data?.meta?.image && ipfsImageParser(data?.meta?.image)
 
@@ -331,20 +327,22 @@ function Cask() {
               Attributes
             </h1>
             <div className="grid grid-cols-4 gap-4 mt-6">
-              {data?.meta?.attributes?.map((attribute: any) => (
-                <div
-                  key={attribute.trait_type}
-                  className="flex flex-col bg-cask-chain rounded-xl p-4 shadow"
-                >
-                  <dt className="text-md font-medium text-gray-400">
-                    {attribute.trait_type.toUpperCase()}
-                  </dt>
-                  <Spacer size="xs" />
-                  <dd className=" text-lg font-extrabold text-black">
-                    {attribute.value}
-                  </dd>
-                </div>
-              ))}
+              {Object.entries(data?.meta?.attributes)?.map(
+                ([attribute, value]: any) => (
+                  <div
+                    key={attribute}
+                    className="flex flex-col bg-cask-chain rounded-xl p-4 shadow"
+                  >
+                    <dt className="text-md font-medium text-gray-400">
+                      {attribute.toUpperCase()}
+                    </dt>
+                    <Spacer size="xs" />
+                    <dd className=" text-lg font-extrabold text-black">
+                      {value}
+                    </dd>
+                  </div>
+                )
+              )}
             </div>
           </div>
         </div>
@@ -354,8 +352,3 @@ function Cask() {
 }
 
 export default Cask
-
-export const getServerSideProps: any = async (context: NextPageContext) => {
-  const { query } = context
-  return auth(context, 'admin', { props: { query } })
-}

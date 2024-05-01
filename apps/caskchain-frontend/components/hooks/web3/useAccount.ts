@@ -11,10 +11,11 @@ import { useQuery } from '@tanstack/react-query'
 import { useAuth } from 'components/contexts/AuthContext'
 import { getUserData } from 'pages/api/auth/getUserData'
 import { useWeb3 } from 'caskchain-lib/provider/web3'
+import { getCookie, setCookie } from 'cookies-next'
 
 export const useAccount = () => {
   const { web3, setIsConnected } = useWeb3()
-
+  const token = getCookie('token')
   const {
     state: { address },
     dispatch,
@@ -26,14 +27,12 @@ export const useAccount = () => {
     staleTime: 5 * 1000,
   })
 
-  const { currentUser } = useAuth()
-
   const [loading, setLoading] = useState<boolean>(false)
 
   const checkIfUserDataIsNeeded = async (callback?: any) => {
     const user = data?.user
 
-    if (!currentUser) {
+    if (!token) {
       return dispatch({
         type: GlobalTypes.SET_SIGN_IN_MODAL,
         payload: { status: true },
@@ -63,10 +62,9 @@ export const useAccount = () => {
         throw new Error('Invalid JWT')
       }
 
-      console.log('Signing in user with custom token: ', customToken)
-
-      await signInUser(customToken)
-
+      const signedUser = await signInUser(customToken)
+      const user: any = signedUser?.user
+      setCookie('token', user?.accessToken)
       callback && callback()
     } catch (e) {
       console.error(e)
@@ -88,7 +86,6 @@ export const useAccount = () => {
     setLoading(true)
     try {
       const accounts = await connectWithMagic(magic)
-      console.log('[[ACCOUNTS]]', accounts)
       localStorage.setItem('user', accounts[0])
       dispatch({
         type: GlobalTypes.SET_ADDRESS,

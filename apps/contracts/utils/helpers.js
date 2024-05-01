@@ -13,6 +13,7 @@ const insertInEnvFile = ({ params, route }) => {
   let env = {};
 
   const envFile = jetpack.read(route);
+
   const buf = Buffer.from(envFile);
   const parsed = dotenv.parse(buf);
 

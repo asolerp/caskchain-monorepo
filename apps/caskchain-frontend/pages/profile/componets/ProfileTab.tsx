@@ -4,12 +4,10 @@ import UserInfoForm from 'components/forms/UserInfoForm'
 import useProfile from '../hooks/useProfile'
 import { useForm } from 'react-hook-form'
 import ImageProfileUploader from 'components/pages/profile/ImageProfileUploader'
-import { useAccount } from '@hooks/web3'
+import { useAccount } from '@hooks/web3/useAccount'
 
 const ProfileTab = () => {
-  const {
-    account: { user },
-  } = useAccount()
+  const { user } = useAccount()
   const { handleSaveUser, loading } = useProfile()
   const onSubmit = (data: any) => handleSaveUser({ formState: data })
 

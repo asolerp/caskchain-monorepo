@@ -1,5 +1,6 @@
 const dotenv = require("dotenv");
 dotenv.config({ path: `../../../.env` });
+const fs = require("fs").promises;
 
 const CCNft = artifacts.require("CCNft");
 const CCNftStorage = artifacts.require("CCNftStorage");
@@ -30,6 +31,7 @@ const NftFractionsFactoryStorageContract = require("../build/contracts/NftFracti
 const NftFractionsVendorContract = require("../build/contracts/NftFractionsVendor.json");
 const NftFractionsVendorStorageContract = require("../build/contracts/NftFractionsVendorStorage.json");
 const MockUSDTContract = require("../build/contracts/MockUSDT.json");
+const { insertInEnvFile } = require("../utils/helpers");
 
 module.exports = async function (callback) {
   try {
@@ -96,8 +98,25 @@ module.exports = async function (callback) {
     console.log("NftVendor ADDRESS", nftVendor.address);
     console.log("NftFractionsFactory ADDRESS", nftFractionsFactory.address);
     console.log("NftFractionsVendor ADDRESS", nftFractionsVendor.address);
-
     console.log("MOCK USDT ADDRESS", mockUSDT.address);
+
+    const originRoute =
+      "/Users/alberto/Desktop/Proyectos/caskchain-monorepo/.env";
+    const destinyRoute =
+      "/Users/alberto/Desktop/Proyectos/caskchain-monorepo/apps/functions/.env";
+
+    insertInEnvFile({
+      params: {
+        CCNFT_ADDRESS: ccNft.address,
+        NFT_VENDOR_ADDRESS: nftVendor.address,
+        NFT_FRACTIONS_FACTORY_ADDRESS: nftFractionsFactory.address,
+        NFT_FRACTIONS_VENDOR_ADDRESS: nftFractionsVendor.address,
+        USDT_CONTRACT_ADDRESS: mockUSDT.address,
+      },
+      route: "/Users/alberto/Desktop/Proyectos/caskchain-monorepo/.env",
+    });
+
+    await fs.copyFile(originRoute, destinyRoute);
 
     await nftVendor.setExcludedFromList(process.env.PUBLIC_KEY, true);
     await nftVendor.addERC20Token(mockUSDT.address);

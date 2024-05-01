@@ -1,28 +1,29 @@
-const CLOUD_NAME = 'caskchain'
-const UPLOAD_PRESET = 'caskchain' // The unsigned preset you noted earlier
+import { storage } from './firebase'
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 
-function uploadImage(file: File, path: string): Promise<void> {
-  const formData = new FormData()
-  formData.append('file', file)
-  formData.append('upload_preset', UPLOAD_PRESET)
-  formData.append('public_id', path) // Path where you want to save it
+function uploadImage(file: File, path: string, onSuccess: any) {
+  const storageRef = ref(storage, path)
+  const uploadTask = uploadBytesResumable(storageRef, file)
 
-  return fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
-    method: 'POST',
-    body: formData,
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.secure_url) {
-        console.log('File uploaded to:', data.secure_url)
-        return data.secure_url
-      } else {
-        console.error('Error uploading file:', data)
-      }
-    })
-    .catch((error) => {
-      console.error('Error uploading file:', error)
-    })
+  uploadTask.on(
+    'state_changed',
+    (snapshot) => {
+      // Observe state change events such as progress, pause, and resume
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+      console.log('Upload is ' + progress + '% done')
+    },
+    (error) => {
+      // Handle unsuccessful uploads
+      console.log(error)
+    },
+    () => {
+      // Handle successful uploads on complete
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        onSuccess && onSuccess(downloadURL)
+        console.log('File available at', downloadURL)
+      })
+    }
+  )
 }
 
 export default uploadImage

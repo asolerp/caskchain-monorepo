@@ -1,16 +1,21 @@
 import { useWeb3 } from 'caskchain-lib/provider/web3'
+import { getOwnedNfts } from 'pages/api/nfts/getOwnedNfts'
+import { useQuery } from '@tanstack/react-query'
+
 // import { useGlobal } from '@providers/global'
 // import { deleteCookie } from 'cookies-next'
 // import axiosClient from 'lib/fetcher/axiosInstance'
 
 // import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { useAuth } from 'components/contexts/AuthContext'
 
 // import useSWR from 'swr'
 
 export const useSideBar = () => {
   const [isMagicWallet, setIsMagicWallet] = useState<string>('')
   const { web3 } = useWeb3()
+  const { currentUser } = useAuth()
 
   useEffect(() => {
     const getWalletType = async () => {
@@ -22,26 +27,13 @@ export const useSideBar = () => {
     }
   }, [web3])
 
-  // const { data } = useSWR(
-  //   sideBar ? '/api/casks/me' : null,
-  //   async () => {
-  //     try {
-  //       const ownedNfts: any = await axiosClient.get('/api/casks/me')
-  //       return ownedNfts.data
-  //     } catch (err: any) {
-  //       if (err.response.status === 401 || err.response.status === 403) {
-  //         deleteCookie('token')
-  //         router.reload()
-  //       }
-  //     }
-  //   },
-  //   {
-  //     revalidateOnFocus: false,
-  //   }
-  // )
+  const { data } = useQuery({
+    queryKey: ['getOwnedNfts', currentUser?.uid],
+    queryFn: async () => getOwnedNfts({ currentUser }),
+  })
 
   return {
-    data: [],
+    data: data?.nfts,
     isMagicWallet,
   }
 }

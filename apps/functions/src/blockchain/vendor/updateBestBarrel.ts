@@ -4,6 +4,7 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
 import cors from "cors";
+import { REGION } from "../../constants";
 
 if (admin.apps.length === 0) {
   admin.initializeApp();
@@ -11,15 +12,16 @@ if (admin.apps.length === 0) {
 
 const corsHandler = cors({ origin: true });
 
-export const updateBestBarrel = functions.https.onRequest(
-  async (req: Request, res: Response): Promise<void> => {
+export const updateBestBarrel = functions
+  .region(REGION)
+  .https.onRequest(async (req: Request, res: Response): Promise<void> => {
     corsHandler(req, res, async () => {
       try {
         const { tokenId, state } = req.body;
 
         await admin.firestore().collection("casks").doc(tokenId).set(
           {
-            offer: state,
+            bestBarrel: state,
           },
           {
             merge: true,
@@ -32,5 +34,4 @@ export const updateBestBarrel = functions.https.onRequest(
         res.status(500).json({ error: "server_error" });
       }
     });
-  }
-);
+  });

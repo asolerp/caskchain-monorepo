@@ -7,6 +7,7 @@ import cors from "cors";
 
 import { log } from "console";
 import { getUser } from "../helpers/db";
+import { REGION } from "../constants";
 
 if (admin.apps.length === 0) {
   admin.initializeApp();
@@ -14,8 +15,9 @@ if (admin.apps.length === 0) {
 
 const corsHandler = cors({ origin: true });
 
-export const onItemBought = functions.https.onRequest(
-  async (req: Request, res: Response): Promise<void> => {
+export const onItemBought = functions
+  .region(REGION)
+  .https.onRequest(async (req: Request, res: Response): Promise<void> => {
     corsHandler(req, res, async () => {
       try {
         const { buyer, seller, tokenId, isErc20, price, transactionHash } =
@@ -55,5 +57,4 @@ export const onItemBought = functions.https.onRequest(
         res.json({ error: error.message });
       }
     });
-  }
-);
+  });

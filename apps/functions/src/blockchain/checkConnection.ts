@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import * as functions from "firebase-functions";
 import Web3 from "web3";
-import { BLOCKCHAIH_URL } from "../constants";
+import { BLOCKCHAIH_URL, REGION } from "../constants";
 import * as admin from "firebase-admin";
 import cors from "cors";
 
@@ -15,8 +15,9 @@ const corsHandler = cors({ origin: true });
 // Usa la URL de Ngrok para conectar con la blockchain local
 const web3 = new Web3(BLOCKCHAIH_URL as string);
 
-export const checkBlockchainConnection = functions.https.onRequest(
-  async (req: Request, res: Response): Promise<void> => {
+export const checkBlockchainConnection = functions
+  .region(REGION)
+  .https.onRequest(async (req: Request, res: Response): Promise<void> => {
     corsHandler(req, res, async () => {
       web3.eth
         .getAccounts()
@@ -29,5 +30,4 @@ export const checkBlockchainConnection = functions.https.onRequest(
           res.status(500).send("Error al conectar con la blockchain");
         });
     });
-  }
-);
+  });

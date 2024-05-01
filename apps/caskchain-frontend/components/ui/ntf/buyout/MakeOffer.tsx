@@ -1,6 +1,6 @@
 import React from 'react'
 import Button from '@ui/common/Button'
-import Input from '@ui/common/Input'
+// import Input from '@ui/common/Input'
 import Spacer from '@ui/common/Spacer'
 import Spinner from '@ui/common/Spinner'
 import { Nft } from '@_types/nft'
@@ -50,7 +50,7 @@ const MakeOffer: React.FC<Props> = ({
             </p>
           </div>
           <Spacer size="md" />
-          <div className="flex items-center">
+          {/* <div className="flex items-center">
             <div className="w-full">
               <p className="text-cask-chain">OFFER</p>
               <Input
@@ -64,7 +64,7 @@ const MakeOffer: React.FC<Props> = ({
                 required
               />
             </div>
-          </div>
+          </div> */}
           <Spacer size="sm" />
           <div className="flex flex-col items-center">
             {hasOffer && (
@@ -81,10 +81,12 @@ const MakeOffer: React.FC<Props> = ({
               </>
             )}
             <Button
+              containerStyle="bg-red-500 py-3"
+              labelStyle="text-white text-xl text-center font-poppins"
               fit={false}
-              onClick={() => offer && onOffer(offer.toString())}
+              // onClick={() => offer && onOffer(offer.toString())}
             >
-              {hasOffer ? 'Bid harder' : 'Make Offer'}
+              Sold
             </Button>
           </div>
         </>

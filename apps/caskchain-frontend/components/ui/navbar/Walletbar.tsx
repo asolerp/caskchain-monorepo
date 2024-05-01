@@ -2,8 +2,8 @@ import { useAccount } from '@hooks/web3/useAccount'
 import { useGlobal } from '@providers/global'
 
 import Button from '@ui/common/Button'
-import { useAuth } from 'components/contexts/AuthContext'
 import ClientOnly from 'components/pages/ClientOnly'
+import { getCookie } from 'cookies-next'
 
 import Image from 'next/image'
 
@@ -14,11 +14,11 @@ const Walletbar: React.FC = () => {
     state: { address, sideBar },
   } = useGlobal()
 
-  const { currentUser } = useAuth()
+  const token = getCookie('token')
   const { handleOpenSidebar, user, loading, checkIfUserDataIsNeeded, connect } =
     useAccount()
 
-  if (currentUser && address) {
+  if (token && address) {
     return (
       <>
         <div className="lg:hidden">

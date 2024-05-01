@@ -5,6 +5,7 @@ import * as admin from "firebase-admin";
 
 import cors from "cors";
 import { log } from "firebase-functions/logger";
+import { REGION } from "../../constants";
 
 if (admin.apps.length === 0) {
   admin.initializeApp();
@@ -12,8 +13,9 @@ if (admin.apps.length === 0) {
 
 const corsHandler = cors({ origin: true });
 
-export const getNft = functions.https.onRequest(
-  async (req: Request, res: Response): Promise<void> => {
+export const getNft = functions
+  .region(REGION)
+  .https.onRequest(async (req: Request, res: Response): Promise<void> => {
     corsHandler(req, res, async () => {
       const tokenId = req.query.tokenId as string;
 
@@ -43,6 +45,7 @@ export const getNft = functions.https.onRequest(
         const user = userResult.data();
 
         const cask = {
+          active: data?.active,
           tokenId: result?.id,
           tokenURI: data?.pinata,
           creator: data?.creator,
@@ -51,7 +54,7 @@ export const getNft = functions.https.onRequest(
             nickname: user?.nickname || "",
           },
           price: data?.price,
-          bestBarrel: data?.offer || false,
+          bestBarrel: data?.bestBarrel,
           meta: {
             name: data?.name,
             description: data?.description,
@@ -69,5 +72,4 @@ export const getNft = functions.https.onRequest(
         res.status(500).send("Error fetching documents.");
       }
     });
-  }
-);
+  });

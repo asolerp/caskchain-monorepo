@@ -1,21 +1,14 @@
-import axios from 'axios'
-import useSWR from 'swr'
+import { useQuery } from '@tanstack/react-query'
+import { getBestBarrels } from 'pages/api/nfts/getBestBarrels'
 
 const useBestBarrels = () => {
-  const { data } = useSWR(
-    'api/casks/bestBarrels',
-    async () => {
-      const { data: bestBarrels }: any = await axios.get(
-        `/api/casks/bestBarrels`
-      )
-
-      return bestBarrels
-    },
-    { revalidateOnFocus: false }
-  )
+  const { data } = useQuery({
+    queryKey: ['getBestBarrels'],
+    queryFn: async () => getBestBarrels(),
+  })
 
   return {
-    bestBarrels: data,
+    bestBarrels: data?.result || [],
   }
 }
 

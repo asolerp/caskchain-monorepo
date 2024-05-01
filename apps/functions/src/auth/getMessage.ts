@@ -1,16 +1,18 @@
-import { isValidEthAddress, makeId } from "../utils/utils";
+import { generateNonce, isValidEthAddress } from "../utils/utils";
 import { Request, Response } from "express";
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import cors from "cors";
 import { log } from "firebase-functions/logger";
+import { REGION } from "../constants";
 
 admin.initializeApp();
 
 const corsHandler = cors({ origin: true });
 
-export const getMessage = functions.https.onRequest(
-  async (req: Request, res: Response): Promise<void> => {
+export const getMessage = functions
+  .region(REGION)
+  .https.onRequest(async (req: Request, res: Response): Promise<void> => {
     corsHandler(req, res, async () => {
       try {
         const { address } = req.query;
@@ -27,8 +29,7 @@ export const getMessage = functions.https.onRequest(
           return;
         }
 
-        const randomString = makeId(20);
-        let messageToSign = `Wallet address: ${address} Nonce: ${randomString}`;
+        let messageToSign = generateNonce();
         const userRef = admin
           .firestore()
           .collection("users")
@@ -54,5 +55,4 @@ export const getMessage = functions.https.onRequest(
         res.status(500).json({ error: "server_error" });
       }
     });
-  }
-);
+  });

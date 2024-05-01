@@ -9,6 +9,7 @@ import { getContract } from "../../web3";
 import {
   BLOCKCHAIH_URL,
   CCNFT_CONTRACT_ADDRESS,
+  REGION,
   // NFT_VENDOR_CONTRACT_ADDRESS,
 } from "../../constants";
 
@@ -24,8 +25,9 @@ if (admin.apps.length === 0) {
 const corsHandler = cors({ origin: true });
 const provider = new ethers.JsonRpcProvider(BLOCKCHAIH_URL as string);
 
-export const getOwnedNfts = functions.https.onRequest(
-  async (req: Request, res: Response): Promise<void> => {
+export const getOwnedNfts = functions
+  .region(REGION)
+  .https.onRequest(async (req: Request, res: Response): Promise<void> => {
     corsHandler(req, res, async () => {
       if (
         !req.headers.authorization ||
@@ -93,8 +95,7 @@ export const getOwnedNfts = functions.https.onRequest(
         res.status(500).send("Error fetching documents.");
       }
     });
-  }
-);
+  });
 
 // public async getOwnedNfts(account: string) {
 //     try {

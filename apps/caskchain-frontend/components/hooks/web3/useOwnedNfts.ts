@@ -31,9 +31,13 @@ export const useOwnedNfts = () => {
   const { setIsLoading } = useContext(LoadingContext)
 
   const { data, isLoading } = useQuery({
-    queryKey: ['getOwnedNfts', currentUser?.uid],
+    queryKey: ['getOwnedNfts', address],
     queryFn: async () => getOwnedNfts({ currentUser }),
   })
+
+  useEffect(() => {
+    setIsLoading(isLoading)
+  }, [isLoading, setIsLoading])
 
   // const {
   //   data,

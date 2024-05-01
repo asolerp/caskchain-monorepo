@@ -9,8 +9,8 @@ import BackupTab from './BackupTab'
 const tabs = [
   { id: 'settings', label: 'Settings' },
   { id: 'profile', label: 'Profile' },
-  { id: 'shipping', label: 'Shipping Address' },
-  { id: 'backup', label: 'Backup Contact' },
+  // { id: 'shipping', label: 'Shipping Address' },
+  // { id: 'backup', label: 'Backup Contact' },
 ]
 
 const ProfileTabs = () => {
@@ -18,7 +18,7 @@ const ProfileTabs = () => {
 
   return (
     <div className="flex flex-col w-2/4 items-center">
-      <div className="flex w-full justify-between border-b border-b-gray-500">
+      <div className="flex w-[250px] justify-between border-b border-b-gray-500">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -46,8 +46,8 @@ const ProfileTabs = () => {
       <div className="w-full">
         {activeTab === 'settings' && <SettingsTab />}
         {activeTab === 'profile' && <ProfileTab />}
-        {activeTab === 'shipping' && <ShippingTab />}
-        {activeTab === 'backup' && <BackupTab />}
+        {/* {activeTab === 'shipping' && <ShippingTab />}
+        {activeTab === 'backup' && <BackupTab />} */}
       </div>
     </div>
   )

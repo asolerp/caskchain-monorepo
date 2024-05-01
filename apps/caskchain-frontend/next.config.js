@@ -60,6 +60,7 @@ const nextConfig = withTM({
       'gateway.pinata.cloud',
       'gold-tropical-mongoose-649.mypinata.cloud',
       'images.unsplash.com',
+      'firebasestorage.googleapis.com',
     ],
   },
   async rewrites() {

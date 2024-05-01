@@ -10,6 +10,10 @@ import useFractionFactoryForm from '@hooks/common/useFractionFactoryForm'
 import axiosClient from 'lib/fetcher/axiosInstance'
 import { sendTransaction } from 'caskchain-lib/provider/web3/utils'
 import { useWeb3 } from 'caskchain-lib/provider/web3'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { getNft } from 'pages/api/nfts/getNft'
+import { updateBestBarrel } from 'pages/api/nfts/updateBestBarrel'
+import { BASE_URL } from 'pages/api/utils'
 
 export const useCaskNft = ({ caskId }: any) => {
   const { nftVendor, ccNft } = useWeb3()
@@ -25,36 +29,19 @@ export const useCaskNft = ({ caskId }: any) => {
   const [tokenAmmount, setTokenAmmount] = useState<number | undefined>(0)
   const [listPrice, setListPrice] = useState<number>(0)
   const [erc20ListPrice, setERC20ListPrice] = useState<number>(0)
+  const [bestBarrel, setBestBarrel] = useState(false)
+  const [isInSale, setIsInSale] = useState(false)
 
-  const [isFavorite, setIsFavorite] = useState<boolean>(false)
+  const queryClient = useQueryClient()
 
   const {
-    state: { user, address },
+    state: { address },
   } = useGlobal()
 
-  useEffect(() => {
-    if (user?.favorites?.[caskId]) {
-      setIsFavorite(true)
-    } else {
-      setIsFavorite(false)
-    }
-  }, [user, caskId])
-
-  const {
-    data,
-    isLoading: isLoadingNft,
-    isValidating: isValidatingNft,
-    mutate: refetchNft,
-  } = useSWR(
-    'web3/useCaskNft',
-    async () => {
-      const { data: nfts }: any = await axios.get(`/api/casks/${caskId}`)
-      return {
-        ...nfts,
-      }
-    },
-    { revalidateOnFocus: false }
-  )
+  const { data, refetch, isLoading, isPending } = useQuery({
+    queryKey: ['getCask', caskId],
+    queryFn: async () => getNft({ tokenId: caskId }),
+  })
 
   const {
     data: salesHistory,
@@ -84,23 +71,19 @@ export const useCaskNft = ({ caskId }: any) => {
     { revalidateOnFocus: false }
   )
 
-  const { data: totalFavoritesData } = useSWR(
-    'api/casks/:caskId/totalFavorites',
-    async () => {
-      const {
-        data: { totalFavorites },
-      }: any = await axios.get(`/api/casks/${caskId}/totalFavorites`)
-      return totalFavorites
-    },
-    { revalidateOnFocus: true }
-  )
-
-  const isLoading = isLoadingNft
-  const isValidating = isValidatingNft
+  const isValidating = isPending
 
   useLoading({
     loading: isLoading || latestOffersIsLoading || salesHistoryIsLoading,
   })
+
+  useEffect(() => {
+    console.log('data', data)
+    if (data) {
+      setIsInSale(data?.cask?.active)
+      setBestBarrel(data?.cask?.bestBarrel)
+    }
+  }, [data?.cask])
 
   const _nftVendor = nftVendor
 
@@ -112,14 +95,14 @@ export const useCaskNft = ({ caskId }: any) => {
 
     try {
       await axios.post(
-        'https://us-central1-cask-chain.cloudfunctions.net/updateERC20TokenPrice',
+        'https://europe-west1-cask-chain.cloudfunctions.net/updateERC20TokenPrice',
         {
           tokenId: caskId,
           erc20ListPrice,
         }
       )
 
-      await refetchNft()
+      await refetch()
 
       toast.update(id, {
         render: 'Barrel USDT price updated',
@@ -144,14 +127,14 @@ export const useCaskNft = ({ caskId }: any) => {
     const id = toast.loading('Updating barrel state...')
     try {
       await axios.post(
-        'https://us-central1-cask-chain.cloudfunctions.net/updateSaleState',
+        'https://europe-west1-cask-chain.cloudfunctions.net/updateSaleState',
         {
           tokenId: caskId,
           state,
         }
       )
 
-      await refetchNft()
+      await refetch()
 
       toast.update(id, {
         render: 'Sale state updated',
@@ -175,12 +158,12 @@ export const useCaskNft = ({ caskId }: any) => {
   const updateNftBestBarel = async (state: boolean) => {
     const id = toast.loading('Updating barrel state...')
     try {
-      await axios.post(`/api/casks/makeBestBarrel`, {
-        caskId,
+      await axios.post(`${BASE_URL}/updateBestBarrel`, {
+        tokenId: caskId,
         state,
       })
 
-      await refetchNft()
+      queryClient.invalidateQueries({ queryKey: ['getCask', caskId] })
 
       toast.update(id, {
         render: 'Sale state updated',
@@ -218,7 +201,7 @@ export const useCaskNft = ({ caskId }: any) => {
 
       await sendTransaction(address, true, txList, 10)
 
-      await refetchNft()
+      await refetch()
 
       toast.update(id, {
         render: 'Barrel price updated',
@@ -302,17 +285,20 @@ export const useCaskNft = ({ caskId }: any) => {
   }
 
   return {
-    data,
+    data: data?.cask,
     isLoading,
-    formState,
-    isFavorite,
+    isInSale,
     listPrice,
+    formState,
+    bestBarrel,
+    setIsInSale,
     salesHistory,
     hasFractions,
     tokenAmmount,
     setListPrice,
     latestOffers,
     isValidating,
+    setBestBarrel,
     erc20ListPrice,
     updateNftPrice,
     createFraction,
@@ -322,6 +308,5 @@ export const useCaskNft = ({ caskId }: any) => {
     updateNftSaleState,
     updateNftBestBarel,
     handleFormFractionsChange: handleChange,
-    totalFavorites: totalFavoritesData?.totalFavorites,
   }
 }

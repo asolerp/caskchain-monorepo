@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.REGION = exports.NEXT_PUBILC_USDT_CONTRACT_ADDRESS = exports.MNEMONIC = exports.NFT_VENDOR_CONTRACT_ADDRESS = exports.CCNFT_CONTRACT_ADDRESS = exports.PUBLIC_ADDRESS = exports.PRIVATE_KEY = exports.BLOCKCHAIN_WS_URL = exports.BLOCKCHAIH_URL = exports.PINATA_GATEWAY_TOKEN = exports.PINATA_GATEWAY_URL = exports.PINATA_API_KEY = void 0;
+require("dotenv/config");
+exports.PINATA_API_KEY = process.env.PINATA_API_KEY;
+exports.PINATA_GATEWAY_URL = process.env.PINATA_GATEWAY_URL;
+exports.PINATA_GATEWAY_TOKEN = process.env.PINATA_GATEWAY_TOKEN;
+exports.BLOCKCHAIH_URL = process.env.BLOCKCHAIN_URL;
+exports.BLOCKCHAIN_WS_URL = process.env.BLOCKCHAIN_WS_URL;
+exports.PRIVATE_KEY = process.env.PRIVATE_KEY;
+exports.PUBLIC_ADDRESS = process.env.PUBLIC_ADDRESS;
+exports.CCNFT_CONTRACT_ADDRESS = process.env.CCNFT_CONTRACT_ADDRESS;
+exports.NFT_VENDOR_CONTRACT_ADDRESS = process.env.NFT_VENDOR_CONTRACT_ADDRESS;
+exports.MNEMONIC = process.env.MNEMONIC;
+exports.NEXT_PUBILC_USDT_CONTRACT_ADDRESS = process.env.NEXT_PUBILC_USDT_CONTRACT_ADDRESS;
+exports.REGION = "europe-west1";

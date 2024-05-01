@@ -21,6 +21,7 @@ import { NAVBAR_HEIGHT } from '.'
 import { SignOutUser } from 'lib/firebase/firebase'
 
 import { useSideBar } from '@hooks/web3/useSideBar'
+import { deleteCookie } from 'cookies-next'
 
 type SidebarProps = {
   open: boolean
@@ -41,7 +42,7 @@ const SidebarComponent: React.FC<SidebarProps> = ({ open }) => {
   const handleLogout = async () => {
     dispatch({ type: GlobalTypes.SET_USER, payload: { user: null } })
     dispatch({ type: GlobalTypes.SET_ADDRESS, payload: { address: null } })
-
+    deleteCookie('token')
     localStorage.removeItem('user')
     await (magic as any)?.wallet.disconnect()
     SignOutUser()

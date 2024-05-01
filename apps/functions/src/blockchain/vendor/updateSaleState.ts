@@ -4,7 +4,7 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
 import cors from "cors";
-import { NFT_VENDOR_CONTRACT_ADDRESS } from "../../constants";
+import { NFT_VENDOR_CONTRACT_ADDRESS, REGION } from "../../constants";
 import { getContract, initWeb3 } from "../../web3";
 
 import NFTVENDORABI from "../../contracts/NFTVendor.json";
@@ -19,8 +19,9 @@ const corsHandler = cors({ origin: true });
 
 const wallet = initWeb3();
 
-export const updateSaleState = functions.https.onRequest(
-  async (req: Request, res: Response): Promise<void> => {
+export const updateSaleState = functions
+  .region(REGION)
+  .https.onRequest(async (req: Request, res: Response): Promise<void> => {
     corsHandler(req, res, async () => {
       try {
         const { tokenId, state } = req.body;
@@ -50,5 +51,4 @@ export const updateSaleState = functions.https.onRequest(
         res.status(500).json({ error: "server_error" });
       }
     });
-  }
-);
+  });

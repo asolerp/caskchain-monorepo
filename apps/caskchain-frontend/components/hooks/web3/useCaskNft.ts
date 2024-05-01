@@ -41,14 +41,6 @@ export const useCaskNft = ({ caskId }: any) => {
   const { rates } = useGetRates()
   const token = getCookie('token')
 
-  // useEffect(() => {
-  //   if (user?.favorites?.[caskId]) {
-  //     setIsFavorite(true)
-  //   } else {
-  //     setIsFavorite(false)
-  //   }
-  // }, [user, caskId])
-
   const { data, isLoading } = useQuery({
     queryKey: ['getCask', caskId],
     queryFn: async () => getNft({ tokenId: caskId }),

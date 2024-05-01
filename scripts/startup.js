@@ -84,6 +84,8 @@ function stopProcess(name, port) {
 // ------------- PROCESS MANAGEMENT ENTRYPOINT -------------------
 //////////////////////////////////////////////////////////////////
 
+pm2.delete("all");
+
 pm2.connect(false, async function (err) {
   if (err) {
     console.log("PM2 ERROR", err);
@@ -178,8 +180,8 @@ pm2.connect(false, async function (err) {
 
     insertInEnvFile({ params: { ...parsed } });
   } else {
-    const envFileMumbai = jetpack.read(".env.mumbai");
-    const buf = Buffer.from(envFileMumbai);
+    const envFileAmoy = jetpack.read(".env.amoy");
+    const buf = Buffer.from(envFileAmoy);
     const parsed = dotenv.parse(buf);
 
     insertInEnvFile({ params: { ...parsed } });
@@ -204,7 +206,7 @@ pm2.connect(false, async function (err) {
       args:
         environment.selected === "local"
           ? "migrage --reset"
-          : "migrate --network mumbai --reset",
+          : "migrate --network amoy --reset",
       watch: false,
       wait_ready: true,
       autorestart: false,

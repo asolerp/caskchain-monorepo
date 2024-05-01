@@ -146,7 +146,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
                         Cask Number {`#${item.id || item.tokenId}`}
                       </p>
                       <div>
-                        <p className="text-cask-chain font-poppins text-sm">
+                        <p className="bg-cask-chain px-2 rounded-lg font-poppins text-sm text-gray-900">
                           {item?.owner?.nickname
                             ? `@${item?.owner?.nickname}`
                             : addressSimplifier(item?.owner?.address)}
@@ -233,8 +233,8 @@ const BarrelNft: React.FC<NftItemProps> = ({
                         </p>
                       </div>
                     ) : (
-                      <p className="text-gray-400">
-                        Is not in sale. Make an offer!
+                      <p className="w-fit px-2 rounded-lg text-gray-100 bg-red-700">
+                        Already sold!
                       </p>
                     )}
                   </div>
@@ -266,7 +266,7 @@ const BarrelNft: React.FC<NftItemProps> = ({
                       ? 'BUY FRACTION'
                       : item?.price
                       ? 'BUY NOW'
-                      : 'MAKE OFFER'}
+                      : 'VIEW DETAILS'}
                   </Button>
                 </div>
               </div>

@@ -196,7 +196,7 @@ const NftCreate: NextPage = () => {
                 <LiquorFilter
                   label="Whiskey"
                   isActive={activeLiquor === 'whiskey'}
-                  onClick={() => handleActiveLiquorChange('whiskey')}
+                  onClick={() => handleActiveLiquorChange('wiskey')}
                 />
                 <LiquorFilter
                   label="Tequila"

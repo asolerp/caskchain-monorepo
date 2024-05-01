@@ -12,6 +12,7 @@ import {
   PINATA_GATEWAY_TOKEN,
   PINATA_GATEWAY_URL,
   PRIVATE_KEY,
+  REGION,
 } from "../../constants";
 import { getContract } from "../../web3";
 
@@ -34,8 +35,9 @@ log("Private key:", PRIVATE_KEY);
 const provider = new ethers.JsonRpcProvider(BLOCKCHAIH_URL as string);
 const wallet = new ethers.Wallet(PRIVATE_KEY as string, provider);
 
-export const createNft = functions.https.onRequest(
-  async (req: Request, res: Response): Promise<void> => {
+export const createNft = functions
+  .region(REGION)
+  .https.onRequest(async (req: Request, res: Response): Promise<void> => {
     corsHandler(req, res, async () => {
       try {
         const { ipfsHash, nftURI, price } = req.body;
@@ -109,5 +111,4 @@ export const createNft = functions.https.onRequest(
         res.status(500).json({ error: "server_error" });
       }
     });
-  }
-);
+  });

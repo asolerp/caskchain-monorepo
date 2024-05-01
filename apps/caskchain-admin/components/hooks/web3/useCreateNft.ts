@@ -1,11 +1,13 @@
 import { CryptoHookFactory } from '@_types/hooks'
-import { NftMeta, PinataRes } from '@_types/nft'
+import { NftMeta } from '@_types/nft'
 
 import axios from 'axios'
 
-import axiosClient from 'lib/fetcher/axiosInstance'
-import { ChangeEvent, useState } from 'react'
+import { useMutation } from '@tanstack/react-query'
+
+import { ChangeEvent, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
+import { pinImageAndMetadata } from 'pages/api/pinatta/pinImageAndMetadata'
 
 type UseCreateNftResponse = {
   nftURI: string
@@ -38,6 +40,7 @@ export const useCreateNft = () => {
   const [activeLiquor, setActiveLiquor] = useState('brandy')
   const [file, setFile] = useState<File | null>(null)
   const [hasURI, setHasURI] = useState(false)
+  const [toastId, setToastId] = useState<any>(null)
   const [nftMeta, setNftMeta] = useState<NftMeta>({
     name: '',
     description: '',
@@ -63,6 +66,46 @@ export const useCreateNft = () => {
       { trait_type: 'awards', value: '', type: 'text', editable: true },
     ],
   })
+
+  const {
+    data,
+    mutate: handlePinImageAndMetadata,
+    status,
+  } = useMutation({
+    mutationKey: ['pinImageAndMetadata'],
+    mutationFn: () => pinImageAndMetadata(file, nftMeta),
+  })
+
+  useEffect(() => {
+    if (status === 'success') {
+      toast.update(toastId, {
+        render: 'Metadata uploaded',
+        type: 'success',
+        isLoading: false,
+        closeOnClick: true,
+        autoClose: 2000,
+      })
+    }
+    if (status === 'error') {
+      toast.update(toastId, {
+        render: 'Something went wrong',
+        type: 'error',
+        isLoading: false,
+        closeOnClick: true,
+        autoClose: 2000,
+      })
+    }
+  }, [status])
+
+  useEffect(() => {
+    if (data) {
+      setNftURI(
+        `${process.env.NEXT_PUBLIC_PINATA_PUBLIC_URL}/${
+          (data as any)?.IpfsHash
+        }`
+      )
+    }
+  }, [data])
 
   const handleActiveLiquorChange = (
     liquor: 'brandy' | 'wiskey' | 'rum' | 'tequila'
@@ -118,58 +161,8 @@ export const useCreateNft = () => {
 
   const uploadMetaData = async () => {
     const id = toast.loading('Uploadnig metada...')
-    try {
-      if (!file) return
-
-      const buffer = await file!.arrayBuffer()
-      const bytes = new Uint8Array(buffer)
-
-      const imageResponse = await axiosClient.post(
-        '/api/pin-nft/pin-image',
-        {
-          bytes,
-          contentType: file!.type,
-          fileName: file!.name.replace(/\.[^/.]+$/, ''),
-        },
-        { withCredentials: true }
-      )
-
-      const imageData = imageResponse.data as PinataRes
-
-      const res = await axiosClient.post(
-        '/api/pin-nft/pin-metadata',
-        {
-          nft: {
-            ...nftMeta,
-            attributes: nftMeta.attributes.map((attr: any) => ({
-              trait_type: attr.trait_type,
-              value: attr.value,
-            })),
-            image: `${process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL}/${imageData.IpfsHash}`,
-          },
-        },
-        { withCredentials: true }
-      )
-
-      const data = res.data as unknown as PinataRes
-      setNftURI(`${process.env.NEXT_PUBLIC_PINATA_PUBLIC_URL}/${data.IpfsHash}`)
-      toast.update(id, {
-        render: 'Metadata uploaded',
-        type: 'success',
-        isLoading: false,
-        closeOnClick: true,
-        autoClose: 2000,
-      })
-    } catch (e: any) {
-      console.error(e.message)
-      toast.update(id, {
-        render: 'Something went wrong',
-        type: 'error',
-        isLoading: false,
-        closeOnClick: true,
-        autoClose: 2000,
-      })
-    }
+    setToastId(id)
+    handlePinImageAndMetadata()
   }
 
   const createNft = async () => {
@@ -178,14 +171,13 @@ export const useCreateNft = () => {
 
     try {
       await axios.post(
-        'https://us-central1-cask-chain.cloudfunctions.net/createNft',
+        'https://europe-west1-cask-chain.cloudfunctions.net/createNft',
         {
           ipfsHash,
           nftURI,
           price,
         }
       )
-
       toast.update(id, {
         render: 'NFT listed',
         type: 'success',

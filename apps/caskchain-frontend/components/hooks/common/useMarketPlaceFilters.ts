@@ -6,13 +6,19 @@ function removeElement(array: any, element: any) {
 }
 
 const useMarketPlaceFilters = () => {
-  const [activeSort, setActiveSort] = useState('Age')
+  const [activeSort, setActiveSort] = useState('tokenId')
   const [sortDirection, setSortDirection] = useState('asc' as 'asc' | 'desc')
   const [selectedFilters, setSelectedFilters] = useState<any>([])
 
   const mapSortDirection = {
     asc: 'Low to high',
     desc: 'High to low',
+  }
+
+  const mapSortActive = {
+    tokenId: 'Cask Id',
+    name: 'Name',
+    age: 'Age',
   }
 
   const handleAddFilter = useCallback(
@@ -78,6 +84,7 @@ const useMarketPlaceFilters = () => {
   return {
     activeSort,
     removeFilter,
+    mapSortActive,
     setActiveSort,
     sortDirection,
     selectedFilters,

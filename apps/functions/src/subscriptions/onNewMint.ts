@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as functions from "firebase-functions";
-import { PINATA_GATEWAY_TOKEN, PINATA_GATEWAY_URL } from "../constants";
+import { PINATA_GATEWAY_TOKEN, PINATA_GATEWAY_URL, REGION } from "../constants";
 import { Request, Response } from "express";
 import * as admin from "firebase-admin";
 import cors from "cors";
@@ -14,8 +14,9 @@ if (admin.apps.length === 0) {
 
 const corsHandler = cors({ origin: true });
 
-export const onNewMint = functions.https.onRequest(
-  async (req: Request, res: Response): Promise<void> => {
+export const onNewMint = functions
+  .region(REGION)
+  .https.onRequest(async (req: Request, res: Response): Promise<void> => {
     corsHandler(req, res, async () => {
       try {
         const { owner, tokenId, tokenUri } = req.body;
@@ -37,6 +38,7 @@ export const onNewMint = functions.https.onRequest(
           .doc(tokenId)
           .set(
             {
+              tokenId,
               name: meta.name,
               pinata: tokenUri,
               creator: owner,
@@ -63,5 +65,4 @@ export const onNewMint = functions.https.onRequest(
         res.json({ error: error.message });
       }
     });
-  }
-);
+  });

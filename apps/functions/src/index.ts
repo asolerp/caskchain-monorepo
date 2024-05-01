@@ -14,18 +14,26 @@ import { updateBestBarrel } from "./blockchain/vendor/updateBestBarrel";
 import { getNft } from "./blockchain/nfts/getNft";
 import { onItemBought } from "./subscriptions/onItemBought";
 import { getOwnedNfts } from "./blockchain/nfts/getOwnedNfts";
+import { verifyUser } from "./auth/verifyUser";
+import { pinImage } from "./pinata/pinImage";
+import { getBestBarrels } from "./blockchain/nfts/getBestBarrels";
+import { pinMetadata } from "./pinata/pinMetadata";
 
 export {
   getJWT,
   getNft,
   getNfts,
+  pinImage,
   createNft,
   onNewMint,
   updateUser,
+  verifyUser,
   getMessage,
   getUserData,
+  pinMetadata,
   getOwnedNfts,
   onItemBought,
+  getBestBarrels,
   updateSaleState,
   updateBestBarrel,
   onSaleStateUpdate,

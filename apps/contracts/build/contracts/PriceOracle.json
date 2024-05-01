@@ -305,15 +305,15 @@
     "absolutePath": "project:/contracts/PriceOracle.sol",
     "exportedSymbols": {
       "PriceOracle": [
-        15988
+        15996
       ]
     },
-    "id": 15989,
+    "id": 15997,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 15966,
+        "id": 15974,
         "literals": [
           "solidity",
           "^",
@@ -330,9 +330,9 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 15988,
+        "id": 15996,
         "linearizedBaseContracts": [
-          15988
+          15996
         ],
         "name": "PriceOracle",
         "nameLocation": "66:11:69",
@@ -341,12 +341,12 @@
           {
             "constant": false,
             "functionSelector": "6deb29d8",
-            "id": 15969,
+            "id": 15977,
             "mutability": "mutable",
             "name": "priceOfDollarInETH",
             "nameLocation": "211:18:69",
             "nodeType": "VariableDeclaration",
-            "scope": 15988,
+            "scope": 15996,
             "src": "196:40:69",
             "stateVariable": true,
             "storageLocation": "default",
@@ -355,7 +355,7 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 15967,
+              "id": 15975,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
               "src": "196:7:69",
@@ -366,7 +366,7 @@
             },
             "value": {
               "hexValue": "32393830",
-              "id": 15968,
+              "id": 15976,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -384,23 +384,23 @@
           },
           {
             "body": {
-              "id": 15978,
+              "id": 15986,
               "nodeType": "Block",
               "src": "285:41:69",
               "statements": [
                 {
                   "expression": {
-                    "id": 15976,
+                    "id": 15984,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
-                      "id": 15974,
+                      "id": 15982,
                       "name": "priceOfDollarInETH",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 15969,
+                      "referencedDeclaration": 15977,
                       "src": "291:18:69",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -410,11 +410,11 @@
                     "nodeType": "Assignment",
                     "operator": "=",
                     "rightHandSide": {
-                      "id": 15975,
+                      "id": 15983,
                       "name": "_newPrice",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 15971,
+                      "referencedDeclaration": 15979,
                       "src": "312:9:69",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -427,14 +427,14 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 15977,
+                  "id": 15985,
                   "nodeType": "ExpressionStatement",
                   "src": "291:30:69"
                 }
               ]
             },
             "functionSelector": "91b7f5ed",
-            "id": 15979,
+            "id": 15987,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -442,17 +442,17 @@
             "nameLocation": "250:8:69",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 15972,
+              "id": 15980,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 15971,
+                  "id": 15979,
                   "mutability": "mutable",
                   "name": "_newPrice",
                   "nameLocation": "267:9:69",
                   "nodeType": "VariableDeclaration",
-                  "scope": 15979,
+                  "scope": 15987,
                   "src": "259:17:69",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -461,7 +461,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 15970,
+                    "id": 15978,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "259:7:69",
@@ -476,12 +476,12 @@
               "src": "258:19:69"
             },
             "returnParameters": {
-              "id": 15973,
+              "id": 15981,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "285:0:69"
             },
-            "scope": 15988,
+            "scope": 15996,
             "src": "241:85:69",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -489,32 +489,32 @@
           },
           {
             "body": {
-              "id": 15986,
+              "id": 15994,
               "nodeType": "Block",
               "src": "393:36:69",
               "statements": [
                 {
                   "expression": {
-                    "id": 15984,
+                    "id": 15992,
                     "name": "priceOfDollarInETH",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 15969,
+                    "referencedDeclaration": 15977,
                     "src": "406:18:69",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "functionReturnParameters": 15983,
-                  "id": 15985,
+                  "functionReturnParameters": 15991,
+                  "id": 15993,
                   "nodeType": "Return",
                   "src": "399:25:69"
                 }
               ]
             },
             "functionSelector": "76f021b8",
-            "id": 15987,
+            "id": 15995,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
@@ -522,23 +522,23 @@
             "nameLocation": "339:21:69",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 15980,
+              "id": 15988,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "360:2:69"
             },
             "returnParameters": {
-              "id": 15983,
+              "id": 15991,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 15982,
+                  "id": 15990,
                   "mutability": "mutable",
                   "name": "",
                   "nameLocation": "-1:-1:-1",
                   "nodeType": "VariableDeclaration",
-                  "scope": 15987,
+                  "scope": 15995,
                   "src": "384:7:69",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -547,7 +547,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 15981,
+                    "id": 15989,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "384:7:69",
@@ -561,14 +561,14 @@
               ],
               "src": "383:9:69"
             },
-            "scope": 15988,
+            "scope": 15996,
             "src": "330:99:69",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "public"
           }
         ],
-        "scope": 15989,
+        "scope": 15997,
         "src": "57:374:69",
         "usedErrors": []
       }
@@ -583,12 +583,12 @@
     "4447": {
       "events": {},
       "links": {},
-      "address": "0xE6F4fab9E3026cA9a43731c6587e307Ef7810D09",
-      "transactionHash": "0xc0adac2b636f2b20e3ac370327d014cdc1a12350f6dd4416ace8f4f9dd9be33e"
+      "address": "0x4BFAb66559CD65e6a3777eBb4Fe50Cc9363E59B8",
+      "transactionHash": "0xfc7ad9f97aa03a6a65e5843e905f802d0457e9eec3373de5902f62af2e0270b3"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2024-04-17T20:59:45.076Z",
+  "updatedAt": "2024-04-30T19:34:19.433Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
