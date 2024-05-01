@@ -1,9 +1,6 @@
 node_modules/
 
 # local env files
-.env
-.env.amoy
-.env.base
-.env.ganache
-.env.mumbai
+.env*
+
 data
