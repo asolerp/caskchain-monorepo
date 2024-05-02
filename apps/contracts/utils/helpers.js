@@ -1,5 +1,6 @@
 const dotenv = require("dotenv");
 const jetpack = require("fs-jetpack");
+const fs = require("fs");
 
 function convertToEnv(object) {
   let envFile = "";
@@ -8,6 +9,19 @@ function convertToEnv(object) {
   }
   return envFile;
 }
+
+const convertEnvToVercel = (envFilePath, vercelFilePath) => {
+  // Cargar el archivo .env
+  const envConfig = dotenv.parse(fs.readFileSync(envFilePath));
+
+  // Preparar la estructura de vercel.json
+  const vercelConfig = {
+    env: envConfig,
+  };
+
+  // Escribir la configuración en el archivo vercel.json
+  fs.writeFileSync(vercelFilePath, JSON.stringify(vercelConfig, null, 2));
+};
 
 const insertInEnvFile = ({ params, route }) => {
   let env = {};
@@ -27,5 +41,6 @@ const insertInEnvFile = ({ params, route }) => {
 };
 
 module.exports = {
+  convertEnvToVercel,
   insertInEnvFile,
 };

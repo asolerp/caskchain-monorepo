@@ -1,12 +1,17 @@
 // scripts/deploy.js
 
 const { ethers, upgrades } = require("hardhat");
-const { insertInEnvFile } = require("../utils/helpers");
+const { insertInEnvFile, convertEnvToVercel } = require("../utils/helpers");
 const fs = require("fs").promises;
 
 const originRoute = "/Users/alberto/Desktop/Proyectos/caskchain-monorepo/.env";
 const destinyRoute =
   "/Users/alberto/Desktop/Proyectos/caskchain-monorepo/apps/functions/.env";
+
+const frontendRoute =
+  "/Users/alberto/Desktop/Proyectos/caskchain-monorepo/apps/caskchain-frontend/vercel.json";
+const adminRoute =
+  "/Users/alberto/Desktop/Proyectos/caskchain-monorepo/apps/caskchain-admin/vercel.json";
 
 async function main() {
   const [deployer] = await ethers.getSigners();
@@ -95,6 +100,9 @@ async function main() {
   });
 
   await fs.copyFile(originRoute, destinyRoute);
+
+  convertEnvToVercel(originRoute, frontendRoute);
+  convertEnvToVercel(originRoute, adminRoute);
 }
 
 main()
