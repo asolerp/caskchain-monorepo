@@ -41,7 +41,7 @@ function convertToEnv(object) {
 const insertInEnvFile = ({ params }) => {
   let env = {};
 
-  const envFile = jetpack.read(".env.local");
+  const envFile = jetpack.read(".env.common");
   const buf = Buffer.from(envFile);
   const parsed = dotenv.parse(buf);
 
@@ -167,7 +167,7 @@ pm2.connect(false, async function (err) {
     const ganacheAccounts = jetpack.read("ganache-accounts.json");
     const accounts = JSON.parse(ganacheAccounts);
 
-    const envFileGanache = jetpack.read(".env.test");
+    const envFileGanache = jetpack.read(".env.local");
     const buf = Buffer.from(envFileGanache);
     const parsed = dotenv.parse(buf);
 
@@ -200,13 +200,13 @@ pm2.connect(false, async function (err) {
     spinner.start("Deploying contracts to the selected network");
 
     await runProcess({
-      name: `truffle-migrate`,
+      name: `hardhat-deploy`,
       cwd: "./apps/contracts",
-      script: "truffle",
+      script: "npx",
       args:
         environment.selected === "local"
-          ? "migrage --reset"
-          : "migrate --network amoy --reset",
+          ? "hardhat run scripts/deploy.js --network development"
+          : "hardhat run scripts/deploy.js --network amoy",
       watch: false,
       wait_ready: true,
       autorestart: false,
@@ -219,7 +219,7 @@ pm2.connect(false, async function (err) {
     spinner.start("Creating contracts interfaces");
 
     const timerId = setInterval(async () => {
-      const isExists = await jetpack.existsAsync("./apps/contracts/build");
+      const isExists = await jetpack.existsAsync("./apps/contracts/artifacts");
       if (isExists) {
         clearInterval(timerId);
         spinner.succeed(chalk.greenBright("Contracts created"));

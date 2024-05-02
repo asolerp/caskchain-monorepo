@@ -1,8 +1,4 @@
 {
-  "packages": [
-    "./caskchain-frontend",
-    "./caskchain-backend",
-    "./caskchain-contracts"
-  ],
+  "packages": ["./caskchain-frontend", "./caskchain-admin"],
   "version": "0.0.1"
 }

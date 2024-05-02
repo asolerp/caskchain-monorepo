@@ -17,16 +17,22 @@ const NftOffersStorage = artifacts.require("NftOffersStorage");
 
 const CREATOR_ADDRESS = process.env.PUBLIC_KEY;
 
+const timeout = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 module.exports = function (deployer) {
   deployer.then(async () => {
     await deployer.deploy(MockUSDT, "10000000000000000000000000");
 
-    const priceOracle = await deployer.deploy(PriceOracle);
+    // const priceOracle = await deployer.deploy(PriceOracle);
+
+    // await timeout(10000);
+
     const ccNftStorage = await deployer.deploy(CCNftStorage);
 
     const collection = await deployProxy(CCNft, [ccNftStorage.address], {
       deployer,
     });
+
     const nftVendorStorage = await deployer.deploy(NftVendorStorage);
 
     const nftVendor = await deployProxy(

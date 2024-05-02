@@ -89,7 +89,9 @@ export const loadContractByAddress = async (
     return Promise.reject("Network ID is not defined!");
   }
 
-  const res = await import(`contracts/build/contracts/${name}.json`);
+  const res = await import(
+    `contracts/artifacts/contracts/${name}/${name}.sol/${name}.json`
+  );
   const Artifact = await res.json();
 
   if (address) {
@@ -110,7 +112,9 @@ export const loadContract = async (
     return Promise.reject("Network ID is not defined!");
   }
 
-  const res = await import(`contracts/build/contracts/${name}.json`);
+  const res = await import(
+    `contracts/artifacts/contracts/${name}/${name}.sol/${name}.json`
+  );
   const Artifact = res;
 
   // if (!web3) {
