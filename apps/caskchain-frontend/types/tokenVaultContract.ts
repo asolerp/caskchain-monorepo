@@ -1,58 +1,56 @@
 import {
   ContractTransaction,
-  ContractInterface,
   BytesLike as Arrayish,
-  BigNumber,
   BigNumberish,
-} from 'ethers';
-import { EthersContractContextV5 } from 'ethereum-abi-types-generator';
+} from 'ethers'
+import { EthersContractContextV5 } from 'ethereum-abi-types-generator'
 
 export type ContractContext = EthersContractContextV5<
   TokenVaultContract,
   TokenVaultContractMethodNames,
   TokenVaultContractEventsContext,
   TokenVaultContractEvents
->;
+>
 
 export declare type EventFilter = {
-  address?: string;
-  topics?: Array<string>;
-  fromBlock?: string | number;
-  toBlock?: string | number;
-};
+  address?: string
+  topics?: Array<string>
+  fromBlock?: string | number
+  toBlock?: string | number
+}
 
 export interface ContractTransactionOverrides {
   /**
    * The maximum units of gas for the transaction to use
    */
-  gasLimit?: number;
+  gasLimit?: number
   /**
    * The price (in wei) per unit of gas
    */
-  gasPrice?: BigNumber | string | number | Promise<any>;
+  gasPrice?: BigInt | string | number | Promise<any>
   /**
    * The nonce to use in the transaction
    */
-  nonce?: number;
+  nonce?: number
   /**
    * The amount to send with the transaction (i.e. msg.value)
    */
-  value?: BigNumber | string | number | Promise<any>;
+  value?: BigInt | string | number | Promise<any>
   /**
    * The chain ID (or network ID) to use
    */
-  chainId?: number;
+  chainId?: number
 }
 
 export interface ContractCallOverrides {
   /**
    * The address to execute the call as
    */
-  from?: string;
+  from?: string
   /**
    * The maximum units of gas for the transaction to use
    */
-  gasLimit?: number;
+  gasLimit?: number
 }
 export type TokenVaultContractEvents =
   | 'Approval'
@@ -63,17 +61,17 @@ export type TokenVaultContractEvents =
   | 'Redeem'
   | 'Start'
   | 'Transfer'
-  | 'Won';
+  | 'Won'
 export interface TokenVaultContractEventsContext {
-  Approval(...parameters: any): EventFilter;
-  Bid(...parameters: any): EventFilter;
-  Cash(...parameters: any): EventFilter;
-  Initialized(...parameters: any): EventFilter;
-  PriceUpdate(...parameters: any): EventFilter;
-  Redeem(...parameters: any): EventFilter;
-  Start(...parameters: any): EventFilter;
-  Transfer(...parameters: any): EventFilter;
-  Won(...parameters: any): EventFilter;
+  Approval(...parameters: any): EventFilter
+  Bid(...parameters: any): EventFilter
+  Cash(...parameters: any): EventFilter
+  Initialized(...parameters: any): EventFilter
+  PriceUpdate(...parameters: any): EventFilter
+  Redeem(...parameters: any): EventFilter
+  Start(...parameters: any): EventFilter
+  Transfer(...parameters: any): EventFilter
+  Won(...parameters: any): EventFilter
 }
 export type TokenVaultContractMethodNames =
   | 'new'
@@ -100,42 +98,42 @@ export type TokenVaultContractMethodNames =
   | 'initialize'
   | 'reservePrice'
   | 'purchase'
-  | 'redeem';
+  | 'redeem'
 export interface ApprovalEventEmittedResponse {
-  owner: string;
-  spender: string;
-  value: BigNumberish;
+  owner: string
+  spender: string
+  value: BigNumberish
 }
 export interface BidEventEmittedResponse {
-  buyer: string;
-  price: BigNumberish;
+  buyer: string
+  price: BigNumberish
 }
 export interface CashEventEmittedResponse {
-  owner: string;
-  shares: BigNumberish;
+  owner: string
+  shares: BigNumberish
 }
 export interface InitializedEventEmittedResponse {
-  version: BigNumberish;
+  version: BigNumberish
 }
 export interface PriceUpdateEventEmittedResponse {
-  user: string;
-  price: BigNumberish;
+  user: string
+  price: BigNumberish
 }
 export interface RedeemEventEmittedResponse {
-  redeemer: string;
+  redeemer: string
 }
 export interface StartEventEmittedResponse {
-  buyer: string;
-  price: BigNumberish;
+  buyer: string
+  price: BigNumberish
 }
 export interface TransferEventEmittedResponse {
-  from: string;
-  to: string;
-  value: BigNumberish;
+  from: string
+  to: string
+  value: BigNumberish
 }
 export interface WonEventEmittedResponse {
-  buyer: string;
-  price: BigNumberish;
+  buyer: string
+  price: BigNumberish
 }
 export interface TokenVaultContract {
   /**
@@ -144,7 +142,7 @@ export interface TokenVaultContract {
    * StateMutability: nonpayable
    * Type: constructor
    */
-  'new'(overrides?: ContractTransactionOverrides): Promise<ContractTransaction>;
+  'new'(overrides?: ContractTransactionOverrides): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: true
@@ -157,7 +155,7 @@ export interface TokenVaultContract {
     owner: string,
     spender: string,
     overrides?: ContractCallOverrides
-  ): Promise<BigNumber>;
+  ): Promise<BigInt>
   /**
    * Payable: false
    * Constant: false
@@ -170,7 +168,7 @@ export interface TokenVaultContract {
     spender: string,
     amount: BigNumberish,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: true
@@ -178,24 +176,21 @@ export interface TokenVaultContract {
    * Type: function
    * @param account Type: address, Indexed: false
    */
-  balanceOf(
-    account: string,
-    overrides?: ContractCallOverrides
-  ): Promise<BigNumber>;
+  balanceOf(account: string, overrides?: ContractCallOverrides): Promise<BigInt>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  canRedeem(overrides?: ContractCallOverrides): Promise<boolean>;
+  canRedeem(overrides?: ContractCallOverrides): Promise<boolean>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  decimals(overrides?: ContractCallOverrides): Promise<number>;
+  decimals(overrides?: ContractCallOverrides): Promise<number>
   /**
    * Payable: false
    * Constant: false
@@ -208,21 +203,21 @@ export interface TokenVaultContract {
     spender: string,
     subtractedValue: BigNumberish,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  forSale(overrides?: ContractCallOverrides): Promise<boolean>;
+  forSale(overrides?: ContractCallOverrides): Promise<boolean>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  id(overrides?: ContractCallOverrides): Promise<BigNumber>;
+  id(overrides?: ContractCallOverrides): Promise<BigInt>
   /**
    * Payable: false
    * Constant: false
@@ -235,14 +230,14 @@ export interface TokenVaultContract {
     spender: string,
     addedValue: BigNumberish,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  name(overrides?: ContractCallOverrides): Promise<string>;
+  name(overrides?: ContractCallOverrides): Promise<string>
   /**
    * Payable: false
    * Constant: false
@@ -259,35 +254,35 @@ export interface TokenVaultContract {
     parameter2: BigNumberish,
     parameter3: Arrayish,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  reserveTotal(overrides?: ContractCallOverrides): Promise<BigNumber>;
+  reserveTotal(overrides?: ContractCallOverrides): Promise<BigInt>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  symbol(overrides?: ContractCallOverrides): Promise<string>;
+  symbol(overrides?: ContractCallOverrides): Promise<string>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  token(overrides?: ContractCallOverrides): Promise<string>;
+  token(overrides?: ContractCallOverrides): Promise<string>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  totalSupply(overrides?: ContractCallOverrides): Promise<BigNumber>;
+  totalSupply(overrides?: ContractCallOverrides): Promise<BigInt>
   /**
    * Payable: false
    * Constant: false
@@ -300,7 +295,7 @@ export interface TokenVaultContract {
     to: string,
     amount: BigNumberish,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: false
@@ -315,7 +310,7 @@ export interface TokenVaultContract {
     to: string,
     amount: BigNumberish,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: true
@@ -326,21 +321,21 @@ export interface TokenVaultContract {
   userPrices(
     parameter0: string,
     overrides?: ContractCallOverrides
-  ): Promise<BigNumber>;
+  ): Promise<BigInt>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  votingTokens(overrides?: ContractCallOverrides): Promise<BigNumber>;
+  votingTokens(overrides?: ContractCallOverrides): Promise<BigInt>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  weth(overrides?: ContractCallOverrides): Promise<string>;
+  weth(overrides?: ContractCallOverrides): Promise<string>
   /**
    * Payable: false
    * Constant: false
@@ -363,14 +358,14 @@ export interface TokenVaultContract {
     _name: string,
     _symbol: string,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  reservePrice(overrides?: ContractCallOverrides): Promise<BigNumber>;
+  reservePrice(overrides?: ContractCallOverrides): Promise<BigInt>
   /**
    * Payable: true
    * Constant: false
@@ -379,7 +374,7 @@ export interface TokenVaultContract {
    */
   purchase(
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: false
@@ -390,5 +385,5 @@ export interface TokenVaultContract {
   redeem(
     _amount: BigNumberish,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 }

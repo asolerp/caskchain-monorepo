@@ -63,6 +63,7 @@ const NFTLatestOffers: React.FC<NFTLatestOffersProps> = ({
                           </td>
                           <td className="text-sm text-gray-100 font-light px-6 py-4 whitespace-nowrap">
                             <Link
+                              passHref
                               href={`https://mumbai.polygonscan.com/tx/${item?.txHash}`}
                             >
                               <ArrowTopRightOnSquareIcon className="h-6 w-6 text-cask-chain" />

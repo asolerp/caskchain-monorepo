@@ -1,10 +1,10 @@
 import { useGlobal } from '@providers/global'
-import { GlobalTypes } from '@providers/global/utils'
+
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import Image from 'next/image'
 import { updateUser } from 'pages/api/user/updateUser'
-import { BASE_URL } from 'pages/api/utils'
+
 import React, { useState, useEffect } from 'react'
 import ImageUploading from 'react-images-uploading'
 import { toast } from 'react-toastify'

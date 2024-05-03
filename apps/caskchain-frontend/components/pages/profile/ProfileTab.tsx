@@ -1,7 +1,7 @@
 import { Button, Spacer } from 'caskchain-ui'
 import UserInfoForm from 'components/forms/UserInfoForm'
 
-import useProfile from '../hooks/useProfile'
+import useProfile from './hooks/useProfile'
 import { useForm } from 'react-hook-form'
 import ImageProfileUploader from 'components/pages/profile/ImageProfileUploader'
 import { useAccount } from '@hooks/web3/useAccount'

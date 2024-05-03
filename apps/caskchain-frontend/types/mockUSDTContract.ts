@@ -1,63 +1,61 @@
 import {
   ContractTransaction,
-  ContractInterface,
   BytesLike as Arrayish,
-  BigNumber,
   BigNumberish,
-} from 'ethers';
-import { EthersContractContextV5 } from 'ethereum-abi-types-generator';
+} from 'ethers'
+import { EthersContractContextV5 } from 'ethereum-abi-types-generator'
 
 export type ContractContext = EthersContractContextV5<
   MockUSDTContract,
   MockUSDTContractMethodNames,
   MockUSDTContractEventsContext,
   MockUSDTContractEvents
->;
+>
 
 export declare type EventFilter = {
-  address?: string;
-  topics?: Array<string>;
-  fromBlock?: string | number;
-  toBlock?: string | number;
-};
+  address?: string
+  topics?: Array<string>
+  fromBlock?: string | number
+  toBlock?: string | number
+}
 
 export interface ContractTransactionOverrides {
   /**
    * The maximum units of gas for the transaction to use
    */
-  gasLimit?: number;
+  gasLimit?: number
   /**
    * The price (in wei) per unit of gas
    */
-  gasPrice?: BigNumber | string | number | Promise<any>;
+  gasPrice?: BigInt | string | number | Promise<any>
   /**
    * The nonce to use in the transaction
    */
-  nonce?: number;
+  nonce?: number
   /**
    * The amount to send with the transaction (i.e. msg.value)
    */
-  value?: BigNumber | string | number | Promise<any>;
+  value?: BigInt | string | number | Promise<any>
   /**
    * The chain ID (or network ID) to use
    */
-  chainId?: number;
+  chainId?: number
 }
 
 export interface ContractCallOverrides {
   /**
    * The address to execute the call as
    */
-  from?: string;
+  from?: string
   /**
    * The maximum units of gas for the transaction to use
    */
-  gasLimit?: number;
+  gasLimit?: number
 }
-export type MockUSDTContractEvents = 'Approval' | 'Transfer';
+export type MockUSDTContractEvents = 'Approval' | 'Transfer'
 export interface MockUSDTContractEventsContext {
-  Approval(...parameters: any): EventFilter;
-  Transfer(...parameters: any): EventFilter;
+  Approval(...parameters: any): EventFilter
+  Transfer(...parameters: any): EventFilter
 }
 export type MockUSDTContractMethodNames =
   | 'new'
@@ -71,16 +69,16 @@ export type MockUSDTContractMethodNames =
   | 'symbol'
   | 'totalSupply'
   | 'transfer'
-  | 'transferFrom';
+  | 'transferFrom'
 export interface ApprovalEventEmittedResponse {
-  owner: string;
-  spender: string;
-  value: BigNumberish;
+  owner: string
+  spender: string
+  value: BigNumberish
 }
 export interface TransferEventEmittedResponse {
-  from: string;
-  to: string;
-  value: BigNumberish;
+  from: string
+  to: string
+  value: BigNumberish
 }
 export interface MockUSDTContract {
   /**
@@ -97,7 +95,7 @@ export interface MockUSDTContract {
     symbol: string,
     initialSupply: BigNumberish,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: true
@@ -110,7 +108,7 @@ export interface MockUSDTContract {
     owner: string,
     spender: string,
     overrides?: ContractCallOverrides
-  ): Promise<BigNumber>;
+  ): Promise<BigInt>
   /**
    * Payable: false
    * Constant: false
@@ -123,7 +121,7 @@ export interface MockUSDTContract {
     spender: string,
     amount: BigNumberish,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: true
@@ -131,17 +129,14 @@ export interface MockUSDTContract {
    * Type: function
    * @param account Type: address, Indexed: false
    */
-  balanceOf(
-    account: string,
-    overrides?: ContractCallOverrides
-  ): Promise<BigNumber>;
+  balanceOf(account: string, overrides?: ContractCallOverrides): Promise<BigInt>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  decimals(overrides?: ContractCallOverrides): Promise<number>;
+  decimals(overrides?: ContractCallOverrides): Promise<number>
   /**
    * Payable: false
    * Constant: false
@@ -154,7 +149,7 @@ export interface MockUSDTContract {
     spender: string,
     subtractedValue: BigNumberish,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: false
@@ -167,28 +162,28 @@ export interface MockUSDTContract {
     spender: string,
     addedValue: BigNumberish,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  name(overrides?: ContractCallOverrides): Promise<string>;
+  name(overrides?: ContractCallOverrides): Promise<string>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  symbol(overrides?: ContractCallOverrides): Promise<string>;
+  symbol(overrides?: ContractCallOverrides): Promise<string>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  totalSupply(overrides?: ContractCallOverrides): Promise<BigNumber>;
+  totalSupply(overrides?: ContractCallOverrides): Promise<BigInt>
   /**
    * Payable: false
    * Constant: false
@@ -201,7 +196,7 @@ export interface MockUSDTContract {
     to: string,
     amount: BigNumberish,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: false
@@ -216,5 +211,5 @@ export interface MockUSDTContract {
     to: string,
     amount: BigNumberish,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 }

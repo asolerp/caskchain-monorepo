@@ -7,7 +7,7 @@ import Modal from 'react-modal'
 import { useForm } from 'react-hook-form'
 
 import UserInfoForm from 'components/forms/UserInfoForm'
-import useProfile from 'pages/profile/hooks/useProfile'
+import useProfile from 'components/pages/profile/hooks/useProfile'
 
 type Props = {
   modalIsOpen: boolean

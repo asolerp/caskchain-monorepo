@@ -1,8 +1,6 @@
 import {
   ContractTransaction,
-  ContractInterface,
   BytesLike as Arrayish,
-  BigNumber,
   BigNumberish,
 } from 'ethers'
 import { EthersContractContextV5 } from 'ethereum-abi-types-generator'
@@ -29,7 +27,7 @@ export interface ContractTransactionOverrides {
   /**
    * The price (in wei) per unit of gas
    */
-  gasPrice?: BigNumber | string | number | Promise<any>
+  gasPrice?: BigInt | string | number | Promise<any>
   /**
    * The nonce to use in the transaction
    */
@@ -37,7 +35,7 @@ export interface ContractTransactionOverrides {
   /**
    * The amount to send with the transaction (i.e. msg.value)
    */
-  value?: BigNumber | string | number | Promise<any>
+  value?: BigInt | string | number | Promise<any>
   /**
    * The chain ID (or network ID) to use
    */
@@ -98,14 +96,14 @@ export interface WithdrawEventEmittedResponse {
   amount: BigNumberish
 }
 export interface OfferResponse {
-  nftId: BigNumber
-  0: BigNumber
+  nftId: BigInt
+  0: BigInt
   seller: string
   1: string
-  lowerBid: BigNumber
-  2: BigNumber
-  highestBid: BigNumber
-  3: BigNumber
+  lowerBid: BigInt
+  2: BigInt
+  highestBid: BigInt
+  3: BigInt
   highestBidder: string
   4: string
 }
@@ -129,10 +127,7 @@ export interface NftOffersContract {
    * Type: function
    * @param parameter0 Type: address, Indexed: false
    */
-  bids(
-    parameter0: string,
-    overrides?: ContractCallOverrides
-  ): Promise<BigNumber>
+  bids(parameter0: string, overrides?: ContractCallOverrides): Promise<BigInt>
   /**
    * Payable: false
    * Constant: true

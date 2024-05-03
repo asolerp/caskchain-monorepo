@@ -8,7 +8,7 @@ import { magic } from 'lib/magic'
 import { useState } from 'react'
 import { signInUser } from 'lib/firebase/firebase'
 import { useQuery } from '@tanstack/react-query'
-import { useAuth } from 'components/contexts/AuthContext'
+
 import { getUserData } from 'pages/api/auth/getUserData'
 import { useWeb3 } from 'caskchain-lib/provider/web3'
 import { getCookie, setCookie } from 'cookies-next'

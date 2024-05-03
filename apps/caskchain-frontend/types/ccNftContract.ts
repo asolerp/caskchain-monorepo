@@ -1,8 +1,6 @@
 import {
   ContractTransaction,
-  ContractInterface,
   BytesLike as Arrayish,
-  BigNumber,
   BigNumberish,
 } from 'ethers'
 import { EthersContractContextV5 } from 'ethereum-abi-types-generator'
@@ -29,7 +27,7 @@ export interface ContractTransactionOverrides {
   /**
    * The price (in wei) per unit of gas
    */
-  gasPrice?: BigNumber | string | number | Promise<any>
+  gasPrice?: BigInt | string | number | Promise<any>
   /**
    * The nonce to use in the transaction
    */
@@ -37,7 +35,7 @@ export interface ContractTransactionOverrides {
   /**
    * The amount to send with the transaction (i.e. msg.value)
    */
-  value?: BigNumber | string | number | Promise<any>
+  value?: BigInt | string | number | Promise<any>
   /**
    * The chain ID (or network ID) to use
    */
@@ -130,13 +128,13 @@ export interface TransferEventEmittedResponse {
 export interface RoyaltyInfoResponse {
   result0: string
   0: string
-  result1: BigNumber
-  1: BigNumber
+  result1: BigInt
+  1: BigInt
   length: 2
 }
 export interface NftitemResponse {
-  tokenId: BigNumber
-  0: BigNumber
+  tokenId: BigInt
+  0: BigInt
   creator: string
   1: string
   owner: string
@@ -157,7 +155,7 @@ export interface CcNftContract {
    * StateMutability: view
    * Type: function
    */
-  _minimumFee(overrides?: ContractCallOverrides): Promise<BigNumber>
+  _minimumFee(overrides?: ContractCallOverrides): Promise<BigInt>
   /**
    * Payable: false
    * Constant: false
@@ -178,17 +176,14 @@ export interface CcNftContract {
    * Type: function
    * @param owner Type: address, Indexed: false
    */
-  balanceOf(
-    owner: string,
-    overrides?: ContractCallOverrides
-  ): Promise<BigNumber>
+  balanceOf(owner: string, overrides?: ContractCallOverrides): Promise<BigInt>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  bottlePrice(overrides?: ContractCallOverrides): Promise<BigNumber>
+  bottlePrice(overrides?: ContractCallOverrides): Promise<BigInt>
   /**
    * Payable: false
    * Constant: true
@@ -420,7 +415,7 @@ export interface CcNftContract {
    * StateMutability: view
    * Type: function
    */
-  totalSupply(overrides?: ContractCallOverrides): Promise<BigNumber>
+  totalSupply(overrides?: ContractCallOverrides): Promise<BigInt>
   /**
    * Payable: false
    * Constant: true
@@ -431,5 +426,5 @@ export interface CcNftContract {
   tokenByIndex(
     index: BigNumberish,
     overrides?: ContractCallOverrides
-  ): Promise<BigNumber>
+  ): Promise<BigInt>
 }

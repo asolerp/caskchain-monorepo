@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 
 import { BaseLayout } from '@ui'
 import PieResponsive from '@ui/charts/PieResponsive'
@@ -11,10 +11,8 @@ import { ethers } from 'ethers'
 import { NextPageContext } from 'next'
 
 import { useRouter } from 'next/router'
-import NFTLatestOffers from '@ui/tables/NFTLatestOffers'
 
 import SuccessPurchaseModal from '@ui/modals/SuccessPurchase'
-import useLocalLoading from '@hooks/common/useLocalLoading'
 import Header from '@ui/layout/Header'
 
 import CaskGallery from './components/CaskGallery'
@@ -46,7 +44,6 @@ function CaskDetail() {
     isLoading,
     // isFavorite,
     cancelOffer,
-    latestOffers,
     successModal,
     salesHistory,
     buyWithERC20,

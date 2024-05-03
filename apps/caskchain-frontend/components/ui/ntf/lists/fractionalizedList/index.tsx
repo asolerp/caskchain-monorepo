@@ -1,11 +1,11 @@
-import { useFractionalizedNfts } from '@hooks/web3'
 import FractionalizedNftItem from '@ui/ntf/item/FractionalizedNft'
 
 import { Nft } from '@_types/nft'
 import Link from 'next/link'
+import { useFractionalizedNfts } from '@hooks/web3/useFractionalizedNfts'
 
 const FractionalizedNftList: React.FC = () => {
-  const { fractionalizedNfts } = useFractionalizedNfts()
+  const { data } = useFractionalizedNfts()
 
   return (
     <div>
@@ -13,8 +13,8 @@ const FractionalizedNftList: React.FC = () => {
         Fractionalized Casks
       </p>
       <div className="flex flex-row space-x-6 mt-6 max-w-lg">
-        {fractionalizedNfts.data?.map((nft: Nft) => (
-          <Link key={nft.meta.image} href={`/cask/${nft.tokenId}`}>
+        {data?.map((nft: Nft) => (
+          <Link key={nft.meta.image} passHref href={`/cask/${nft.tokenId}`}>
             <div className="flex flex-col rounded-lg shadow-lg overflow-hidden">
               <FractionalizedNftItem item={nft} />
             </div>

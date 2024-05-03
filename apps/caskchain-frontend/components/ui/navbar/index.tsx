@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import ActiveLink from '../link'
 
@@ -16,7 +16,6 @@ import NetworkModal from '@ui/modals/NetworkModal'
 import ShareModal from '@ui/modals/ShareModal'
 import SidebarComponent from './Sidebar'
 import ClientOnly from 'components/pages/ClientOnly'
-import { useWeb3Instance } from 'caskchain-lib/provider/web3'
 
 const navigation = [
   { name: 'Home', href: '/', url: '/', key: 'home' },

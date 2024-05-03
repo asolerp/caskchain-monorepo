@@ -17,9 +17,9 @@ import {
 
 // Demo styles, see 'Styles' section below for some notes on use.
 import 'react-accessible-accordion/dist/fancy-example.css'
-import { faqGettingStarted } from './utils/faq'
+import { faqGettingStarted } from '../../components/pages/faq/faq'
 
-export const getServerSideProps = (context: any) => auth(context, 'user')
+export const getServerSideProps = (context: any) => auth(context)
 
 const FAQ: NextPage = () => {
   return (

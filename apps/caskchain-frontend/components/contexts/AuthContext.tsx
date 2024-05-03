@@ -1,4 +1,3 @@
-import { User } from 'firebase/auth'
 import { SignOutUser, userStateListener } from 'lib/firebase/firebase'
 
 import {
@@ -15,13 +14,13 @@ interface Props {
 
 export const AuthContext = createContext({
   // "User" comes from firebase auth-public.d.ts
-  currentUser: {} as User | null,
-  setCurrentUser: (_user: User) => {},
+  currentUser: {},
+  setCurrentUser: (_user: any) => {},
   signOut: () => {},
 })
 
 export const AuthProvider = ({ children }: Props) => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null)
+  const [currentUser, setCurrentUser] = useState<any>(null)
 
   useEffect(() => {
     const unsubscribe = userStateListener((user) => {

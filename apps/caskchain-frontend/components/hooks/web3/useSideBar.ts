@@ -28,7 +28,7 @@ export const useSideBar = () => {
   }, [web3])
 
   const { data } = useQuery({
-    queryKey: ['getOwnedNfts', currentUser?.uid],
+    queryKey: ['getOwnedNfts', (currentUser as any)?.uid],
     queryFn: async () => getOwnedNfts({ currentUser }),
   })
 

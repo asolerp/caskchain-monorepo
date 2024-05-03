@@ -3,8 +3,6 @@ import { motion } from 'framer-motion'
 import SettingsTab from './SettingsTab'
 import { Spacer } from 'caskchain-ui'
 import ProfileTab from './ProfileTab'
-import ShippingTab from './ShippingTab'
-import BackupTab from './BackupTab'
 
 const tabs = [
   { id: 'settings', label: 'Settings' },

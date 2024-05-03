@@ -1,6 +1,3 @@
-import { setupHooks, Web3Hooks } from "@hooks/web3/setupHooks";
-
-import { Web3Dependencies } from "@_types/hooks";
 import { Contract } from "ethers";
 
 export const AcceptedChainIds = [1337, 80001];
@@ -17,8 +14,8 @@ type Nullable<T> = {
 
 export type Web3State = {
   isLoading: boolean;
-  hooks: Web3Hooks;
-} & Nullable<Web3Dependencies>;
+  hooks: any;
+} & Nullable<any>;
 
 export const createDefaultState = () => {
   return {
@@ -47,7 +44,7 @@ export const createWeb3State = ({
   erc20Contracts,
   nftOffers,
   isLoading,
-}: Web3Dependencies) => {
+}: any) => {
   return {
     web3,
     ccNft,

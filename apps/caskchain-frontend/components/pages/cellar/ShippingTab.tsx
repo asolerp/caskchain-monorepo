@@ -2,17 +2,17 @@ import { useGlobal } from '@providers/global'
 import { Button, Spacer } from 'caskchain-ui'
 import { useForm } from 'react-hook-form'
 
-import useProfile from '../hooks/useProfile'
-import BackupForm from 'components/forms/BackupForm'
+import ShippingForm from 'components/forms/ShippingForm'
+import useProfile from 'components/pages/profile/hooks/useProfile'
 
-const BackupTab = () => {
+const ShippingTab = () => {
   const {
     state: { user },
   } = useGlobal()
 
-  const { handleSaveBackupInfo, loading } = useProfile()
+  const { handleSaveShippingInfo, loading } = useProfile()
   const onSubmit = (data: any) =>
-    handleSaveBackupInfo({ formState: { ...data } })
+    handleSaveShippingInfo({ formState: { ...data } })
 
   const {
     register,
@@ -20,21 +20,16 @@ const BackupTab = () => {
     handleSubmit,
   } = useForm({
     defaultValues: {
-      ...user?.backupInfo,
+      ...user?.shippingInfo,
     },
   })
 
   return (
     <div className="w-full">
-      <h2 className="font-relay text-white text-3xl">Backup Contact</h2>
-      <Spacer size="lg" />
-      <p className="font-poppins text-white text-lg w-fit">
-        {`Backup contact will be contacted in the case where we are unable to reach you regarding your cask redemption. `}
-      </p>
+      <h2 className="font-relay text-white text-3xl">Shipping Address</h2>
       <Spacer size="lg" />
       <form onSubmit={handleSubmit(onSubmit)}>
-        <BackupForm register={register} errors={errors} />
-        <Spacer size="lg" />
+        <ShippingForm register={register} errors={errors} />
         <Spacer size="lg" />
         <Button disabled={!isValid || isSubmitting} loading={loading}>
           Save
@@ -45,4 +40,4 @@ const BackupTab = () => {
   )
 }
 
-export default BackupTab
+export default ShippingTab

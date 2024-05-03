@@ -2,7 +2,7 @@ import { BaseLayout } from '@ui'
 import Header from '@ui/layout/Header'
 
 import { NextPage } from 'next'
-import ProfileTabs from './componets/ProfileTabs'
+import ProfileTabs from '../../components/pages/profile/ProfileTabs'
 import Spacer from '@ui/common/Spacer'
 
 import { auth } from 'utils/auth'

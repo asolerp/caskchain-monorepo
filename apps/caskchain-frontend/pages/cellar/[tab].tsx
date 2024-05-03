@@ -4,9 +4,8 @@ import Header from '@ui/layout/Header'
 import { NextPage } from 'next'
 import Spacer from '@ui/common/Spacer'
 
-import CellarTabs from './componets/CellarTabs'
 import { auth } from 'utils/auth'
-import CasksTab from './componets/CasksTab'
+import CasksTab from '../../components/pages/cellar/CasksTab'
 
 export const getServerSideProps = (context: any) => auth(context)
 

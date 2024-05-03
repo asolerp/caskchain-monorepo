@@ -2,10 +2,8 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import CasksTab from './CasksTab'
 import { Spacer } from 'caskchain-ui'
-import FavouritesTab from './FavouritesTab'
+
 import { useRouter } from 'next/router'
-import MyOffersSent from './MyOffersSent'
-import MyOffersReceived from './MyOffersReceived'
 
 const tabs = [
   { id: 'my-casks', label: 'My casks' },

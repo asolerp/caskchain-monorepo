@@ -18,14 +18,7 @@ import {
   GlobalTypes,
   initialState,
 } from './utils'
-import { getMagicProvider } from 'caskchain-lib'
 
-import axiosClient from 'lib/fetcher/axiosInstance'
-
-import { logout } from 'caskchain-lib/utils'
-
-import { useWeb3Instance } from 'caskchain-lib/provider/web3'
-import { magic } from 'lib/magic'
 import { getUserData } from 'pages/api/auth/getUserData'
 
 const GlobalContext = createContext<{

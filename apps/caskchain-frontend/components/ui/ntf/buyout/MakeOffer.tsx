@@ -5,7 +5,6 @@ import Spacer from '@ui/common/Spacer'
 import Spinner from '@ui/common/Spinner'
 import { Nft } from '@_types/nft'
 
-import { useState } from 'react'
 import { addressSimplifier } from 'utils/addressSimplifier'
 import { useGlobal } from '@providers/global'
 
@@ -16,13 +15,7 @@ type Props = {
   onOffer: (offer: string) => void
 }
 
-const MakeOffer: React.FC<Props> = ({
-  cask,
-  isLoading,
-  onCancelOffer,
-  onOffer,
-}) => {
-  const [offer, setOffer] = useState<number>()
+const MakeOffer: React.FC<Props> = ({ cask, isLoading, onCancelOffer }) => {
   const {
     state: { address },
   } = useGlobal()

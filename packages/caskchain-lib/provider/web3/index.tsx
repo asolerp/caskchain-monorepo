@@ -5,22 +5,15 @@ import {
   useEffect,
   useState,
 } from "react";
-import {
-  createDefaultState,
-  createWeb3State,
-  loadContract,
-  Web3State,
-} from "./utils";
+import { createDefaultState, createWeb3State, loadContract } from "./utils";
 
 import { CcNftContract } from "contracts/types/ccNftContract";
 import { NftVendorContract } from "contracts/types/nftVendorContract";
 import { NftOffersContract } from "contracts/types/nftOffersContract";
 
-import { NftFractionsFactoryContract } from "@_types/nftFractionsFactoryContract";
-
 import { getMagicProvider, getWeb3 } from "caskchain-lib";
 
-const Web3Context = createContext<Web3State>(createDefaultState());
+const Web3Context = createContext<any>(createDefaultState());
 
 interface Props {
   magic: any;
@@ -58,8 +51,7 @@ const Web3Provider: React.FC<Props> = ({ magic, children }) => {
             erc20Contracts: { USDT: mockUSDT },
             // nftFractionToken: signedNftFractionToken,
             nftFractionsVendor: nftFractionsVendor as unknown as any,
-            nftFractionsFactory:
-              nftFractionsFactory as unknown as NftFractionsFactoryContract,
+            nftFractionsFactory: nftFractionsFactory as unknown as any,
             ccNft: ccNft as unknown as CcNftContract,
             nftVendor: nftVendor as unknown as NftVendorContract,
             nftOffers: nftOffers as unknown as NftOffersContract,

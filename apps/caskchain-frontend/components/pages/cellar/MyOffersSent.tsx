@@ -1,19 +1,20 @@
+import { useMyActivity } from '@hooks/web3/useMyActivity'
 import OffersSent from '@ui/tables/OffersSent'
-import { useMyActivity } from '@hooks/web3'
+
 import { useEffect } from 'react'
 
 const MyOffersSent = () => {
-  const { myActivity } = useMyActivity()
+  const { sentOffersRefetch, sentOffers, cancelOffer } = useMyActivity()
 
   useEffect(() => {
-    myActivity.sentOffersRefetch()
+    sentOffersRefetch()
   }, [])
 
   return (
     <div className="w-full">
       <OffersSent
-        offersSent={myActivity?.sentOffers}
-        cancelOffer={(tokenId) => myActivity.cancelOffer(tokenId)}
+        offersSent={sentOffers}
+        cancelOffer={(tokenId) => cancelOffer(tokenId)}
       />
     </div>
   )

@@ -1,69 +1,67 @@
 import {
   ContractTransaction,
-  ContractInterface,
   BytesLike as Arrayish,
-  BigNumber,
   BigNumberish,
-} from 'ethers';
-import { EthersContractContextV5 } from 'ethereum-abi-types-generator';
+} from 'ethers'
+import { EthersContractContextV5 } from 'ethereum-abi-types-generator'
 
 export type ContractContext = EthersContractContextV5<
   VaultFactoryContract,
   VaultFactoryContractMethodNames,
   VaultFactoryContractEventsContext,
   VaultFactoryContractEvents
->;
+>
 
 export declare type EventFilter = {
-  address?: string;
-  topics?: Array<string>;
-  fromBlock?: string | number;
-  toBlock?: string | number;
-};
+  address?: string
+  topics?: Array<string>
+  fromBlock?: string | number
+  toBlock?: string | number
+}
 
 export interface ContractTransactionOverrides {
   /**
    * The maximum units of gas for the transaction to use
    */
-  gasLimit?: number;
+  gasLimit?: number
   /**
    * The price (in wei) per unit of gas
    */
-  gasPrice?: BigNumber | string | number | Promise<any>;
+  gasPrice?: BigInt | string | number | Promise<any>
   /**
    * The nonce to use in the transaction
    */
-  nonce?: number;
+  nonce?: number
   /**
    * The amount to send with the transaction (i.e. msg.value)
    */
-  value?: BigNumber | string | number | Promise<any>;
+  value?: BigInt | string | number | Promise<any>
   /**
    * The chain ID (or network ID) to use
    */
-  chainId?: number;
+  chainId?: number
 }
 
 export interface ContractCallOverrides {
   /**
    * The address to execute the call as
    */
-  from?: string;
+  from?: string
   /**
    * The maximum units of gas for the transaction to use
    */
-  gasLimit?: number;
+  gasLimit?: number
 }
 export type VaultFactoryContractEvents =
   | 'Mint'
   | 'OwnershipTransferred'
   | 'Paused'
-  | 'Unpaused';
+  | 'Unpaused'
 export interface VaultFactoryContractEventsContext {
-  Mint(...parameters: any): EventFilter;
-  OwnershipTransferred(...parameters: any): EventFilter;
-  Paused(...parameters: any): EventFilter;
-  Unpaused(...parameters: any): EventFilter;
+  Mint(...parameters: any): EventFilter
+  OwnershipTransferred(...parameters: any): EventFilter
+  Paused(...parameters: any): EventFilter
+  Unpaused(...parameters: any): EventFilter
 }
 export type VaultFactoryContractMethodNames =
   | 'new'
@@ -76,23 +74,23 @@ export type VaultFactoryContractMethodNames =
   | 'vaults'
   | 'mint'
   | 'pause'
-  | 'unpause';
+  | 'unpause'
 export interface MintEventEmittedResponse {
-  token: string;
-  id: BigNumberish;
-  price: BigNumberish;
-  vault: string;
-  vaultId: BigNumberish;
+  token: string
+  id: BigNumberish
+  price: BigNumberish
+  vault: string
+  vaultId: BigNumberish
 }
 export interface OwnershipTransferredEventEmittedResponse {
-  previousOwner: string;
-  newOwner: string;
+  previousOwner: string
+  newOwner: string
 }
 export interface PausedEventEmittedResponse {
-  account: string;
+  account: string
 }
 export interface UnpausedEventEmittedResponse {
-  account: string;
+  account: string
 }
 export interface VaultFactoryContract {
   /**
@@ -101,28 +99,28 @@ export interface VaultFactoryContract {
    * StateMutability: nonpayable
    * Type: constructor
    */
-  'new'(overrides?: ContractTransactionOverrides): Promise<ContractTransaction>;
+  'new'(overrides?: ContractTransactionOverrides): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  logic(overrides?: ContractCallOverrides): Promise<string>;
+  logic(overrides?: ContractCallOverrides): Promise<string>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  owner(overrides?: ContractCallOverrides): Promise<string>;
+  owner(overrides?: ContractCallOverrides): Promise<string>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  paused(overrides?: ContractCallOverrides): Promise<boolean>;
+  paused(overrides?: ContractCallOverrides): Promise<boolean>
   /**
    * Payable: false
    * Constant: false
@@ -131,7 +129,7 @@ export interface VaultFactoryContract {
    */
   renounceOwnership(
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: false
@@ -142,14 +140,14 @@ export interface VaultFactoryContract {
   transferOwnership(
     newOwner: string,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
    */
-  vaultCount(overrides?: ContractCallOverrides): Promise<BigNumber>;
+  vaultCount(overrides?: ContractCallOverrides): Promise<BigInt>
   /**
    * Payable: false
    * Constant: true
@@ -160,7 +158,7 @@ export interface VaultFactoryContract {
   vaults(
     parameter0: BigNumberish,
     overrides?: ContractCallOverrides
-  ): Promise<string>;
+  ): Promise<string>
   /**
    * Payable: false
    * Constant: false
@@ -181,14 +179,14 @@ export interface VaultFactoryContract {
     _supply: BigNumberish,
     _listPrice: BigNumberish,
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
    */
-  pause(overrides?: ContractTransactionOverrides): Promise<ContractTransaction>;
+  pause(overrides?: ContractTransactionOverrides): Promise<ContractTransaction>
   /**
    * Payable: false
    * Constant: false
@@ -197,5 +195,5 @@ export interface VaultFactoryContract {
    */
   unpause(
     overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  ): Promise<ContractTransaction>
 }

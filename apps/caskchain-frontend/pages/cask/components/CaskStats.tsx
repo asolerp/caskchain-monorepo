@@ -12,17 +12,18 @@ const CaskStats: React.FC<CaskStatsProps> = ({ data }) => {
           Stats
         </h2>
         <div className="grid grid-cols-4 gap-4 mt-6 space-y-2">
-          {Object.entries(data?.meta?.attributes)?.map(([key, value]: any) => (
-            <div key={key} className="">
-              <dt className="text-lg font-medium text-gray-400">
-                {key.toUpperCase()}
-              </dt>
-              <Spacer size="xs" />
-              <dd className=" text-lg font-sans text-cask-chain text-left w-3/4">
-                {value}
-              </dd>
-            </div>
-          ))}
+          {data &&
+            Object.entries(data?.meta?.attributes)?.map(([key, value]: any) => (
+              <div key={key} className="">
+                <dt className="text-lg font-medium text-gray-400">
+                  {key.toUpperCase()}
+                </dt>
+                <Spacer size="xs" />
+                <dd className=" text-lg font-sans text-cask-chain text-left w-3/4">
+                  {value}
+                </dd>
+              </div>
+            ))}
         </div>
       </div>
     </section>
